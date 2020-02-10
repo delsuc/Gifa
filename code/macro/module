@@ -1,0 +1,3 @@
+; obsolote, use MODULUS instead
+print 'This command is obsolete, use MODULUS'
+modulus

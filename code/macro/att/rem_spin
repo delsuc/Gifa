@@ -1,0 +1,17 @@
+; rem_spin $sp_id
+;
+; ask for removes $sp_id from peak data base
+
+set sp_id = $_
+gm/al_yesno ("Ok to remove spin #"; $sp_id;"from data-base")
+if ($returned s! "yes") error "'spin remove' Aborted"
+; draw in black to remove on screen
+set ss = $scolor
+scolor 8
+show_spin $sp_id
+scolor $ss
+
+@rem_spin_proc $sp_id
+
+alert ("Spin #"; $sp_id; "removed")
+

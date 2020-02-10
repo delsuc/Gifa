@@ -1,0 +1,12 @@
+; edit_spin
+;
+; calls mod_spin which
+; builds a dialog box permitting to modify a spin in the data base.
+
+;if (head($LAST_CLICK) s! "SPIN") then
+;    alert "Click on the spin you want to modify"
+    @find_spin
+    if ($returned == 0) exit
+;endif
+set id = (tail($last_click))
+@mod_spin $id

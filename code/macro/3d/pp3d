@@ -1,0 +1,25 @@
+; peak_pick_3d
+;
+; realizes a peak_picking of a 3D on file.
+
+if ($c_dim!=3) error 'Works only on a JOINed 3D'
+
+if ($c_itype != 0) error 'Data-set should be Real'
+
+message 'Enter mult. factor for the noise level (typically 10)'
+set pp_fact :=
+
+; do it by chunk of 16x16x16
+
+dim 3
+minimax ($pp_fact*$noise) (1+ $c_absmax)
+zoom 0
+for i1 = 1 $c_sizef1 step 15
+for i2 = 1 $c_sizef2 step 15
+for i3 = 1 $c_sizef3 step 15
+   getc $i1 $i2 $i3 (min($i1+16,$c_sizef1)) (min($i2+16,$c_sizef2)) (min($i3+16,$c_sizef3))
+   peak %
+endfor
+endfor
+endfor
+

@@ -1,0 +1,20 @@
+; apropos topic
+; for GIFA on_line help
+;
+; Search the string "topic" in all the help files available
+;
+; see also : help 
+
+message 'Enter topic to be searched in the help data-base'
+set a_it = $_
+
+if ($CONFIG_GRAPH==1) then
+	set list_comm = ' ' 
+	set fileout = ("/usr/tmp/gifapropos" // int(100000*$random))
+	sh ('/usr/local/gifa/com/create_apropos_macro.sh '  // $a_it ; $GIFAPATH ; '>'; $fileout )
+	$fileout
+	sh ( '/bin/rm -f';$fileout )
+else
+	sh ('/usr/local/gifa/com/apropos.sh '  // $a_it ; $GIFAPATH )
+endif
+exit

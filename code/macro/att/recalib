@@ -1,0 +1,53 @@
+; recalib
+;
+;
+
+set o1 = $OFFSET_1_2D
+set o2 = $OFFSET_2_2D
+
+calib
+
+write $CUR_EXP
+
+set sh1 = (($OFFSET_1_2D-$o1)/$FREQ_1_2D)
+set sh2 = (($OFFSET_2_2D-$o2)/$FREQ_2_2D)
+
+initinprogress $att['LARGEST']    set j = 0
+foreach i in att
+ if ($i s! 'LARGEST') then
+   set pk = $att[$i]
+   set f1 = (head($pk))  set pk = (tail($pk))
+   set f2 = (head($pk))  set pk = (tail($pk))
+   set rem = $pk
+
+   set att[$i] = ($f1+$sh1; $f2+$sh2; $rem)
+   set j = (%+1)  inprogress $j
+ endif
+endfor
+inprogress $att['LARGEST']
+
+
+gm/al_yesno 'Do you want to propagate to spin database ? (Do it only once !)'
+if ($returned s= 'yes') then
+initinprogress $att['LARGEST']    set j = 0
+foreach i in att
+ if ($i s! 'LARGEST') then
+   set pk = (tail(tail(tail($att[$i]))))
+   set sp1 = (head($pk))  set pk = (tail($pk))
+   set sp2 = (head($pk))
+
+   if (toupper($sp1) s! 'UNK') then
+	set sp = $spin[$sp1]
+	set f = (head($sp))   set sp = (tail($sp))
+	set spin[$sp1] = ($f+$sh1; $sp)
+   endif
+   if (toupper($sp2) s! 'UNK') then
+	set sp = $spin[$sp2]
+	set f = (head($sp))   set sp = (tail($sp))
+	set spin[$sp2] = ($f+$sh2; $sp)
+   endif
+   set j = (%+1)  inprogress $j
+ endif
+endfor
+inprogress $att['LARGEST']
+endif

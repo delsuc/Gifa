@@ -1,0 +1,8 @@
+; showzoom
+if ($zoom == 1) exit
+if ($dim!=2) error " in 2D Only"
+ showline $zoom_2d[2] $zoom_2d[1] $zoom_2d[2] $zoom_2d[3]
+ showline $zoom_2d[2] $zoom_2d[3] $zoom_2d[4] $zoom_2d[3]
+ showline $zoom_2d[4] $zoom_2d[3] $zoom_2d[4] $zoom_2d[1]
+ showline $zoom_2d[4] $zoom_2d[1] $zoom_2d[2] $zoom_2d[1]
+

@@ -1,0 +1,20 @@
+The Fourier Transform macros present in the standard macro directory are
+developped and tested for a Bruker spectrometer. Sometimes they even
+stick to Bruker terminology.
+
+However, with the help of some Varian users, I have developped a set of such
+macros adapted to Varian. These should be located in a subdirectory called
+/usr/local/gifa/macro/varian/ 
+
+To use them, simply add this directory to your GifaPath by typing the
+following command :
+
+SETPATH ('/usr/local/gifa/macro/varian' ; $gifapath)
+
+or better, add this command to your startup.g file (in /usr/local/macro/gifa
+for system-wide modification; or in $HOME/macro for a per-user modification).
+
+After this command, the file in the varian/ directory will superseed the
+standard macros, thus permitting transparent use of the Varian files.
+
+M.A.Delsuc

@@ -1,0 +1,17 @@
+; compute occurences of system type
+;
+set tot = 0
+foreach i in sys
+  if ($i s! 'LARGEST') then
+     set type = (head(tail($sys[$i])))
+     if (!exist('c[' // $type // ']')) set c[$type] = 0
+     set c[$type] = (%+1)
+     set tot = (%+1)
+  endif
+endfor
+print 'Statistic on the Spin Systems in the db'
+foreach i in c
+     print ($i; ':'; $c[$i])
+endfor
+print ('For a total of:'; $tot; 'Spin-systems')
+

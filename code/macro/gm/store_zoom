@@ -1,0 +1,4 @@
+; memorizes the current zoom window in a static variable
+set stored_zoom := ($scale;$ZOOM_1D[1];$ZOOM_1D[2];$ZOOM_2D[1];$ZOOM_2D[2];$ZOOM_2D[3];$ZOOM_2D[4];$ZOOM_3D[1];$ZOOM_3D[2];$ZOOM_3D[3];$ZOOM_3D[4];$ZOOM_3D[5];$ZOOM_3D[6])
+
+

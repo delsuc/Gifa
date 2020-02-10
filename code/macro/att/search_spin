@@ -1,0 +1,95 @@
+; search_spin (interactive)
+;
+; permits click on the data-set, and high-light the spins 
+; in the db located in the align tolerance, in F1 and F2 axes
+;
+
+print "Click at the point where you want to search for spins"
+
+point_clear
+monopoint
+set f1 = (itop($pointy[1],2,1))  set f2 = (itop($pointx[1],2,2))
+set tmp1 = (int($f1*1000)/1000)
+set tmp2 = (int($f2*1000)/1000)
+
+set tmp = ('tmp' // int(1000000*$random))
+open $tmp
+fprint $tmp ('formbox "'; 'F1' ; $tmp1 ; 'F2' ; $tmp2; '"  DO_NOTHING \')
+set fm =    "'%6.3f %5s      #%3d       %3s %3d  #%4d %s' message noreturn\"
+set f1list = " "
+set ss = $scolor
+fprint $tmp ('"F1 Axis" message \')
+foreach i in spin  within 1 ($f1-$tol_align) ($f1+$tol_align) 
+  if ($scolor <6) then
+    scolor (%+1)
+  else
+    scolor 1
+  endif
+  show_spin $i
+  set sp = ($spin[$i])
+  set ppm = (head($sp))  set sp = (tail($sp))
+  set name = (head($sp)) set sp = (tail($sp))
+  set sys = (head($sp))  set sp = (tail($sp))
+  set res_num = (head($sys[$sys])) set sp1 = (tail($sys[$sys]))
+  set res_name = (head($sp1))
+  set ppm = (int(1000*$ppm)/1000)
+;  fprintf $tmp $fm $ppm $name $sys $res_name $res_num $i $sp *
+  fprint $tmp ('"PPM'; $ppm; 'Spin #'//$i;'" message noreturn \')
+  fprint $tmp ($name; 'action "show_spin'; $i; '" noreturn \')
+  fprint $tmp ('"  from System #' // $sys; '" message noreturn \')
+  fprint $tmp ($res_name//'-'//$res_num;' action "show_sys'; $sys; '" \')
+  if ($f1list s= ' ') then
+     set f1list = $i
+  else
+     set f1list = ($f1list // ":" // $i)
+  endif
+endfor
+scolor $ss
+
+set f2list = " "
+set ss = $scolor
+fprint $tmp ('separator "F2 Axis" message \')
+foreach i in spin  within 1 ($f2-$tol_align) ($f2+$tol_align) 
+  if ($scolor <6) then
+    scolor (%+1)
+  else
+    scolor 1
+  endif
+  show_spin $i
+  set sp = ($spin[$i])
+  set ppm = (head($sp))  set sp = (tail($sp))
+  set name = (head($sp)) set sp = (tail($sp))
+  set sys = (head($sp))  set sp = (tail($sp))
+  set res_num = (head($sys[$sys])) set sp1 = (tail($sys[$sys]))
+  set res_name = (head($sp1))
+  set ppm = (int(1000*$ppm)/1000)
+;  fprintf $tmp $fm $ppm $name $sys $res_name $res_num $i $sp *
+  fprint $tmp ('"PPM'; $ppm; 'Spin #'//$i;'" message noreturn \')
+  fprint $tmp ($name; 'action "show_spin'; $i; '" noreturn \')
+  fprint $tmp ('"  from System #' // $sys; '" message noreturn \')
+  fprint $tmp ($res_name//'-'//$res_num;' action "show_sys'; $sys; '" \')
+  if ($f2list s= ' ') then
+     set f2list = $i
+  else
+     set f2list = ($f2list // ":" // $i)
+  endif
+endfor
+scolor $ss
+
+if ($f1list s= " ") then
+   alert ("No spin found in F1 axis within"; $tol_click; "ppm")
+endif
+if ($f2list s= " ") then
+   alert ("No spin found in F2 axis within"; $tol_click; "ppm")
+endif
+
+if (($f1list s! " ") & ($f2list s! " ")) then
+   fprint $tmp ('"Search Dipeptides" action "search_dipep';$f1list;$f2list;'" \')
+   fprint $tmp ('noreturn "Search distances" action "calc_dist_mat';$f1list;$f2list;'" \')
+   endif
+endif
+fprint $tmp  ('  *')
+close $tmp
+@($tmp)
+sh ("/bin/rm"; $tmp)
+

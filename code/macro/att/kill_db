@@ -1,0 +1,13 @@
+if (dbm("sys")) dbclose sys
+if (dbm("att")) dbclose att
+if (dbm("spin")) dbclose spin
+
+sh "rm -i db/*.dir db/*.pag"
+dbopen $cur_db att
+set att["largest"] = 0
+dbopen db/spin_syst sys
+set sys["largest"] = 0
+dbopen db/spin spin
+set spin["largest"] = 0
+
+

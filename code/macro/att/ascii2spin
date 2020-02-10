@@ -1,0 +1,146 @@
+; ascii2spin
+;
+; This macro extract the chemical shifts of spins 
+; from a generic ascii assignment file
+; one line per residue
+;
+ ;  MAD oct 98 from bmrb2spin
+
+dialogbox "Import from ascii file" \
+  "Name of assignment file" file brmbfil ' ' \
+  "Format of file" enum "12 ALA 15N HN Ha Hb ..,ALA 12 15N HN Ha Hb ..,other" format % \
+  "Action to take" enum "append to current spin db,erase current spin db" act % \
+  "Spin to consider" enum "all spins,all H and N,H only,H-N HSQC only" cons % \
+  *
+
+
+if (head($act) s= 'erase') \
+  gm/al_yesno "Warning, this action will erase your current spin data-base, do you wish to continue?"
+
+if ($returned s! 'yes') error "Aborted by user"
+
+;check existence of file
+open $brmbfil
+close $brmbfil
+
+print ("Scanning"; $brmbfil; "file for"; $cons; "and"; $act // '.')
+
+;scan primary sequence
+set prim = db/primary
+open $prim
+set l = <$prim
+set i = 1
+while (!eof($prim))
+   set seq[$i] = $l
+   set i = (%+1)
+   set l = <$prim
+endwhile
+close $prim
+
+set tmp = $brmbfil
+
+dbopen /usr/local/gifa/macro/att/1let_3let code
+dbopen /usr/local/gifa/macro/att/3let_1let code3
+set n_spin = 0
+set n_sys = 0
+
+if (head($act) s= 'erase') then
+  if (dbm('spin')) dbclose spin
+  if (dbm('sys'))  dbclose sys
+  sh '/bin/rm -f db/spin.* db/sys.*'
+  dbopen db/spin spin
+  set spin["largest"] = 0
+  dbopen db/spin_syst sys
+  set sys["largest"] = 0
+endif
+
+open $tmp
+set l = <$tmp
+while (!eof($tmp))
+
+; read chemical shift of hydrogen spins, put them into
+; the dbm base and modify the spin system base accordingly
+
+  if (index($l,'#') != 1) then      ; not a comment
+     if ($format s= '12 ALA 15N HN Ha Hb ..' | $format s= 'ALA 12 15N HN Ha Hb ..') then
+         
+          ; get sys - and check
+          if ($format s= '12 ALA 15N HN Ha Hb ..') then
+              set sys_id = (head($l))      set l = (tail($l))
+              set sys_typ = (toupper(head($l)))     set l = (tail($l))
+          elsif ($format s= 'ALA 12 15N HN Ha Hb ..') then
+              set sys_typ = (toupper(head($l)))     set l = (tail($l))
+              set sys_id = (head($l))      set l = (tail($l))
+          endif
+
+          if (!exist("code3["  // $sys_typ // "]")) then
+              print ("Warning Residue type:";$sys_typ;"unknown")
+              set sys_typ = 'UNK'
+              set tt = "N,HH,HA,UNK,UNK,UNK,UNK,UNK,UNK,UNK"
+          else
+              if ($sys_typ s! head($code[$seq[$sys_id]])) then
+                 print ("Warning, mismatch between primary sequence and file for residue"; $sys_id)
+                 print ($sys_id; $sys_typ; $seq[$sys_id])
+                 set sys_typ = 'UNK'
+                 set tt = "N,HH,HA,UNK,UNK,UNK,UNK,UNK,UNK,UNK"
+              else
+                set tt = ('N,'// $topo[$sys_typ])
+                set syss = (tail($code3[$sys_typ]))   ; not empty if 2 spin sys in this residue
+                set syss = (tailx($syss,','))
+                if (exist("topo[" // $syss // "]")  &  $syss s! ' ') then
+                  ; for some strange reasons, $topo[' '] seems to exist ??
+                  set tt = ($tt // ',' // $topo[$syss])
+                endif
+              endif
+          endif
+          
+; now get spins
+          while ($l s! ' ')      ; parse remaining of line
+            set sp_delta = (head($l))       set l = (tail($l))        ; get delta
+            set sp_name = (headx($tt,','))  set tt = (tailx($tt,','))      ; get spin name
+            while (index($sp_name,'Q') == 1)                       ; skip pseudo atoms
+                set sp_name = (headx($tt,','))    set tt = (tailx($tt,','))
+            endwhile
+            
+            if ($sp_delta s= 'X') goto skip                        ; skip X's
+            set sp_typ = (subst($sp_name,1,1))
+           ; determine keep condition
+           set keep = ($sp_typ s= "H" & $cons s! 'H-N HSQC only')
+           set keep = ($keep | $cons s= 'all spins')
+           set keep = ($keep | ( $sp_typ s= "N" & ( $cons s= 'all spins' | $cons s= 'all H and N')))
+           set keep = ($keep | ($cons s= 'H-N HSQC only' & ($sp_name s= "N" | $sp_name s= "HN")))
+           if ($keep) then
+                set id = ($spin["largest"] + 1)
+                set spin[$id] = ($sp_delta;$sp_name;$sys_id)
+                set spin["largest"] = $id
+                set n_spin = (%+1)
+                
+                ;then complete spin sys
+                if (exist("sys["// $sys_id //"]")) then
+                  set sys[$sys_id] = ($sys[$sys_id] ; $id)
+                else
+            ;      print ("toto" ; $seq[$sys_id] ; $sys_id)
+                  set sys[$sys_id] = ($sys_id ; $sys_typ ; $id)
+                  set sys['largest'] = $sys_id
+                  set n_sys = (%+1)
+                endif
+           endif
+=skip
+    	  endwhile
+     else
+        alert ' Not implemented yet !'
+        goto fin
+     endif
+  endif
+  set l = <$tmp
+endwhile
+
+=fin
+dbclose code
+dbclose code3
+close $tmp
+
+alert   ("Added"; $n_sys; "spin-systems, and"; $n_spin; "spins") message *
+
+quit
+

@@ -1,0 +1,51 @@
+; compute_label $nopk
+;
+; Determine the label of a peak when this peak 
+; is assigned 
+; compute_label is called by mult_integ
+;
+
+if (!$arg) message "Peak number?"
+set i = $_
+
+set super = 0
+; look at the label of the current peak
+if (exist("att[" // $i //"]")) then
+   set l = $att[$i]
+else
+   error "Unknown peak"
+endif
+
+set f1 = (head($l)) set f2 = (head(tail($l)))
+set f1i = (ptoi($f1,2,1))
+set f2i = (ptoi($f2,2,2))
+
+;print ("l "//$l)
+set t = (tail(tail(tail($l))))
+set u = (tolower(head($t))) 
+set v = (tolower(head(tail($t)))) 
+if (($u s! "unk" ) & ($v s! "unk" )) then
+   set s1 = ($spin[(head($t))])
+   set s2 = ($spin[(head(tail($t)))])
+   set sys1 = (head(tail(tail($s1))))
+   set note1 = (tail(tail(tail($s1))))
+   set sys2 = (head(tail(tail($s2))))
+   set note2 = (tail(tail(tail($s2))))
+; processing of the assigned peaks
+   if (($sys1 s! "unk") & ($sys2 s! "unk")) then 
+      set r1t = (head($sys[$sys1]))
+      set r2t = (head($sys[$sys2]))
+      set t = (head(tail($s1))//":"//$r1t//"-"//head(tail($s2))//":"//$r2t)
+   else 
+      set super = 1
+   endif
+else
+   set super = 1
+endif
+
+if ($super == 1) then
+   set returned := " "
+else 
+   set returned := $t
+endif
+

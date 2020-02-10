@@ -1,0 +1,24 @@
+; List the first values of the data buffer
+; Replaces the previous built-in LISTD
+;
+; see also : list
+
+if ($dim==1) then
+  for i = 1 to (min(400,$si1_1d))
+    print ($i;":";val1d($i))
+  endfor
+elsif ($dim==2) then
+  for i = 1 to (min(20,$si1_2d))
+  for j = 1 to (min(20,$si2_2d))
+    print ($i;$j;":";val2d($i,$j))
+  endfor
+  endfor
+elsif ($dim==3) then
+  for i = 1 to (min(8,$si1_3d))
+  for j = 1 to (min(8,$si2_3d))
+  for k = 1 to (min(8,$si3_3d))
+    print ($i;$j;$k;":";val3d($i,$j,$k))
+  endfor
+  endfor
+  endfor
+endif

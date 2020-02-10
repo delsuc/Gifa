@@ -1,0 +1,24 @@
+; Realizes the least-square fit of a DOSY 1D curve,
+; as extracted from a 2D or 3D DOSY experiment
+; tries to fit 2 exponential damping
+; SHOULD BE USED WITH CAUTION
+;
+; see also : dosyfit FITGENE, INVTLAP, dosy2d, showexp
+
+gm/test1d
+; First fits one daming, then fits two.
+set exp = '$p2*exp(-$p1*$x/$dfactor)'
+set p1 := ($dfactor/$tab[round($si1_1d/2)]) ; eval initial $p1 and $p2
+set p2 := (val1d(1))
+fitgene $exp 2			; do first fit with 1 damping
+
+print 'Ignore previous message !'
+
+set exp = ($exp // '+$p4*exp(-$p3*$x/$dfactor)')
+set p2 = ($p2/2)   set p4 = $p2
+set p3 = ($p1/3)   set p1 = (3*$p1)
+fitgene $exp 4			; then final fit
+
+showexp $exp
+print (' Amplitudes :';$p2;'+/-';$dp2;'   ';$p4;'+/-';$dp4)
+print ('   dampings :';$p1;'+/-';$dp1;'   ';$p3;'+/-';$dp3; 'micron^2/sec')

@@ -1,0 +1,18 @@
+; rem_spin_clean $sp_id
+;
+; removes $sp_id from spin data base
+; unassign related peaks
+; check and clear all spin_systems
+;
+; This the correct way to remove a spin
+
+set sp_id = $_
+
+; correct spin_systems
+foreach ss_id in sys
+  @rem_spin_sys $ss_id $sp_id
+endfor
+
+;remove spin itself
+@rem_spin $sp_id
+

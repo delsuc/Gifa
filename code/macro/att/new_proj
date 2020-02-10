@@ -1,0 +1,156 @@
+;new_proj
+; 
+; creates a new assignment project.
+; 
+; A project consists in a directory with several entries :
+;     spectra/  contains the spectra for the assignment project
+;             (usually links rather than real files)
+;     db/   contains the data bases used for the assignment
+;         spin_syst.dir spin_syst.pag    is the spin-system db
+;                        (one entry per SS)
+;         spin.dir spin.pag  is the spin db
+;                    on entry for each spin  
+;         *.dir *.pag : several peak db, associated to each files found 
+;                     in spectra
+;                  these are in dbm format (thus the dir / pag names )
+;         primary      is the primary sequence of the molecule,
+;                  one letter code, on a single line.
+;                  in plain ascii
+; each db files ar bound to a dbm array[]
+; $sys[] for spin_syst
+; $spin[] for spin
+; $att[] for the peak data-base (one at a time)
+; the syntax for each entry is :
+;att :
+;	$att<#att> = f1 f2 amp #spin1 #spin2 note
+;
+;spin
+;		$spin<#spin> = delta  nom #ss note
+;
+;sys :
+;		$sys<#ss> = index type list_of_spin
+
+if (dbm("sys")) dbclose sys
+if (dbm("spin")) dbclose spin
+if (dbm("att")) dbclose att
+
+dialogbox "New project" \
+  "First, Create a directory which will hold all the information" message \
+  "This directory will be called a project" message \
+  separator \
+  "Create project (directory)" file dd ($home//"/new_project") *
+set proj = $dd
+
+;correction P.Ladam, 29 fev 2000
+;sh ("mkdir"; $proj; "; mkdir"; $proj // "/db; mkdir"; $proj // "/spectra")
+;sh ("mkdir"; $proj // "/PDB" ; "mkdir"; $proj // "/processing";$proj // "/constraints")
+sh ("mkdir"; $proj; "; mkdir";$proj // "/db" ;" ; mkdir";$proj // "/spectra")
+sh ("mkdir"; $proj // "/PDB"; "; mkdir";$proj // "/processing"; "; mkdir";$proj // "/constraints")
+
+cd  $proj
+
+set prim = " "
+=redo
+  if (dbm("code")) dbclose code
+  dialogbox "Primary sequence" \
+    "Then enter the primary sequence of the protein under study" message \
+    "You can choose to get the sequence from a file, or to type it directly" message \
+    "If you choose to read a file, then choose the file format (1 letter, 3 letters, PDB, BMRB)" message \
+    "If you choose to type it directly, use the 1 letter code" message \
+    separator \
+    "Choose your input method" enum "Direct input,3let code file,1let code file,PDB file,BMRB file" meth % \
+    separator \
+    "Depending on the input method, enter Primary sequence    OR    file name " message \
+    "Primary sequence (1 letter code)" string prim $prim \
+    noreturn \
+    "/  File name" file fich " "  *
+  set meth = (head($meth))
+  if ($meth s= "Direct") then
+    set prim = (toupper($prim))
+    open db/primary
+    dbopen /usr/local/gifa/macro/att/1let_3let code
+    set failed = (1==0)       ; used to shorten when wrong aa is used
+    for i = 1 to (len($prim))
+      if (!$failed) then
+        set aa = (subst($prim,$i,$i))
+        if (!exist("code[" // $aa // "]")) then
+          gm/al_yesno ($aa; " : Unknown residue, Continue ?")
+        if ($returned s! "yes") set failed = (1==1)
+        endif
+        fprint db/primary $aa
+      endif
+    endfor
+    close db/primary
+    dbclose code
+    if ($failed) goto redo
+    gm/al_yesno (len($prim); "residues, Ok ?")
+    if ($returned s! 'yes') goto redo
+  elsif ($meth s= "3let" | $meth s= "1let") then
+    open $fich
+    open db/primary
+    set i = 0
+    if ($meth s= "3let") dbopen /usr/local/gifa/macro/att/3let_1let code
+    set l = <$fich
+    while (!eof($fich))
+      while ($l s! " " & index($l,'#') != 1)    ; skip empty lines and comments
+        set t = (toupper(head($l)))  set l = (tail($l))
+        if ($meth s= "3let") set t = (head($code[$t]))
+        fprint db/primary $t       set i = (%+1)
+      endwhile
+      set l = <$fich
+    endwhile
+    close db/primary
+    if ($meth s= "3let") dbclose code
+    close $fich
+    gm/al_yesno ($i; "residues, Ok ?")
+    if ($returned s! 'yes') goto redo
+  elsif ($meth s= "PDB") then
+    pdb2primary $fich
+    if ($returned s! 'yes') goto redo
+    sh ('cp'; $fich; 'PDB')
+  elsif ($meth s= "BMRB") then
+    bmrb2primary $fich
+    if ($returned s! 'yes') goto redo
+  endif
+
+; load PDB if any
+@build_pdb
+
+; open db
+dbopen db/spin spin
+set spin["largest"] = 0
+dbopen db/spin_syst sys
+set sys["largest"] = 0
+
+; set default param.
+set tol_align := 0.03
+set tol_click := 0.1
+set box_f1 := 0.03
+set box_f2 := 0.03
+
+; ch_param
+
+open parameters
+fprint parameters ("set tol_align :="; $tol_align)
+fprint parameters ("set tol_click :="; $tol_click)
+fprint parameters ("sign"; $sign)
+fprint parameters ("level"; $level)
+fprint parameters ("scale"; $scale)
+fprint parameters ("loga"; $loga)
+fprint parameters ("set box_f1 :="; $box_f1)
+fprint parameters ("set box_f2 :="; $box_f2)
+close parameters
+
+; create default zoom_window
+open zoom_window
+fprint zoom_window  "set zmem['HN-HA'] := '2D 5.2p 9.5p 3.2p 6.2p'"
+fprint zoom_window  "set zmem['HN-HN'] := '2D 9.5p 9.5p 6.2p 6.2p'"
+close zoom_window
+
+@multi_zoom Load
+
+alert "Now, add spectra to the project, then start the assignment work"
+set list_spectra := ' '
+@add_spec
+
+

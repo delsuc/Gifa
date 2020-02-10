@@ -1,0 +1,57 @@
+; mod_att $pic
+;
+; builds a dialog box permitting to modify a peak in the data base.
+; (called with the 'edit peak' in the menu )
+;
+
+set pic = $_
+
+if (exist("att[" // $pic //"]")) then
+   set l = $att[$pic]
+else
+   error "Unknown peak"
+endif
+
+compute_label $pic
+set label = $returned
+
+set tmp = ('tmp' // int(1000000*$random))
+open $tmp
+set spl1 = (head(tail(tail(tail($l)))))
+set spl1 = (toupper($spl1))
+set spl2 = (head(tail(tail(tail(tail($l))))))
+set spl2 = (toupper($spl2))
+
+fprint $tmp ('formbox "'; '#'//$pic; $label; '" \')
+fprint $tmp ('"set att[' // $pic // '] = ($f1;$f2;$amp;$sp1;$sp2;$note)" \')
+fprint $tmp  ('"Current:'; $cur_exp; '" message \')
+fprint $tmp  ('"ppm in F1" real f1'; head($l); ' \')
+if ($spl1 s= 'UNK') then
+  set stt = ('find_spin_low F1 $f1 set_spin_att'; $pic; '$returned closeform $widget mod_att'; $pic )
+  fprint $tmp  ('noreturn "Search Spins" action "'; $stt; '" \')
+endif
+fprint $tmp  ('"ppm in F2" real f2'; head(tail($l)); ' \')
+if ($spl2 s= 'UNK') then
+  set stt = ('find_spin_low F2 $f2 set_spin_att'; $pic; '$returned closeform $widget mod_att'; $pic )
+  fprint $tmp  ('noreturn "Search Spins" action "'; $stt; '" \')
+endif
+fprint $tmp  ('"Amplitude :" real amp'; head(tail(tail($l))); '\')
+fprint $tmp  ('"Spin F1 #" int sp1'; $spl1; 'noreturn \')
+fprint $tmp  ('Show action "show_spin $sp1" noreturn \')
+fprint $tmp  ('Edit action "mod_spin $sp1" \')
+fprint $tmp  ('"Spin F2 #" int sp2'; $spl2; 'noreturn \')
+fprint $tmp  ('Show action "show_spin $sp2" noreturn \')
+fprint $tmp  ('Edit action "mod_spin $sp2" \')
+fprint $tmp  ('"note" string note "'; tail(tail(tail(tail(tail($l))))); '" \')
+fprint $tmp  ('separator Center action "local_pk'; $pic; '" noreturn \')
+fprint $tmp  ('Show action "show_att'; $pic; '" noreturn \')
+fprint $tmp  ('Move action "mov_att'; $pic; ' closeform $widget mod_att'; $pic; '" noreturn \')
+fprint $tmp  ('Remove action "rem_att'; $pic; ' closeform $widget" \')
+fprint $tmp  ('"Move to top" action "mov_att_top'; $pic;  ' closeform $widget mod_att'; $pic; '" noreturn \')
+fprint $tmp  ('"Align spins to peak" action "align_spin_pk'; $pic; '" *')
+close $tmp
+@($tmp)
+sh ("/bin/rm"; $tmp)
+
+
+

@@ -1,0 +1,13 @@
+set _f := $name
+set toto = 1
+formbox "Formatted Read" \
+  dump \
+  "Enter file name" message \
+  " " file _f \
+  "Select Format" message \
+  "Format :" enum _ff \
+  "Read (standard),ReadH (FtNmr),ReadV (Varian),ReadL (NMRi),ReadM (Matlab),ReadT (text),ReadS (portable)" \
+   *
+;(head($_ff)) $_f
+
+

@@ -1,0 +1,80 @@
+; if called with no argument :
+;    builds a form which permits to superimpose up to 3 1D in the disp1d window
+;
+; if called with proper arguments :
+;    does actually the display
+;
+; see also : super2d SHOWC JOIN DISP1D
+ 
+if (!$arg) then
+ formbox "Super Impose 1D" \
+   "super1d $name2 $sc2 $sh2 $col2 $name1 $sc1 $sh1 $col1 'coucou' 1 0 $colm" \
+   "Superimpose up to 2 other 1D's to the current one" message \
+   "Click on 'Apply' to restore the display" message \
+   separator \
+   "Data-Set in memory" message \
+     "Show" enum "don't,red,yellow,green,cian,blue,purple,white" colm "yellow" \
+   separator \
+   "First data-set :" file name1 $c_name \
+     "Show" enum "don't,red,yellow,green,cian,blue,purple,white" col1 "cian" \
+     noreturn "Shift (in points)" cursor -50 50 0 sh1 0 \
+     "Int. ratio" cursor -3 3 2 sc1 0 noreturn "(in power of 10)" message \
+   separator \
+   "Second Data-Set :" file name2 $c_name \
+     "Show" enum "don't,red,yellow,green,cian,blue,purple,white" col2 "don't" \
+     noreturn "Shift (in points)" cursor -50 50 0 sh2 0 \
+     "Int. ratio" cursor -3 3 2 sc2 0 noreturn "(in power of 10)" message \
+   *
+else
+   if ($zoom == 0) zoom 1 (0.05*$si1_1d) (0.95*$si1_1d)   ; SHOULD be Zoomed
+   refmacro 0
+   clear 1
+   for i = 1 to 3
+     set nm = $_		; get arguments
+     set scm = $_
+     set sh = $_
+     set colm = $_
+     if ($colm s! "don't") then		; for color
+		 if ($colm s= "white") then
+		   set cc = 1
+		 elsif ($colm s= "red") then
+		   set cc = 2
+		 elsif ($colm s= "yellow") then
+		   set cc = 3
+		 elsif ($colm s= "green") then
+		   set cc = 4
+		 elsif ($colm s= "cian") then
+		   set cc = 5
+		 elsif ($colm s= "blue") then
+		   set cc = 6
+		 elsif ($colm s= "purple") then
+		   set cc = 7
+		 elsif ($colm s= "black") then
+		   set cc = 8
+		 endif
+	      if ($i != 3) then		; in case we're a joined
+		if ($sh != 0) then	; adapt zoom window (of current) for shift
+		    set z1 = $zoom_1d[1]	; first memorize
+		    set z2 = $zoom_1d[2]
+		    set nz1 = ($zoom_1d[1]-$sh)  set nz2 = ($zoom_1d[2]-$sh)
+		    if ($nz1 < 1 | $nz2 < 3 | $nz1 > $si1_1d-2 | $nz2 > $si1_1d) \
+			error "shift too large : outside window"
+		    zoom 1 $nz1 $nz2
+		endif
+	         scolor $cc join $nm  showc (exp($Scm*log(10))*$scale)
+                 showtext $c_name $zoom_1d[1] (75+5*$i)
+		if ($sh != 0) then		; get back
+		   zoom 1 $z1 $z2
+		endif
+	      else
+	         color $cc 1
+	         refmacro 0 ref		; forces display
+                 scolor $cc showtext 'in memory' $zoom_1d[1] 90
+	         refmacro 1
+	      endif
+	      clear 0
+     endif
+   endfor
+   refmacro 0
+   clear 1
+endif

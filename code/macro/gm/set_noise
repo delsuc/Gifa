@@ -1,0 +1,13 @@
+refmacro 1
+alert ' Zoom on an empty area of the data-set'
+ref zoom 0
+zm-old zoom 1 %%
+set ans = 'yes' message 'Ok ?' set ans =
+zoom 0 
+if ($ans s! 'yes') exit
+if ($dim == 1) then 
+   evaln $zoom_1d[1] $zoom_1d[2]
+else
+   evaln $zoom_2d[1] $zoom_2d[2] $zoom_2d[3] $zoom_2d[4]
+endif
+

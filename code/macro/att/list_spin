@@ -1,0 +1,32 @@
+; list_spins
+;
+; list all spin entries to a file
+set tmp = ('tmp' // int(1000000*$random))
+sh ('pwd >'; $tmp)
+open $tmp
+set pwd = <$tmp
+close $tmp open $tmp
+open spin_list
+fprint spin_list ("# Project :"; $pwd)
+fprint spin_list "#PPM   Name  System Spin#  (Note)"
+initinprogress $spin["LARGEST"]   set i = 1
+foreach sid in spin
+  inprogress $i  set i = (%+1)
+  if ($sid s! "LARGEST") then
+	set sp = ($spin[$sid])
+	set ppm = (head($sp))  set sp = (tail($sp))
+	set name = (head($sp)) set sp = (tail($sp))
+	set sys = (head($sp))  set sp = (tail($sp))
+;	fprintf $tmp "%6.3f %5s %3d     %4d %s" $ppm $name $sys $sid $sp *
+	set ppm = (int(1000*$ppm)/1000)
+	fprint $tmp ($ppm; $name; $sys; $sid; $sp)
+  endif
+endfor
+close $tmp
+inprogress $spin["LARGEST"]
+sh ("sort -n"; $tmp; ">> spin_list")
+formbox "List of Spins" DO_NOTHING \
+    'File is spin_list' message \
+    spin_list text \
+   'Print file' action 'sh "gifaprint spin_list"' *
+sh ("/bin/rm -f";$tmp)

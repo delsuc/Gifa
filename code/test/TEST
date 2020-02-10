@@ -1,0 +1,47 @@
+; runs the whole series of tests for GIFA
+; uses minimum constructs
+;
+print "Test : basic"
+; sets the timer on to know how much it takes
+timer 1
+basic
+if ($error != 0) error "Gifa is in bad state, can't proceed"
+print "----------Ok"
+timer 1
+
+set failed = " "
+set succeed = " "
+open TEST_LIST
+=loop
+        set cmd = <TEST_LIST
+        if  (eof("TEST_LIST")) goto fin
+        print ("*********** Test : " // $cmd )
+        set error := 0
+        $cmd
+        if ($error == 0) print "----------Ok"
+        if ($error != 0) print "----------Failed"
+        if ($error != 0) set failed = ($failed ; $cmd)
+        if ($error == 0) set succeed = ($succeed ; $cmd)
+	timer 1
+        goto loop
+=fin
+print ' '
+print ' '
+print ' '
+print '********************************************************'
+print '                    Test Results'
+print '********************************************************'
+if ($failed s= " ") then
+        print "All tests successfully finished"
+else
+	print "Tests Succeded :"
+	print $succeed
+        print "Test failed :"
+        print $failed
+;	print "(expect - cache - to fail)"
+endif
+print '********************************************************'
+print ' '
+print ' '
+refmacro 0
+timer 0

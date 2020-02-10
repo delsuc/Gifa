@@ -1,0 +1,10 @@
+; chose_unit
+;
+; permit to choose display unit
+; see also : UNIT UNIT_Y
+
+formbox 'Choose Unit' \
+   "unit $ux if ($uy s! 'idem') unit_y $uy" \
+   "Choose main Unit :" enum "INDEX,PPM,HZ,SECOND,DAMPING,TAB" ux $unit \
+   "  Unit on Y axis :" enum "idem,INDEX,PPM,HZ,SECOND,DAMPING,TAB" uy idem \
+   noreturn "(optional )" message *

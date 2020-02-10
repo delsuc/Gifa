@@ -1,0 +1,33 @@
+; to make a nice multicolored plot out of the fitted line shapes
+;
+; see also : plot_fit SHOW LINEFIT
+
+if ($dim==1) then
+   if ($disp1d==0) error '*** Display should be on'
+   if ($npk1d==0) error '*** Peak table should not be empty'
+   set shf_l = $npk1d
+elsif ($dim==2) then
+   if ($cdisp2d==0) error '*** Contour display should be on'
+   if ($npk2d==0) error '*** Peak table should not be empty'
+   set shf_l = $npk2d
+else
+   error '*** Not implemented yet'
+endif
+
+set shf_file = '/tmp/pk_shf'
+sh ('rm -f '//$shf_file)   pkwrite $shf_file
+set shf_sc = $scolor    set i = 1   
+; first whole spectrum
+clear 0
+scolor 2 show linefit
+; then each line
+scolor 3
+=loop
+  pkread $shf_file yes showpeak $i
+  pkselect $i $i 0 show linefit 
+  scolor (%+1) if ($scolor==8) scolor 2
+  set i = (%+1) if ($i<=$shf_l) goto loop
+scolor $shf_sc
+pkread $shf_file yes
+sh ('rm '//$shf_file)
+clear 1

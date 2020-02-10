@@ -1,0 +1,18 @@
+; interactive
+; permits to choose verts interactively on a JOINed 3D by clicking on the 2d plane
+;
+;see also : vertint GETC
+
+if ($c_dim!=3) error 'Works only on a JOINed 3D'
+
+refmacro 1
+print "click on the 2D data set, finish by pressing the third button of the mouse"
+=loop
+  dim 2 unref
+  monopoint
+  if ($button==3) goto end
+  print ('vert :'; round($pointy[1]); round($pointx[1]))
+  dim  1 getc $plane[1]  (round($pointy[1])) (round($pointx[1])) %%  absmax $c_absmax ; zoom 0
+  goto loop
+=end
+refmacro 0 dim 2 exit

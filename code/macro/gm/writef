@@ -1,0 +1,10 @@
+dialogbox "Formatted Write" \
+  "Enter file name" message \
+  " " file _f $name \
+   "Select Format" message \
+   "Format :" enum  \
+"Write (standard),Writeh (FtNmr),WriteL (NMRi),WriteM (Matlab),WriteT (text),WriteS (portable)" \
+   _ff % \
+   *
+(head($_ff)) $_f
+

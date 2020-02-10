@@ -1,0 +1,52 @@
+; burg2d_back axis new_size
+;
+; extend backward the FID along axis up to new_size, using burg method
+; to be used when the beginning of the FIDs got truncated for some reason.
+;
+; this is probably not optimum, as burg is phase-minimum
+; what we need here is rather a 'phase maximum' method.
+; This has the advantage of being MUCH faster than what would be optimum,
+; and will work probably just as well, as long as the number of points
+; to reconstruct is 'small enough'
+;
+; see also : burg_back burg2d burg3d BURG
+
+refmacro 0
+if ($dim != 2) error "Available in 2D only"
+set axis = F1
+message "enter axis (F1 / F2)"
+set axis = $_
+set axis = (toupper($axis))
+if ($axis s= 'F1') set nsz = (2*$si1_2d)
+if ($axis s= 'F2') set nsz = (2*$si2_2d)
+message "Enter new size"
+set nsz = $_
+if (2*int($nsz/2) != $nsz) error "size should be even"
+
+if ($axis s= "F1") then
+	if ($nsz <= $si1_2d) error "Wrong size"
+	set osz = $si1_2d
+	chsize $nsz %
+	set ext = "col"
+	set imax = $si2_2d
+elsif ($axis s= "F2") then
+	if ($nsz <= $si2_2d) error "Wrong size"
+	set osz = $si2_2d
+	chsize % $nsz
+	set ext = "row"
+	set imax = $si1_2d
+else
+	error "Wrong axis for LP"
+endif
+initinprogress $imax
+
+for i = 1 to $imax
+	$ext $i
+	dim 1
+	chsize $osz
+	itype 1 reverse burg $nsz reverse
+	dim 2 put $ext $i
+	inprogress $i
+endfor
+exit
+

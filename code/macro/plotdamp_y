@@ -1,0 +1,73 @@
+; plotdamp_y step plot_file
+;
+; draw along y axis labels for damping units.
+;
+; see also : plotdamp_x PLOTAXIS easyplot
+
+message 'step value'
+set step = $_
+set i = (abs(log($step)/log(10)))
+if (abs(round($i) - $i)>0.00001) then
+   print 'Warning, damping tick spacing is not a power of 10'
+endif
+
+message 'Plot file'
+set f =  $_
+set x = $step
+
+if ($dim == 1 ) then
+  print 'Sorry, No damping Y axis in 1D mode'
+  exit
+elsif ($dim == 3) then
+  print 'Sorry, No damping axes in 3D mode'
+  exit
+endif
+
+set l = ($CX)
+set ll = ($l+0.2)
+if ($zoom == 1) then
+  set cte = ($CY/($zoom_2d[3]-$zoom_2d[1]))
+  set limit = (itod($zoom_2d[3],2,1))
+  set left = (itod($zoom_2d[1],2,1))
+  set lefti = ($zoom_2d[1])
+else
+  set cte = ($cy/($si1_2d-1))
+  set limit = (itod($si1_2d,2,1))
+  set left = (itod(1,2,1))
+  set lefti = 1
+endif
+
+while ($x < $left)
+        set x = ($x+$step)
+        set i = (abs(log($x)/log(10)))
+        if (abs(round($i) - $i)<0.00001) set step = (10*$step)
+endwhile
+   
+; je compte le nombre de tirets que je vais dessiner
+set nlf = 0
+set xx = $x
+set st = $step
+while ($xx < $limit)
+   set nlf = ($nlf + 1)
+   set xx = ($xx +$st)
+   set i = (abs(log($xx)/log(10)))
+   if (abs(round($i) - $i)<0.00001) set st = (10*$st)
+endwhile
+
+set nl = 0
+PLOTTEXT $x ($ll+0.1) ($cte*(dtoi($x,2,1)-$lefti)) $f
+while ($x < $limit)
+   plotline $l ($cte*(dtoi($x,2,1)-$lefti)) $ll ($cte*(dtoi($x,2,1)-$lefti)) $f
+   set nl = ($nl + 1)
+   if ($nl == $nlf) then
+      PLOTTEXT $x ($ll+0.1) ($cte*(dtoi($x,2,1)-$lefti)) $f
+   else
+      set x = ($x +$step)
+      set i = (abs(log($x)/log(10)))
+      if (abs(round($i) - $i)<0.00001) then
+         set step = (10*$step)
+         if ($x < $limit) PLOTTEXT $x ($ll+0.1) ($cte*(dtoi($x,2,1)-$lefti)) $f
+      endif
+   endif
+endwhile
+PLOTTEXT 'um2/sec' ($ll+0.8) ($CY/2) $f

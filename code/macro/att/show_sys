@@ -1,0 +1,40 @@
+; show_sys $sys_id
+;
+; display graphically a spin-system
+
+
+; get spin list
+  set ss = $_
+  set l = $sys[$ss]
+  set num = (head($l))
+  set aa = (head(tail($l)))
+  set l = (tail(tail($l)))
+
+; count and find min and max
+  set p = ($spin[head($l)])
+  set min = (head($p))   set max = $min
+  set p = (head(tail($l)))   set lp = (tail(tail($l)))
+  while ($p s! " ")
+     set p = (head($spin[$p]))
+     if ($min > $p) set min = $p
+     if ($max < $p) set max = $p
+     set p = (head($lp))   set lp = (tail($lp))
+  endwhile
+
+; draw boxes
+  set max1 = (ptoi($max,2,1))
+  set max2 = (ptoi($max,2,2))
+  set min1 = (ptoi($min,2,1))
+  set min2 = (ptoi($min,2,2))
+  set p = (head($l))  set lp = (tail($l))
+  while ($p s! " ")
+     set p = (head($spin[$p]))
+     set p1 = (ptoi($p,2,1))     set p2 = (ptoi($p,2,2))
+     showline $p2 $min1 $p2 $max1
+     showline $min2 $p1 $max2 $p1
+     set p = (head($lp))   set lp = (tail($lp))
+  endwhile
+
+
+
+

@@ -1,0 +1,57 @@
+; mov_att_top  $att
+;
+; moves the current peak to the local top
+;
+;
+
+set pic = $_
+
+if (exist("att[" // $pic //"]")) then
+   set l = $att[$pic]
+else
+   error "Unknown peak"
+endif
+
+; calculate the sizes of the integration box in index unit
+  set mm1 = (($freq_1_2d*$box_f1)*($si1_2d-1)/($specw_1_2d+$si1_2d))
+  set mm2 = (($freq_2_2d*$box_f2)*($si2_2d-1)/($specw_2_2d+$si2_2d))
+
+      set f1 = (head($l)) \
+      set f2 = (head(tail($l)))
+      set t = (tail(tail(tail($l))))
+
+      set f1i = (round(ptoi($f1,2,1)))
+      set f2i = (round(ptoi($f2,2,2)))
+      set apk = (val2d($f1i,$f2i))
+      set f1max = ($f1i+$mm1)
+      set f1min = ($f1i-$mm1)
+      set f2max = ($f2i+$mm2)
+      set f2min = ($f2i-$mm2)
+
+      set redo = 1
+      while ($redo)
+        set redo = 0    ; assume we're finished
+        for i = -1 to 1     ; search largest direct neighbour
+          for j = -1 to 1
+            if (val2d($f1i+$i, $f2i+$j ) > $apk) then
+               if (($f1i+$i <= $f1max) & ($f1i+$i >= $f1min))   then
+                 if (($f2i+$j <= $f2max) & ($f2i+$j >= $f2min))   then
+                   set f1in = ($f1i+$i)   set f2in = ($f2i+$j)
+                   set apk = (val2d($f1in,$f2in))
+                   set redo = 1   ; we're not !
+                  endif
+               endif
+            endif
+          endfor
+        endfor
+        if $redo  set f1i = $f1in  set f2i = $f2in    ; jump to it
+      endwhile
+
+set sc = $scolor
+scolor 8
+show_att $pic
+
+set att[$pic] = (itop($f1i,2,1); itop($f2i,2,2); $apk; $t)
+
+scolor $sc
+show_att $pic

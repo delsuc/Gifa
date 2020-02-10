@@ -1,0 +1,395 @@
+; easy2d_doit
+; used by the easy2d form
+;
+; see also easy2d proc2d
+
+refmacro 0
+
+; easy2d_doit is not easy macro proramming !
+; several modes are mixed here, in a not optimal fashion
+;  read/write macro        in-memory/on-file processing
+
+; first get arguments
+set ffn = $_
+set f1st = $_
+set fw1 = $_
+set fw1p = $_
+set fw2 = $_
+set fw2p = $_
+set remh = $_
+set fz1 = $_
+set fz2 = $_
+set fft1 = $_
+set fft2 = $_
+set burg = $_
+set fmod = $_
+set fph10 = $_
+set fph11 = $_
+set fph20 = $_
+set fph21 = $_
+set fb1 = $_
+set fb2 = $_
+set fact = $_
+
+; check final sizes vs max available
+if ($fz1*$fz2 > $mem_max) then    ; flag for on-file processing
+     set on_file = (1==1)
+else
+     set on_file = (1==0)
+endif
+
+;prepare ft
+if ($fft1 s! 'none') set fft1 = ("ft_" // $fft1)
+if ($fft2 s! 'none') set fft2 = ("ft_" // $fft2)
+if ($fft1 s= 'none')  then
+    set f1st = 'no'
+    set remh = 'no'
+    set fph10 = 0
+    set fph11 = 0
+    set fb1 = none
+endif
+if ($fft2 s= 'none')  then
+    set fph20 = 0
+    set fph21 = 0
+    set fb2 = none
+endif
+
+;switch on action  and on on_file flag
+set phasedf2 = (1==0)
+
+; on file processing is done thru the proc2d macro.
+; build commands to do in proc2 proc1 and portp2 strings.
+
+if $on_file then
+  set proc1 = " "
+  set proc2 = " "
+  set postp2 = " "
+  join $ffn
+  set szint = ($fz2*$c_sizef1*4/(1024*1024))    ; guess file sizes (in Mo)
+  set szfin = ($fz1*$fz2*4/(1024*1024))
+  if ($fact s= "Do it" |  $fact s= "Do it but phase" | $fact s= "Write macro" ) then
+	  if ($fft2 s! "none") then     ; build f2 proc
+	      if ($fz2 < $C_SIZEF2) set proc2 = ($proc2; "chsize"; $fz2)
+              if ($remh s= 'yes') set proc2 = ($proc2; 'rem_h2o')
+	      if ($fw2 s! "none") set proc2 = ($proc2; $fw2; $fw2p)
+	      if ($fz2 > $C_SIZEF2) set proc2 = ($proc2; "chsize"; $fz2)
+	      set proc2 = ($proc2; $fft2)
+	  endif
+	  if ($fft1 s! "none") then     ; build f1 proc
+        if ($f1st s= 'yes') then
+            set proc1 = ($proc1; "correct1st")
+        endif
+
+	    if ($burg s= 'yes') then
+	      set proc1 = ($proc1; "itype 1 burg"; $fz1)
+	      if ($fw1 s! "none") set proc1 = ($proc1; $fw1; $fw1p)
+	    else
+	      if ($fz1 < $C_SIZEF1) set proc1 = ($proc1; "chsize"; $fz1)
+	      if ($fw1 s! "none") set proc1 = ($proc1; $fw1; $fw1p)
+	      if ($fz1 > $C_SIZEF1) set proc1 = ($proc1; "chsize"; $fz1)
+	    endif
+	  if ($fft1 s= 'ft_sh') then        ; fft1 has to be reprocessed !
+	      set fft1 = 'itype 1 revf ft'
+	  elsif ($fft1 s= 'ft_sh_tppi') then
+	      set fft1 = 'itype 1 ft'
+	  elsif ($fft1 s= 'ft_tppi') then
+	      set fft1 = 'itype 0 rft'
+	  else
+	      error ("Fourier mode"; $fft1; "not implemented in on-file processing - Sorry :-(")
+	      ; this would be MUCH work to do, has ft_phase modu and ft_n+p
+	      ; are base on flip and flop, => mix several lines together !
+	  endif
+      set proc1 = ($proc1; $fft1)
+	  endif
+  endif
+  disjoin
+
+  if ($fact s= "Do phase only" | $fact s= "Do it" | $fact s= "Write macro") then
+	      if ($fph20 != 0 | $fph21 != 0) set proc2 = ($proc2; "phase"; $fph20; $fph21)
+	      if ($fph10 != 0 | $fph11 != 0) set proc1 = ($proc1; "phase"; $fph10; $fph11)
+  endif
+    
+  if ($fact s= "Do b.corr only" | $fact s= "Do it" | $fact s= "Write macro") then
+	      if ($fb2 s! "none") then
+	         set proc2 = ($proc2; "real")
+	         if ($fb2 s= "polynomial") set postp2 = ($postp2; "bcorr 3")
+		     if ($fb2 s= "2 stages") set postp2 = ($postp2; "bcorrp1 bcorr 3 bcorrp0 bcorr 3")
+		     set szint = (%/2)
+		     set szfin = (%/2)
+		  endif
+	      if ($fb1 s! "none") then
+	         set proc1 = ($proc1; "real")
+	         if ($fb1 s= "polynomial") set proc1 = ($proc1; "bcorr 3")
+		     if ($fb1 s= "2 stages") set proc1 = ($proc1; "bcorrp1 bcorr 3 bcorrp0 bcorr 3")
+		     set szfin = (%/2)
+		  endif
+  endif
+  set fout = ($ffn // '~')
+  set ftemp = ($ffn // ".temp")
+  if ($fact s! "Load macro") then
+     dialogbox "On-file" \
+         "Size too large for in-memory processing" message \
+         "switching to on-file processing" message \
+         separator \
+         "out file will be called:" file fout $fout \
+         noreturn ("(Size"; $szfin; "Mo)") message \
+         "will use a temporary file called:" file ftemp $ftemp \
+         noreturn ("(Size"; $szint; "Mo)") message \
+         "(temporary file will be deleted at the end of the processing)" message *
+  endif
+
+                ;Now do the processing
+  if ($fact s! "Write macro") then
+    if ($proc2 s! " " & $proc1 s! " ") then
+      proc2d $ffn $ftemp F2 $proc2
+      proc2d $ftemp $fout F1 $proc1
+      sh ('/bin/rm'; $ftemp)
+      if ($postp2 s! " ") then         ; this is bcorr in F2
+         proc2d $fout $fout F2 $postp2
+      endif
+      
+    elsif ($proc1 s! " ") then
+      proc2d $ffn $fout F1 $proc1
+      
+    elsif ($proc2 s! " ") then
+      proc2d $ffn $fout F2 ($proc2;$postp2)
+    endif
+  endif
+
+else          ; if ! on_file
+	if ($fact s= "Do it" |  $fact s= "Do it but phase") then
+		readv $ffn
+		if ($f1st s= 'yes') correct1st
+		if ($remh s= 'yes') rem_h2o
+		if ($fft2 s! 'none') if ($fz2 < $si2_2d) chsize % $fz2  ; truncate BEFORE apod.
+		if ($fft1 s! 'none') if ($fz1 < $si1_2d) chsize $fz1 %
+	
+		if ($fft2 s! 'none') then
+		  if ($fw2 s! "none") $fw2 $fw2p f2  ; apod in F2
+	
+		  chsize % $fz2                      ; zero-fill AFTER apod.
+		  $fft2                              ; and FT in F2
+	    endif
+	
+	    if ($fft1 s! 'none') then
+	  	  if ($burg s= 'yes' & $fz1 > $si1_2d) then	; Burg BEFORE apod
+		   if ($fact s= "Do it") then			; but AFTER phase
+			if ($fph20 != 0 | $fph21 != 0) then
+			   phase $fph20 $fph21 f2
+			   set phasedf2 = (1==1)   ; flag for later use
+			endif
+		   endif
+		   print 'Doing Burg...'
+		   burg2d F1 $fz1
+	           if ($fw1 s! "none") $fw1 $fw1p f1
+		  else
+		   if ($fw1 s! "none") $fw1 $fw1p f1
+		   chsize $fz1 %
+		  endif
+	
+		  $fft1		; finally fft1
+		endif
+	endif
+
+	if ($fact s= "Do phase only" | $fact s= "Do it") then
+	   if ($fmod s= 'modulus') then
+		modulus
+	   else
+		if ($fph10 != 0 | $fph11 != 0) phase $fph10 $fph11 f1
+		if (! $phasedf2) then	; if Burg, phase F2 already perf<med
+		   if ($fph20 != 0 | $fph21 != 0) phase $fph20 $fph21 f2
+		endif
+	   endif
+	endif
+
+	if ($fact s= "Do b.corr only" | $fact s= "Do it") then
+		if (($fb1 s! "none" | $fb2 s! "none") & $itype_2d != 0) then
+		   if ($itype_2d == 3) real f12
+		   if ($itype_2d == 2) real f1
+		   if ($itype_2d == 1) real f2
+		   print 'doing Baseline Correction...'
+		endif
+		if ($fb1 s= "polynomial") then
+		   bcorr 3 f1
+		elsif ($fb1 s= "2 stages") then
+		   bcorrp1 bcorr 3 f1
+		   bcorrp0 bcorr 3 f1
+		endif
+		if ($fb2 s= "polynomial") then
+		   bcorr 3 f2
+		elsif ($fb2 s= "2 stages") then
+		   bcorrp1 bcorr 3 f2
+		   bcorrp0 bcorr 3 f2
+		endif
+	endif
+endif     ; if on_file
+
+if ($fact s= "Write macro") then
+	dialogbox macro "Macro name" string mname ($name//'.g') *
+	open $mname
+	fprint $mname "; macro generated automagically by easy2d"
+    if $on_file then
+       fprint $mname "; on_file processing"
+	   if ($proc2 s! " " & $proc1 s! " ") then
+	      fprint $mname ("proc2d"; $ffn; "\")
+	      fprint $mname ( $ftemp; "F2 \")
+	      fprint $mname ("'"; $proc2; "'")
+	      fprint $mname ("proc2d"; $ftemp; "\")
+	      fprint $mname ( $fout; "F1 \")
+	      fprint $mname ("'"; $proc1; "'")
+	      fprint $mname ("sh '/bin/rm"; $ftemp;"'")
+	      if ($postp2 s! " ") then         ; this is bcorr in F2
+	         fprint $mname ("proc2d"; $fout; "\")
+	         fprint $mname ( $fout; "F2 \")
+	         fprint $mname ("'"; $postp2; "'")
+	      endif
+	      
+	   elsif ($proc1 s! " ") then
+	       fprint $mname ("proc2d" $ffn; "\")
+	       fprint $mname ( $fout; "F1 \")
+	       fprint $mname ("'"; $proc1; "'")
+	      
+	   elsif ($proc2 s! " ") then
+	      fprint $mname ("proc2d"; $ffn; "\")
+	      fprint $mname ( $fout; "F2 \")
+	      fprint $mname ("'"; $proc2; $postp2; "'")
+	   endif
+       
+    else          ; (if on_file)
+		fprint $mname  ("readv" ; $ffn)
+		dim 2 put data readv $ffn			; to check sizes of input file
+		if ($fft1 s! 'none') if ($f1st s= 'yes') fprint $mname "correct1st"
+		if ($fft1 s! 'none') if ($remh s= 'yes') fprint $mname "rem_h2o"
+		if ($fft2 s! 'none') if ($fz2 < $si2_2d) fprint $mname ("chsize %";$fz2)
+		if ($fft1 s! 'none') if ($fz1 < $si1_2d) fprint $mname ("chsize";$fz1;"%")
+	
+		if ($fft2 s! 'none') then
+	   	    if ($fw2 s! "none") 	fprint $mname  ($fw2 ; $fw2p ; "F2")
+		    fprint $mname  ("chsize %" ;$fz2)
+		    fprint $mname  $fft2
+		endif
+	
+		if ($fft1 s! 'none') then
+			if ($burg s= 'yes' & $fz1 > $si1_2d) then
+			  if ($fph20 != 0 | $fph21 != 0) then           ; phase before Burg is slightly nicer
+				fprint $mname  ("phase"; $fph20; $fph21; "F2")
+				set phasedf2 = (1==1)
+			  endif
+			  fprint $mname ("burg2d F1"; $fz1)
+			  if ($fw1 s! "none") 	fprint $mname  ($fw1 ; $fw1p ; "F1")
+			else
+			  if ($fw1 s! "none") 	fprint $mname  ($fw1 ; $fw1p ; "F1")
+			  fprint $mname  ("chsize" ; $fz1 ; "%")
+			endif
+		    fprint $mname  $fft1
+		endif
+	
+		if ($fmod s= 'modulus') then
+	            fprint $mname  "modulus"
+	        else
+		    if ($fph10 != 0 | $fph11 != 0) fprint $mname  ("phase"; $fph10; $fph11; "F1")
+		    if (! $phasedf2) \
+		    if ($fph20 != 0 | $fph21 != 0) fprint $mname  ("phase"; $fph20; $fph21; "F2")
+		endif
+		if ($fb1 s! "none" | $fb2 s! "none") if ($fmod s! "modulus") fprint $mname "real f12"
+		if ($fb1 s= "polynomial") then
+		   fprint $mname "bcorr 3 F1"
+		elsif ($fb1 s= "2 stages") then
+		   fprint $mname "bcorrp1 bcorr 3 F1 bcorrp0 bcorr 3 F1  ; 2 stages "
+		endif
+		if ($fb2 s= "polynomial") then
+		   fprint $mname "bcorr 3 F2"
+		elsif ($fb2 s= "2 stages") then
+		   fprint $mname "bcorrp1 bcorr 3 F2 bcorrp0 bcorr 3 F2  ; 2 stages "
+		endif
+		get data
+    endif
+	close $mname
+	alert ("Macro '"//$mname//"' written, just type its name for applying it")
+
+elsif ($fact s= "Load macro") then
+	dialogbox macro "Macro name" file mname ($name//'.g') *
+	open $mname
+    set fft1 = 'none'
+    set fft2 = 'none'
+	set fw1 = 'none'
+	set fw1p = 0
+	set fw2 = 'none'
+	set fw2p = 0
+	set f1st = 'no'
+	set remh = 'no'
+	set fmod = 'phase-sensitive'
+	set fph10 = 0
+	set fph11 = 0
+	set fph20 = 0
+	set fph21 = 0
+	set fb1 = "none"
+	set fb2 = "none"
+	set burg = "no"
+	set in = <$mname
+	while (!eof($mname))
+		set cmd = (head($in))	; parse commande
+		set param = (tail($in))
+		if ($cmd s= ";") then	; show comments
+			print $param
+			if (index($param,'on_file')) \
+			     error "I do not know how to read this kind of macro, - Sorry :-("
+		elsif ($cmd s= "readv") then
+			set ffn = $param
+		elsif ($cmd s= "correct1st") then
+			set f1st = "yes"
+		elsif ($cmd s= "rem_h2o") then
+			set remh = "yes"
+		elsif ($cmd s= "sin" | $cmd s= "sqsin" | $cmd s= "expbroad" | $cmd s= "gaussbroad") then
+			set dd = (toupper(tail($param)))
+			if ($dd s= "F1") then
+				set fw1 = $cmd
+				set fw1p = (head($param))
+			elsif ($dd s= "F2") then
+				set fw2 = $cmd
+				set fw2p = (head($param))
+			endif
+		elsif ($cmd s= "chsize") then
+			if (head($param) s= "%") then
+				set fz2 = (tail($param))
+			else
+				set fz1 = (head($param))
+			endif
+		elsif ($cmd s= "burg2d") then
+			set fz1 = (tail($param))
+			set burg = "yes"
+		elsif ($cmd s= "ft_sim" | $cmd s= "ft_seq") then
+			set fft2 = (subst($cmd,4,len($cmd)))
+		elsif ($cmd s= "ft_sh" | $cmd s= "ft_tppi" | $cmd s= "ft_sh_tppi" | $cmd s= "ft_phase_modu" | $cmd s= "ft_n+p") then
+			set fft1 = (subst($cmd,4,len($cmd)))
+		elsif ($cmd s= "modulus") then
+			set fmod = "modulus"
+		elsif ($cmd s= "phase") then
+			set dd = (toupper(tail(tail($param))))
+			if ($dd s= "F1") then
+				set fph10 = (head($param))
+				set fph11 = (head(tail($param)))
+			elsif ($dd s= "F2") then
+				set fph20 = (head($param))
+				set fph21 = (head(tail($param)))
+			endif
+		elsif ($cmd s= "bcorr") then
+			set dd = (toupper(tail($param)))
+			if ($dd s= "F1") then
+				set fb1 = "polynomial"
+			elsif ($dd s= "F2") then
+				set fb2 = "polynomial"
+			endif
+		elsif ($cmd s= "bcorrp1") then
+			set dd = (toupper(head(tail(tail($param)))))
+			if ($dd s= "F1") then
+				set fb1 = "2 stages"
+			elsif ($dd s= "F2") then
+				set fb2 = "2 stages"
+			endif
+		endif
+		set in = <$mname
+	endwhile
+	close $mname
+	easy2d $ffn $fw1 $fw1p $f1st $fw2 $fw2p $remh $fft1 $fz1 $burg $fft2 $fz2 $fmod $fph10 $fph11 $fph20 $fph21 $fb1 $fb2
+endif

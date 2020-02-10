@@ -1,0 +1,20 @@
+; interactive
+; permits to draw directly on the spectrum a set of lines.
+; drawing store in a file - can be redrawn with the macro redraw
+;
+if (!$arg) print 'Enter coordinate file name'
+set outfile := $_   open $outfile
+set ans = 'y' set xprev = 0
+print "Click on the spectrum to draw, "
+print "Click on start and end points, finish with the third button"
+=loop
+  monopoint if ($button==3) goto end
+  set draw_x = $pointx[1] set draw_y = $pointy[1]
+  monopoint if ($button==3) goto end
+  showline $draw_x $draw_y $pointx[1] $pointy[1]
+  set draw_l = ($draw_x//" "//$draw_y//" "//$pointx[1]//" "//$pointy[1])
+  fprint $outfile $draw_l
+  goto loop
+=end
+close $outfile
+exit

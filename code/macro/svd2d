@@ -1,0 +1,45 @@
+; svd2d axis new_size
+;
+; axis is F1 or F2,
+; extend the FID up to new_size, using SVD method
+;
+; see also : DT->SVD burg2d 
+
+refmacro 0
+if ($dim != 2) error "Available in 2D only"
+message "enter axis (F1 / F2)"
+set axis = F1
+set axis = $_
+set axis = (toupper($axis))
+message "Enter new size"
+if ($axis s= 'F1') set nsz = (2*$si1_2d)
+if ($axis s= 'F2') set nsz = (2*$si2_2d)
+set nsz = $_
+print "Preparing...."
+if ($axis s= "F1") then
+	if ($nsz <= $si1_2d) error "Wrong size"
+	set osz = $si1_2d
+	chsize $nsz %
+	set ext = "col"
+	set imax = $si2_2d
+elsif ($axis s= "F2") then
+	if ($nsz <= $si2_2d) error "Wrong size"
+	set osz = $si2_2d
+	chsize % $nsz
+	set ext = "row"
+	set imax = $si1_2d
+else
+	error "Wrong axis for LP"
+endif
+initinprogress $imax
+
+for i = 1 to $imax
+	$ext $i
+	dim 1
+	chsize $osz
+	itype 1 dt->svd % svd->ar 1 ar->dt $nsz 1
+	dim 2 put $ext $i
+	inprogress $i
+endfor
+exit
+

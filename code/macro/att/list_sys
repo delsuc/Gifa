@@ -1,0 +1,33 @@
+; list_sys
+;
+; list all sys entries to a file
+initinprogress $sys["LARGEST"]
+set tmp = ('tmp' // int(1000000*$random))
+sh ('pwd >'; $tmp)
+open $tmp
+set pwd = <$tmp
+close $tmp
+sh ('/bin/rm -f';$tmp)
+open sys_list
+fprint sys_list ("# Project :"; $pwd)
+set k = 1
+foreach sid in sys
+   if ($sid s! "LARGEST") then
+	set ss = $sys[$sid]
+	fprint sys_list (head($ss); head(tail($ss)))
+	set ss = (tail(tail($ss)))    ; keep only the spin part
+	while ($ss s! ' ')
+	   set sp = $spin[head($ss)]      set ss = (tail($ss))
+	   fprint sys_list ("----"; $sp)
+	endwhile
+   endif
+   inprogress $k set k = (%+1)
+endfor
+close sys_list
+inprogress $sys["LARGEST"]
+
+formbox "List of Spin-Systems" DO_NOTHING \
+    'File is sys_list' message \
+    sys_list text \
+   'Print file' action 'sh "gifaprint sys_list"' *
+

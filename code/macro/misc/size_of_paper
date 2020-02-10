@@ -1,0 +1,27 @@
+; determines the size of the sheet of paper in the plotter, and sets 
+; CX, CY and PLOTOFFSET
+;
+; needs implementation on a distant X32
+sh 'rsh guest@laguiole test_hp > temp_pl'
+; laguiole is a X32 , test_hp is :
+;===============================
+;cat /dev/tty02 > temp &
+;pid=$!
+;echo 'OW;' | lp -s -dhp7575a -
+;sleep 4
+;echo 'IP' `cat temp` ';' | lp -s -dhp7575a -
+;sed -e "s/,/ /g" temp
+;kill $pid
+;===============================
+; sets P1 and P2 to maximum size, and outputs P1 and P2 in plotter units
+open temp_pl  set temp_pl = <temp_pl close temp_pl
+sh 'rm temp_pl'
+set x1 = (int(head($temp_pl)/40))
+set y1 = (int(head(tail($temp_pl))/40))
+set x2 = (int(head(tail(tail($temp_pl)))/40))
+set y2 = (int(head(tail(tail(tail($temp_pl))))/40))
+; print ($x1 // ' ' // $y1 // '  ' // $x2 // '  ' // $y2)
+plotoffset ($x1/10) ($y1/10+1)
+cx (int($x2-$x1)/10) cy (int($y2-$y1)/10-1)
+print ('Max plot : cx = '//$cx//' cy = '//$cy)
+exit

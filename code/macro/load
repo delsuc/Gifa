@@ -1,0 +1,28 @@
+; load file_name
+;
+; loads the value for a text file, one entry per line,
+; no special format.
+;
+; quite inefficient (understand slow) !
+;
+; see also : READM READT
+
+message "File name:"
+set file = $_
+print $file
+set i = 0
+dim 1 itype 0 chsize 1 
+open $file
+set v = <$file
+while (!eof($file))
+  if (index($v,'#') != 1 & $v s! ' ') then
+    set i = (%+1)
+    chsize $i
+    setval $i $v
+  endif
+  set v = <$file
+endwhile
+close $file
+absmax 0
+exit
+

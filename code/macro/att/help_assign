@@ -1,0 +1,7 @@
+; start the help window for assignment module
+formbox 'Assignment Help' DO_NOTHING \
+   /usr/local/gifa/help/assign.hlp text \
+   'You may want a more' message noreturn \
+   'Complete Help' action 'print ("Starting"; $viewer) sh ($viewer; "/usr/local/gifa/doc/assign/assignment.html &")' \
+   noreturn '(HTML documentation)' message \
+   *

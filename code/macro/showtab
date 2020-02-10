@@ -1,0 +1,31 @@
+; showtab
+;
+; displays tabulated data in tabulated mode
+; i.e. realizes a scatter plot Xi Yi,
+;    where Yi are the current 1D data-set
+;      and Xi are the value stored in $TAB[i]
+;
+; see also : showexp PUT DISP1D SHOWLINE UNIT
+
+gm/test1d
+if ($si_tab != $si1_1d) error "Sizes do not match"
+
+set min = $tab[1]
+set max = $tab[$si_tab+0]
+set range = (($si1_1d-1)/($max-$min))
+set sc = ($scale*65/$absmax)
+set vh = (100*$vheight)
+set x = (($tab[2]-$min)*$range +1)
+set y2 = (val1d(1) * $sc + $vh)
+set y = (val1d(2) * $sc + $vh)
+showline 1 $y2 $x $y
+for i = 3 to $si1_1d
+	set x2 = (($tab[$i]-$min)*$range +1)
+	set y2 = (val1d($i) * $sc + $vh)
+	showline $x $y $x2 $y2
+	set x = $x2   set y = $y2
+endfor
+set y2 = (val1d($si1_1d) * $sc + $vh)
+showline $x $y $si1_1d $y2
+unref
+

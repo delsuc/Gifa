@@ -1,0 +1,5 @@
+;open with vi a macro in the $HOME/macro directory
+;
+; see also : ls pwd more rm vi vim SH CD
+message ' Which macro ?'
+set vi_l = $_  sh ("vi " // '$HOME/macro/' // $vi_l)

@@ -1,0 +1,51 @@
+; transform1d sourcefile destinationfile commands
+; traite une manip 1D selon sa 'ligne' . Le fichier de sortie peut etre
+; identique a celui d'entree.
+
+
+  if (!$arg) print 'enter input filename'
+    set file = $_
+  join $file
+  if ($c_dim != 1) error 'available on 1D data only'
+    set outfile = $file 
+  if (!$arg) print 'enter output filename'
+    set outfile = $_
+
+; entree des commandes ...
+ if (!$arg) print 'enter commands (get back by typing ^D)' \
+     sh ('cat > doit') goto suite
+ ;else
+ set commac = $_
+ open doit fprint doit $commac
+ unset commac close doit
+ sh ('more doit')
+
+ =suite
+ sh ('wc -c doit > cmpt') open cmpt set trf = <cmpt
+ set trf = (head($trf)) close cmpt
+ if ($trf s= ' ') goto 100
+
+  set ancdim = $dim
+  dim 1
+  join $file
+
+  getc 1 $c_sizef1
+  doit
+
+    newfilec $outfile 1D $si1_1d $offset_1d $specw_1d $freq \
+           $freq_1d $itype_1d
+    print ('output file :'//sp(2)//$outfile)
+
+  join $outfile
+  putc 1 $c_sizef1           ; et ranger les donnees dans filename~
+  disjoin join $outfile         ; sauvegarde de filename~
+
+  =end 
+  dim $ancdim
+  munset ancdim *
+  =100
+  sh 'rm doit cmpt'
+exit
+
+;***************************************************************************
+

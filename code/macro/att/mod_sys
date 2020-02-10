@@ -1,0 +1,80 @@
+; mod_sys sys_id
+;
+; permits to interactively modify a spin system
+; and the associated spins
+;
+; if called as : mod_sys sys_id name index    will do the modification
+
+message "Modify System :"
+set sid = $_
+
+if (exist("sys[" // $sid //"]")) then
+   set ss = $sys[$sid]
+else
+   error "Unknown spin-system"
+endif
+
+if (!$arg) then			; called with more arguments when call-back
+set num = (head($ss))
+set aa = (head(tail($ss)))
+set ll_res = (tail(tail($ss)))
+
+; build dialog
+set tmp = ('tmp' // int(1000000*$random))
+open $tmp
+fprint $tmp "formbox \"
+fprint $tmp ("'Modif System #"; $sid;  "' \")
+fprint $tmp ('"mod_sys'; $sid; '$aa $num "  \')		; call back is modify aa & num
+fprint $tmp ("'spin-system type' enum ('unk,' // $topo['residue']) aa"; $aa; " \")
+fprint $tmp (' "Primary number :" int num'; $num; '   separator \')
+fprint $tmp "'list of spins :' message \ "
+
+; build list of spins
+set p = (head($ll_res))  set ll = (tail($ll_res))
+set ppmlist = " "
+while ($p s! " ")
+; for each spin : id : name-ppm; 'show' 'modify' 'remove from spin-sys'
+  set ppm = (head($spin[$p]))
+  set ppm = (int(1000*$ppm)/1000)
+  set ppmlist = ($ppmlist//':'//$ppm)
+  set name = (head(tail($spin[$p])))
+  fprint $tmp ('"#' // $p // ' : ' // $name; $ppm; 'ppm" message noreturn \')
+  fprint $tmp ('show action "show_spin'; $p; '" noreturn \')
+  fprint $tmp ('modify action "mod_spin'; $p; '" noreturn \')
+  fprint $tmp ('remove action "rem_spin_sys'; $sid; $p; 'rem_spin'; $p; 'closeform $widget mod_sys'; $sid; '" \')
+  set p = (head($ll))  set ll = (tail($ll))
+endwhile
+
+set ppmlist = ($ppmlist // ":")
+
+; now list of buttons
+fprint $tmp 'separator \'
+fprint $tmp ('"Create Peaks" action "build_att_one_sys'; $sid; '" noreturn \')
+fprint $tmp ('Mosaic action "mosaic'; "'"; $ll_res; "'"; '" noreturn \')
+fprint $tmp ('"close mosaic" action close_all_view noreturn \')
+fprint $tmp ('"peak sys" action "show_sys_peaks';$sid; '" \ ')
+fprint $tmp ('"Show" action "show_sys'; $sid; '" noreturn \')
+fprint $tmp ('"Delete" action "rem_sys'; $sid; 'closeform $widget" noreturn \')
+fprint $tmp ('"Add a spin" action "add_spin_sys'; $sid; 'closeform $widget mod_sys'; $sid; '" noreturn \')
+fprint $tmp ('"refresh" action "closeform $widget mod_sys'; $sid; '" \')
+fprint $tmp ('noreturn RESCUE action "sh'; "'/usr/local/gifa/com/rescue"; $ppmlist; "'"; '" \')
+fprint $tmp '*'
+close $tmp
+
+; call it
+@($tmp)
+
+sh ("/bin/rm -f"; $tmp)
+
+else	; !$arg
+; parse return : sys_type, num_ass
+set systype = $_
+set num = $_
+set ll_res = (tail(tail($sys[$sid])))
+
+; change in spin db
+set sys[$sid] = ($num; $systype; $ll_res)
+
+check_topo $sid
+
+endif

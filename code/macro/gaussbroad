@@ -1,0 +1,48 @@
+; gaussbroad lb { axis }
+;
+; this macro applies a exponential broadening in nD
+; it actually duplicates the GM functionnality, but
+; but, uses the same syntax as SIN and SQSIN
+;
+; contexts : $GB1 $GB2 $GB3
+;
+; see also : GM SIN expbroad
+
+message "Enter broadening to apply (in Hz)"
+set l = $_
+if ($dim == 1) then
+   GM $l
+else
+   message "Enter axis on which to apply broadening"
+   set ax = $_
+   set ax = (toupper($ax))
+   if ($dim == 2) then
+      if ($ax s= 'F1') then
+          GM $l 0
+      elsif ($ax s= 'F2') then
+          GM 0 $l
+      elsif ($ax s= 'F12') then
+          GM $l $l
+      else
+          error ($ax;'Wrong axis')
+      endif
+   elsif ($dim == 3) then
+      if ($ax s= 'F1') then
+          GM $l 0 0
+      elsif ($ax s= 'F2') then
+          GM 0 $l 0
+      elsif ($ax s= 'F3') then
+          GM 0 0 $l
+      elsif ($ax s= 'F12') then
+          GM $l $l 0
+      elsif ($ax s= 'F13') then
+          GM $l 0 $l
+      elsif ($ax s= 'F23') then
+          GM 0 $l $l
+      elsif ($ax s= 'F123') then
+          GM $l $l $l
+      else
+          error ($ax;'Wrong axis')
+      endif
+   endif
+endif

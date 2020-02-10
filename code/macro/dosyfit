@@ -1,0 +1,15 @@
+; Realizes the least-square fit of a DOSY 1D curve,
+;
+; as extracted from a 2D or 3D DOSY experiment
+;
+; see also : dosyfit_2 FITGENE, INVTLAP, dosy2d, showexp
+
+gm/test1d
+set exp = '$p2*exp(-$p1*$x/$dfactor)'
+set p1 := ($dfactor/$tab[round($si1_1d/2)]) ; eval initial $p1 and $p2
+set p2 := (val1d(1))
+fitgene $exp 2			; do fit
+
+showexp $exp
+print (' Amplitude :';$p2;'+/-';$dp2)
+print ('   damping :';$p1;'+/-';$dp1; 'micron^2/sec')

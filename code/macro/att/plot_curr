@@ -1,0 +1,23 @@
+; Plot on file the peak current database
+;
+message 'Plotter file :'
+set f = '*PLOTTER'
+set f = $_
+if ($att['largest'] == 0) error "Database Empty !"
+
+set f1min = (itop($zoom_2d[3],2,1))
+set f2min = (itop($zoom_2d[4],2,2))
+set f1max = (itop($zoom_2d[1],2,1))
+set f2max = (itop($zoom_2d[2],2,2))
+set pk = 0    set apk = 0   set wpk = 0
+
+if (head(tail($VERSION)) < 4.102) error 'Version 4.102 or Higher needed'
+
+initinprogress $att["LARGEST"]
+set k = 1
+foreach i in att  within 2 $f1min $f2min $f1max $f2max
+  if ($i s! "LARGEST")  plot_att $i $f  set wpk = (%+1)
+  set k = ($k+1) inprogress $k
+endfor
+inprogress $att["LARGEST"]
+

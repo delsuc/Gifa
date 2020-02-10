@@ -1,0 +1,48 @@
+; expbroad lb { axis }
+;
+; this macro applies a exponential broadening in nD
+; it actually duplicates the EM functionnality, but
+; but, uses the same syntax as SIN and SQSIN
+;
+; contexts : $LB1 $LB2 $LB3
+;
+; see also : EM SIN gaussbroad
+
+message "Enter broadening to apply (in Hz)"
+set l = $_
+if ($dim == 1) then
+   EM $l
+else
+   message "Enter axis on which to apply broadening"
+   set ax = $_
+   set ax = (toupper($ax))
+   if ($dim == 2) then
+      if ($ax s= 'F1') then
+          EM $l 0
+      elsif ($ax s= 'F2') then
+          EM 0 $l
+      elsif ($ax s= 'F12') then
+          EM $l $l
+      else
+          error ($ax;'Wrong axis')
+      endif
+   elsif ($dim ==3) then
+      if ($ax s= 'F1') then
+          EM $l 0 0
+      elsif ($ax s= 'F2') then
+          EM 0 $l 0
+      elsif ($ax s= 'F3') then
+          EM 0 0 $l
+      elsif ($ax s= 'F12') then
+          EM $l $l 0
+      elsif ($ax s= 'F13') then
+          EM $l 0 $l
+      elsif ($ax s= 'F23') then
+          EM 0 $l $l
+      elsif ($ax s= 'F123') then
+          EM $l $l $l
+      else
+          error ($ax;'Wrong axis')
+      endif
+   endif
+endif

@@ -1,0 +1,24 @@
+; mosaic "list of spins"
+;
+set l = $_
+set n = 0
+set winx = (3*$box_f2)
+set winy = (3*$box_f1)
+set posx = 0
+set posy = 3
+while ($l s! ' ')
+	set s = (head($l))	set l = (tail($l))	set n = (%+1)
+	set ppm[$n] = (head($spin[$s]))
+	set name[$n] = (head(tail($spin[$s])))
+	set sid[$n] = $s
+endwhile
+join $name
+set x = 4   set y = 4    ; size of the boxes
+if (!exist('view['//$n//'-'//$n//']')) close_all_view
+for i = 1 to $n
+  for j = 1 to $n
+    open_view ($i // '-' // $j) $x $y ($x*($i-1)+$posx) ($y*($n-$j)+$posy)
+    disp_view ($i // '-' // $j) 2D ($ppm[$j]+$winy) ($ppm[$i]+$winx) ($ppm[$j]-$winy) ($ppm[$i]-$winx)
+  endfor
+endfor
+

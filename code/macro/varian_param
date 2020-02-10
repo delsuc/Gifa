@@ -1,0 +1,48 @@
+; varian_param procpar_file_name
+;
+; this macro reads-in the procpar Varian file and sets
+; the Gifa relevant parameters from the values found in the file.
+; The parameters which are sets are :
+; FREQ - SPECW
+;
+; see also : READV READ varian_read
+;
+
+set f = 'procpar'
+message 'Varian parameter file'
+set f = $_
+open $f
+set l = <$f
+print "Scanning the param file ..."
+while (!eof($f))
+   if (index($l,'sw1') == 1) then
+     set l = <$f
+     set sw1 = (tail($l))
+   elsif (index($l,'sw2') == 1) then
+     set l = <$f
+     set sw2 = (tail($l))
+   elsif (index($l,'sw') == 1) then
+     set l = <$f
+     set sw = (tail($l))
+   elsif (index($l,'sfrq') == 1) then
+     set l = <$f
+     if (tail($l)!= 0) set sf = (tail($l))
+   elsif (index($l,'dfrq2') == 1) then
+     set l = <$f
+     if (tail($l)!= 0) set df2 = (tail($l))
+   elsif (index($l,'dfrq') == 1) then
+     set l = <$f
+     if (tail($l)!= 0) set df = (tail($l))
+   endif
+   set l = <$f
+endwhile
+close $f
+if ($dim == 1) then 
+  specw $sw
+  freq $sf $sf
+elsif ($dim == 2) then
+  if (!exist('sw1')) set sw1 = $sw  ; happens if it is not a 'true' 2D
+  specw $sw1 $sw
+  freq $sf $df $sf
+endif
+

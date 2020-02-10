@@ -1,0 +1,7 @@
+; align all spins to their associated peaks
+
+foreach i in att
+   if ($i s! 'LARGEST') then
+      align_spin_pk $i
+   endif
+endfor

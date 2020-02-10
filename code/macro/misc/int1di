@@ -1,0 +1,12 @@
+; performs 1D integration between 2 points
+; interactively determined
+
+if ($dim != 1) error "in 1D only"
+point
+if ($npoint !=2) error "you must click twice"
+set ii = 0
+for i = (min($pointx[1],$pointx[2])) to (max($pointx[1],$pointx[2]))
+  set ii = ($ii + val1d($i) )
+endfor
+showtext $ii ($pointx[1] + ($pointx[2]-$pointx[1])/2)  80 
+print ("From";$pointx[1];"to";$pointx[2];"(";1+abs($pointx[2]-$pointx[1]);"points) :";$ii)

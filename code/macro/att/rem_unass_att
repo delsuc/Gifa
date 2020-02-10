@@ -1,0 +1,30 @@
+; rem_unass_att
+;
+; remove all the unassigned peaks in a database
+;
+alert ("Ok to remove unassigned peaks from the database ?")
+set unass = 0
+for i = 1 to $att["LARGEST"]
+
+   if (exist('att[' // $i // ']')) then
+   set l = $att[$i]
+;print ("l "//$l)
+; find spin numbers
+   set t = (tail(tail(tail($l))))
+   set u = (tolower(head($t))) 
+   set v = (tolower(head(tail($t)))) 
+   if (($u s= "unk" ) & ($v s= "unk")) then
+; unassigned peak -> remove it
+      unset ("att[" // $i // "]")
+      set unass = (%+1)
+;  if it is the last when, then we can backtrack one
+; (Should we ?)      if ($att["LARGEST"] == $i) set att["LARGEST"] = ($i-1)
+   endif
+  endif
+
+endfor
+
+dialogbox "Unassigned peaks" \
+  ($unass; "unassigned peaks removed") message \
+      *
+

@@ -1,0 +1,219 @@
+; dosy3d input_file data_type processing_type size thres output_file
+;
+; implements the complete DOSY processing for 3D
+;
+; DOSY data are on-file, diffusion dimension is in F1,
+; NMR spectra in F23
+;
+; data_type :       tabulated or regular   determines the type of sampling
+; processing_type : MaxEnt, Fit or Fit_2_comp   determines the processing which will be used
+;           Fit is faster (if you have a small number of data-point), but is less accurate,
+;           and cannot handle supersposition in spectra, nor polydisperse species.
+;           Fit_2_comp tries to fit two exponential components
+;             should be used with CAUTION
+; size : size after Laplace inversion
+; thres : multiplier used to determine the processing threshold
+;         only columns which first point is larger
+;         than the noise level by this ratio, will be processed
+;
+; see also :  INVLAP, INVTLAP, FITGENE, dosyfit, dosyfit_2, dosy2d, dosy3d.g, dosy_setup
+
+if ($noise == 0.0) error 'NOISE should not be 0.0'
+
+message "Enter the input file name"
+set filein = $_
+
+message "Enter data type (regular/tabulated)"
+set type = $_
+set type = (toupper($type))
+if ($type s! "REGULAR" & $type s! "TABULATED")   error "Wrong data type"
+
+message "Enter processing type (Fit / Fit_2_comp / MaxEnt)"
+set proc = $_
+set proc = (toupper($proc))
+if ($proc s! "FIT" & $proc s! "MAXENT" & $proc s! 'FIT_2_COMP') then
+   error "Wrong processing type"
+endif
+
+message "Enter final size"
+set sz = $_
+if ($sz < 4) error "Size too small"
+if ($sz > $MEM_PRO_1D) error "Size too large"
+if ($si2_3d*$si3_3d > $MEM_pro_2d) error 'Plan size too large'
+
+message "Enter noise factor used for thresholding"
+set thresh = $_
+
+message "Enter the output file name"
+set fileout = $_
+
+join $filein
+set si1 = $c_sizef1
+set si2 = $c_sizef2
+set si3 = $c_sizef3
+if ($type s= "TABULATED" & $si_tab != $si1) \
+    error "F1 dimension not compatible with TAB buffer"
+set of1 = $c_offsf1
+set of2 = $c_offsf2
+set of3 = $c_offsf3
+set sp1 = $c_specwf1
+set sp2 = $c_specwf2
+set sp3 = $c_specwf3
+set f1 = $c_freq1
+set f2 = $c_freq2
+set f3 = $c_freq3
+set ityp = $c_type
+disjoin
+
+; compute sizes to be used before and after
+set szbf = $si1
+
+if ($sz > $szbf) then
+        set szaf = $sz
+else
+        set szaf = $szbf
+endif
+
+; open the final spectrum
+newfilec $fileout 3d $szaf $of1 $sp1 $f1 $si2 $of2 $sp2 $f2 $si3 $of3 $sp3 $f3 600.04 $ityp
+
+; put zero in the final spectrum
+join $filein
+dim 2
+getc F1 1 1 1 $si2 $si3
+zero
+join $fileout
+dim 2
+initinprogress ($szaf)
+print ("Preparation of the output file ... ")
+for i = 1 to $szaf
+   putc F1 $i 1 1 $si2 $si3
+   inprogress $i
+endfor
+PUTHEADER Dmin $dmin
+PUTHEADER Dmax $dmax
+PUTHEADER Dfactor $dfactor
+disjoin
+
+; fake a regular mode in FIT
+if (($PROC s= 'FIT' | $proc s= 'FIT_2_COMP') & $type s= 'REGULAR') then
+  join $filein
+  dim 2
+  getc F1 1 1 1 $si2 $si3
+  dim 1
+  one tm $si1_1d $si1_1d addbase (1/$si1_1d)
+  mult (0.5/$SPECW_1D)
+  put tab
+endif
+
+; output file
+set result = 'result_dosy.temp'
+
+; Count the number of columns to process
+unit i
+join $filein
+dim 2
+getc F1 1 1 1 $si2 $si3
+count ($thresh * $noise)
+set peakcount = $returned
+initinprogress (($peakcount+1))
+print ($peakcount;'columns are to process')
+set peakcount = 1
+inprogress $peakcount
+
+; do the processing
+open $result
+; initial value of P1 is set once, only
+set p1 := ($dfactor/$tab[round($si_tab/2)]) ; eval initial $p1 and $p2
+for i = 1 to $si2
+   for j = 1 to $si3
+        if (val2d($i,$j) > $thresh * $noise) then
+           set peakcount = (%+1)
+           inprogress $peakcount
+           join $filein
+           dim 1 itype 0
+           chsize $szbf
+           getc f1 $i $j 1 $szbf
+           print ("Processing vert " // $i ; $j // "... ")
+           chsize $szbf
+           if ($proc s= 'MAXENT') then
+              if ($type s= "TABULATED") then
+                 maxent_dosy $sz
+                 fprint $result ("vert";$i;$j;"iter. count";$nbreiter;"chi2";$chi2min)
+              else
+                 invlap $sz
+              endif
+           else
+              set exp = '$p2*exp(-$p1*$x/$dfactor)'
+              set p2 := (val1d(1))
+              fitgene $exp 2			; do first fit with 1 damping
+              fprint $result ("vert";$i;$j;"chi2_1_comp";$chi2)
+              set p1_1 = $p1
+              set p3 = $p1
+              set p2_1 = $p2
+              set dp1_1 = $dp1
+              set dp2_1 = $dp2
+              set chi2_1 = $chi2 
+              if ($proc s= 'FIT_2_COMP' & $chi2 > (5*$si1_1d)) then
+                 set exp = ($exp // '+$p4*exp(-$p3*$x/$dfactor)')
+                 set p2 = ($p2/2)   set p4 = $p2
+                 set p3 = ($p1/3)   set p1 = (3*$p1)
+                 fitgene $exp 4			; then final fit
+              endif
+              if ( $chi2 < (0.8*$chi2_1) & $p1>0 & $p3>0 ) then
+                 chsize $szaf
+                 fprint $result ("         chi2_2_comp";$chi2)
+                 fprint $result ('         damping 1';$p1;'+/-';$dp1;'amplitude 1';$p2;'+/-';$dp2)
+                 fprint $result ('         damping 2';$p3;'+/-';$dp3;'amplitude 2';$p4;'+/-';$dp4)
+                 set left1 = (dtoi($p1-$dp1,1,1))
+                 set right1 = (dtoi($p1+$dp1,1,1))
+                 set left2 = (dtoi($p3-$dp3,1,1))
+                 set right2 = (dtoi($p3+$dp3,1,1))
+                 chsize (%*2)
+                 zero 
+                 simun $p2 (dtoi($p1,1,1)) 0 0
+                 gm (2*($right1-$left1)*$SPECW_1D/$SI1_1D)  
+                 put data 
+                 zero 
+                 simun $p4 (dtoi($p3,1,1)) 0 0
+                 gm (2*($right2-$left2)*$SPECW_1D/$SI1_1D)  
+                 adddata
+                 sin 0
+                 ft
+                 refmacro 1
+                 real
+                 refmacro 0
+              else
+                 fprint $result ('         damping';$p1_1;'+/-';$dp1_1;'amplitu';$p2_1;'+/-';$dp2_1)
+                 if ($p1_1 <0) then
+                    fprint $result 'negative damping, setting to zero'
+                    dim 1 chsize $szaf zero
+                 else
+                    chsize $szaf
+                    set left = (dtoi($p1_1-$dp1_1,1,1))
+                    set right = (dtoi($p1_1+$dp1_1,1,1))
+                    chsize (%*2)
+                    zero simun $p2_1 (dtoi($p1_1,1,1)) 0 0
+                    gm (2*($right-$left)*$SPECW_1D/$SI1_1D)  sin 0
+                    ft
+                    refmacro 1
+                    real
+                    refmacro 0
+                 endif
+              endif
+           endif
+           chsize $szaf
+           join $fileout
+           dim 1 putc f1 $i $j 1 $szaf
+        endif
+   endfor
+endfor
+fprint $result (($peakcount-1);'columns processed')
+close $result
+dim 2
+join $fileout
+disjoin
+join $filein
+disjoin 
+refmacro 0
+print (($peakcount-1);'columns processed')

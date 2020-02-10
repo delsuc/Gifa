@@ -1,0 +1,30 @@
+Here are some description for the Compilation and machine requirements for
+the various ports of Gifa.
+
+gifav4_SGI6.tar.Z - binaries for Silicon Graphics machines, R8000 or higher running IRIX 6.5
+     compiled with the standard f77 and cc commands on IRIX 6.5
+     options -O -n32 -mips4 -DSGI64
+     every thing is dynamically linked.
+     Runs very fine on O2 and O200 (not tested on O2000)
+
+gifav4_LINUX.tar.gz  - binaries for PC Linux
+   this one should work with most Linux versions
+   compiled with f2c-19991109-2 and gcc egcs-2.91.66 with full optimization for
+     the pentium CPU  switch,
+     linked with the glibc-2.1.3 library.
+     compiled and tested with RedHat 6.2
+     tested on Mandrake 8.1 (glibc 2.2)	
+     Xm and gdbm  are statically linked
+
+gifav4_SOL2.tar.Z - binaries for SUN - Solaris
+    compiled on Solaris 5.6
+    with the 4.2 version of C and F77
+    with the -fast -O4 optimisation switches
+    the F77 library has been compiled in static.
+
+gifav4_DARWIN.tar.Z - binaries for Macintosh running MacOs X or Darwin.
+    compiled on 10.1.1 with the standard Apple development tools
+    with -O3 option,
+    -faltivec option has been activated (support for G4) but does not seem to be very efficient.
+    tested on 10.1 on Powebook G3 and Desktop G4
+    Motif is from the Xfree / XDarwin distribution, 

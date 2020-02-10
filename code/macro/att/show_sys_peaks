@@ -1,0 +1,61 @@
+; show_sys_peak $sys_id
+;
+; display graphically all spin-system peaks
+
+if ($att['largest'] == 0) error "Database Empty !"
+if ($zoom == 0) error "Does not work in 'Full' mode"
+
+; get spin list
+  set ss = $_
+  set l = $sys[$ss]
+  set num = (head($l))
+  set aa = (head(tail($l)))
+  set l = (tail(tail($l)))
+
+
+while ($l s! " ")
+	set p = ($spin[head($l)])
+	set ppm  = (head($p))
+	set sp = (head($l))
+	set l = (tail($l))
+
+	;Box in F1
+	set f1min = ($ppm-$tol_align)
+  	set f2min = (itop($zoom_2d[4],2,2))
+  	set f1max = ($ppm+$tol_align)
+  	set f2max = (itop($zoom_2d[2],2,2))
+
+  	foreach i in att  within 2 $f1min $f2min $f1max $f2max
+	    	if ($i s! "LARGEST")  then
+		   ;select peak of the system
+		   set pk = $att[$i]
+		   set sp1 = (head(tail(tail(tail($pk)))))
+		   set sp2 = (head(tail(tail(tail(tail($pk))))))
+		   if (($sp1 s= $sp) | ($sp1 s= $sp )) then
+			show_att $i
+		   endif
+		endif
+	endfor
+	
+        ;Box in F2
+        set f1min = (itop($zoom_2d[3],2,1))
+        set f2min = ($ppm-$tol_align)
+        set f1max = (itop($zoom_2d[1],2,1))
+        set f2max = ($ppm+$tol_align)
+        foreach i in att  within 2 $f1min $f2min $f1max $f2max
+                if ($i s! "LARGEST")  then
+		   ;select peak of the system
+                   set pk = $att[$i]
+                   set sp1 = (head(tail(tail(tail($pk)))))
+                   set sp2 = (head(tail(tail(tail(tail($pk))))))
+                   if (($sp1 s= $sp) | ($sp1 s= $sp )) then
+                        show_att $i
+                   endif
+
+                endif
+        endfor
+
+endwhile
+
+
+

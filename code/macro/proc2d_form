@@ -1,0 +1,18 @@
+; prepares a form for proc2d
+;
+; see also : proc2d
+
+formbox "proc2D" \
+    "proc2d $fin $fout $ax $cmd join $fout" \
+    "This form is a graphic interface to the macro <proc2d>" message noreturn \
+    "more Help" action "help proc2d" \
+    separator \
+    "input file" file fin $c_name \
+    noreturn \
+    dataset action "join $fin dataset disjoin " \
+    "output file" file fout ($c_name // "~") \
+    "Axis to process" enum "F1,F2" ax % \
+    "Enter a (1D) command for processing along the selected axis" message \
+    "command line" string cmd "your commands here.." \
+    *
+

@@ -1,0 +1,44 @@
+; proj3d_all  algo abs
+;
+; algo is M or S
+; if abs is Y, absolute value is taken first
+;
+;
+; equivalent to proj3d, but all projections are computed,
+; and put as first planes in each direction
+;
+; looses information located in the first planes !
+;
+; see also : proj3d proj_loc PROJ JOIN proc3d
+
+if ($c_dim!=3) error 'Works only on a JOINed 3D'
+
+message "enter algorithm, Skyline or Mean : (S/M)"
+set alg = $_
+
+message "Take absolute value : (Y/N)"
+set abs = $_
+
+dim 2
+; first put zeros in the 1st plane (if ever the proj3d_all has already been done)
+print 'F1 proj'
+getc f1 1 %%
+zero
+putc f1 1 %%
+proj3d f1 $alg $abs
+putc f1 1 %%
+
+print 'F2 proj'
+getc f2 1 %%
+zero
+putc f2 1 %%
+proj3d f2 $alg $abs
+putc f2 1 %%
+
+print 'F3 proj'
+getc f3 1 %%
+zero
+putc f3 1 %%
+proj3d f3 $alg $abs
+putc f3 1 %%
+

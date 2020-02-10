@@ -1,0 +1,29 @@
+; align_spin_pk $pk_id
+; for a given peak, align the spins pointed to by the peak, with 
+; the chemical shifts of the peak itself.
+
+set pkid = $_
+
+set pk = $att[$pkid]
+set f1 = (head($pk))   set pk = (tail($pk))
+set f2 = (head($pk))   set pk = (tail(tail($pk)))
+set sp1id = (head($pk)) set pk = (tail($pk))
+set sp2id = (head($pk))
+
+if (toupper($sp1id) s! "UNK") then
+	set sp1 = $spin[$sp1id]
+	set of1 = (head($sp1))  set sp1 = (tail($sp1))
+	set spin[$sp1id] = ($f1;$sp1)
+	if (abs($of1-$f1)>$tol_click) then
+	  print ("spin"; $sp1id; "at"; $of1; "has been moved to"; $f1; "(more than"; $tol_click; ")" )
+	endif
+endif
+
+if (toupper($sp2id) s! "UNK") then
+	set sp2 = $spin[$sp2id]
+	set of2 = (head($sp2))  set sp2 = (tail($sp2))
+	set spin[$sp2id] = ($f2;$sp2)
+	if (abs($of2-$f2)>$tol_click) then
+	   print ("spin"; $sp2id; "at"; $of2; "has been moved to"; $f2; "(more than"; $tol_click; ")" )
+	endif
+endif

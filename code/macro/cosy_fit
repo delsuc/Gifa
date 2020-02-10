@@ -1,0 +1,51 @@
+; cosy_fit f1 f2 J_act F1_pat F2_pat
+;
+; f1 f2 : cross peak center, in ppm
+; J_act : estimation of the active coupling value, in Hz
+; F1_pat F2_pat : shape of the spins
+;       D T Q M :  Doublet Triplet Quadruplet Multiplet.
+; returns J_act value in $returned
+
+refmacro 1
+
+set f1 = $_
+set f2 = $_
+set Ja = $_
+set F1_pat = $_
+set F2_pat = $_
+
+set f1 = (ptoi($f1,2,1))
+set f2 = (ptoi($f2,2,2))
+
+set i_h1 = ($si1_2d/$specw_1_2d)
+set i_h2 = ($si2_2d/$specw_2_2d)
+
+; zoom on peak
+set a = 2     ; size of the window
+zoom 1 ($f1 - $a*$Ja*$i_h1 -1) ($f2 - $a*$Ja*$i_h2 -1) ($f1 + $a*$Ja*$i_h1 +1) ($f2 + $a*$Ja*$i_h2 +1)
+
+; peak pick
+set up = ($f1 + $Ja*$i_h1/2)
+set low = ($f1 - $Ja*$i_h1/2)
+set left = ($f2 - $Ja*$i_h2/2)
+set right = ($f2 + $Ja*$i_h2/2)
+
+set a = (0.25*(abs(val2d($up,$left))+abs(val2d($low,$left))+abs(val2d($up,$right))+abs(val2d($low,$right))))
+
+pkclear  point_clear
+point_input $up $left	point_push
+point_input $up $right	point_push
+point_input $low $left	point_push
+point_input $low $right	
+point->pk point_clear
+
+showpeaks
+
+linefit gauss
+
+set J11 = (($pk2d_f1f[3]-$pk2d_f1f[1])/$i_h1)
+set J12 = (($pk2d_f1f[4]-$pk2d_f1f[2])/$i_h1)
+set J21 = (($pk2d_f2f[1]-$pk2d_f2f[2])/$i_h2)
+set J22 = (($pk2d_f2f[3]-$pk2d_f2f[4])/$i_h2)
+print ($j11;$j12;$j21;$j22)
+show linefit

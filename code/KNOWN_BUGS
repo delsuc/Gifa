@@ -1,0 +1,21 @@
+Gifa Version 4.3 - dated 1 august 2000
+
+Known BUGS
+----------
+There are quite a few bug known (and unknown)
+ o When using the Graphic interface, some questions go to the text terminal
+   rather than in the dialog box. The message are sometime a bit erratic.
+ o STPL (stacked plot) on screen is very sloppy, it will be changed sometime.
+ o low level contours may have some erratic lines in it.
+ o 2D Density window should not be resizable
+ o $a[$b[$i]] does not work ($a[$b[$i]]) does work though
+ o too many Overflow messages
+ o ux2cach.sh shell script is sometime confused if the ##$INSTRUM field is
+   wrong on your Bruker spectrometer
+   check it if you get a "wrong number of argument' message
+ o MODULUS does not work in 3D if ITYPE is not 7
+ o 24 bit graphic is not available yet
+ o etc...
+
+
+

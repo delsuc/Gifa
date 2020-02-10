@@ -1,0 +1,5 @@
+; obsolete, for compatibility
+print "CDISP command is obsolete, use DISP1D, CDISP2D"
+set cdisp := $_
+disp1d $cdisp
+cdisp2d $cdisp

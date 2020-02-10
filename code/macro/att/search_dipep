@@ -1,0 +1,87 @@
+; search_dipep
+;
+; permits click on the data-set, and high-light the spins 
+; in the db located in the align tolerance, in F1 and F2 axes
+;
+
+
+set f1list = $_
+set f2list = $_
+
+; now search for possible assignment
+if ($f1list s! " "  & $f2list s! " ") then
+   set gfound = 0
+   set f1 = (headx($f1list,':'))  set f1l = (tailx($f1list,':'))   ; 1st for intra res peaks
+   while ($f1 s! ' ')
+     set f2 = (headx($f2list,':'))  set f2l = (tailx($f2list,':'))
+     set sys1 = (head(tail(tail($spin[$f1]))))
+     while ($f2 s! ' ')
+        set sys2 = (head(tail(tail($spin[$f2]))))
+             if ($sys2 == $sys1) then
+print ("Intra-residue match #"// $sys1; ":"; $sys[$sys1])
+set gfound = 1
+               goto cut
+             endif
+       set f2 = (headx($f2l,':'))  set f2l = (tailx($f2l,':'))
+     endwhile
+     set f1 = (headx($f1l,':'))  set f1l = (tailx($f1l,':'))
+  endwhile
+
+=cut 
+  dbopen /usr/local/gifa/macro/att/1let_3let code     ; then search for dipeptides
+  open db/primary
+  set i = 1
+  set aa = <db/primary
+  set chainaa = $code[$aa]
+  set bb = <db/primary
+  set chainbb = $code[$bb]
+  while (!eof('db/primary'))                          ; loop on primary
+     set f1 = (headx($f1list,':'))  set f1l = (tailx($f1list,':'))
+     while ($f1 s! ' ')                            ; loop on f1 spins
+        set foundaa = 0    set foundbb = 0
+        set sys1 = (head(tail(tail($spin[$f1]))))
+        set sys1res = (head(tail($sys[$sys1])))          ; find sys name
+        if (index($chainaa,$sys1res) !=0) then
+           set foundaa = 1
+        endif
+        if (index($chainbb,$sys1res) !=0) then
+           set foundbb = 1
+        endif
+        if ($foundaa == 1 | $foundbb == 1) then
+           set f2 = (headx($f2list,':'))  set f2l = (tailx($f2list,':'))
+           while ($f2 s! ' ')                            ; loop on f2 spins
+             set found = 0
+             set sys2 = (head(tail(tail($spin[$f2]))))
+             if ($sys2 != $sys1) then
+               set sys2res = (head(tail($sys[$sys2])))          ; find sys name
+               if ($foundaa == 1) then
+                  if (index($chainbb,$sys2res) !=0) then
+                    set found = 1
+                  endif
+               endif
+               if ($foundbb == 1) then
+                  if (index($chainaa,$sys2res) !=0) then
+                    set found = 1
+                  endif
+               endif
+if ($found == 1) then
+   print ("Possible sequetial match:"; $i; $aa; "-"; ($i+1); $bb)
+   set gfound = 1
+endif           
+             endif
+             set f2 = (headx($f2l,':'))  set f2l = (tailx($f2l,':'))
+           endwhile
+        endif
+        set f1 = (headx($f1l,':'))  set f1l = (tailx($f1l,':'))
+     endwhile
+     set i = (%+1)
+     set aa = $bb
+     set chainaa = $chainbb
+     set bb = <db/primary
+     if ($bb s! ' ') set chainbb = $code[$bb]
+  endwhile
+  if ($gfound == 0) print "No possible match found"
+  close db/primary
+  dbclose code
+endif
+

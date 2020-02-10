@@ -1,0 +1,45 @@
+; align_pk_spin $spin_id
+; for a given spin align the peaks pointing to this spin
+; with the chemical shifts of the spin itself.
+; 
+; WARNING : peaks far from the spin are not detected nor moved !
+;
+
+set id = $_
+
+set sp = $spin[$id]
+set ppm = (head($sp))   set left = (tail($sp))
+
+
+for i = 1 to 2
+  if ($i==1) then
+    set f1min = ($ppm-10*$TOL_ALIGN)
+    set f1max = ($ppm+10*$TOL_ALIGN)
+    set f2min = (itop($si2_2d,2,2))
+    set f2max = (itop(1,2,2))
+  else
+    set f2min = ($ppm-10*$TOL_ALIGN)
+    set f2max = ($ppm+10*$TOL_ALIGN)
+    set f1min = (itop($si1_2d,2,1))
+    set f1max = (itop(1,2,1))
+  endif
+  foreach pkid in att within 2 $f1min $f2min $f1max $f2max
+    if ($pkid s! "LARGEST") then
+        set pk = $att[$pkid]
+        set f1 = (head($pk))   set pk = (tail($pk))
+        set f2 = (head($pk))   set pk = (tail($pk))  set spleft = $pk
+        set pk = (tail($pk))
+        set sp1id = (head($pk)) set pk = (tail($pk))
+        set sp2id = (head($pk))
+
+        if ($sp1id s= $id) then
+;           set att[$pkid] = ($ppm;$f2;$spleft)
+           print ("peak";$pkid;"has been moved")
+        elsif ($sp2id s= $id) then
+;           set att[$pkid] = ($f1;$ppm;$spleft)
+           print ("peak";$pkid;"has been moved")
+        endif
+    endif
+  endfor
+endfor
+

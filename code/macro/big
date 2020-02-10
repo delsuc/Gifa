@@ -1,0 +1,5 @@
+; obsolete, for compatibility
+; big was removed in Gifa since version 4_09alpha
+message " enter parameter" set a = $_
+print "*** Command obsolete, has no function"
+

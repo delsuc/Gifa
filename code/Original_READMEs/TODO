@@ -1,0 +1,20 @@
+This is the list of the planned futures developments. Presented here by
+decreasing order of likelyness (It will depend on popular demand :-) 
+
+- the internal peak table will be moved to an external dbm file.
+  This will permits much more more freedom in defining new entries.
+  Will also merge with the assignment code which is to come.
+  A hash table will be added to rapidly find a peak from its
+  spectral coordinates
+
+- a 4D mode will be able once, (probably as soon as I manage to run one 
+  on my spectrometer ;-)
+
+- The size of the main memory should be configurable from the command line
+  thus having only one binary file to handle around.
+
+- The look mode in the cache_mad library will be developed some day.
+
+- The graphic might one day change to a display-list based one, to
+  permit multiple display on-screen (kindof subplot() in matlab).
+  Will permit multiple zooms (for instance to show a spin-system)

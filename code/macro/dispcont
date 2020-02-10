@@ -1,0 +1,77 @@
+; dispcont no_arg 
+;
+; creates a form box which permits to modify the contour parameters
+;
+; calls itself with parameters for the update
+;
+; see also : CDISP2D LEVEL LOGA SIGN
+
+; no arg means : build the formbox, args means do the update
+;
+;re-vamped on 18-mai-99 by mad
+
+if (!$arg) then
+  ; compute default val
+  if ($disp2d==1) then
+     set def = on
+  else
+     set def = off
+  endif
+  if ($cdisp2d==1) then
+     set cdef = on
+  else
+     set cdef = off
+  endif
+  if ($sign == 1) then
+     set pndef = "1 (positive)"
+  elsif ($sign == 0) then
+     set pndef = "0 (both)"
+  else
+     set pndef = "-1 (negative)"
+  endif
+  formbox "Display control" \
+	"dispcont $bmp $cont $posneg $sc $lev $log" \
+	"Bitmap (disp2d)" enum "on,off" bmp $def \
+	noreturn "Contour (cdisp2d)" enum "on,off" cont $cdef \
+	"Sign" enum "1 (positive),-1 (negative),0 (both)" posneg $pndef \
+	noreturn 'help' action 'help sign' \
+	"scale" cursor 1 1000 0 sc $scale \
+	noreturn 'help' action 'help scale' \
+	"level" cursor 1 64 0 lev $level \
+	noreturn 'help' action 'help level' \
+	"spacing (loga)" cursor 1.0 5.0 1 log $loga \
+	noreturn 'help' action 'help loga' \
+	*
+else
+  set bmp = $_
+  set cont = $_
+  set posneg = $_ 
+  set sc = $_
+  set lev = $_ 
+  set log = $_
+; switch off first
+  if ($bmp s= "off" ) then
+   disp2d 0
+  endif
+  if ($cont s= "off" ) then
+   cdisp2d 0
+  endif
+
+  if ($lev != $level )	then
+     if ($lev < 1 | $lev >64) error "Wrong number of levels"
+     level $lev unref
+  endif
+  if ($log != $loga ) then
+      if ($log <1) error "Loga should be > 1"
+      loga $log unref
+  endif
+  scale $sc sign (head($posneg)) unref
+  if ($bmp s= "on" ) then
+   disp2d 1 ref
+  endif
+  if ($cont s= "on" ) then
+   cdisp2d 1 ref
+  endif
+  zm 1    ; in order to reset vignette
+endif
+

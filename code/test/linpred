@@ -1,0 +1,472 @@
+; Test for forward linear prediction calculated by LPSVD
+; T.Malliavin first version
+; G.Salnikov jan-1996 : added peak sorting
+
+dim 1
+order 10
+simu 6024 512 2 1.0 3123 1.0 0. \
+1.0 5001 1.0 0. 0.0
+dt->svd 512
+svd->ar 1
+ar->dt 1k 1
+itype 0 evaln 1 1k itype 1
+set a = (abs($noise - .95968282)<0.001)
+set b = (abs($shift - .226734569878E-03)<0.001)
+report ($a & $b) "Forward Linear Prediction by LPSVD"
+; forward linear prediction coeff calculated by LPSVD
+;Number of AR coefficients :         10
+;Forward coeff. of PE polynome
+;        .032423
+;        .218044
+;       -.135395
+;       -.069564
+;       -.022323
+;        .031589
+;        .083497
+;       -.560398
+;        .330764
+;        .119651
+;       -.255565
+;       -.082291
+;        .069599
+;        .047879
+;        .009635
+;        .261716
+;        .309227
+;       -.071307
+;       -.189211
+;        .000804
+
+; Test for backward linear prediction by LPSVD
+dim 1
+order 10
+simu 6024 512 2 1.0 3123 1.0 0. \
+1.0 5001 1.0 0. 0.0
+dt->svd 512
+svd->ar 2
+ar->dt 1k 2
+itype 0 evaln 1 1k itype 1
+set a = (abs($noise - 1.00010108948)<0.001)
+set b = (abs($shift - .145896791946E-02)<0.001)
+report ($a & $b) "Backward Linear Prediction by LPSVD"
+
+; backward linear prediction coeff calculated by LPSVD
+;Number of AR coefficients :         10
+;Backward coeff. of PE polynome
+;        .211119
+;       -.018458
+;       -.129454
+;        .013135
+;        .123079
+;       -.092347
+;        .236444
+;        .761579
+;        .149035
+;        .181000
+;       -.181964
+;        .033043
+;        .164967
+;        .020283
+;       -.073370
+;       -.050815
+;        .152297
+;        .031029
+;       -.123679
+;       -.005283
+
+; Test for forward linear prediction and spectrum calculation by the Burg method
+dim 1
+order 10
+simu 6024 512 1 1.0 3123 1.0 0. 0.0
+dt->ar
+ar->dt 1k 1
+itype 0 evaln 1 1k itype 1
+set a = (abs($noise - .684671044350)<0.001)
+set b = (abs($shift - .664793420583E-03)<0.001)
+ar->sp
+max
+set c = (abs($max[1] - .312438824039E-04)<0.001)
+set d = (abs($max[2] - .178954522312E-07)<0.001)
+report ($a & $b & $c & $d) "Forward Linear Prediction and spectrum calculation by the Burg method"
+; Linear prediction coefficients calculated by the Burg method
+;Number of AR coefficients :         10
+;Forward coeff. of PE polynome
+;       1.298755
+;        .151038
+;        .205728
+;        .048508
+;       -.028264
+;       -.010233
+;        .012509
+;        .006233
+;       -.006552
+;       -.004286
+;        .003542
+;        .002954
+;       -.001666
+;       -.001754
+;        .000144
+;        .000191
+;        .004596
+;        .007862
+;        .018509
+;        .042231
+
+; Test for spectral analysis by forward LPSVD
+dim 1
+order 10
+simu 6024 512 2 1.0 3123 1.0 0. \
+1.0 5001 1.0 0. 0.0
+dt->svd 512
+svd->ar 1
+ar->rt 1 
+rt->pk 512 1 0.0
+unit h
+pkclean 0.001
+for i = 1 to $npk1d
+set f[$i] := $pk1d_f[$i]
+set w[$i] := $pk1d_w[$i]
+endfor
+for i = 1 to ($npk1d-1)
+  if ($f[$i] > $f[$i+1]) then
+    for j = $i to 1 step -1
+      if ($f[$j] > $f[$j+1]) then
+	 set k = $f[$j+1]
+	 set f[$j+1] = $f[$j]
+	 set f[$j] = $k
+	 set k = $w[$j+1]
+	 set w[$j+1] = $w[$j]
+	 set w[$j] = $k
+      endif
+    endfor
+  endif
+endfor
+set a = (abs($f[1] - 86.9482116699) < 0.001)
+set b = (abs($f[2] - 246.565734863) < 0.001)
+set c = (abs($w[1] - .270543918014E-01) < 0.001)
+set d = (abs($w[2] - .270575433969E-01) < 0.001)
+report ($a & $b & $c & $d) "Spectral analysis by Forward LPSVD"
+;Peaks computed with linear prediction
+;Number of 1D peaks :         10
+;Peak coordinates in HZ       widthes in Hz
+;   Index   Coord          Ampli         Volume       Width     Phase  Type
+;     1  4273.871    .112823E-06    .904885E-06    94.365    58.986 unknown
+;     2  1955.547    .479791E-07    .853707E-06   209.350   152.705 unknown
+;     3   447.116    .327822E-07    .242444E-06    87.014    98.625 unknown
+;     4  2115.433    .491742E-07    .184734E-05   442.003   -58.959 unknown
+;     5  1101.549    .631592E-08    .297399E-06   554.010     6.059 unknown
+;     6  5697.313    .139044E-06    .734033E-05   621.123   124.380 unknown
+;     7  5010.787    36.9626        1.00000          .318      .000 unknown
+;     8  3129.112    36.9584        1.00000          .318      .000 unknown
+;     9  3575.401    .111505E-06    .785088E-06    82.840    41.604 unknown
+;    10  5886.629    .101792E-06    .952602E-05  1101.066   -90.490 unknown
+pkselect 1 2 0
+for i = 1 to $npk1d
+set f[$i] := $pk1d_f[$i]
+set w[$i] := $pk1d_w[$i]
+endfor
+for i = 1 to ($npk1d-1)
+  if ($f[$i] > $f[$i+1]) then
+    for j = $i to 1 step -1
+      if ($f[$j] > $f[$j+1]) then
+	 set k = $f[$j+1]
+	 set f[$j+1] = $f[$j]
+	 set f[$j] = $k
+	 set k = $w[$j+1]
+	 set w[$j+1] = $w[$j]
+	 set w[$j] = $k
+      endif
+    endfor
+  endif
+endfor
+set a = (abs($f[1] - 86.9482116699) < 0.5)
+set b = (abs($w[2] - 0.270575117320E-01) < 0.5)
+report ($a & $b) "PKSELECT"
+;Peaks computed with linear prediction
+;Number of 1D peaks :          2
+; Peak coordinates in HZ       widthes in Hz
+;   Index   Coord          Ampli         Volume       Width     Phase  Type
+;     1  1955.547    .479791E-07    .853707E-06   209.350   152.705 Gauss
+;     2  2115.433    .491742E-07    .184734E-05   442.003   -58.959 Gauss
+
+
+; Test for spectral analysis by backward LPSVD
+dim 1
+order 10
+simu 6024 512 2 1.0 3123 1.0 0. \
+1.0 5001 1.0 0. 0.0
+dt->svd 512
+svd->ar 2
+ar->rt 2
+rtclean 2
+rtinv 2 
+rt->pk 512 1 0.0
+unit h
+for i = 1 to $npk1d
+set f[$i] := $pk1d_f[$i]
+set w[$i] := $pk1d_w[$i]
+endfor
+for i = 1 to ($npk1d-1)
+  if ($f[$i] > $f[$i+1]) then
+    for j = $i to 1 step -1
+      if ($f[$j] > $f[$j+1]) then
+	 set k = $f[$j+1]
+	 set f[$j+1] = $f[$j]
+	 set f[$j] = $k
+	 set k = $w[$j+1]
+	 set w[$j+1] = $w[$j]
+	 set w[$j] = $k
+      endif
+    endfor
+  endif
+endfor
+set a = (abs($f[2] - 246.565734863) < 0.001)
+set b = (abs($f[1] - 86.9482116699) < 0.001)
+set c = (abs($w[2] - .270543918014E-01) < 0.001)
+set d = (abs($w[1] - .270575433969E-01) < 0.001)
+set e = ($nrt == 2)
+report ($a & $b & $c & $d &$e) "Spectral analysis by Backward LPSVD"
+;Number of 1D peaks :          2
+;Peak coordinates in HZ       widthes in Hz
+;   Index   Coord          Ampli         Volume       Width     Phase  Type
+;     1  3129.112    36.9573        1.00000          .318      .000 unknown
+;     2  5010.787    36.9623        1.00000          .318      .000 unknown
+
+; Test for phase-minimum bacward and forward linear prediction by LPSVD
+dim 1
+order 10
+simu 6024 512 2 1.0 3123 1.0 0. \
+1.0 5001 1.0 0. 0.0
+dt->svd 512
+svd->ar 2
+ar->rt 2
+rtclean 2
+rtinv 2 
+rt->ar 3
+;Number of AR coefficients :          2
+;Forward coeff. of PE polynome
+;        .510480
+;        .991116
+;       -.580482
+;        .813865
+;Backward coeff. of PE polynome
+;        .510650
+;       -.991445
+;       -.580867
+;       -.814406
+ar->dt 1k 1
+itype 0 evaln 1 1k itype 1
+set a = (abs($noise - .959682941437)<0.001)
+set b = (abs($shift - .226510470384E-03)<0.001)
+report ($a & $b) "Phase-minimum forward Linear Prediction by LPSVD"
+chsize 512
+ar->dt 1k 2
+itype 0 evaln 1 1k itype 1
+set a = (abs($noise - 1.00010097027)<0.001)
+set b = (abs($shift - .145897129551E-02)<0.001)
+report ($a & $b) "Phase-minimum backward Linear Prediction by LPSVD"
+
+; Test for data recalculation from SVD decomposition
+dim 1
+order 10
+simu 6024 512 2 1.0 3123 1.0 0. \
+1.0 5001 1.0 0. 0.0
+mult -1 put data mult -1
+dt->svd 512
+;number of SVD :         10
+;Singular values
+;      49.514317
+;        .000000
+;      47.397547
+;        .000000
+;        .000176
+;        .000000
+;        .000167
+;        .000000
+;        .000137
+;        .000000
+;        .000080
+;        .000000
+;        .000064
+;        .000000
+;        .000056
+;        .000000
+;        .000054
+;        .000000
+;        .000046
+;        .000000
+svdclean2 5.0 y
+set c = ($nsvd == 2)
+svdclean1 2 y
+svd->dt
+adddata
+max
+set a = (abs($max[1] - .160932540894E-04) < 0.001)
+set b = (abs($max[2] + .217556953430E-04) < 0.001)
+report ($a & $b &$c) "Data back-calculation from SVD decomposition"
+
+; Test for forward linear prediction calculated by LPSVD using roots reflected into the unit-circle
+dim 1
+order 10
+simu 6024 512 2 1.0 3123 1.0 0. \
+1.0 5001 1.0 0. 0.0
+dt->svd 512
+svd->ar 1
+ar->rt 1
+rtreflect 1
+rt->ar 1
+ar->dt 1k 1
+itype 0 evaln 1 1k itype 1
+set a = (abs($noise - .95968062)<0.001)
+set b = (abs($shift - .22652098E-03)<0.001)
+report ($a & $b) "Forward Linear Prediction by LPSVD using reflected roots"
+; forward linear prediction coeff calculated by LPSVD
+;Number of AR coefficients :         10
+;Forward coeff. of PE polynome
+;        .032423
+;        .218044
+;       -.135395
+;       -.069564
+;       -.022323
+;        .031589
+;        .083497
+;       -.560398
+;        .330764
+;        .119651
+;       -.255565
+;       -.082291
+;        .069599
+;        .047879
+;        .009635
+;        .261716
+;        .309227
+;       -.071307
+;       -.189211
+;        .000804
+
+; Test for spectral analysis by backward LPSVD
+dim 1
+order 10
+simu 6024 512 2 1.0 3123 1.0 0. \
+1.0 5001 1.0 0. 0.0
+dt->svd 512
+svd->ar 3
+ar->rt 3
+rtmatch 2 
+rt->pk 512 2 0.0
+unit h
+for i = 1 to $npk1d
+set f[$i] := $pk1d_f[$i]
+set w[$i] := $pk1d_w[$i]
+endfor
+for i = 1 to ($npk1d-1)
+  if ($f[$i] > $f[$i+1]) then
+    for j = $i to 1 step -1
+      if ($f[$j] > $f[$j+1]) then
+	 set k = $f[$j+1]
+	 set f[$j+1] = $f[$j]
+	 set f[$j] = $k
+	 set k = $w[$j+1]
+	 set w[$j+1] = $w[$j]
+	 set w[$j] = $k
+      endif
+    endfor
+  endif
+endfor
+set a = (abs($f[2] - 246.565734863) < 0.001)
+set b = (abs($f[1] - 86.9482116699) < 0.001)
+set c = (abs($w[2] - .270579215139E-01) < 0.001)
+set d = (abs($w[1] - .270544942468E-01) < 0.001)
+set e = ($nrt == 2)
+report ($a & $b & $c & $d &$e) "Spectral analysis by Matched LPSVD"
+;Peaks computed with linear prediction
+;Number of 1D peaks :          2
+;Peak coordinates in HZ       widthes in Hz
+;   Index   Coord          Ampli         Volume       Width     Phase  Type
+;     1  3129.112    36.9579        1.00000          .318      .000 Gauss
+;     2  5010.787    36.9624        1.00000          .318      .000 Gauss
+
+; Test for spectral analysis by forward LPSVD
+dim 1
+order 10
+simu 6024 512 2 1.0 3123 1.0 0. \
+1.0 5001 1.0 0. 0.0
+dt->svd 512
+svd->ar 1
+ar->rt 1 
+rtselect 1 1 2 3 4 5 6 7 8 9 10 0
+set a = ($nrt == 10)
+rt->pk 512 1 0.
+pkclean 0.001
+for i = 1 to $npk1d
+set f[$i] := $pk1d_f[$i]
+set w[$i] := $pk1d_w[$i]
+endfor
+for i = 1 to ($npk1d-1)
+  if ($f[$i] > $f[$i+1]) then
+    for j = $i to 1 step -1
+      if ($f[$j] > $f[$j+1]) then
+	 set k = $f[$j+1]
+	 set f[$j+1] = $f[$j]
+	 set f[$j] = $k
+	 set k = $w[$j+1]
+	 set w[$j+1] = $w[$j]
+	 set w[$j] = $k
+      endif
+    endfor
+  endif
+endfor
+set b = (abs($f[1] - 86.9482116699) < 0.5)
+set c = (abs($f[2] - 246.565734863) < 0.5)
+set d = (abs($w[1] - 0.270543936640E-01) < 0.5)
+set e = (abs($w[2] - 0.270575117320E-01) < 0.5)
+report ($a & $b & $c & $d &$e) "RTSELECT"
+;Number of Root          3
+;forward roots of PE polynome
+;       -.247805
+;       -.919160
+;        .853978
+;        .428907
+;        .678869
+;       -.249615
+;Peaks computed with linear prediction
+;Number of 1D peaks :          3
+;Peak coordinates in INDEX    widthes in Hz
+;   Index   Coord          Ampli         Volume       Width     Phase  Type
+;     1   149.459    .659790E-02    .529180E-01    94.365    65.051 unknown
+;     2   474.072    .150557E-01    .111346        87.014    46.328 unknown
+;     3    28.712    .191453E-01    1.01070       621.123   -41.029 unknown
+
+; Test for forward linear prediction and spectrum calculation by the Burg method (BURG command)
+dim 1
+order 10
+simu 6024 512 1 1.0 3123 1.0 0. 0.0
+burg 1k
+itype 0 evaln 1 1k itype 1
+set a = (abs($noise - .684670567513)<0.001)
+set b = (abs($shift - .664792780299E-03)<0.001)
+report ($a & $b) "BURG command"
+; Linear prediction coefficients calculated by the Burg method
+;Number of AR coefficients :         10
+;Forward coeff. of PE polynome
+;       1.298755
+;        .151038
+;        .205728
+;        .048508
+;       -.028264
+;       -.010233
+;        .012509
+;        .006233
+;       -.006552
+;       -.004286
+;        .003542
+;        .002954
+;       -.001666
+;       -.001754
+;        .000144
+;        .000191
+;        .004596
+;        .007862
+;        .018509
+;        .042231
+

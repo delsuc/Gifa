@@ -1,0 +1,32 @@
+; SimSpect2D_form args...
+; builds and apply a standard action for 2D spectrum simulation
+;
+; see also: SimSpect2D DBOPEN SIMUN 
+
+formbox "2D Spectrum Simulation" \
+	"chsize $fz1 $fz2 freq $fq $fq_1_2d $fq_2_2d specw $sp1 $sp2 offset $of1 $of2 SimSpect2D $ppmdb $intfil $fft1 $sm" \
+	"PPM DBM" file ppmdb "DBPPM" \
+	separator \
+	"intensity file" file intfil "INT" \
+	separator \
+	"Sizes" message \
+	"in F1" real fz1 $si1_2d \
+	"in F2" real fz2 $si2_2d \
+	separator \
+	"Frequences" message \
+        "1H" real fq $freq \
+        "F1" real fq_1_2d $freq_1_2d \
+        "F2" real fq_2_2d $freq_2_2d \
+	separator \
+	"Spectral widthes" message \
+        "F1" real sp1 $specw_1_2d \
+        "F2" real sp2 $specw_2_2d \
+	separator \
+	"Offsets" message \
+        "F1" real of1 $offset_1_2d \
+        "F2" real of2 $offset_2_2d \
+	separator \
+	"Modulation type in F1" enum "sh_tppi,phase_modu" fft1 sh_tppi \
+	separator \
+	"Spectrum" enum "sym,asym" sm sym \
+	*

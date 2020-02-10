@@ -1,0 +1,3 @@
+; used by control to test for @ construct
+set a = $_
+set returned := (%+$a) 

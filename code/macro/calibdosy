@@ -1,0 +1,95 @@
+; calibdosy { sequence nucleus grad_length grad_delay grad_calib grad_shape }
+;
+; computes theoretical dfactor from experimental parameters
+; for some nucleus (1H, 2H, 13C, 15N, 17O, 19F, 31P)
+; When calibration is correct, your DOSY spectra should be directly
+; readable in diffusion factors (in micron^2/sec) when using unit d (damping)
+;
+; Delays are in seconds, gradients are in Gauss/cm
+;
+; Gradient shape can be either :  Square  or  Other shape defined by ascii file
+;
+; see also: DMIN DMAX DFACTOR calib
+
+ ; does the work if called with proper argument,
+; builds a formbox if called with no arguments
+;
+
+if (!$arg) then
+  formbox 'Calibrate dosy' \
+    'calibdosy $sequence $nucleus $delta $bdelta $g $exp' \
+    'Sequence' enum 'LED,Bipolar_pulse_LED' sequence LED \
+    'Nucleus' enum '1H,2H,13C,15N,17O,19F,31P' nucleus 1H \
+    'Gradient length (in second)' real delta 0.001 \
+    'Inter-gradient delay (in second)' real bdelta 0.1 \
+    'Intensity in G/cm of a gradient of 1.0' real g 0.5 \
+    'Gradient Shape' enum 'Square,Other' exp Square \
+    separator 'Help' action 'help calibdosy' \
+    *
+else
+  message 'Sequence (LED,Bipolar_pulse_LED)'
+  set sequence = $_
+  message 'Nucleus (1H/2H/13C/15N/17O/19F/31P)'
+  set nucleus = $_                                
+  message 'Gradient length (in second)'
+  set delta = $_                                ; s
+  message 'Inter-gradient delay (in second)'
+  set bdelta = $_                               ; s
+  message 'Intensity in G/cm of a gradient of 1.0'
+  set g = $_                                    ; E-4 T . cm-1
+  set g = ($g * 1e-4)
+  message 'Gradient Shape (Square/Other)'
+  set exp = $_
+
+  if ('LED' s= toupper($sequence)) then 
+     set tau := 0 
+  else
+     message 'Inter-pulse delay (in second)'
+     set tau := $_
+     set delta = ($delta*2)
+  endif
+
+  if ('SQUARE' s= toupper($exp)) then    ; correct for gradient shape
+     set aire = ($g * $delta)
+  else
+     if (!exist('tt')) set tt := 'ascii_file'
+     dialogbox File_name 'Enter ascii file name' file tt ' ' *
+     set integ = 0   set count = 0
+     open $tt
+     set l = <$tt    set l = <$tt
+     while (!eof($tt))
+	set count = (%+1)
+	set integ = (%+head($l))
+	set l = <$tt
+     endwhile
+     close $tt
+     print ("Integrale =";$integ/$count)
+     set aire =  ($g * $delta * $integ/$count)
+  endif
+
+  if ('1H' s= toupper($nucleus)) then    ; correct for nucleus 
+     set gama = 2.675E8                           ; rad.s-1.T-1
+  elsif ('2H' s= toupper($nucleus)) then
+     set gama = 0.411E8                           ; rad.s-1.T-1
+  elsif ('13C' s= toupper($nucleus)) then
+     set gama = 0.673E8                           ; rad.s-1.T-1
+  elsif ('15N' s= toupper($nucleus)) then
+     set gama = -0.271E8                           ; rad.s-1.T-1
+  elsif ('17O' s= toupper($nucleus)) then
+     set gama = -0.363E8                           ; rad.s-1.T-1
+  elsif ('19F' s= toupper($nucleus)) then
+     set gama = 2.517E8                           ; rad.s-1.T-1
+  elsif ('31P' s= toupper($nucleus)) then
+     set gama = 1.083E8                           ; rad.s-1.T-1
+  else
+     error 'Unknown nucleus'
+  endif
+  set K = (($gama * $aire)^2)
+  set K = ($K * ($Bdelta - $delta/3 + $tau/2))   ; cm 2 sec-1
+  set K = ($K * 1.e-8)
+
+  dfactor  (1/$K)
+
+  print ('DFACTOR :'; $dfactor; '    Values are in micron^2 / sec')
+  if ($unit s= 'DAMPING' | $unity s= 'DAMPING') ref
+endif

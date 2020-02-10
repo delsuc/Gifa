@@ -1,0 +1,18 @@
+; add_spin_sys $sys_id
+;
+; adds a spin to the spin-system $sys_id
+;
+
+set ss_id = $_
+alert "Select the spin you want to add"
+@find_spin
+
+if ($returned != 0) then     ; if a spin is found
+  set spid = $returned
+  set sys[$ss_id] = ($sys[$ss_id]; $spid)    ; add in system
+  set sp = $spin[$spid]        ; and modify spin return pointer
+  set delta = (head($sp))
+  set name = (head(tail($sp)))
+  set spin[$spid] = ($delta; $name; $ss_id)
+endif
+

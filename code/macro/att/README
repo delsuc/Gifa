@@ -1,0 +1,14 @@
+This directory contains all the macros and files for using the assignment
+module in Gifa.
+
+The assignment module is accessed by starting it from the menu/Mode entry.
+
+If you have an error message when entering the module, it can be due to
+the static database files.
+The files topology.*, 3let_1let.* and 1let_3let.* are internal databases.
+They should have been installed during the standard Gifa installation.
+If they are lacking or cannot be opened correctly, type the command :
+build_static_db.g
+it should clean and reinstal the static files.
+
+

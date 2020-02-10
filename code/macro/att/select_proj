@@ -1,0 +1,58 @@
+; Select_proj
+;
+; select a project for assignment,
+;   eventually make a backup of the databases
+;   binds to the databases
+;   builds the list of spectra.
+;
+
+dialogbox "Select project" \
+   "Select the project directory" file proj $home \
+   separator \
+   "Data-Bases Backup option" enum "create backup,recover from previous bck,no action" bck % \
+   * 
+
+if (dbm("sys")) dbclose sys
+if (dbm("att")) dbclose att
+
+cd $proj
+
+if ($bck s= "create backup") then
+    sh "mv backup.tar backup.tar.old; cd db; tar cvf ../backup.tar *"
+elsif ($bck s= "recover from previous bck") then
+    sh "cd db; tar xvf ../backup.tar"
+endif
+
+@build_spec
+
+@build_pdb
+
+; set default values
+set tol_align := 0.03
+set tol_click := 0.1
+set box_f1 := 0.03
+set box_f2 := 0.03
+
+;then laod from stored parameters
+parameters
+
+dbopen db/spin_syst sys
+set ksy = 0
+foreach i in sys
+  set ksy = (%+1)
+endfor
+
+dbopen db/spin spin
+set ksp = 0
+foreach i in spin
+  set ksp = (%+1)
+endfor
+dialogbox project \
+  '--------- in data base : ---------' message \
+  ($ksp-1; 'spins') message \
+  ($ksy-1; 'spin-systems') message \
+  *
+; then load a data-set
+@multi_zoom Load
+@file_selector
+

@@ -1,0 +1,25 @@
+; This macro prints the sizes of the largest 3D which can be processed
+; with the current version of Gifa.
+;
+  print " "
+
+  set mem = $mem_max
+
+  set a = (power2(exp(log($mem)/3)))
+  print ("Largest 3D in memory   :  "; $mem/1024; "k  ( e.g. : "; $a;"x";$a;"x";$mem/($a*$a);")" )
+  set mem = $mem_pro_3d
+
+  set a = (power2(exp(log($mem)/3)))
+  print ("Largest 'Protected' 3D :  "; $mem/1024; "k  ( e.g. : "; $a;"x";$a;"x";$mem/($a*$a);")" )
+  set mem = $mem_pro_3d
+
+  print " "
+  print "'Protected' 3D means that the 3D fits completely in the 3D buffer,"
+  print "processing of larger 3D will need the use of the 2D buffer also."
+  print "In which case you will not be able to see planes or projection."
+  print " (Hint) You may process the whole 3D in the largest size, and then"
+  print " reduce the size by throwing away unneeded parts"
+  print " (imaginaries, useless spectral regions, etc..)."
+  print " "
+
+

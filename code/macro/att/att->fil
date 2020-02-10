@@ -1,0 +1,81 @@
+; pk->att filename
+;
+; copy the current assignment data-base to a peak file
+; that can be read with pkread.
+; create a database filename.hash giving the relation between 
+; the peak index in the assignment data-base and in the peak file. 
+
+if (!dbm("att")) error "No data-set selected !"
+
+if (!$arg) then
+
+  formbox 'Write Peak file' \
+   'att->fil $pkname' \
+   "Enter the basename of the ascii peak file" file pkname $name \
+   *
+
+else
+
+  set pkname = $_
+  dbopen ($pkname//".hash") hash
+  set pkname = ($pkname//".atr")
+  open $pkname
+  set u = 0
+  foreach i in att 
+   if ($i s! "LARGEST") then
+      set u = (%+1)
+   endif
+  endfor
+
+  initinprogress $u
+  set uu = 0
+  fprintf $pkname $u *
+  foreach i in att 
+   if ($i s! "LARGEST") then
+      set l = $att[$i]
+;print ("l "//$l//" i "//$i)
+      set f1 = (head($l))
+      set f2 = (head(tail($l))) 
+      set amp = (head(tail(tail($l))))
+      set t1 = (tail(tail(tail($l))))
+      set t2 = (tail(tail(tail(tail(tail($l))))))
+      set u = (tolower(head($t1))) 
+      set v = (tolower(head(tail($t1)))) 
+      if ($u s! "unk") then
+         set s1 = ($spin[(head($t1))])
+         set t = (head(tail($s1)))
+         set sys = (head(tail(tail($s1))))
+         if ($sys s! "unk") then 
+            set r1 = (head($sys[$sys]))
+            set t = ($t // ":" // $r1)
+         else
+            set r1 = -10
+            set t = ($t // "?")
+         endif
+      endif
+      if ($v s! "unk") then 
+         set s2 = ($spin[(head(tail($t1)))])
+         set sys = (head(tail(tail($s2))))
+         set t = ($t // "-" // head(tail($s2)))
+         if ($sys s! "unk") then 
+            set r2 = (head($sys[$sys]))
+            set t = ($t // ":" // $r2)
+         else
+            set r2 = -10
+            set t = ($t // "?")
+         endif
+      endif
+      if (($u s= "unk") | ($v s= "unk")) then 
+         set t = "unk:unk/unk:unk"
+      endif
+;print ("f2 "//$f2//" f1 "//$f1)
+      fprintf $pkname "%f 3.0 %f %f 3.0 %s %s" $f2 $amp $f1 $t $t2 *
+      set uu = (%+1)   inprogress $uu
+      set hash[$i] := $uu
+   endif
+  endfor
+  close $pkname
+  dbclose hash 
+
+endif
+

@@ -1,0 +1,24 @@
+; gm_bruker lb gb
+; will perform a Gaussian apodisation in the Bruker manner
+;
+; lb is negative,
+; gb goes from 0 to 1
+; will set LB and GB (gifa ones) to their corresponding value)
+; see also: GM EM sin_bruker
+
+if ($dim!=1) error 'Works only in 1D !'
+message "Enter lb :"
+ set lb = $_
+message "Enter gb :"
+ set gb = $_
+if ($gb < 0 | $gb > 1) error "Wrong parameter"
+em $lb
+set pi = (4*atan(1.0))
+;if ($gb!=0) gm (-$pi*$lb*$specw_1d/(2*$si1_1d*$gb))
+if ($gb!=0) then
+	set gg = (2* sqrt( (-$lb*log(2)*$specw_1d)/($gb * $si1_1d *$pi)) )
+; Gloups
+	gm $gg
+endif
+exit
+

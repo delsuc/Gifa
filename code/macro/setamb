@@ -1,0 +1,53 @@
+; setamb $pic $typ_act
+;
+; this macro permits to interactively modify the 
+; amoeba of pic $pic
+;
+; see also : INTEG MSKINTEG saveamb setamb
+
+set pic = $_
+set typ_act = $_
+
+refmacro 1
+print "Click on spectrum with left and middle button"
+print "Exit by clicking on right button"
+point_clear
+
+=loop
+  show amoeba
+  monopoint
+  if ($button == 3) goto exit
+  if ($typ_act s= "add") then
+    set tmp = (valamb($pointy[1],$pointx[1]))
+    if (($tmp != $pic) & ($tmp != 0)) then
+      gm/al_yesno ("Pixel in the peak amoeba";$tmp;"do you wish to change it ?")
+      if ($returned s= 'yes') then
+        mskmodif (round($pointy[1])) (round($pointx[1])) $pic   
+      endif
+    else
+      mskmodif (round($pointy[1])) (round($pointx[1])) $pic   
+    endif
+  elsif ($typ_act s= "erase") then
+    set tmp = (valamb($pointy[1],$pointx[1]))
+    if ($tmp == $pic) then
+      mskmodif (round($pointy[1])) (round($pointx[1])) 0
+    elsif ($tmp != 0) then
+      alert ("Pixel in the peak amoeba";$tmp//": you cannot change it in this run")
+    else
+      alert ("This pixel is empty")
+    endif
+  endif
+  point_push
+  goto loop
+=exit
+
+show amoeba
+showpeak $pic
+
+unref refmacro 0
+exit
+
+
+
+
+

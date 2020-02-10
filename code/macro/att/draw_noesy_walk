@@ -1,0 +1,78 @@
+; draw_noesy_walk
+;
+; draw the homonuclear noesy walk in the HN-HN and the HN-HA regions
+;
+; should be optimized to draw only the visible segments !
+
+; modified 19 - jan - 2000 MAD to draw from i to j.
+
+open db/primary
+; 1st count residues
+set nres = 0
+set l = <db/primary
+while (!eof('db/primary'))
+   set nres = (%+1)
+   set l = <db/primary
+endwhile
+close db/primary
+
+; Ask limits
+dialogbox 'Noesy Walk' \
+  'Draw Noesy Walk' message \
+  'From:' int res_from 1 noreturn 'To:' int res_to  $nres *
+
+if ($res_from < 1 | $res_from >= $res_to | $res_to > $nres) \
+   error ' Outside Limits'
+
+; then collect systems
+for i = 1 to $sys['LARGEST']
+   if (!exist('sys['//$i//']')) goto breakfor 
+   set ss = $sys[$i]                          ; get a system
+   set res = (head($ss))
+   if (tolower($res) s= 'unk') goto breakfor
+   set splist = (tail(tail($ss)))             ; an assigned one
+   while ($splist s! ' ')             ; search for HN and HA
+     set sp = (head($splist))
+     set splist = (tail($splist))
+     set spin = $spin[$sp]
+     set spname = (head(tail($spin)))
+     if ($spname s= 'HA' | $spname s= 'HA2' | $spname s= 'QA') set HA[$res] = (head($spin))
+     if ($spname s= 'HN')                    set HN[$res] = (head($spin))
+   endwhile
+=breakfor
+endfor
+
+; now draw
+set nextn = 0
+set preva = 0
+for i = $res_from to $res_to
+    if (exist('HN[' // $i // ']')) then
+       set hni = ($hn[$i] // 'p')
+       showtext $i $hni $hni
+       if (exist('HN[' // $i+1 // ']')) then
+          set hni1 = ($hn[$i+1] // 'p')
+          showline $hni $hni $hni $hni1
+          showline $hni $hni1 $hni1 $hni1
+          set nextn = 1
+       else
+          set nextn = 0
+       endif
+       if (exist('HA[' // $i // ']')) then
+          set hai = ($ha[$i] // 'p')
+          showtext $i $hni $hai
+          if ($preva == 1)   then
+               showline $hni $hpa $hni $hai
+               showline $hpa $hni $hai $hni
+          endif
+          set preva = 1  set hpa = $hai
+       else
+          set preva = 0
+       endif
+       if ($nextn == 1 & $preva == 1) then
+          showline $hni $hai $hni1 $hai
+          showline $hai $hni $hai $hni1
+       endif
+    endif
+endfor
+
+

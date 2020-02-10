@@ -1,0 +1,23 @@
+; setfont font-name font-size file-name
+;
+; Permit to change the font type and size in Postscript outputs
+; eg. setfont Symbol 14 %PL
+;
+; Should not be the first drawing command for a given plot,
+; use PEN or instance
+;
+; see also : PCOLOR PEN PLOTTEXT PLOT
+
+if ($config_plot s! 'postscript') error 'Works only on Postscript devices'
+
+set fn = 'Helvetica'
+message 'Enter font name'
+set fn = $_
+set sz = 7
+message 'Enter font size (in point)'
+set sz = $_
+set file = '*PLOTTER'
+message 'Enter output file'
+set file = $_
+if (subst($file,1,3) s= '*PL') set file = 'Gifa_Temp.Plot'
+sh ("echo /" // $fn ; " findfont"; $sz; "scalefont setfont >>"; $file)

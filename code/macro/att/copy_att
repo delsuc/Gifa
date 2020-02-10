@@ -1,0 +1,23 @@
+; copy_att filename.in filename.out
+;
+; copy the database filename.in into the database filename.out
+
+if (!$arg) then
+  formbox 'Copy database' \
+   'copy_att $dbin $dbout' \
+   'Select the input data-set name' enum $list_spectra dbin  % \
+   'Select the output data-set name' enum $list_spectra dbout $name \
+   *
+else
+  dbclose att
+  set dbin = $_
+  set dbout = $_
+  set cmd = ("cp -i db/"//$dbin//".pag db/"//$dbout//".pag")
+;  print $cmd
+  sh $cmd
+  set cmd = ("cp -i db/"//$dbin//".dir db/"//$dbout//".dir")
+;  print $cmd
+  sh $cmd
+  dbopen $cur_db att
+endif
+

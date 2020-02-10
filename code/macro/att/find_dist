@@ -1,0 +1,57 @@
+; find_dist (interactive)
+;
+; permits click on the data-set, high-light the closer
+; peak in the db, and create the dialog box to look 
+; for the distances between hydrogens involved in the 
+; selected correlation.
+; to look for all the residues or all th atoms, put the 
+; sign '.' into the dialog box.
+;
+alert "Click on the peak you want to analyze"
+
+point_clear
+monopoint
+set f1 = (itop($pointy[1],2,1))  set f2 = (itop($pointx[1],2,2))
+
+find att 2 $f1 $f2
+
+if ($pk_fnd_dst < $tol_click & $pk_fnd_dst != -1) then
+  set ss = $scolor
+  if ($scolor <6) then
+    scolor (%+1)
+  else
+    scolor 1
+  endif
+; show the assigned peak
+  show_att $pk_fnd
+  scolor $ss
+  set last_click := ("PEAK"; $pk_fnd)
+
+; get the assigned peak label
+  compute_label $pk_fnd
+  set label = $returned
+  set t = (headx($returned,"-"))
+  set p = (tailx($returned,"-"))
+  set a1 = (headx($t,":"))
+  set r1 = (tailx($t,":"))
+  set a2 = (headx($p,":"))
+  set r2 = (tailx($p,":"))
+  formbox "Interactomic Distance" \
+     'calc_dist $pdbfil $name1 $nores1 $name2 $nores2' \
+     "choose PDB file " enum $list_pdb pdbfil % \
+     separator \
+     "First atom name" string name1 $a1 \
+     "First residue number" int nores1 $r1 \
+     separator \
+     "Second atom name" string name2 $a2 \
+     "Second residue number" int nores2 $r2 \
+     * 
+
+else
+  alert ("No peak found within"; $tol_click; "ppm")
+  set returned := 0
+endif
+
+
+
+

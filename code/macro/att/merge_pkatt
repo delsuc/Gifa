@@ -1,0 +1,37 @@
+; merge_pkatt
+;
+; merge the peak table into a database for each peak of the peak table, 
+; look at the closest element of the database within the tolerance
+; and change the spectral coordinates and the intensity of this element to 
+; the peak coordinates and intensity.
+; If no database element in found within the peak tolerance, add the peak to the 
+; database as an unassigned element.
+;
+if (!dbm("att")) error "No database selected !"
+if ($npk2d == 0) error "Peak table empty !"
+alert ("Ok to merge the peak table into the database ?")
+
+set add_peak = 0
+for k = 1 to $npk2d
+
+  set f1 = (itop($pk2d_f1f[$k],2,1))  set f2 = (itop($pk2d_f2f[$k],2,2))
+  find att 2 $f1 $f2
+
+  if ($pk_fnd_dst < $tol_align & $pk_fnd_dst != -1) then
+; gives to the database element the coordinates and the amplitude of the peak
+    set l = $att[$pk_fnd]
+    set t = (tail(tail(tail($l))))
+    set att[$pk_fnd] = ($f1; $f2; $PK2D_A[$k]; $t)
+  else 
+; add the peak as unassigned in database
+    set l = $att["largest"]
+    set att[$l+1] = ($f1; $f2; $PK2D_A[$k]; "unk"; "unk")
+    set att["largest"] = ($l + 1)
+    set add_peak = (%+1)
+  endif
+
+endfor
+
+alert  ($add_peak; "peaks added to the database")
+
+

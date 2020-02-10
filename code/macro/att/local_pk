@@ -1,0 +1,22 @@
+; local_pk $i
+;
+; display on the screen a zoom around the $i peak in the 
+; database
+;
+set mm1 = (3*$box_f1)
+set mm2 = (3*$box_f2)
+if (!$arg) message "Peak number in the database?"
+set i = $_
+if (exist("att[" // $i //"]")) then
+   set l = $att[$i]
+else
+   error "Unknown peak"
+endif
+
+set f1 = (head($l)) set f2 = (head(tail($l)))
+zoom 1 (($f1+$mm1)//"p") (($f2+$mm2)//"p") (($f1-$mm1)//"p") (($f2-$mm2)//"p")
+refmacro 1
+show_att $i  
+refmacro 0
+
+

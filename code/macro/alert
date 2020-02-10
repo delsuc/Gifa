@@ -1,0 +1,15 @@
+; alert "text to display"
+;Creates a graphic alert box displaying the text. User must click in 
+;the alert box to continue.
+;
+;see also : PRINT ERROR DIALOGBOX
+
+if ($CONFIG_GRAPH) then
+  refmacro 1
+  dialogbox "alert" $_ message *
+  refmacro 0
+else
+  print $_
+  message "Type on return to continue"
+  set a =
+endif

@@ -1,0 +1,41 @@
+; calc_dist_mat
+;
+;
+
+
+set f1list = $_
+set f2list = $_
+if ($list_pdb s= ' ') alert "No PDB file available" exit
+
+if ($f1list s! " "  & $f2list s! " ") then
+   dialogbox 'Choose PDB file' \
+     "choose PDB file " enum $list_pdb pdbfil % \
+     *
+
+   while ($f1list s! ' ')
+      set f1 = (headx($f1list,':'))  set f1list = (tailx($f1list,':'))   
+      set sp1 = $spin[$f1]
+      set sys1 = $sys[head(tail(tail($sp1)))]
+      if (!exist('at1')) then
+        set at1 = (head(tail($sp1)))
+        set no1 = (head($sys1))
+      else
+        set at1 = ($at1 // ":" // head(tail($sp1)))
+        set no1 = ($no1 // ":" // head($sys1))
+      endif
+   endwhile
+
+   while ($f2list s! ' ')
+      set f2 = (headx($f2list,':'))  set f2list = (tailx($f2list,':'))
+      set sp2 = $spin[$f2]
+      set sys2 = $sys[head(tail(tail($sp2)))]
+      if (!exist('at2')) then
+        set at2 = (head(tail($sp2)))
+        set no2 = (head($sys2))
+      else
+        set at2 = ($at2 // ":" // head(tail($sp2)))
+        set no2 = ($no2 // ":" // head($sys2))
+      endif
+   endwhile
+endif
+sh ('/usr/local/gifa/com/att/calc_dist_mat.pl';$pdbfil; $at1; $no1; $at2; $no2)

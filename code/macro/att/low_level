@@ -1,0 +1,30 @@
+; low_level
+;
+; this form permits direct acces to the data base
+;
+formbox 'low level' \
+	DO_NOTHING \
+	'Peak : #' int pk 1 noreturn \
+	   Print  action 'print $att[$pk]' noreturn \
+	   Show   action 'show_att $pk' noreturn \
+	   Edit   action 'mod_att $pk' noreturn \
+	   Modify action \
+  	     'dialogbox modify ("peak #"; $pk) string val1 $att[$pk] * set att[$pk] = $val1' \
+	   noreturn unset action 'gm/al_yesno ("Are you sure you want to unset this peak?") if ($returned s= "yes") unset ("att[" // $pk // "]")' \
+	   noreturn center action 'local_pk $pk' \
+	'Spin : #' int sp 1 noreturn \
+	   Print  action 'print $spin[$sp]' noreturn \
+	   Show   action 'show_spin $sp' noreturn \
+	   Edit   action 'mod_spin $sp' noreturn \
+	   Modify action \
+   	   'dialogbox modify ("spin #"; $sp) string val2 $spin[$sp] * set spin[$sp] = $val2' \
+	   noreturn unset action 'gm/al_yesno ("Are you sure you want to unset this spin?") if ($returned s= "yes") unset ("spin[" // $sp // "]")' \
+	'Syst : #' int ss 1 noreturn \
+	   Print  action 'print $sys[$ss]' noreturn \
+	   Show   action 'show_sys $ss' noreturn \
+	   Edit   action 'mod_sys $ss' noreturn \
+ 	   Modify action \
+	   'dialogbox modify ("sst #"; $ss) string val3 $sys[$ss] * set sys[$ss] = $val3' \
+	   noreturn unset action 'gm/al_yesno ("Are you sure you want to unset this spin system?") if ($returned s= "yes") unset ("sys[" // $ss // "]")' \
+	*
+

@@ -1,0 +1,49 @@
+; interactive 
+; permits to assign a new chemical shift to a given point
+; will change the offset
+; adjust all the spin chemical shift in the assignement
+; DBM database
+;
+;see also : CALIB UNIT SPECW OFFSET FREQ 
+
+set old_offset_1 = $OFFSET_1_2D
+set old_offset_2 = $OFFSET_2_2D
+
+; call the CALIB macro and write in file
+
+calib
+write $CUR_EXP
+
+; recalibrate (in Hz)
+
+set adjust1 = ($OFFSET_1_2D - $old_offset_1)
+set adjust2 = ($OFFSET_2_2D - $old_offset_2)
+
+; New peak chemical shift calculation 
+
+
+set lrg = $att['LARGEST']
+initinprogress $lrg   set j = 0
+
+for i = 1 to $att["LARGEST"]
+     if (exist('att[' // $i // ']')) then
+
+	set j = (%+1)   inprogress $j
+	
+; get coordinates (in Hz)
+        set at = $att[$i]
+        set f1 = (head($at)) set at = (tail($at))
+        set f2 = (head($at)) set end = (tail($at))
+
+; adjust coordinates 
+        set new_f1 = ($adjust1 / $C_FREQ1)
+        set new_f2 = ($adjust2 / $C_FREQ2)
+
+; save new coordinates
+
+        set newat =  ($f1+$new_f1;$f2+$new_f2;$end)
+        set att[$i] = $newat
+
+    endif
+endfor
+inprogress $lrg

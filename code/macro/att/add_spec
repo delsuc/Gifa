@@ -1,0 +1,43 @@
+;add_spec
+;
+;All the spectra handled by the Assignment module have to be located
+;in the special directory spectra/ of the current project.
+;The list of the spectra is then handled internally,
+;the 'file selector' (located in the project menu) permitting to
+;load them or look at them rapidely.
+;
+;This tool permit to add to the project spectra already located
+;elsewhere on your computer.
+;This is usually done by creating a soft link to the actual file,
+;rather than copying the file.
+;
+;see also: file_selector
+
+if ($arg == 0) then
+	formbox "Add Data-sets to project" \
+		"DO_NOTHING" \
+		"use this dialog to copy/link data-set to this project" message \
+		Help action "help add_spec" \
+		separator \
+		"Print current list of spectra:" action "print $list_spectra" \
+		noreturn "Refresh list from directory" action "build_spec" \
+		separator \
+		"New Data-set:" file ff $name \
+		noreturn "Link" action "add_spec $ff Link " \
+		noreturn "Copy" action "add_spec $ff Copy " \
+		noreturn "(dataset)" action "join $ff dataset disjoin" \
+		"(links take much less disk room than copies)" message \
+		*
+else
+	set ff = $_
+	set act = $_
+	join $ff
+	if ($c_type != 0) error "Data-set should be real !"
+	if ($act s= "Copy") then
+		sh ("cp"; $ff; "spectra")
+	elsif ($act s= "Link") then
+		sh ("ln -s"; $ff; "spectra")
+	endif
+	print ("Succesfully added";$ff;"to the spectra list")
+	@build_spec
+endif

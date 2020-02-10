@@ -1,0 +1,31 @@
+; interactive for baseline correction
+; should be called : bcorr_x $algo_to_apply
+;
+set algo = $_
+if ($dim == 1) then
+  if ($itype_1d != 0) error "*** data should be real"
+  if ($algo != 3) then
+    print "then select points by clicking on them"
+    point
+    gm/al_yesno "Ok to apply ?"
+    if ($returned s! 'yes') print "aborted" exit
+    bcorr $algo 2 %%
+  else
+    bcorr 3
+  endif
+elsif ($dim == 2) then
+  if ($itype_2d != 0) error "data should be real"
+  dialogbox "bcorr" "Choose axis to correct " enum "F1,F2" axis % *
+  if ($algo != 3) then
+    print "then select points by clicking on them"
+    gm/pointf $axis
+    gm/al_yesno "Ok to apply ?"
+    if ($returned s! 'yes') print "aborted" exit
+    bcorr $algo 2 $axis %%
+  else
+    bcorr 3 $axis
+  endif
+else
+  error "Graphic user interface not implemented in 3D yet, use bcorr command"
+endif
+

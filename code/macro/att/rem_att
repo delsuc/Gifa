@@ -1,0 +1,18 @@
+; rem_att $pk_id
+;
+; removes $pk_id from peak data base
+;
+
+set pic = $_
+gm/al_yesno ("Ok to remove peak #"; $pic)
+if ($returned s! "yes") error "'Peak remove' Aborted"
+; draw in black to remove on screen
+set ss = $scolor
+scolor 8
+show_att $pic
+scolor $ss
+; unset
+unset ("att[" // $pic // "]")
+;  if it is the last when, then we can backtrack one
+; (Should we ?) if ($att["LARGEST"] == $pic) set att["LARGEST"] = ($pic-1)
+alert ("Peak #"; $pic; "removed")

@@ -1,0 +1,38 @@
+; apsl_cp i sz
+;
+; computes the phase of the peak centered on i, using +/-sz points
+; the phase of the peak is returned as a global variable called $returned
+; between -180 and 180
+; i  has to be odd !
+; used as a routine by the macro apsl
+;
+; see also : apsl
+
+set pi  = (4*atan(1))
+	set pki = $_
+	set sz = $_
+	set A = 0	set B = 0
+	for j = 2 to (2*$sz) step 2
+		set dr = (val1d($pki+$j) - val1d($pki-$j) )
+		set di = (val1d($pki+$j+1) - val1d($pki-$j+1) )
+		set A = ($A + $dr*$di)
+		set B = ($B + $di*$di - $dr*$dr )
+	endfor
+	set phi = (atan( 2*$A / $B)/2)
+	set px = 0
+	for j = 0 to 3
+	  set pj = ($phi+$j*$pi/2)
+	  set x = (cos($pj)*val1d($pki) - sin($pj)*val1d($pki+1) )
+	  if ($x>$px) set phx = $pj  set px = $x
+	endfor
+
+	while ($phx <= -$pi)
+		set phx = ($phx + 2*$pi)
+	endwhile
+	while ($phx > $pi)
+                set phx = ($phx - 2*$pi)
+        endwhile
+
+	set returned := (180*$phx/$pi)
+;	return	(2* _ _)
+

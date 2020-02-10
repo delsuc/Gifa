@@ -1,0 +1,29 @@
+; add_att { f1 f2}
+;
+; permits to add a peak in the current data_base
+; if called without arguments, wait for a click of the user
+;
+
+if (!$arg) then
+  monopoint
+  set f1 = (itop($pointy[1],2,1))  set f2 = (itop($pointx[1],2,2))
+else
+  set f1 = $_  set f2 = $_
+endif
+
+; check it
+find att 2 $f1 $f2
+if ($pk_fnd_dst < $tol_click & $pk_fnd_dst != -1) then
+   show_att $pk_fnd
+   gm/al_yesno ("Peak #"; $pk_fnd; "is less than";$tol_click; "away, Do you want to continue ?")
+   if ($returned s! "yes") error "Aborted"
+endif
+
+; builds it
+set pic = ($att["largest"] + 1)
+set amp = (val2d(ptoi($f1,2,1),ptoi($f2,2,2)))
+set att[$pic] = ($f1; $f2; $amp; "unk unk")
+set att["largest"] = $pic
+; then show it
+show_att $pic
+mod_att $pic

@@ -1,0 +1,37 @@
+; this one test basic reading and processing of 2Ds
+cdisp2d 0 disp2d 1 scale 2 zoom 0 refmacro 1  ; show what is happening
+
+read ../data/hsqc_grad      ; on sorbine
+max
+report ($dim == 2 & $si1_2d == 256 & $si2_2d == 2k & abs($max[1]-45705)<10.0) "Loading of data"
+
+sin 0.2 f12 		; apodise
+../macro/ft_sim    	; process in F2 (simultaneous (complex) sampling here)
+chsize (2*%) %		; zerofill in F1
+../macro/ft_sh_tppi	; process in F1 (States-Haberkorn + TPPI here)
+phase 119.2 -80 f2
+
+max
+report (abs($max[1]-40154644.)<40.0) "Basic Fourier Transform and phasing"
+
+real f12
+max
+report (abs($max[1]-39193776.)<40.0) "Real"
+
+zm 1
+zoom 1 71 623 172 921
+cx 10 cy 10 cdisp2d 1
+
+disp1d 1
+row 86   				; select a row
+zoom 0 scale 1	dim 1 extract 584 922 max set a = (abs($max[1]-4283381.)<10.0)
+dim 2 col 819 dim 1
+max
+report  (abs($max[1]-7945463.)<8.0 & $a) "dim , row, col, extract"
+
+dim 2 proj f1 s dim 1
+evaln 33 142 max
+report (abs($max[2]-361132.4)<4.0 & abs($noise-81255)<1.0) "proj evaln"
+
+write fit_test 
+

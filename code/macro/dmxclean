@@ -1,0 +1,54 @@
+; dmxclean DECIM_value
+;
+; DECIM is a parameter which is found in the acqus file in your
+; data tree.
+;
+; This macro solves the problem of the 'additional' points
+; on the data-sets acquired on DMX Bruker spectrometer with the 
+; digital filtering on.
+; After applying the macro, you get an FID, on which regular processing
+; should work, All apodisation of Linear Prediction processing
+; will behave as usual.
+; The macro assumes that you have acquired in SIM mode, and will
+; work much better if you have a spectrum phased at the acquisition level.
+;
+; Be carefull that this macro will change slightly the size of your data-set,
+; since the wrong points are removed.
+;
+; Look to the F.A.Q. at the end of the manual for details
+;
+; DECIM logic is adapted from  W. M. Westler and F.  Abildgaard
+;
+
+message 'Enter DECIM value, (as found in acqno/acqus)'
+set decim = $_
+if ($decim < 1) error "Wrong value for DECIM"
+
+; pt is the number of 'wrong' points
+if (power2($decim) == $decim) then
+	set pt = (70.5 - 15.5/$decim)    ; if power of 2
+else
+	set pt = (185/3 - 15.5/$decim)
+endif
+
+; the principle is to:
+; zero-fill; fourier transform; phase correct; throw im-part, inverse FT
+
+if ($dim == 1) then
+   set si = $si1_1d
+   chsize (4*power2($si-1))
+   ft_sim phase 0 (-360*$pt) real iftbis revf
+   chsize ($si-2*int($pt))
+elsif ($dim == 2) then
+   set si = $si2_2d
+   if ($itype_2d == 2 | $itype_2d == 0) itype (%+1)
+   chsize % (4*power2($si-1))
+   ft_sim phase 0 (-360*$pt) f2 real f2 iftbis f2 revf f2
+   chsize % ($si-2*int($pt))
+else
+   set si = $si3_3d
+   if (($itype_3d %2)==0) itype (%+1)
+   chsize % % (4*power2($si-1))
+   ft_sim phase 0 (-360*$pt) f3 real f3 iftbis f3 revf f3
+   chsize % % ($si-2*int($pt))
+endif

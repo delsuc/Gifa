@@ -1,0 +1,12 @@
+; exemple de help
+; ....
+formbox FORMULAIRE \
+dump \
+TEST1 string var_test1 \
+TEST2 int var_test2 \
+TEST3 real var_test3 \
+TEST4 string var_test4 \
+TEST5 string var_test5 \
+TEST6 string var_test6 \
+TEST7 string var_test7 \
+*

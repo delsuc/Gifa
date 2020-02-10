@@ -1,0 +1,33 @@
+; add_spin {ff}
+;
+; permits to add a spin in the current data_base
+; if called without arguments, wait for a click of the user
+;
+
+if (!$arg) then
+  dialogbox "New spin" "Gives the axis :" enum "F1,F2" axis % *
+  monopoint
+  if ($axis s= "F1") then
+    set ff = (itop($pointy[1],2,1))
+  else
+    set ff = (itop($pointx[1],2,2))
+  endif
+else
+  set ff = $_
+endif
+
+; check it
+find spin 1 $ff
+if ($pk_fnd_dst < $tol_click & $pk_fnd_dst != -1) then
+   show_spin $pk_fnd
+   gm/al_yesno ("Spin #"; $pk_fnd; "is less than";$tol_click; "away, Do you want to continue ?")
+   if ($returned s! "yes") error "Aborted"
+endif
+
+; builds it
+set id = ($spin["largest"] + 1)
+set spin[$id] = ($ff;"unk unk")
+set spin["largest"] = $id
+; then show it
+@show_spin $id
+@mod_spin $id

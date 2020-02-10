@@ -1,0 +1,36 @@
+; showexp exp
+;
+; displays the curve of a given expression, with the same
+; syntax as FITGENE
+;
+; exp should be an equation in $X, 
+; $X will take the values $TAB[1] to $TAB[n]
+; where n is the size of the current TAB buffer
+;
+; see also : residue FITGENE showtab PUT DISP1D SHOWLINE 
+
+message 'Enter equation in $X'
+
+set exp = $_
+gm/test1d
+set tmp = ('/tmp/gifa' // int(100000*$random))
+open $tmp
+fprint $tmp ';temporary file created by showexp'
+fprint $tmp 'set x = $_'
+fprint $tmp ('set returned := (' // $exp // ')' )
+close $tmp
+
+set sc = ($scale*65/$absmax)
+set vh = (100*$vheight)
+
+@($tmp) $tab[1]
+set y = ($vh + $sc*$returned)
+for i = 2 to $si_tab
+	@($tmp) $tab[$i]
+	set y2 = ($vh + $sc*$returned)
+	showline ($i-1) $y $i $y2
+	set y = $y2
+endfor
+
+sh ('/bin/rm' ; $tmp)
+

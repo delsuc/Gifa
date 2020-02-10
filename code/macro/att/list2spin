@@ -1,0 +1,66 @@
+; lis2spin list_of_peaks
+;
+; converts the list of peaks to a list of ppm, 
+; considering all possible alignments,
+; uses $tol_align
+;
+; list is peaks is by index
+; return values is in (static) $returned as a list of chemical shifts
+;
+; used by promote and others...
+
+message "enter list of peaks"
+set ll = $_  set ll_res = $ll
+
+; first recognize alignements
+set p = (head($ll)) set ll = (tail($ll))
+set nf = 1		; 1st peak gives already 2 spins if not diagonal !
+set f[1] = (head(tail($att[$p])))
+set n[1] = 1		; for means
+set ff = (head($att[$p]))
+if (abs($ff-$f[1]) > $tol_align) then
+  set f[2] = $ff    set n[2] = 1
+  set nf = 2
+endif
+while ($ll s! ' ')
+   set p = (head($ll)) set ll = (tail($ll))
+   for axe = 1 to 2		; do f1 and f2
+	if ($axe == 2 ) then
+		set ff =  (head(tail($att[$p])))
+	else
+		set ff =  (head($att[$p]))
+	endif
+	set found = 0
+	for j = 1 to $nf
+		if (abs($ff-$f[$j]) <= $tol_align) then
+			set f[$j] = (($ff + $n[$j]*$f[$j])/($n[$j]+1))
+			set n[$j] = (%+1)
+			set found = 1
+		endif
+	endfor
+	if ($found == 0)  set nf = (%+1)	set n[$nf] = 1	set f[$nf] = $ff
+   endfor
+endwhile
+
+; renormalize ppm to 4 digits
+for i = 1 to $nf
+	set f[$i] = (int(1000*$f[$i])/1000)
+endfor
+
+; sort them
+for i = 1 to $nf
+	for j = $i to $nf
+		if ($f[$j] > $f[$i]) then
+			set k = $f[$i]
+			set f[$i] = $f[$j]
+			set f[$j] = $k
+		endif
+	endfor
+endfor
+
+; build $returned
+
+set returned := $f[1]
+for i = 2 to $nf
+	set returned := (%;$f[$i])
+endfor

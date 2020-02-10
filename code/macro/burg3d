@@ -1,0 +1,61 @@
+; burg3d axis new_size
+;
+; axis is F1 F2 or F3
+; extend the FID up to new_size, using burg method
+;
+; see also : burg2d BURG
+
+if ($dim != 3) error "Available in 3D only"
+refmacro 0
+message "enter axis (F1 / F2 / F3)"
+set axis = $_
+set axis = (toupper($axis))
+if ($axis s= 'F1') set nsz = (2*$si1_3d)
+if ($axis s= 'F2') set nsz = (2*$si2_3d)
+if ($axis s= 'F3') set nsz = (2*$si3_3d)
+message "Enter new size"
+set nsz = $_
+print "Preparing...."
+if ($axis s= "F1") then
+	if ($nsz <= $si1_3d) error "Wrong size"
+	set osz = $si1_3d
+	chsize $nsz % %
+	set pext = "F2"
+	set ext = "col"
+	set pimax = $si2_3d
+	set imax = $si3_3d
+elsif ($axis s= "F2") then
+	if ($nsz <= $si2_3d) error "Wrong size"
+	set osz = $si2_3d
+	chsize % $nsz %
+	set pext = "F1"
+	set ext = "col"
+	set pimax = $si1_3d
+	set imax = $si3_3d
+elsif ($axis s= "F3") then
+	if ($nsz <= $si3_3d) error "Wrong size"
+	set osz = $si3_3d
+	chsize % % $nsz
+	set pext = "F1"
+	set ext = "row"
+	set pimax = $si1_3d
+	set imax = $si2_3d
+else
+	error "Wrong axis for LP"
+endif
+initinprogress $pimax
+for pi = 1 to $pimax
+	inprogress $pi
+	plane $pext $pi
+	dim 2
+	for i = 1 to $imax
+		$ext $i
+		dim 1
+		chsize $osz
+		itype 1 burg $nsz
+		dim 2 put $ext $i
+	endfor
+	dim 3 put plane $pext $pi
+endfor
+exit
+

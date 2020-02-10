@@ -1,0 +1,19 @@
+; interactive
+; permits to choose rows interactively on a 2D by clicking on the data-set
+;
+;see also : colint vertint planeint ph2dc ROW COL
+
+if ($dim==1) error 'Works only in 2D'
+refmacro 1
+print "click on the data set, finish by pressing the third button of the mouse"
+;alert "click on the data set, finish by pressing the third button of the mouse"
+=loop
+   monopoint
+   if ($button==3) goto end
+   set x   = (round($pointy[1]))
+   if ($itype_2d == 2 | $itype_2d == 3)  set x = (2*int($x/2)+1)
+   print ('row :';$x)
+   row  $x
+   goto loop
+=end
+refmacro 0 exit

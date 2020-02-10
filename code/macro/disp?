@@ -1,0 +1,19 @@
+; initeractive
+; to set all plot relevant parameters
+;
+; see also : DISP1D DISP2D DISP3D
+
+message "Enter Display parameters :"
+message "scale of display (SCALE)"
+scale
+message "specific to 1D ......."
+message "vertical height of the zero level (VHEIGHT)"
+vheight
+message " "
+message "specific to 2D........"
+message "which points to display (SIGN)"
+sign
+message "number of levels in contours (LEVEL)"
+level
+message "spacing of levels in contours (LOGA)"
+loga

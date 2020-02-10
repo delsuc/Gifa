@@ -1,0 +1,36 @@
+; mov_spin $spin_id
+set id = $_
+
+if (exist("spin[" // $id //"]")) then
+   set l = $spin[$id]
+   set ppm = (head($l))
+   set left = (tail($l))
+else
+   error "Unknown spin"
+endif
+
+print "Click on new spin location"
+monopoint
+if ($BUTTON == 3) exit
+set ppm1 = (itop($POINTY[1],2,1))
+set ppm2 = (itop($POINTx[1],2,2))
+
+if (abs($ppm1-$ppm) < abs($ppm2-$ppm)) then
+  set newp = $ppm1
+else
+  set newp = $ppm2
+endif
+
+if ( abs($newp-$ppm)>$tol_click ) then
+	alert ("Spin moves by more than"; $tol_click; "are you sure ?")
+endif
+
+set sc = $scolor
+scolor 8
+show_spin $id
+set spin[$id] = ($newp;$left)
+scolor $sc
+show_spin $id
+
+
+

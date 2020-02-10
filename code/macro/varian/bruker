@@ -1,0 +1,10 @@
+; This command switches to Bruker mode
+;
+; see also: /usr/local/gifa/macro/varian/README.varian
+
+if (index($gifapath,'varian')!=0) then
+   SETPATH (tail($gifapath))
+endif
+closebutton
+button.g
+

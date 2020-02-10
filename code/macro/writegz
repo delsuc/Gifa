@@ -1,0 +1,7 @@
+; writegz filename
+;
+; write a regular Gifa file and compresses it
+;
+; see also : WRITEZ ZEROING
+write $_
+sh ('gzip -v'; $name)

@@ -1,0 +1,120 @@
+; super2d (Superimpose 2D display)
+;
+; Displays spectra read form files, to the data-set currently held into
+; memory.
+; For each data-set, choose the color, the scale ratio 
+;    and adapt lateral shift.
+;
+; Shifts are in index values on the current one
+;
+; Click on 'Apply' to restore the display
+;   but use the current data-set form chosing the zoom level.
+;
+; see also : super1d SHOWC JOIN CDISP2D
+
+; if called with no argument :
+;    builds a form which permits to superimpose up to 3 2D in the cdisp2d window
+;
+; if called with proper arguments :
+;    actually does the display (see macro source)
+;
+
+ 
+if (!$arg) then
+ formbox "Super Impose 2D" \
+   "super2d $name2 $sc2 $sign2 $level2 $sh21 $sh22 $col2 $name1 $sc1 $sign1 $level1 $sh11 $sh12 $col1 'coucou' 1 $signm $levelm 0 0 $colm" \
+   'Click on "Apply" to display the superposed spectra    ' message noreturn \
+   'More Help' action 'help super2d' \
+   separator \
+   "Data-Set in memory" message \
+     "Show" enum "don't,red,yellow,green,cian,blue,purple,white" colm "yellow" \
+     noreturn "Display" enum "positive,negative,both" signm $sign  \
+     noreturn "Number of levels" int levelm $level \
+   separator \
+   "First data-set : " file name1 $c_name \
+     "Show" enum "don't,red,yellow,green,cian,blue,purple,white" col1 "cian" \
+     noreturn "Display" enum "positive,negative,both" sign1 $sign  \
+     noreturn "Number of levels" int level1 $level \
+     "Int. ratio" cursor -3 3 2 sc1 0 noreturn "(in power of 10)" message \
+     "F1 Shift" cursor -50 50 0 sh11 0 \
+     "F2 Shift" cursor -50 50 0 sh12 0 \
+   separator \
+   "Second Data-Set : " file name2 $c_name \
+     "Show" enum "don't,red,yellow,green,cian,blue,purple,white" col2 "don't" \
+     noreturn "Display" enum "positive,negative,both" sign2 $sign  \
+     noreturn "Number of levels" int level2 $level \
+     "Int. ratio" cursor -3 3 2 sc2 0 noreturn "(in power of 10)" message \
+     "F1 Shift" cursor -50 50 0 sh21 0 \
+     "F2 Shift" cursor -50 50 0 sh22 0 \
+   *
+else
+   if ($zoom == 0) error 'Works only in Zoom mode'
+   set cccpy = $ccolor
+   set sscpy = $sign
+   set sscpy = $scolor
+   set lvcpy = $level
+   refmacro 0
+   clear 1
+   ccolor 0
+   for i = 1 to 3
+     set nm = $_				; get arguments
+     set scm = $_
+     set signm = $_
+     set levelm = $_
+     set shf1 = $_
+     set shf2 = $_
+     set colm = $_
+     if ($colm s! "don't") then
+		 if ($colm s= "white") then
+		   set cc = 1
+		 elsif ($colm s= "red") then
+		   set cc = 2
+		 elsif ($colm s= "yellow") then
+		   set cc = 3
+		 elsif ($colm s= "green") then
+		   set cc = 4
+		 elsif ($colm s= "cian") then
+		   set cc = 5
+		 elsif ($colm s= "blue") then
+		   set cc = 6
+		 elsif ($colm s= "purple") then
+		   set cc = 7
+		 elsif ($colm s= "black") then
+		   set cc = 8
+		 endif
+	      if ($signm s= "positive") then
+	         set ss = 1
+	      elsif ($signm s= "negative") then
+	         set ss = -1
+	      elsif ($signm s= "both") then
+	         set ss = 0
+	      endif
+	      if ($i != 3) then
+	       if ($shf1 != 0 | $shf2 != 0) then
+	         set z1 = $zoom_2d[1] set z2 = $zoom_2d[2] set z3 = $zoom_2d[3] set z4 = $zoom_2d[4]
+	         set nz1 = ($zoom_2d[1]-$shf1)
+	         set nz2 = ($zoom_2d[2]-$shf2)
+	         set nz3 = ($zoom_2d[3]-$shf1)
+	         set nz4 = ($zoom_2d[4]-$shf2)
+	         if ($nz1 < 1 | $nz2 < 1 | $nz3 < 3 | $nz4 < 3) \
+			error "shift too large : outside window"
+	         if ($nz1 > $si1_2d-2 | $nz2 > $si2_2d-2 | $nz3 > $si1_2d | $nz4 > $si2_2d) \
+			error "shift too large : outside window"
+		    zoom 1 $nz1 $nz2 $nz3 $nz4
+	        endif
+	         level $levelm  sign $ss  scolor $cc join $nm  showc (exp($scm*log(10))*$scale)
+	       if ($shf1 != 0 | $shf2 != 0) then
+	          zoom 1 $z1 $z2 $z3 $z4
+	       endif
+	      else
+	         level $levelm  sign $ss  color $cc 3
+	         refmacro 0 ref		; forces display
+	         refmacro 1
+	      endif
+	      clear 0
+     endif
+   endfor
+   refmacro 0
+   clear 1   ccolor $cccpy  scolor $sscpy  level $lvcpy
+   unref		; no refresh in this case
+endif

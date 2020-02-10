@@ -1,0 +1,9 @@
+; permits to interactively phase a real 1D spectrum,
+; by doing an Hilbert transform first
+;
+; see also : PH HPHASE IFTBIS 
+;
+if ($dim != 1) error "in 1D only"
+iftbis chsize (%*2) ft
+refmacro 1 ph refmacro 0
+real

@@ -1,0 +1,32 @@
+; build2d file_name
+; builds a 2d from a set of 1D, the name of which are found in file_name
+; one entry per line
+;
+; see also : READ build3d
+
+; get name
+if (!$arg) print 'Enter name of the list of file:'
+set file = $_
+
+; get length using wc and shell  (could be in gifa)
+sh ('wc'//sp(1)//$file//'> /tmp/build2d.tmp')
+open /tmp/build2d.tmp   set si1 = </tmp/build2d.tmp
+set si1 = (head($si1))
+close /tmp/build2d.tmp sh 'rm /tmp/build2d.tmp'
+
+; prepare
+open $file
+dim 1 readh <$file                 ; get first one
+dim 2 chsize $si1 $si1_1d          ; set-up sizes
+put row 1
+
+set i = 2                          ; then loop
+=loop
+  dim 1 readh <$file
+  dim 2 put row $i
+  set i = ($i+1) if ($i<=$si1)  goto loop
+
+;finished
+dim 2  close $file
+exit
+

@@ -1,0 +1,218 @@
+#This file is included in the makefile
+
+#all the objects to be compiled here, one per_line :
+
+OBJECTS = \
+   gifa.o \
+   paramio.o \
+   tools.o \
+   unit.o \
+   tools2d.o \
+   vect.o \
+   math2d.o \
+   writehare.o \
+   whare2d.o \
+   levy.o \
+   lhare.o \
+   lhare2d.o \
+   writetc3d.o \
+   readtc3d.o \
+   writet3d.o \
+   readt3d.o \
+   readparam.o \
+   writeparam.o \
+   lvarian.o \
+   initgull.o \
+   itergull.o \
+   controlgull.o \
+   dofilter.o\
+   laplib.o \
+   tft.o \
+   tft1d.o \
+   tft2d.o \
+   tdftreal.o \
+   tdftcpx.o \
+   fftcpx.o \
+   fftreal.o \
+   powell.o \
+   minimize.o \
+   conjgrad.o \
+   brentmini.o \
+   braket.o \
+   hphase.o \
+   hphase2d.o \
+   phase.o \
+   phase2d.o \
+   phasemerit.o \
+   autophase.o \
+   matlab.o \
+   loaddata2.o \
+   simu2d.o \
+   simunoe.o \
+   transpose.o \
+   gifshell.o \
+   evaln.o \
+   evaln2d.o \
+   eval.o \
+   variable.o \
+   dbm.o \
+   dbtools.o \
+   addc.o \
+   addh.o \
+   expmult.o \
+   gausmult.o \
+   jmult.o \
+   random.o \
+   dsavect.o \
+   extr2d.o \
+   linecorr.o \
+   trigmult.o \
+   smooth.o \
+   median.o \
+   picmax.o \
+   intpic.o \
+   intpic1d.o \
+   stockpic.o \
+   stockpoint.o \
+   bornepic.o \
+   intrec.o \
+   borne1d.o \
+   display1d.o \
+   display2d.o \
+   showlinetab.o \
+   X_main.o \
+   X_windows.o \
+   X_color.o \
+   X_zoom.o \
+   X_formulaire.o \
+   X_phase.o \
+   X_env3d.o \
+   X_util.o \
+   topcross.o \
+   showpattern.o \
+   unix_lib.o \
+   grid.o \
+   stplot.o \
+   plot1d.o \
+   X_biblidialog.o \
+   plot2d.o \
+   plotaxis.o \
+   lect.o \
+   delta.o \
+   genfid2.o \
+   getplane.o \
+   getdiag.o \
+   putplane.o \
+   extr3d.o \
+   math3d.o \
+   real3d.o \
+   simu3d.o \
+   whare3d.o \
+   lhare3d.o \
+   writeparam3d.o \
+   readparam3d.o \
+   writenew.o \
+   readnew.o \
+   lib3d.o \
+   plot3d.o \
+   util.o \
+   linecor2.o \
+   lisse.o \
+   segpri.o \
+   deriv.o \
+   segsec.o \
+   approx.o \
+   nuee.o \
+   rs_diag.o \
+   rotation.o \
+   backprod.o \
+   burg.o \
+   burgspectrum.o \
+   calcsvd.o \
+   cdgeco.o \
+   cdgedi.o  \
+   cdgefa.o \
+   cdgesl.o \
+   cdsvdc.o \
+   clesvd.o \
+   extpic.o \
+   factorf.o \
+   facti3e.o \
+   fairemat.o \
+   lpbasic.o \
+   lpreconstruct.o \
+   readc.o \
+   writec.o \
+   recalcdat.o \
+   redfield.o \
+   roots.o \
+   lpcio.o \
+   dprootb.o \
+   blas_lin.o  \
+   polyarf.o \
+   polyarb.o \
+   polynom.o \
+   levenberg.o \
+   fit1d.o \
+   fit2d.o \
+   sgeco.o \
+   sgedi.o \
+   fplot2d.o \
+   gcolor.o \
+   peaksym.o \
+   peakproj.o \
+   hash_wrap.o \
+   dorefresh.o \
+   execute.o \
+   assert.o \
+   plotlib.o \
+   plotlibpost.o \
+   plotlibhpgl.o \
+   addsimu1d.o \
+   addsimu2d.o \
+   addsimu3d.o \
+   X_interface.o \
+   addnoise.o \
+   cache_mad.o \
+   reversebyte.o \
+   c_inter.o \
+   plot2dj.o \
+   detmsk.o \
+   doslide.o \
+   nbneigh.o \
+   mkmask.o \
+   mskintg.o \
+   replam.o \
+   superp.o \
+   integ1.o \
+   amoeba.o \
+   ambtools.o \
+   searchamb.o \
+   get_licence.o 
+#END_OF_LIST
+
+# link 
+gifa :  libgif.a
+	$L -o gifa gifa.o libgif.a $(LDFLAG)
+
+# different versions
+gifa_small : gifa
+	cp gifa gifa_small
+
+gifa_norm : gifa
+	cp gifa gifa_norm
+
+gifa_big : gifa
+	cp gifa gifa_big
+
+#library, this one is to make it from scratch
+library : $(OBJECTS)
+	if test -f libgif.a; then rm -f libgif.a ; fi
+	ar cru libgif.a `lorder $(OBJECTS) plotlibpost.o | tsort  `
+	ranlib libgif.a
+
+libgif.a : $(OBJECTS)
+	ar r libgif.a $?
+
+#dependence list
+

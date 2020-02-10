@@ -1,0 +1,12 @@
+; edit_sys
+;
+; calls mod_sys which
+; builds a dialog box permitting to modify a spin in the data base.
+
+;if (head($LAST_CLICK) s! "SYS") then
+;    alert "Click on a peak of the System you want to modify"
+    @find_sys
+    if ($returned == 0) exit
+;endif
+set id = (tail($last_click))
+@mod_sys $id

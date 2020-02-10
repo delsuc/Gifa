@@ -1,0 +1,137 @@
+; proc2d sourcefile destinationfile axis_to_process commands
+;
+; this macro processes a 2D file using the cache system (join, getc, putc)
+; it permits to handle very large files, which would not fit into memory.
+;
+; sourcefile         : is the initial data-set
+; destinationfile    : is the result of the process
+; axis_to_process    : either F1 or F2 (NOT F12)
+; commands           : the commands to be applied to each row/column in 1D notation
+;
+; the commands are the regular commands you would used to process a 1D data-set.
+; when called without parameters, 'commands' can be several line long, as typed
+; when proc2d is called with parameters on the line, then 'commands' should be a single
+; command line within quotes.
+;
+; e.g.
+; proc2 my_ser_file my_F2_processed F2 'sin 0.2  ft_sim  phase 30 -40  real'
+; proc2 my_F2_processed my_F12_processed F1 'sin 0.2  revf ft  phase 0 30  real  bcorr 3'
+;
+; would process a whole 2D in 2 steps.
+;
+; if sourcefile and destinationfile are identical, assumes in_place 
+; processing (i.e. no size changes)
+;
+; see also : proc3d easy2d FT JOIN easy2d
+
+
+  message 'enter input filename:'
+; get parameters
+  set infile := $_
+  join $infile
+  if ($c_dim != 2) error 'available on 2D data only' 
+  if (!exist('outfile')) set outfile := ($infile // '~')
+  message 'enter output filename:'
+  set outfile := $_
+  if ($infile s= $outfile) then
+     set in_place = (1==1)
+  else
+     set in_place = (1==0)
+  endif
+  message 'enter axis (F1 or F2)'
+  set axis = $_
+  set axis = (toupper($axis))
+  if (($axis s! 'F1') & ($axis s! 'F2')) error 'error with axis'
+
+; get commands ...
+ if (!$arg) then
+    print 'enter commands (finish by a ^D (control-D) on an empty line)'
+    sh ('cat > proc_temp')
+ else
+    set commac = $_ 
+    open proc_temp fprint proc_temp $commac
+    unset commac close proc_temp
+ endif
+
+; check commands
+; the following might fail on certain memory configuration, because of sh.
+; this is just protection, just remove it !
+ sh 'wc -c proc_temp > cmpt' open cmpt  set trf = <cmpt
+ set trf = (head($trf)) close cmpt
+ if ($trf == 0) sh '/bin/rm cmpt proc_temp' error 'Empty command file'
+ sh 'echo exit >> proc_temp'
+
+  set ancdim = $dim
+
+; check how the size and itype changes
+  dim 1
+  join $infile
+  getc $axis 1 % %
+  set it = $itype_1d
+  @proc_temp
+
+  set it = ($itype_1d-$it)   ; itype offset
+
+  if ($axis s= 'F1') then
+      set nbpt1 = $SI1_1D   set nbpt2 = $c_sizef1   set iter = $c_sizef2
+      set it = ($c_type + 2*$it)
+  elsif ($axis s= 'F2') then
+      set nbpt2 = $SI1_1D   set nbpt1 = $c_sizef2   set iter = $c_sizef1
+      set it = ($c_type + $it)
+  endif
+
+  if $in_place then
+     if ($nbpt1 != $nbpt2) error "In_Place processing requires no changes in sizes"
+  endif
+
+; then create large out_file
+  if (!$in_place) then
+	  if ($axis s= 'F1') then
+	      newfilec $outfile 2D $si1_1d $offset_1d $specw_1d $freq_1d \
+	           $c_sizef2 $c_offsf2 $c_specwf2 $c_freq2 $c_freq $it
+	   else
+	      newfilec $outfile 2D $c_sizef1 $c_offsf1 $c_specwf1 $c_freq2 \
+	            $si1_1d $offset_1d $specw_1d $freq_1d $c_freq $it
+	
+	   endif
+	   print ('output file : ';$outfile)
+   else
+       print "In_Place processing"
+   endif
+
+; process
+dim 1
+initinprogress $iter
+
+if $in_place then         ; duplicate code for speed-up
+    join $infile
+	for i = 1 to $iter
+	  inprogress $i
+	  getc $axis $i % %
+	  @proc_temp
+	  putc  $axis $i % %
+	endfor
+	join $infile
+	putheader Type $it        ; finally update itype.
+	disjoin 
+else
+	for i = 1 to $iter
+	  inprogress $i
+	  join $infile
+	  getc $axis $i % %
+	  @proc_temp
+	  join $outfile
+	  putc  $axis $i % %
+	endfor
+    join $infile
+	disjoin 
+	join $outfile
+	disjoin
+endif
+
+; clean-up
+dim $ancdim
+sh '/bin/rm proc_temp cmpt'
+exit
+
+

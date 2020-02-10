@@ -1,0 +1,118 @@
+; easy3d_doit
+; used by the easy3d form
+;
+; see also : easy3d
+; syntax is: easy3D_doit action ..then list of arg depends on action..
+
+set fact = $_
+if ($fact s='doit' | $fact s='write') then
+  set fin = $_
+  set axis1 = $_
+  set mac1 = $_
+  set axis2 = $_
+  set mac2 = $_
+  set fout = $_
+  set fin2 = ($fin // '_')
+endif
+
+;prepare lookup on axis
+set ax['F1'] = 'F23'   set ax['F2'] = 'F13'   set ax['F3'] = 'F12'
+set ax['F12'] = 'F3'   set ax['F23'] = 'F1'  set ax['F13'] = 'F2'
+
+;switch on action
+
+;                                 DOIT  called by doit/Ok/Apply buttons
+if ($fact s= "doit") then
+   ;the whole processing is based on 'proc3d'
+   set step = 0
+   if ($axis1 s! 'none') then         ; 1st pass
+     print '******** 1st Pass *********'
+     proc3d $fin $fout (head($axis1)) $mac1
+     set step = (%+1)
+   endif
+   if ($axis2 s! 'none') then         ; 2nd pass
+     print '******** 2nd Pass *********'
+     if ($step != 0) then
+        sh ('mv'; $fout; $fin2)
+        proc3d $fin2 $fout (head($axis2)) $mac2
+     else
+        proc3d $fin $fout (head($axis2)) $mac2
+     endif
+     set step = (%+1)
+   endif
+   if ($step>1) sh ('/bin/rm'; $fin2)
+;                                      PRACTICE called by practice button
+elsif ($fact s= 'practice') then
+   set todo = $_     ; get pass to do on arg list
+   set fin = $_      ; then file, axis and macro
+   set axs = $_
+   set mac = $_
+   set axs = (head($axs))
+
+   if ($axs s= 'none') error 'Nothing to Practice!'
+
+   join $fin
+   dim 2
+   getc $axs 1 %%
+   disjoin
+   write ('plane_' // $axs)
+   easy2d $name sin 0 yes sin 0 no 0 0 sh ($si1_2d+0) no sim ($si2_2d+0) % 0 0 0 0 %%
+
+   formbox 'Easy3d info' \
+     DO_NOTHING  \
+     'practice with the new easy2d form,' message  \
+     (' when done, store the macro as:';$name // '.g') message *
+
+elsif ($fact s= 'clean') then        ; CLEAN
+;  do nothing but remove 'read' in macro
+   set mac = $_
+   open $mac
+   set ff = ('tmp' // int(1000000*$random))  ; temp file
+   open $ff
+   set l = <$mac
+   while (!eof($mac))
+     if (index($l,'automagically') != 0) set l = ($l; '- adapted to easy3d')
+     if (head($l) s! 'read') fprint $ff $l
+     set l = <$mac
+   endwhile
+   close $mac   close $ff
+   sh ('/bin/rm'; $mac)
+   sh ('mv'; $ff; $mac)
+   alert ($mac;'as been adapted to 3D processing')
+elsif ($fact s= 'write') then
+	dialogbox macro "Macro name" string mname ($fin //'.g') *
+	open $mname
+	fprint $mname "; macro generated automagically by easy3d"
+
+    set step = 0
+    if ($axis1 s! 'none') then         ; 1st pass
+      fprint $mname ('proc3d'; $fin; '\')
+      fprint $mname ($fout; (head($axis1)); $mac1)
+      set step = (%+1)
+    endif
+    if ($axis2 s! 'none') then         ; 2nd pass
+      if ($step != 0) then
+        fprint $mname  ("sh 'mv"; $fout; $fin2; "'")
+        fprint $mname ("proc3d"; $fin2; "\")
+        fprint $mname ($fout; (head($axis2)); $mac2)
+      else
+        fprint $mname ("proc3d"; $fin; "\")
+        fprint $mname ($fout; (head($axis2)); $mac2)
+      endif
+      set step = (%+1)
+    endif
+    if ($step>1) \
+      fprint $mname ("sh '/bin/rm"; $fin2; "'")
+
+	close $mname
+	alert ("Macro '"//$mname//"' written, just type its name for applying it")
+
+else
+  print ('fact:';$fact)
+  while ($arg)
+    print $_
+  endwhile
+endif
+
+
+

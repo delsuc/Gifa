@@ -1,0 +1,9 @@
+dialogbox "Formatted Read" \
+  "Enter file name" message \
+  " " file _f $name \
+   "Select Format" message \
+   "Format :" enum  \
+"Read (standard),ReadH (FtNmr),ReadV (Varian),ReadL (NMRi),ReadM (Matlab),ReadT (text),load (simple text),ReadS (portable)" \
+   _ff % \
+   *
+(head($_ff)) $_f

@@ -1,0 +1,18 @@
+; comp_spin_label  $spin
+;
+; given a spin_id, returns a string
+; SPIN_NAME SYS_NAME SYS_INDEX_IN_PRIM
+;
+set spid = $_
+set sp = $spin[$spid]
+set spnam = (head(tail($sp)))
+set syid = (head(tail(tail($sp))))
+if (tolower($syid) s! 'unk') then
+   set sy = $sys[$syid]
+   set synam = (head(tail($sy)))
+   set synum = (head($sy))
+else
+   set synam = "unk"
+   set synum = " "
+endif
+set returned := ($spnam;$synam;$synum)

@@ -1,0 +1,3 @@
+; obsolete, for compatibility
+print "CONT command is now obsolete, use MAXENTCONT instead"
+maxentcont

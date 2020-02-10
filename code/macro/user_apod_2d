@@ -1,0 +1,32 @@
+; user_apod_2d func($i) direc
+; 
+; func($i) is entered as a string which defines the function to be applied
+; $i will run from 1 to the size of the data_set
+; no blank should inserted in the definition of func($i)
+;
+; all context can be used
+; $pi is predefined
+;
+; direc is either F1 or F2
+;
+; see also : user_apod
+
+gm/test2d
+
+set st = ' sin($i*$pi/$si1_1d) '
+message 'Enter equation as a function of $i'
+set st = $_
+message 'Enter axis (F1,F2)'
+set direc = 'F2'
+set direc = $_
+
+if ($direc s= 'F2') then
+   row 1
+   dim 1
+   one
+   apod_user $st
+   put filter
+   dim 2
+   apply filter f2
+else
+   

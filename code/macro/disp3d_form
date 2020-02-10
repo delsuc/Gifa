@@ -1,0 +1,18 @@
+; interactive for choosing the view point in 3D
+;
+; builds a form to enter parameters for 3D display and plotting.
+;
+; see also : disp? disp3d? zoom3di DISP3D PLOT3D
+
+formbox "Disp3d" \
+  "dim 3 axis3d $ax level $lv loga $lg sign (head($sg)) cx $ccx cy $ccy cz $ccz" \
+  "select parameters for disp3d mode" message \
+  "Axis for level plotting" enum "F1,F2,F3,F12,F13,F23,F123" ax F123 \
+  noreturn "Display sign:" enum "0 (both),1 (positive),-1 (negative)" sg $sign \
+  "Number of levels" cursor 1 16 0 lv $level \
+  noreturn "spacing (loga):" cursor 1.0 5.0 1 lg $loga \
+  'size of box in X' real ccx $cx \
+  noreturn 'Y' real ccy $cy \
+  noreturn 'and Z' real ccz $cz \
+  'Choose a 3D zoom window' action zoom3di \
+  *

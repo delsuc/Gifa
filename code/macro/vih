@@ -1,0 +1,2 @@
+message ' Which macro ?'
+set vi_l = $_  sh ("vi " // '/usr/local/gifa/help/' // $vi_l // '.hlp')

@@ -1,0 +1,9 @@
+set ans = 'EM'
+message "Choose exponential (EM) or Gaussian (GM)" set ans =
+if ($ans s= 'EM') then
+  lb
+elsif ($ans s= 'GM') then
+  gb
+else
+  error "Should be EM or GM"
+endif

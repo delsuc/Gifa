@@ -1,0 +1,40 @@
+; write_bmrb
+;
+; output the assignment in BRMB format (hopefully!)
+
+set tmp = ('tmp' // int(1000000*$random))
+sh ('pwd >'; $tmp)
+open $tmp
+set pwd = <$tmp
+close $tmp
+sh ('/bin/rm -f';$tmp)
+open brmb_list
+set prim = "db/primary"    open $prim
+set aa = 0
+fprint brmb_list ("# Project :"; $pwd)
+set laa = <$prim   set aa = ($aa+1)
+set nl = 0
+while (!eof($prim))
+  set found = 0
+  foreach p in sys within 1 ($aa-0.1) ($aa+0.1)
+        set found = 1
+        set ss = $sys[$p]
+;	fprint brmb_list ($aa; $laa; "assigned to :"; $ss)
+	set ss = (tail(tail($ss)))    ; keep only the spin part
+	while ($ss s! ' ')
+	   set sp = $spin[head($ss)]      set ss = (tail($ss))
+           set sname = (head(tail($sp)))
+           set stype = (subst($sname,1,1))
+	   set d = (head($sp))
+	   set nl = (%+1)
+	   fprint brmb_list ($nl;"   ";$aa;" ";$laa;"        ";$sname;"        ";$stype;$d;"    1")
+	endwhile
+  endfor
+  set laa = <$prim   set aa = ($aa+1)
+endwhile
+close brmb_list
+formbox "List of Spin-Systems in BRMB format" DO_NOTHING  \
+   'File is brmb_list' message \
+   brmb_list text \
+   'Print file' action 'sh "gifaprint brmb_list"' *
+

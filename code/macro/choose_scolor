@@ -1,0 +1,6 @@
+; to choose interactively the show color
+;
+
+formbox "base color" \
+"scolor (head($sc))" \
+"Choose color" enum "1 (white),2 (red),3 (yellow), 4 (green),5 (cian),6 (blur),7 (purple)" sc $scolor *

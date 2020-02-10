@@ -1,0 +1,21 @@
+; build_spec
+;
+;used to build the static list of the data-file
+
+set awk = ("| awk 'BEGIN {ORS=" // '","' // '} {print $0} END {print "\n"}';"'")
+sh ("ls -C1 spectra"; $awk; " > tmp")
+open tmp  set list_spectra := <tmp
+close tmp sh "rm -f tmp"
+
+exit
+
+; other version
+sh "ls -C1 spectra > tmp"
+open tmp
+set list_spectra := <tmp
+while (!eof('tmp'))
+  set a =  <tmp
+  if ($a s! " ") set list_spectra := ($list_spectra // ',' // $a)
+endwhile
+close tmp sh "rm -f tmp"
+

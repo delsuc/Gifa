@@ -1,0 +1,121 @@
+; integ_att (interactive)
+;
+; Performs integration of all the peaks of the opened dbm assignment 
+; table (it is not possible to perform this integration only on the 
+; current zoom window, because of a bug in dbm described in CAVEAT). 
+; The calulated volumes are put into the peak amplitude
+;
+; Different integration methods can be used:
+; - 'Max Intensity' simply gives the value at the peak location
+; - 'Max in box' gives the highest value in the peak box
+; - 'Sumrec' computes the sum of the points in the peak box
+; - 'Amoeba' computes the sum over an automatically determine integration area
+;
+; 'sumrec' and 'amoeba' make use of the 
+; commands  SUMREC and INTEG respectively.
+;
+; see also: SUMREC SHOWPEAKS INTEG maxinbox mult_integ
+
+  ; this file is to be called /usr/local/gifa/macro/att/integ_att
+
+
+Print "Current project :"
+pwd
+
+if ($att['largest'] == 0) error "Database Empty !"
+if ($dim != 2) error "Command available in 2D only !"
+
+if (!$arg) then
+  set list = 'Max Intensity,Max in box,Sumrec,Amoeba'
+
+  set integ_meth = "Max in box"
+
+  formbox 'Peak integration' \
+   'zoom 0 evaln.g  integ_att $integ_meth' \
+   'Integration method' enum $list integ_meth 'Max in box'  *
+
+else
+
+  set integ_meth = $_
+
+; calculate the sizes of the integration box in index unit
+  set mm1 = (($freq_1_2d*$box_f1)*($si1_2d-1)/($specw_1_2d+$si1_2d))
+  set mm2 = (($freq_2_2d*$box_f2)*($si2_2d-1)/($specw_2_2d+$si2_2d))
+
+; determine the number of peaks in the assignment data-base
+  set u = 0
+  foreach i in att
+    set u = (%+1)
+  endfor
+
+  initinprogress ($u-1)
+  set uu = 0
+
+; prepare amoebaes...
+  if ($integ_meth s= "Amoeba") then
+     set tmp = ('tmp' // int(1000000*$random))
+     att->fil $tmp
+     pkread ($tmp//".atr") y
+     integ %%
+; open the att/pk lookup data-base
+     dbopen ($tmp//".hash") hash
+  endif
+
+;loop on all peaks
+  for i = 1 to $att["LARGEST"]
+   if (exist('att['//$i//']')) then
+
+      set l = $att[$i]
+      set f1 = (head($l))
+      set f2 = (head(tail($l)))
+      set t = (tail(tail(tail($l))))
+
+      if ($integ_meth s= "Max Intensity") then
+
+        set int = (val2d(ptoi($f1,2,1),ptoi($f2,2,2)) - $shift )
+
+      elsif ($integ_meth s= "Max in box") then
+
+	      set f1i = (int(ptoi($f1,2,1)))
+	      set f2i = (int(ptoi($f2,2,2)))
+	      set apk = (val2d($f1i,$f2i))
+
+          for ib = (max(1, $f1i-$mm1)) to (min($si1_2d , $f1i+$mm1))
+            for jb = (max(1, $f2i-$mm2)) to (min($si2_2d , $f2i+$mm2))
+               if (val2d($ib,$jb) > $apk)    set apk =   (val2d($ib,$jb))
+            endfor
+          endfor
+
+          set int = ($apk-$shift)
+
+      elsif ($integ_meth s= "Sumrec") then
+
+;       print ("sumrec";(($f1+($box_f1/2))//"p");(($f2+($box_f2/2))//"p");(($f1-($box_f1/2))//"p") ;(($f2-($box_f2/2))//"p") )
+       sumrec (($f1+($box_f1/2))//"p") (($f2+($box_f2/2))//"p") (($f1-($box_f1/2))//"p")  (($f2-($box_f2/2))//"p") 
+       set int = $sumrec
+
+      elsif ($integ_meth s= "Amoeba") then
+
+        set ipk = $hash[$i]
+        set int = $pk2d_a[$ipk]
+
+      else
+         error "Internal error in integ_att - wrong quantification method"
+      endif
+
+; finally set peak values
+      set att[$i] = ($f1;$f2;$int;$t)
+
+      set uu = (%+1)   inprogress $uu
+    endif  ;    if (exist())
+  endfor
+  
+  inprogress $u    ; forces the closing of the progress box
+
+  if ($integ_meth s= "Amoeba") then
+    dbclose hash
+    sh ("/bin/rm"; $tmp//".atr")
+    sh ("/bin/rm"; $tmp//".hash.dir")
+    sh ("/bin/rm"; $tmp//".hash.pag")
+  endif
+endif

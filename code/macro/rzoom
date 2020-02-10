@@ -1,0 +1,16 @@
+; This command permits, when in zoom mode in 2D, to jump to a zoom 
+;window symmetric relatively to the diagonal of the one currently 
+;used.
+;
+;see also : ZOOM ZM multi_zoom
+
+if ($dim != 2) error "Available only in 2D"
+if ($zoom != 1) error "Not in ZOOM mode !"
+if ($dim == 2) then
+   set z1 =  (min(max($zoom_2d[2]*$si1_2d/$si2_2d, 1), $si1_2d) )
+   set z2 =  (min(max($zoom_2d[1]*$si2_2d/$si1_2d, 1), $si2_2d) )
+   set z3 =  (min(max($zoom_2d[4]*$si1_2d/$si2_2d, 1), $si1_2d) )
+   set z4 =  (min(max($zoom_2d[3]*$si2_2d/$si1_2d, 1), $si2_2d) )
+;   print ($z1; $z2; $z3; $z4)
+   zoom 1 $z1 $z2 $z3 $z4
+endif

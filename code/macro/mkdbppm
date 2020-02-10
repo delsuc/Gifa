@@ -1,0 +1,47 @@
+; Macro to generate a ppm DBM file from a ppm ascii file
+;
+; mkdbppm dbm_ppm_filename ascii_ppm_filename 
+;
+; the ascii ppm file has the following free-format:
+;
+; PPM residu_name residu_number atom_name ppm_value linewidth_value
+;
+; see also: SimSpect2D DBOPEN SIMUN 
+
+; open the PPM DBM file
+;
+if (!$arg) print "DBM ppm filename ?"
+set ppmdb = $_
+if (!$arg) print "Ascii ppm filename ?"
+set ppmasc = $_
+;
+;open the PPM DBM file
+;
+if (!dbm('PPM')) then 
+  dbopen $ppmdb PPM
+endif
+;
+;open the ascii ppm file
+;
+open $ppmasc
+while (!eof($ppmasc))
+   set line = <$ppmasc
+   if ((head($line)) s= 'PPM') then
+      set queue = (tail($line))
+      set res = (head($queue))
+      set res = (toupper($res))
+      set num = (head(tail($queue)))
+      set ato = (head(tail(tail($queue))))
+      set ato = (toupper($ato))
+      set spin = ($res//"-"//$num//"-"//$ato)
+      set ppmval = (head(tail(tail(tail($queue)))))
+      set linew = (head(tail(tail(tail(tail($queue))))))
+;      print ($ppmval//"-"//$linew)
+      set PPM[$spin] = ($ppmval//"-"//$linew)
+   endif
+endwhile
+close $ppmasc
+dbclose PPM
+quit
+
+

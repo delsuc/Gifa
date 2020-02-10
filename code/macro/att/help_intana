@@ -1,0 +1,7 @@
+; start the help window for intensity analysis sub-module
+formbox 'Intensity analysis Help' DO_NOTHING \
+   /usr/local/gifa/help/intana.hlp text \
+   'You may want a more' message noreturn \
+   'Complete Help' action 'print ("Starting"; $viewer) sh ($viewer; "/usr/local/gifa/doc/assign/assignment.html &")' \
+   noreturn '(HTML documentation)' message \
+   *

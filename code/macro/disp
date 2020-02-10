@@ -1,0 +1,5 @@
+; obsolete, for compatibility
+print "DISP command is obsolete, use DISP1D, DISP2D"
+set disp := $_
+disp2d $disp
+disp1d $disp

@@ -1,0 +1,18 @@
+; exemple de help
+; ....
+set var_test1 := "un exemple"
+formbox FORMULAIRE \
+'print ($var_test2;$var_test3;$var_enum123;$var_enum4567;$var_file) ' \
+'ceci est un test de formulaire' message \
+'seconde ligne:' message \
+separator \
+TEST1 string var_test1 \
+TEST2 int var_test2 \
+TEST3 real var_test3 \
+separator \
+ENUM1 enum var_enum123 'enum_1,enum_2,enum_3' \
+ENUM2 enum var_enum4567 'enum_4,enum_5,enum_6,enum_7' \
+separator \ 
+TEST4 file var_file \ 
+separator \
+*

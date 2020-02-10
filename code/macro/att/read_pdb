@@ -1,0 +1,27 @@
+; read_pdb pdb_file
+;
+message "Enter PDB file-name"
+set f = $_
+
+open $f
+
+set l = <$f
+while (!eof($f))
+	if (subtr($f,1,4) s= 'ATOM') then
+		if (h) -- reste a faire
+		if (meth)
+			set x =
+			set y =
+			set z =
+			set nom =
+			set res =
+			set hash = ($res*100)
+			while (exist("struct<" // $hash // ">")
+				set hash = (%+1)
+			endwhile
+			set struct<hash> = ($x;$y;$z;$nom)
+		endif
+	endif
+	set l = <$f
+endwhile
+close $f

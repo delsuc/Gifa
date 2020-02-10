@@ -1,0 +1,12 @@
+; align_pk_all_spin 
+; for all spin align the peaks pointing to this spin
+; with the chemical shifts of the spin itself.
+
+initinprogress $spin["LARGEST"]
+
+for spid = 1 to $spin["LARGEST"]
+    if (exist('spin[' // $spid // ']')) then
+	align_pk_spin $spid
+    endif
+inprogress $spid
+endfor

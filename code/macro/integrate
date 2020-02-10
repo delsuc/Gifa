@@ -1,0 +1,212 @@
+; integrate
+;
+; This tool is intented to realize the 'old' 1D integration, so loved
+; by the chemists. With it, you can define integration zones,
+; name draw and calibrate them.
+;
+; When you first enter the tool, no integration zone is defined, so you
+;   are presented with an empty box.
+;
+;           'New Zone'
+; To create a new integration zone, click on the the 'New zone' button.
+;   A small dialog will tell you to select the region, do so with the mouse
+;   (left + medium buttons or shift-left button).
+;   Then (only then) click on Ok in the small dialog. The interaction box
+;   will redraw itself with an additionnal line for the new zone.
+;   You can define as many zones as you wish, and zones can superpose!
+; The line for the defined zone present the name of the zone (its index
+;   by default), the starting and ending points, and the integral value.
+;   By default the first zone is calibrated to 1.0
+; You can change the name and the calibration constant on using the specific
+;   buttons on the right of the entry.
+; You can change the starting and ending points, simply by modifying them
+;  in the box (click on calibrate to recompute the calibration).
+; You can even delete a given integration zone with the corresponding
+;  button on the line.
+;
+;            'Draw'
+; If you change the display (e.g. by zooming in or changing scale),
+;   you can redraw the integration curves on the spectrum with the
+;   'Draw' button on the botton of the box, (same action thant 'Apply')
+; The cursor just above the buttons permit to scale on the display
+;   the size of the integration versus the size of the spectrum.
+;
+;            'List'
+; The 'List' button simply produces a listing of the zone and the integration
+;   values on the terminal.
+;
+;            'Reset'
+; If you goofed completely with the zone definitions (or if you inadvertedly
+;   use a previously defined zone set (see below)), you can throw every thing
+;   and restart form an empty box.
+;
+;            'Close and forget'
+; The definitions used by the tool are statically stored in the program. So if
+;   you simply close the integration box, the definitions will remain in memory.
+;   When entering again the integration tool, these old definitions will show again.
+;   This can be very convenient in certain cases, but can also be very cumbersome.
+;   If you close the box with the 'Close and forget' button, all the static definitions
+;   will go away.
+;   These static definitions imply also that you can have only one integrate box
+;   on screen at a single time (most boxes (such as easy1d, easy2d) storing variables
+;   locally, can have independent instances on screen at the same time)
+; 
+;
+; Calling from macros
+; The 'integrate' macro checks wether there are arguments on its calling line,
+; so if you want to use it in another macro, put it alone on one line, so
+; that the formbox will build.
+;
+; see also : easy1d INTEG
+
+if (head(tail($version))<4.211) error "Need Gifa Version 4.211 or higher"
+
+gm/test1d
+
+if ($itype_1d != 0) error "Please remove the imaginary part first, with the REAL command"
+
+if (!$arg) then
+
+; set needed variable if absent
+  if (!exist('int_calib')) set int_calib := 1   ; static calibration value.
+  if (!exist('int_scale')) set int_scale := 1   ; static scale for display
+  if (!exist('int_set_c')) set int_set_c := 0   ; count of reset points
+
+; create macro on the fly, to draw the int box
+; create file_name, and write common definitions
+  set file = ('gifatmp' // int($random*1000000))
+  open $file
+  fprint $file '; file generated automatically by "integrate"'
+  fprint $file '; should have been removed after use'
+  fprint $file 'formbox Integrate "integrate draw" \'
+  if ($int_set_c == 0) then
+    fprint $file '"Click on  -New zone-  to define at least one integration zone" message separator \'
+  else
+   fprint $file '"                start                 end         integral" message  \'
+; then definitions for each zones
+   for i = 1 to $int_set_c
+     fprint $file ('"Zone'; $int_name[$i]; '" real int_start[' // $i // ']'; $int_start[$i]; ' \ ')
+     fprint $file ('noreturn " " real int_end[' // $i // '] $int_end[' // $i // '] \ ')
+     fprint $file ('noreturn';  $int_val[$i]; 'message \ ')
+     fprint $file ('noreturn "calibrate" action "integrate calib'; $i; ' closeform $widget integrate"  \ ')
+     fprint $file ('noreturn "rename" action "integrate rename'; $i; ' closeform $widget integrate"  \ ')
+     fprint $file ('noreturn "delete" action "integrate delete'; $i; ' closeform $widget integrate"  \ ')
+   endfor
+; finally common actions
+   fprint $file 'separator Scale cursor 0.1 10 2 int_scale $int_scale  \'
+  endif
+  fprint $file '"New zone" action "integrate new closeform $widget integrate" \ '
+  fprint $file 'noreturn Draw action "integrate draw" \ '
+  fprint $file 'noreturn List action "integrate list" \ '
+  fprint $file 'noreturn "                              " message \ '
+  fprint $file 'noreturn Reset action "integrate reset closeform $widget integrate" \ '
+  fprint $file 'noreturn "Close and forget" action "integrate close closeform $widget ref" \ '
+  fprint $file 'noreturn "                              " message \ '
+  fprint $file 'noreturn Help action "help integrate" \ '
+  fprint $file '*'
+  close $file
+  $file
+  sh ('/bin/rm'; $file)
+else    ; (!$arg)
+  set cmd = $_		; get arg
+  if ($cmd s= 'reset') then
+      if ($int_set_c > 0) tunset int_val tunset int_start  tunset int_end tunset int_name
+      set int_calib := 1
+      set int_set_c := 0
+      set int_scale := 1
+  elsif ($cmd s= 'close') then
+      if ($int_set_c > 0) tunset int_val tunset int_start  tunset int_end tunset int_name
+      munset int_calib  int_set_c  int_scale *
+      exit
+  elsif ($cmd s= 'new') then
+    alert 'Select the integration region THEN click on ok'
+    set int_set_c := (%+1)
+    set int_name[$int_set_c] := $int_set_c
+    set  int_start[$int_set_c] := ($zone[2]+0)
+    set  int_end[$int_set_c] := ($zone[4]+0)
+    put data int1d
+    set int_val[$int_set_c] := (val1d($int_end[$int_set_c]) - val1d($int_start[$int_set_c]))
+    if ($int_set_c == 1) then        ; initialize int_calib the 1st time
+       set int_calib := $int_val[$int_set_c]
+    endif
+    set int_val[$int_set_c] := ($int_val[$int_set_c]/$int_calib)
+    set int_val[$int_set_c] := (int(100*$int_val[$int_set_c])/100)
+    get data
+  elsif ($cmd s= 'draw') then
+  elsif ($cmd s= 'delete') then
+    set ind = $_
+    for i = ($ind+1) to $int_set_c        ; shift every body
+       set int_end[$i-1] := $int_end[$i]
+       set int_start[$i-1] := $int_start[$i]
+       set int_val[$i-1] := $int_val[$i]
+       set int_name[$i-1] := $int_name[$i]
+    endfor
+    unset ('int_start[' // $int_set_c // ']')
+    unset ('int_end[' // $int_set_c // ']')
+    unset ('int_val[' // $int_set_c // ']')
+    set int_set_c := ($int_set_c-1)
+  elsif ($cmd s= 'calib') then
+    set ind = $_
+    dialogbox 'Enter Value'  \ 
+        ('Enter Calibration for zone';$ind) real A $int_val[$ind] *
+    put data int1d
+    set int_calib := ((val1d($int_end[$ind]) - val1d($int_start[$ind]))/$A)
+    for i = 1 to $int_set_c
+       set int_val[$i] := ((val1d($int_end[$i]) - val1d($int_start[$i]))/$int_calib)
+       set int_val[$i] := (int(100*$int_val[$i])/100)
+    endfor
+    get data
+  elsif ($cmd s= 'rename') then
+    set ind = $_
+    dialogbox 'New name'  \
+       'Enter new name:' string A  $int_name[$ind]  *
+    set int_name[$ind] := $A
+  elsif ($cmd s= 'list') then
+    print ' '
+    print 'Zone        start  end   integral'
+    print '---------------------------------'
+    for i = 1 to $int_set_c
+       print ('Zone'; $int_name[$i]; ':'; $int_start[$i]; $int_end[$i]; $int_val[$i])
+    endfor
+  else
+    error 'wrong internal command'
+  endif
+
+; in any case, display
+; fist spectrum
+  if ($int_set_c == 0) then
+    print 'No defined Zone !'
+  else
+    put data
+    refmacro 1
+    ref
+    refmacro 0
+    set sc = $scale
+    set si = $si1_1d
+    set a = $absmax
+;   build tab 
+    chsize $si one mult $si  tm  $si $si
+    put tab
+;   then show each one
+    scale (%*$int_scale)
+    if $zoom then
+      set z1 = $ZOOM_1D[1]
+      set z2 = $ZOOM_1D[2]
+    else
+      set z1 = 1
+      set z2 = $si
+    endif
+    for i = 1 to $int_set_c
+     get data   int1d    ; compute integrale
+     extract  $int_start[$i] $int_end[$i]
+     chsize $si
+         ; and display
+     absmax $a   zoom 1 $z1 $z2
+     showlinetab index ($int_end[$i]-$int_start[$i]+1) $int_start[$i] (-val1d(1))
+     showtext $int_name[$i]  $int_start[$i] (100*$vheight-5)
+     showtext $int_val[$i]  $int_start[$i] 90
+    endfor
+    get data scale $sc unref
+  endif
+endif
+

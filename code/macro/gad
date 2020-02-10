@@ -1,0 +1,7 @@
+; setup for gull & Daniell MAXENT iteration
+;
+; see also : gifa conjg MAXENT
+
+print 'Set up for Gull & Daniel MaxEnt algorithm'
+step  0.01
+algo  101

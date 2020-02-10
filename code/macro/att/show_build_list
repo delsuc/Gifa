@@ -1,0 +1,10 @@
+;show_build_list "list of peaks"
+;
+set lsp = $_
+set cc = 0
+while ($lsp s! " ")
+	show_att (head($lsp))
+	set lsp = (tail($lsp))
+        set cc = (%+1)
+endwhile
+alert ($cc;" Peaks in Build-List")

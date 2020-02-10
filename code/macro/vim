@@ -1,0 +1,7 @@
+;open with vi a macro in the standard place
+; i.e. in /usr/local/gifa/macro/
+;
+; see also : ls pwd more rm vi vip SH CD
+
+message ' Which macro ?'
+set vi_l = $_  sh ("vi " // '/usr/local/gifa/macro/' // $vi_l)

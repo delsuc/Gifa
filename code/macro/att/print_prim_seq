@@ -1,0 +1,30 @@
+
+; first search for assigned sys
+
+; attention, ne pas toucher a ce commentaire
+
+;scan prim seq
+open db/primary
+set l = <db/primary
+set i = 1
+while (!eof('db/primary'))
+   set seq[$i] = $l
+   set i = (%+1)
+   set l = <db/primary
+endwhile
+close db/primary
+   
+; for all residues
+for j = 1 to ($i-1)
+  set m = '?'
+  set k = '?'
+  foreach p in sys within 1 ($j-0.1) ($j+0.1)
+      set ss = (head(tail($sys[$p])))
+      if ($p s! 'LARGEST' ) then
+	set m = $ss
+	set k = $p
+      endif
+  endfor
+  print ($j;  $seq[$j]; ' - '; $m; $k)
+endfor
+

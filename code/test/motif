@@ -1,0 +1,17 @@
+; this one realizes the very basic Motif tests
+setpath ($GIFAPATH ; '../macro')	; first put macro in path
+setprompt 'Gifa_test>'
+
+closebutton		; closes the environment (if one)
+../macro/startup.g		; launch standard environment
+report (1==1) 'standard environment'
+
+dialogbox 'Gifa Test' 'Do not change this value ->' int val 1 \
+   'Nor this one ->' message \
+   noreturn \
+   ' ' cursor 0 1 2 val2 0.45 \
+   separator \
+   'Please Click on "Ok"' message *
+report ($val == 1 & $val2 == 0.45 ) 'dialogbox'
+
+formbox 'Gifa Test' 'report (1 == 1) "formbox" ' 'Please Click on "Ok"' message *

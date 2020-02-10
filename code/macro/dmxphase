@@ -1,0 +1,44 @@
+; dmxphase DECIM_value
+;
+; DECIM is a parameter which is found in the acqus file in your
+; data tree.
+;
+; When processing DMX data-sets, you may have noticed that the spectrum is
+; really strange, with wiggles like artefacts.
+; This is due to additional points in the beginning of the FID, left by the
+; Bruker acquisition software.
+; The artefacts are corrected by applying a 1st order phase correction
+; of -180*n where n is the number of additionnal points.
+;
+; This macro uses the value DECIM (from which the number of additional points
+; is guessed) as found in the acqus file to apply the phase correction.
+;
+; Look to the F.A.Q. at the end of the manual for details
+;
+; DECIM logic is adapted from  W. M. Westler and F.  Abildgaard
+;
+; NOTE: dmxphase should be applied on spectra
+;       dmxclean should be applied of FID
+;
+; see also: dmxclean PHASE
+
+message 'Enter DECIM value, (as found in acqno/acqus)'
+set decim = $_
+if ($decim < 1) error "Wrong value for DECIM"
+
+; pt is the number of 'wrong' points
+if (power2($decim) == $decim) then
+	set pt = (70.5 - 15.5/$decim)    ; if power of 2
+else
+	set pt = (185/3 - 15.5/$decim)
+endif
+set p1 = (-360*$pt)
+print $p1
+
+if ($dim == 1) then
+  phase 0 $p1
+elsif ($dim == 2) then
+  phase 0 $p1 f2
+else
+  phase 0 $p1 f3
+endif

@@ -1,0 +1,51 @@
+; list_att
+;
+; list all peak entries to a file
+set tmp = ('tmp' // int(1000000*$random))
+sh ('pwd >'; $tmp)
+open $tmp
+set pwd = <$tmp
+close $tmp open $tmp
+open peak_list
+fprint peak_list ("# Project :"; $pwd)
+fprint peak_list ("# Experiment :"; $cur_exp)
+fprint peak_list "# F1    F2   Spin1  Spin2   Amplitude Peak#"
+close peak_list
+initinprogress $att["LARGEST"]   set i = 1
+foreach pid in att
+  inprogress $i  set i = (%+1)
+  if ($pid s! "LARGEST") then
+	set pk = ($att[$pid])
+	set f1 = (head($pk))  set pk = (tail($pk))
+	set f2 = (head($pk))  set pk = (tail($pk))
+	set amp = (head($pk))  set pk = (tail($pk))
+	set sp1 = (head($pk))  set pk = (tail($pk))
+	set sp2 = (head($pk))  set pk = (tail($pk))
+;        set t = (tail(tail(tail(tail(tail($pk))))))
+	if (tolower($sp1) s! "unk") then
+	  set sp1 = (tail($spin[$sp1]))
+	  set sp1 = (head($sp1) // "-" // head(tail($sp1)))
+	endif
+	if ( tolower($sp2) s! "unk") then
+	  set sp2 = (tail($spin[$sp2]))
+	  set sp2 = (head($sp2) // "-" // head(tail($sp2)))
+	endif
+;	fprintf $tmp "%6.3f %6.3f %5s %5s %10.0f %4d %s" $f1 $f2 $sp1 $sp2 $amp $pid $pk *
+	set f1 = (int(1000*$f1)/1000)
+	set f2 = (int(1000*$f2)/1000)
+	fprint $tmp ($f1; $f2; $sp1; $sp2; $amp; $pid; $pk)
+;        print $pk
+  endif
+endfor
+close $tmp
+inprogress $att["LARGEST"]
+sh ("sort -n"; $tmp; ">> peak_list")
+formbox "List of Peaks" DO_NOTHING \
+   'File is peak_list' message \
+    peak_list text \
+   'Print file' action 'sh "gifaprint peak_list"' *
+sh ("/bin/rm -f";$tmp)
+
+
+
+

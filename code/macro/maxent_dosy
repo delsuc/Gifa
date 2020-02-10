@@ -1,0 +1,42 @@
+; utility used by dosy2d when processing in MaxEnt
+;
+; stores temporary results in a file, and get back to it if
+; something went wrong
+;
+; see also : dosy2d INVTLAP INVTLAPCONT
+
+set temp = ('gifa_max_dosy' // int(1000000*$random) )
+
+set szz = $_
+set itermax = $iter
+iter $ndisp
+
+invtlap $szz
+set chi2min := $chi2
+set nbreiter := $iter
+if (! isnumb($chi2)) zero
+write  $temp
+
+if (! isnumb($chi2)) goto sortie
+
+while ($iter < $itermax)
+   if ($chi2 > 1.0) then
+     iter ($iter + $ndisp)
+     invtlapcont
+   else
+     goto sortie
+   endif
+
+   if (! isnumb($chi2)) goto sortie
+
+   if ($chi2 < $chi2min) then
+      set chi2min := $chi2
+      set nbreiter := $iter
+      write $temp
+   endif
+endwhile
+
+=sortie
+read $temp
+sh ('/bin/rm'; $temp)
+iter $itermax

@@ -1,0 +1,18 @@
+; report test message
+;
+; used by test suit
+; tests also $_ and macro call
+
+set t = $_
+set msg = $_
+if $t then
+        print ("--- " // $msg // " Ok")
+else
+        print ("--- " // $msg // " FAILED")
+	if (exist("error")) then
+       		set error := ($error+1)
+	else
+		set error := 1
+	endif
+endif
+exit

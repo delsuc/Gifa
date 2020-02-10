@@ -1,0 +1,73 @@
+; bmrb2primary
+;
+; This macro extract the primary sequence of the protein 
+; from a BMRB assignment file
+
+ ; Therese Malliavin sept 98 (adapted by MAD)
+
+if (!$arg) message "Name of BMRB assignment file?"
+set brmbfil = $_
+
+open $brmbfil
+set l = <$brmbfil
+while (!eof($brmbfil))
+  set test1 = (index($l,"olymer"))
+  set test2 = (index($l,"residue"))
+  set test3 = (index($l,"sequence"))
+;  print ("l" ; $l ; "test1" ; $test1 ; $test2 ; $test3)
+  if (($test1 != 0) & ($test2 != 0) & ($test3 != 0)) then
+    goto titrseq
+  endif
+  set l = <$brmbfil
+endwhile
+
+goto error
+
+; detect the beginning of the primary sequence
+=titrseq
+while (!eof($brmbfil))
+  set l = <$brmbfil
+  set u = (head($l))
+;  print ("u" ; $u)
+  if ($u s= "1") then
+    goto beg
+  endif
+endwhile
+goto error
+
+; read primary sequence
+=beg
+while ($l s! "") 
+  set res_id = (head($l))
+  set res_name[$res_id] = (head(tail($l)))
+;  print ("Res" ; $res_name[$res_id] ; $res_id)
+  set l = (tail(tail($l)))
+endwhile
+set l = <$brmbfil
+if ((head($l)) s! "stop_") goto beg     
+
+; write primary sequence
+open db/primary
+if (len($res_name[1]) == 1) then
+  for k = 1 to $res_id
+    fprint db/primary $res_name[$k] 
+  endfor
+elsif (len($res_name[1]) == 3) then
+  dbopen /usr/local/gifa/macro/att/3let_1let code
+  for k = 1 to $res_id
+    set t = (head($code[$res_name[$k]]))
+    fprint db/primary $t
+  endfor
+  dbclose code
+endif
+close db/primary
+
+close $brmbfil
+
+gm/al_yesno ($res_id; "residues, Ok ?")
+
+quit
+
+=error
+error "No primary sequence detected"
+

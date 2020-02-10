@@ -1,0 +1,34 @@
+; find_sys (interactive)
+;
+; permits click on the data-set, and high-light the closer
+; sys in the db
+;
+
+print "Select a System by clicking on a peak on the data-set"
+
+set last_click := " "
+@find_att
+if ($last_click s! " ") then
+   set pkid = (tail($last_click))
+   if (!exist('att[' // $pkid // ']')) error 'Unknown peak'
+   set peak = $att[$pkid]
+   set spid = (head(tail(tail(tail($peak)))))
+   if (!exist('spin[' // $spid // ']')) error 'Unassigned peak'
+   set sp = $spin[$spid]
+   set ssid = (head(tail(tail($sp))))
+   if (!exist('sys[' // $ssid // ']')) error 'Unassigned spin'
+
+  set ss = $scolor
+  if ($scolor <6) then
+    scolor (%+1)
+  else
+    scolor 1
+  endif
+  show_sys $ssid
+  scolor $ss
+  set last_click := ("SYS"; $ssid)
+  print $last_click
+  set returned := $ssid
+endif
+
+

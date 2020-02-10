@@ -1,0 +1,80 @@
+; plotdamp_x step plot_file
+;
+; draw along x axis labels for damping units.
+; 
+; see also : plotdamp_y PLOTAXIS easyplot
+
+message 'step value'
+set step = $_
+set i = (abs(log($step)/log(10)))
+if (abs(round($i) - $i)>0.00001) then
+   print 'Warning, damping tick spacing is not a power of 10'
+endif
+
+message 'Plot file'
+set f =  $_
+set x = $step
+if ($dim == 1) then
+  if ($zoom == 1) then
+    set cte = ($CX/($zoom_1d[2]-$zoom_1d[1]))
+    set limit = (itod($zoom_1d[2],1,1))
+    set left = (itod($zoom_1d[1],1,1))
+    set lefti = ($zoom_1d[1])
+  else
+    set cte = ($cx/($si1_1d-1))
+    set limit = (itod($si1_1d,1,1))
+    set left = (itod(1,1,1))
+    set lefti = 1
+  endif
+elsif ($dim == 2) then
+  if ($zoom == 1) then
+    set cte = ($CX/($zoom_2d[4]-$zoom_2d[2]))
+    set limit = (itod($zoom_2d[4],2,2))
+    set left = (itod($zoom_2d[2],2,2))
+    set lefti = ($zoom_2d[2])
+  else
+    set cte = ($cx/($si2_2d-1))
+    set limit = (itod($si2_2d,2,2))                                                                
+    set left = (itod(1,2,2))
+    set lefti = 1
+  endif
+else
+  print 'Sorry, No damping axes in 3D mode'
+  exit
+endif
+
+while ($x < $left)
+        set x = ($x+$step)
+        set i = (abs(log($x)/log(10)))
+        if (abs(round($i) - $i)<0.00001) set step = (10*$step)
+endwhile
+
+; je compte le nombre de tirets que je vais dessiner
+set nlf = 0
+set xx = $x
+set st = $step
+while ($xx < $limit)
+   set nlf = ($nlf + 1)
+   set xx = ($xx +$st)
+   set i = (abs(log($xx)/log(10)))
+   if (abs(round($i) - $i)<0.00001) set st = (10*$st)
+endwhile
+
+PLOTTEXT $x ($cte*(dtoi($x,$dim,$dim)-$lefti)) -0.5 $f
+plotline 0 0 $CX 0 $f
+set nl = 0
+while ($x < $limit)
+   plotline ($cte*(dtoi($x,$dim,$dim)-$lefti)) 0 ($cte*(dtoi($x,$dim,$dim)-$lefti)) -0.2 $f
+   set nl = ($nl + 1)
+   if ($nl == $nlf) then
+      PLOTTEXT $x ($cte*(dtoi($x,$dim,$dim)-$lefti)) -0.5 $f
+   else
+      set x = ($x +$step)
+      set i = (abs(log($x)/log(10)))
+      if (abs(round($i) - $i)<0.00001) then
+         set step = (10*$step)
+         if ($x < $limit) PLOTTEXT $x ($cte*(dtoi($x,$dim,$dim)-$lefti)) -0.5 $f
+      endif
+   endif
+endwhile
+PLOTTEXT 'um2/sec' ($CX/2) -0.9 $f

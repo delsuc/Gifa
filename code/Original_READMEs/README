@@ -1,0 +1,187 @@
+This is version 4.4
+Version 4.4 - dated novembre 2001
+
+        The Gifa program is a multi-purpose NMR program. It is designed for
+the processing, the display and the analysis of 1D, 2D & 3D NMR data-sets.
+        The program includes all the classical processing, displaying and
+plotting capabilities of an NMR program, as well as more advanced
+processing techniques such as Maximum Entropy processing or Linear
+prediction. There is no actual limit to the size of the data-set which can
+be processed. A complete macro language permits to builds sophisticated
+processing. The Graphic User Interface is fully designable and programmable
+by the user.
+	The version 4.2 introduced a complete module for DOSY processing, as
+well as a general fitter.
+	An assignment module has be added to the program. It is aimed
+toward the assignment of protein and peptides from a set of 2D homonuclear
+experiments. Version 4.22 extended this module with a comprehensive
+module for heteronuclear relaxation analysis.
+	Version 4.4 introduces speed-up in DOSY execution, the complete handling
+of digitally filtered Bruker data-sets, a better solvent flattening and
+many extension in the macro langage. 
+        The program currently runs on several UNIX platforms. The graphics
+can be displayed on X-Windows terminals. Plots are generated on postscript
+or HP-GL devices.
+	There is support for processing files coming from Varian and Bruker
+(AM, AMX, DMX) spectrometers, as well as more generic formats (ascii format,
+matlab (tm) files, etc..). Jeol and GE will be supported as soon as somebody
+can help me at this.
+	This version is distributed under a licence. There is no
+fee for academic laboratories, however the licence requires that you refer
+to Gifa in any published work which depend in some manner on the Gifa
+program.
+
+Note that that Gifa could be used for several other purposes than NMR:
+- sophisticate image filtering
+  (based on convolutions and Fourier Analysis)
+- a generic application generator
+  (based on the macro language and the programmable GUI)
+  (we actually use Gifa for the system management of the network)
+
+DISTRIBUTION
+------------
+        This program can be downloaded by anonymous FTP on Internet, the
+home site is the following address :
+ftp://www.cbs.univ-montp1.fr/pub/gifa_v4 .
+
+There is also mirror sites :
+
+In Japan :
+at Institute for Molecular Science, Okazaki,
+ftp://ftp.ims.ac.jp/pub/unix/chem/gifa
+gopher://gopher.ims.ac.jp:70/11/tmp/pub-link/unix/chem/gifa
+
+In US. :
+Ohio Supercomputer Center, Colombus
+ftp://ccl.osc.edu/pub/chemistry/software/UNIX/gifa/
+
+
+*______________________________________________________*
+*  Check also                                          *
+*  http://www.cbs.univ-montp1.fr/GIFA/                 *
+*                                                      *
+*  The HOME PAGE of the software                       *
+*______________________________________________________*
+*                                                      *
+
+LICENCE
+-------
+The distribution of Gifa is conditionned by a licence agreement that the user
+should sign to get a working program.
+Registration is free for academical laboratories, however a licence is required
+so that you can use Gifa on a sound legal basis (Gifa is NOT public domain, nor
+is it covered by the GNU licence agreement). A single licence is given to one
+laboratory, and can be used on all the machines of this lab.
+
+In the distribution, you will find 4 versions of the licence agreement :
+
+	licence_eng.ps	the english version in postscript
+	licence_eng.asc	the english version in ascii
+	license_fra.ps	the french version in postscript
+	license_fra.asc	the french version in ascii
+
+
+Internationnal users should sign,      |    Les utilisateurs dans un laboratoire
+fax, and mail me the english version.  |    francais doivent signer, me telecopier,
+                                       |    et me poster la version francaise.
+                                       |
+my fax number                          |    mon numero de fax :
+
+                    (33) (0)4 67 52 96 23
+
+my address                             |    mon adresse :
+
+                      M.A.Delsuc
+                      CBS
+                      Faculte de Pharmacie
+                      15 avenue Charles Flahault
+                      F-34060 Montpellier Cedex FRANCE
+
+my e-mail address                      |    mon adresse electronique :
+
+                      MA.Delsuc@cbs.cnrs.fr
+
+
+When registered, you will be receive by e-mail a small licence key file that
+will remove all the annoying messages that you currently have when running the
+software. You will also be put in the Gifa mail-list, in order to get
+informations on the new release of Gifa, and to exchange tips/problems with
+other Gifa users. Finally, you will also be logged in my list of registered
+laboratories (never distributed to anybody).
+
+
+
+INSTALLATION
+------------
+The program is obtained by anonymous FTP at several addresses (see above)
+
+i.e.
+log with ftp on the server
+login as anonymous, give your e-mal address as password
+go to the gifa directory
+get the needed files
+
+In this distribution you will find the following files :
+
+makefile           The basic command file for unpacking and installing
+                   the complete Gifa program.
+...Just type  make  and follow the instructions
+
+gifav4_SOL2.tar.Z           The binaries for SUN/Sparc Solaris 2.4
+gifav4_LINUX.tar.Z          The binaries for PC Linux
+gifav4_DARWIN.tar.Z         The binaries for Macintosh / Mac Os X
+gifav4_SGI6.tar.Z           The binary for Silicon Graphics / IRIX 6.5
+
+
+...copy only the one you need for your machine
+...missing binary files means that the port is not finished yet.
+...Some versions are more tested than others, (SUN is the less tested)
+
+gifav4_basic.tar.Z       The basic support files (macros, help, utilities,...)
+...This one is needed !
+
+gifav4_data.tar.Z        Some data for demos ( ~6 Mega)
+...This one is helpfull to learn how to use Gifa.
+
+doc/*.html                   The gifa documentation in Mosaic format
+doc/*.ps.Z                   The gifa documentation in Postscript
+...only there as convenience, a copy is present in the gifav4_basic.tar.Z file.
+
+To summarize :
+Get :   Makefile
+        gifav4_YOUR_MACHINE.tar.Z
+        gifav4_basic.tar.Z
+        optionnally gifav4_data.tar.Z
+
+Type :  make
+and follow the instructions
+
+The *.tar.Z files can then be deleted.
+
+
+The complete package takes about 16 Mega on the disk. From which about 6 are
+example files which can be removed.
+Installation, when decompressing the archives takes about 10 Mega more.
+
+REMARKS
+-------
+This software is still in development, it intensely tested here in
+Montpellier on HP and SGI. Friends of mine test it on AIX and Linux. However the
+software is not finished yet. There are : -missing features, -features that
+are not yet implemented as in the manual,-commands that may change (slightly
+I hope, changes will be described in the follow-up), -known bugs, and of
+course -unknown bugs.
+
+Use it at your own risks, I am not liable for any loss of data,
+time, integrity, etc.. due to using this software.
+
+
+DISCLAIMER
+----------
+THIS PACKAGE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR
+IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
+WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+
+
+
+

@@ -1,0 +1,35 @@
+; list_all_spin
+;
+; list all spin entries in a clickable table
+set tmp = ('tmp' // int(1000000*$random))
+open $tmp
+fprint $tmp 'formbox "all spin" DO_NOTHING \'
+foreach sid in spin
+   if ($sid s! 'LARGEST') then
+	set sp = $spin[$sid]
+	set syid = (head(tail(tail($sp))))
+	if ($syid s! 'unk') then
+	  set sy = $sys[$syid]
+	  set synum = (head($sy))
+	else
+	  set sy = 'unk'
+	  set synum = 'unk'
+	endif
+	set spnum = (head($sp))
+	set spnam = (head(tail($sp)))
+	if ($synum s= 'unk') then
+	   fprint $tmp ('"#'; $sid; $spnam; 'of sys #'; $syid;'" message \')
+	else
+	   set synam = (head(tail($sy)))
+	   fprint $tmp ('"#'; $sid; $spnam; 'of'; $synam; $synum;'" message \')
+	endif
+        fprint $tmp ('noreturn Show action "show_spin'; $sid; '" \')
+        fprint $tmp ('noreturn Edit action "mod_spin'; $sid; '" \')
+   endif
+endfor
+fprint $tmp '*'
+close $tmp
+@($tmp)
+
+sh ('/bin/rm' ; $tmp)
+

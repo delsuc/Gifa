@@ -1,0 +1,34 @@
+; pkrmz
+;
+; permits to remove all the peaks within a given zone
+;
+; see also : PKRM pkrmi pkrm_diag
+
+if ($dim == 3) error "Not available in 3D"
+set sc = $scolor
+if ($scolor != 7) then
+	scolor (%+1)
+else
+	scolor 2
+endif
+refmacro 1
+if ($dim == 1) then
+   DO_NOTHING
+elsif ($dim == 2) then
+  alert "Select with the zoom box all the peaks you want to remove, THEN click on Ok"
+  set n = 0
+  for pic = $npk2d to 1 step -1
+    if ($PK2D_F1F[$pic] >= $zone[1] & $PK2D_F1F[$pic] <= $zone[3] & $PK2D_F2F[$pic] >= $zone[2] & $PK2D_F2F[$pic] <= $zone[4] ) showpeak $pic set n = (%+1)
+  endfor
+  if ($n == 0) scolor $sc error "No peak selected or peak table empty"
+  gm/al_yesno ("Ok to remove"; $n; "peaks")
+  if ($returned s! 'yes') scolor $sc error 'Aborted by user'
+  for pic = $npk2d to 1 step -1
+    if ($PK2D_F1F[$pic] >= $zone[1] & $PK2D_F1F[$pic] <= $zone[3] & $PK2D_F2F[$pic] >= $zone[2] & $PK2D_F2F[$pic] <= $zone[4] ) pkrm $pic 0
+  endfor
+endif
+ref
+scolor $sc
+showpeaks
+refmacro 0
+

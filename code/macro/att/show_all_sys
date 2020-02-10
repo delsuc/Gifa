@@ -1,0 +1,49 @@
+; show_all_sys
+;
+; show all system on display
+
+set mm2 = (($freq_2_2d*$box_f2)*($si2_2d-1)/($specw_2_2d+$si2_2d))
+
+foreach ss in sys
+  if ($ss s! 'LARGEST') then
+   ; get spin list
+    set l = $sys[$ss]
+    set num = (head($l))
+    set aa = (head(tail($l)))
+    set l = (tail(tail($l)))
+
+	; count and find min and max
+	  set p = ($spin[head($l)])
+	  set min = (head($p))   set max = $min
+	  set p = (head(tail($l)))   set lp = (tail(tail($l)))
+	  while ($p s! " ")
+	     set p = (head($spin[$p]))
+	     if ($min > $p) set min = $p
+	     if ($max < $p) set max = $p
+	     set p = (head($lp))   set lp = (tail($lp))
+	  endwhile
+
+	    ; draw boxes
+	  set max1 = (ptoi($max,2,1))
+	  set max2 = (ptoi($max,2,2))
+	  set min1 = (ptoi($min,2,1))
+	  set min2 = (ptoi($min,2,2))
+	  set p = (head($l))  set lp = (tail($l))
+	  while ($p s! " ")
+	     set p = (head($spin[$p]))
+	     set p2 = (ptoi($p,2,2))
+	     if ($p2>=$zoom_2d[2] & $p2<=$zoom_2d[4]) then
+		     showline $p2 $min1 $p2 $max1
+		     set pp = (head($l))  set lpp = (tail($l))
+		     while ($pp s! ' ')
+			     set pp = (head($spin[$pp]))
+			     set p1 = (ptoi($pp,2,1))
+		         showline ($p2-$mm2) $p1 ($p2+$mm2) $p1
+		         set pp = (head($lpp))   set lpp = (tail($lpp))
+		     endwhile
+         endif
+		 set p = (head($lp))   set lp = (tail($lp))
+	  endwhile
+
+  endif
+endfor

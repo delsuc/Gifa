@@ -1,0 +1,31 @@
+; set_spin_att $att $spin_list
+; used by the 'search spins' button in mod_att
+;
+
+set pkid = $_
+set spl = $_
+if ($spl s= '0') exit
+dialogbox "Choose Spin" \
+  "Choose the spin you wan to assign : " enum $spl sp % \
+  *
+
+set spid = (head($sp))
+set axe = (head(tail(tail($sp))))
+
+set pk = ($att[$pkid])
+set f1 = (head($pk))  set pk = (tail($pk))
+set f2 = (head($pk))  set pk = (tail($pk))
+set amp = (head($pk))  set pk = (tail($pk))
+set sp1 = (head($pk))  set pk = (tail($pk))
+set sp2 = (head($pk))  set pk = (tail($pk))
+
+print $spid
+print (tail($sp))
+print (tail(tail($sp)))
+
+if ($axe s= 'F1:') then
+  set att[$pkid] = ($f1;$f2;$amp;$spid;$sp2;$pk)
+else
+  set att[$pkid] = ($f1;$f2;$amp;$sp1;$spid;$pk)
+endif 
+  

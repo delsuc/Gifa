@@ -1,0 +1,11 @@
+; for interactive bug report
+sh  'echo "GIFA: ____ configuration, do not change ____________________" > /tmp/bug_form '
+sh ('echo "GIFA: ';$config_os;$version ; $MEM_MAX/1024 // 'k  " > /tmp/bug_form' )
+sh ('echo "GIFA: '; $dim; $si1_1d; $si1_2d; $si2_2d;  '" >>/tmp/bug_form' )
+sh ('echo "GIFA: '; $si1_3d; $si2_3d; $si3_3d ; $zoom; '" >>/tmp/bug_form' )
+sh ('echo "GIFA: '; $npk1d ; $npk2d; $npk3d ; '" >>/tmp/bug_form' )
+sh 'cat /usr/local/gifa/com/bug_form >> /tmp/bug_form'
+vi /tmp/bug_form
+sh '/usr/local/gifa/com/bug_report.sh'
+
+

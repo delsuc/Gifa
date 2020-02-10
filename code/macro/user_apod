@@ -1,0 +1,47 @@
+; user_apod func($i)
+;
+; func($i) is entered as a string which defines the function to be applied
+; as an apodisation function.
+; $i will run from 1 to the size of the data_set
+; no blank should be inserted in the definition of func($i)
+;
+; all context can be used
+; $pi is predefined
+;
+; see also : user_apod_2d
+
+gm/test1d
+set st = ' sin($i*$pi/$si1_1d) '
+message 'Enter equation as a function in $i'
+set st = $_
+
+
+; create temp file
+set tmp = ('tmp' // int(1000000*$random))
+open $tmp
+fprint $tmp ';Temporary file used by user_apod'
+fprint $tmp 'set pi = (4*atan(1.0))'
+
+; real case
+if ($itype_1d == 0) then
+  fprint $tmp 'for i = 1 to $si1_1d'
+  fprint $tmp ('  set a = (' ; $st ; ')' )
+  fprint $tmp '  setval $i (val1d($i)*$a)'
+
+else
+  fprint $tmp 'for i = 1 to $si1_1d step 2'
+  fprint $tmp ('  set a = (' ; $st ; ')' )
+  fprint $tmp '  setval $i (val1d($i)*$a)'
+  fprint $tmp '  setval ($i+1) (val1d($i+1)*$a)'
+endif
+
+fprint $tmp 'endfor'
+
+close $tmp
+
+; execute
+@($tmp)
+
+sh ('/bin/rm'; $tmp)
+ref
+absmax 0

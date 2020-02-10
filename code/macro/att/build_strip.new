@@ -1,0 +1,216 @@
+; this macro builds a strip file from the following information
+; - a HSQC 2D spectrum in the current assignement db
+; - a 3D spectrum
+; - the list of amino-acid to extract
+;
+; for each assigned peak in the HSQC, a column, at the same ppm
+; coordinates will be extracted and put in a composite 2D.
+;
+; The list of amino-acid to extract is given with the following notation:
+;   blank separated index: 2 4 6 7 8 9 10 12 15 
+;   or ranges :            6:10
+;   the two can be mixed : 2 4 6:10 12 15
+; Be carefull with :
+;    calibrating correctly your 3D
+
+
+if (!$arg) then
+
+; first build the list of 3D in the list of spectra
+ set l = $list_spectra
+ while ($l s! ' ')
+   set h = (headx($l,','))  set l = (tailx($l,','))
+   join ('spectra/' // $h)
+   if ($c_dim == 3) then
+       if (exist('l3d')) then
+          set l3d = ($l3d // ',' // $h)
+       else
+          set l3d = $h
+       endif
+   endif
+   disjoin
+ endwhile
+ if (!exist('l3d')) then
+    dialogbox '3D needed' \
+       'Please, first add a 3D data set in the list of spectra' message \
+       ' use the "add spectra" commande in the "project" menu ' message *
+    exit
+ endif
+
+; build formbox
+ set pknum = 'no'
+ formbox 'build_strip' \
+   'build_strip $ff $w $line $ax $pknum ' \
+   Help action 'help build_strip' \
+   'Select a 3D file' enum $l3D ff $c_name \
+   noreturn dataset action 'join ("spectra/"  // $ff) dataset disjoin' \
+   'Choose the strip width (in pixel)' cursor 1 20 0 w 4 \
+   'Choose axis to follow (1H axis)' enum 'F1,F2' ax % \
+   separator \
+   'sort in peak number order' enum 'yes,no' pknum 'no' \
+   'or in primary sequence order:' message \
+   'Residus numbers (e.g. 2 4 6:15)' string line '1' \
+   *
+
+else
+; Do processing
+
+  gm/al_yesno "Warning, this operation will kill the 3D buffer, Ok to continue ?"
+  if ($returned s! 'yes') error 'Aborted'
+  set f = $_
+  set w = $_
+  set line = $_
+  set ax = $_
+  set pksort = $_
+  set i = 0
+  ; parse aa line
+
+if ($pksort s= 'no') then  ; sort in primary sequence number 
+
+  while ($line s! ' ')
+    set h = (head($line))   set line = (tail($line))
+    if (index($h,':') == 0) then     ; no range
+       set i = (%+1)
+       set pic[$i] = $h
+    else
+       set i1 = (headx($h,':'))
+       set i2 = (tailx($h,':'))
+       for ii = $i1 to $i2
+	       set i = (%+1)
+	       set pic[$i] = $ii
+	   endfor
+	endif
+  endwhile 
+  set nbpic = $i
+
+  join ('spectra/' // $f)
+  if ($c_dim != 3) error "File should be a 3D"
+  if ($ax s= 'F1') then
+    set long =  $C_SIZEF1
+    set axtotake = F2
+    set ptoidim = 2
+  else
+    set long = $C_SIZEF2
+    set axtotake = F1 
+    set ptoidim = 1
+  endif
+
+  dim 3 chsize $long $nbpic (2*$w)
+  for i = 1 to $nbpic
+    dim 2
+    find sys 1 $pic[$i]
+    set ss = $sys[$pk_fnd]
+
+    if (head($ss) != $pic[$i]) then
+      print ($pic[$i];'Not found !')
+      zero
+    else
+	    set spins = (tail(tail($ss)))
+	    set hfreq = 'xxx'  set nfreq = 'xxx'
+	    while ($spins s! ' ')
+	       set sp = $spin[head($spins)]   set spins = (tail($spins))
+	       set spname =  (head(tail($sp)))
+	       if ($spname s= 'N') then
+	          set nfreq = (head($sp))
+	       elsif ($spname s= 'HN') then
+	          set hfreq = (head($sp))
+	       endif
+	    endwhile 
+	    if ($hfreq s= 'xxx' | $nfreq s= 'xxx') then
+          print ($pic[$i];'Spin not found !';$ss;$hfreq;$nfreq)
+	      zero
+	    else
+print $pic[$i]
+	      set  nf = (round(ptoi($nfreq,0,$ptoidim)))
+	      set  hf = (round(ptoi($hfreq,0,3)))
+	;print ($nf;$hf)
+	      if (($nf < 0) | ($hf < 0)) \
+	         error "Error in arithmetics, your 3D is probably not correctly calibrated"
+	      getc $axtotake $nf 1 ($hf-$w+1) $long  ($hf+$w)
+	    endif
+    endif
+    dim 3
+    put plane f2 $i
+  endfor
+  modifysize $long 1 ($nbpic*2*$w)
+  plane f2 1
+  dim 2
+
+else                    ;sort in peak number order
+
+;=========================================
+  set temp_file_name = '/usr/tmp/gifa_temporary_big'
+
+  set first = 1
+  message "Enter index of first peak"
+  set first = $_
+  if ($first <1 | $first >$npk2d) error 'wrong peak index'
+
+  set last = $npk2d
+  message "Enter index of last peak"
+  set last = $_
+  if ($last <= $first | $last >$npk2d) error 'wrong peak index'
+
+  join ('spectra/' // $f)
+  if ($c_dim != 3) error "File should be a 3D"
+  if ($ax s= 'F1') then
+    set long =  $C_SIZEF1
+    set axtotake = F2
+    set ptoidim = 2
+  else
+    set long = $C_SIZEF2
+    set axtotake = F1
+    set ptoidim = 1
+  endif
+
+; initialise les param variables
+initinprogress $last
+dim 3
+chsize $long ($last-$first+1) (2*$w)
+for i = $first to $last
+  inprogress $i
+  dim 2
+  getc $axtotake $PK2D_F1F[$i] 1 ($PK2D_F2f[$i]-$w+1) $long ($PK2D_F2f[$i]+$w)
+  dim 3
+  put plane f2 $i
+endfor
+
+chsize % % (%+1)
+modifysize $long 1 (($last-$first+1)*(2*$w+1))
+if ($MEM_PRO_2D <= $c_sizef3*$c_sizef1) then
+        plane f2 1
+        dim 2
+else            ; plane would not work -> do it through a file
+        set ff = $c_name
+        write $temp_file_name
+        dim 2
+        join $temp_file_name
+        getc f2 1 %%
+        disjoin
+        join $ff
+        sh ('/bin/rm'; $temp_file_name)
+endif
+
+
+
+
+;===========================================
+endif
+
+; on positionne les param. spectraux pour avoir l'index de peak en ppm en F2
+; ! Bidouille
+  if ($ax s= 'F1') then
+     freq $c_freq $c_freq1 1
+     specw $c_SPECWF1 (-$nbpic)
+     offset $C_OFFSF1 ($nbpic+0.5)
+  else
+     freq $c_freq $c_freq2 1
+     specw $c_SPECWF2 (-$nbpic)
+     offset $C_OFFSF2 ($nbpic+0.5)
+  endif
+
+endif
+
+
+
+

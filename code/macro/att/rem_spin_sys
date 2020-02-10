@@ -1,0 +1,22 @@
+; rem_spin_sys $sys_id $spin_id
+;
+; removes spin_id from the spin-system $sys_id
+;
+set ss_id = $_
+set sp_id = $_
+    set ss = $sys[$ss_id]
+    if (index($ss,$sp_id)!=0) then
+      gm/al_yesno ("Ok to remove spin #"; $sp_id; "from System #";$ss_id)
+      if ($returned s! "yes") error "Remove spin form system Aborted"
+      set new := " "
+      set num = (head($ss))
+      set aa = (head(tail($ss)))
+      set old = (tail(tail($ss)))
+      while ($old s! " ")
+	set sp = (head($old))	set old = (tail($old))
+	if ($sp != $sp_id) set new := (%; $sp)
+      endwhile
+      set sys[$ss_id] = ($num; $aa; $new)
+    endif
+
+

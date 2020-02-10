@@ -1,0 +1,52 @@
+; file_selector
+;
+; This is the control to loading or showing new file when within an assignment project.
+;
+; the pop-up gives the list of the data-set currently copied into the project,
+; the dataset button, gives you information on the experiment currently selected
+; The Read button permits to load the experiment currently selected, as
+;   well as to load the peak database asociated to it
+; Showc button simply displays the selected experiment,  
+;   without loading it nor the peak data-base.
+;   the cursor permits to chose the relative display ratio.
+
+if (!$arg) then
+  formbox 'Read file' \
+   'file_selector "Read" $f' \ 
+   'choose file' enum $list_spectra f % \
+   noreturn dataset action 'join ("spectra/" //$f) dataset disjoin' \
+   'Read' action 'file_selector "Read" $f ' noreturn \
+   '       or' message \
+   'Showc' action 'join ("spectra/" // $f) showc (exp($sc*log(10))*$scale)' noreturn \
+   'with Int. ratio:' cursor -3 3 1 sc 0 \
+   noreturn 'Help' action 'help file_selector' \
+   *
+else
+  set act = $_
+  set f = $_
+  set ff = ("spectra/" // $f)
+  if ($act s= "Read") then
+    read $ff
+    set cur_exp := $ff
+    set cur_db := ("db/" // $f)
+	if (dbm("att")) dbclose att
+    dbopen $cur_db att
+; check if it is the first time and count peaks
+    set k = 0
+    if (!exist("att[LARGEST]")) then
+      set att["LARGEST"] = 0
+    else
+      foreach i in att
+         set k = (%+1)
+      endfor
+    endif
+    dialogbox data-file \
+      ("Data-set :" ; $ff) message \
+      ("Size :"; $si1_2d; "x"; $si2_2d) message \
+      ($k; "peaks in data-base") message \
+      *
+    zm 1        ; this  resets the small vignette
+  else
+    join $ff showc %
+  endif
+endif

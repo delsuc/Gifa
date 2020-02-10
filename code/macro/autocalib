@@ -1,0 +1,41 @@
+; autocalib
+;
+; this is based on the work by Wishart et al, J.Biomol NMR, (1995) 6 p135-140
+;
+; computes the correct offset in F1 from F2
+
+set n15 = 0.101329118
+set c13 = 0.251449530
+
+if ($dim == 1) then
+	alert "Nothing to do in F1"
+elsif ($dim == 2) then
+
+	set r = ($FREQ_1_2D/$FREQ_2_2D)
+	if ( (0.09 < $r) & ($r <0.11)) then
+		print "Set to 1H-15N"
+		set vish = $n15
+	elsif ( (0.24 < $r) & ($r <0.26)) then
+		print "Set to 1H-13C"
+		set vish = $c13
+	elsif ( (0.98 < $r) & ($r <1.02)) then
+		print "Set to homonuclear"
+		set vish = 1.0
+	else
+		alert "Unknown Nucleus"
+	endif
+
+; FREQ is assumed to be the carrier == in the middle of the spectrum
+	set decalh = (itoh($SI2_2D/2,2,2))
+	set zeroh  = ($FREQ_2_2D*1000000 - $decalh)
+	set zerox  = ($zeroh * $vish)
+	set decalx = ($FREQ_1_2D*1000000 - $zerox)
+	offset ($decalx - $specw_1_2d/2)  %
+
+else
+	alert "Not available yet"
+endif
+
+;       $FREQ_1_3D     frequency in 3D in F1 (in MHz)
+;       $FREQ_2_3D     frequency in 3D in F2 (in MHz)
+;       $FREQ_3_3D     frequency in 3D in F3 (in MHz)

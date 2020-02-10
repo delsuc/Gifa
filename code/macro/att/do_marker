@@ -1,0 +1,151 @@
+; called by marker
+
+set sym = $_
+set act = $_
+
+
+; get optionnal arg
+if ($act s= "dra") then         ; draw
+   set col = $_
+endif
+
+; get list of coord in ff1[] and ff2[]   - but not if -ext- action selected
+if ($act s! 'ext') then
+	set np = 0
+	if ($sym s= "Symm") then      ; get all coord in one bag (ff1 and ff2 are equiv)
+	   while ($arg)  ; make the array of diff. coord in arg_list
+	      set ff = $_
+	      set found = (1==0)
+	      for i = 1 to $np
+	         set found = ($found | (abs($ff-$ff1[$i])<$tol_align) )   ; found ?
+	      endfor
+	      if (!$found) set np = (%+1)   set ff1[$np] = $ff  set ff2[$np] = $ff ; if not found, add it to the list
+	   endwhile
+	else
+	   while ($arg)  ; make the array of diff. coord in arg_list
+	      set np = (%+1) set ff1[$np] = $_ set ff2[$np] = $_ 
+	   endwhile
+	endif
+endif
+
+; then parse
+if ($act s= "dra") then		; draw
+   set ss = $scolor
+   scolor (head($col))
+   for i = 1 to $np
+   for j = 1 to $np
+   set f1 = $ff1[$i]
+   set f2 = $ff2[$j]
+      Showline 1 (ptoi($f1,2,1)) $si2_2d (ptoi($f1,2,1))
+      Showline (ptoi($f2,2,2)) 1 (ptoi($f2,2,2)) $si1_2d
+;      Showline $ZOOM_2D[2] (ptoi($f1,2,1)) $ZOOM_2D[4] (ptoi($f1,2,1))
+;      Showline (ptoi($f2,2,2)) $ZOOM_2D[1] (ptoi($f2,2,2)) $ZOOM_2D[3]
+   endfor
+   endfor
+   scolor $ss
+elsif ($act s= "sho") then		; show related peaks
+   refmacro 1
+   set ccount = 0
+   for i = 1 to $np
+   for j = 1 to $np
+     if ($sym s= "Symm" | $i == $j) then
+        set f1 = $ff1[$i]
+        set f2 = $ff2[$j]
+        find att 2 $f1 $f2
+        if ($pk_fnd_dst <= $tol_align & $pk_fnd_dst != -1) then      ; found
+          print ("Peak";$pk_fnd) 
+          set pk = (tail(tail(tail($att[$pk_fnd]))))
+          if (tolower(head($pk)) s! "unk" | tolower(head(tail($pk))) s! "unk")  alert ("Peak"; $pk_fnd; "already assigned")
+;        center (ptoi($f1,2,1)) (ptoi($f2,2,2))
+;        Showline 1 (ptoi($f1,2,1)) $si2_2d (ptoi($f1,2,1))
+;        Showline (ptoi($f2,2,2)) 1 (ptoi($f2,2,2)) $si1_2d
+;        alert "Next"
+          show_att $pk_fnd
+          set ccount = (%+1)
+        endif
+     endif
+   endfor
+   endfor
+   alert ($ccount;"Peaks detected")
+   refmacro 0
+elsif ($act s= "cre") then		; create missing peaks
+   refmacro 1
+     if ($sym s= "Symm") then
+      for i = 1 to $np
+      for j = 1 to $np
+       if ($i != $j) then 
+        set f1 = $ff1[$i]
+        set f2 = $ff2[$j]
+        find att 2 $f1 $f2
+        if ($pk_fnd_dst > $tol_align | $pk_fnd_dst == -1) then
+          center (ptoi($f1,2,1)) (ptoi($f2,2,2))
+          Showline 1 (ptoi($f1,2,1)) $si2_2d (ptoi($f1,2,1))
+          Showline (ptoi($f2,2,2)) 1 (ptoi($f2,2,2)) $si1_2d
+          gm/al_yesno ('Do you want to create a new peak at : F1'; $f1; "F2"; $f2)
+          if ($returned s= 'yes') @add_att $f1 $f2
+        endif
+       endif
+      endfor
+      endfor
+     else
+      for i = 1 to $np
+        set f1 = $ff1[$i] set f2 = $ff2[$i]
+	find att 2 $f1 $f2
+        if ($pk_fnd_dst > $tol_align | $pk_fnd_dst == -1) then
+          center (ptoi($f1,2,1)) (ptoi($f2,2,2))
+          Showline 1 (ptoi($f1,2,1)) $si2_2d (ptoi($f1,2,1))
+          Showline (ptoi($f2,2,2)) 1 (ptoi($f2,2,2)) $si1_2d
+          gm/al_yesno ('Do you want to create a new peak at : F1'; $f1; "F2"; $f2)
+          if ($returned s= 'yes') @add_att $f1 $f2
+        endif
+      endfor
+     endif
+   refmacro 0
+elsif ($act s= "add") then		; add to build_list related peaks
+
+   for i = 1 to $np
+   for j = 1 to $np
+     if ($sym s= "Symm" | $i == $j) then
+      set f1 = $ff1[$i]
+      set f2 = $ff2[$j]
+      find att 2 $f1 $f2           ; get coord
+      if ($pk_fnd_dst <= $tol_align & $pk_fnd_dst != -1) then      ; found
+        if (!exist('done[' // $pk_fnd // ']')) then       ; not in list yet
+          print ('added pk #';$pk_fnd)
+          set done[$pk_fnd] = 1
+          set pk = (tail(tail(tail($att[$pk_fnd]))))
+          if (tolower(head($pk)) s! "unk" | tolower(head(tail($pk))) s! "unk") then
+;            gm/al_yesno ("Peak"; $pk_fnd; "already assigned, do you wish to add it ?")
+;            if ($returned s= "yes") set build_list := ($build_list; $pk_fnd)
+            local_pk $pk_fnd
+            dialogbox 'Warning' ("Peak"; $pk_fnd; "already assigned") message \
+              'Do you want to:' enum 'do not add,add it as is,create a new one and add it' choix % *
+            if ($choix s= 'add it as is') then
+               set build_list := ($build_list; $pk_fnd)
+            elsif ($choix s= 'create a new one and add it') then
+               set pic = ($att["largest"] + 1)
+               set amp = (val2d(ptoi($f1,2,1),ptoi($f2,2,2)))
+               set att[$pic] = ($f1; $f2; $amp; "unk unk")
+               set att["largest"] = $pic
+               set build_list := ($build_list; $pic)
+            endif
+          else
+            set build_list := ($build_list; $pk_fnd)
+          endif
+        endif
+      endif
+     endif
+   endfor
+   endfor
+elsif ($act s= "ext") then		; new point in the marker
+	point							
+	while ($arg)                    ; get corr on call line
+		point_push
+		set f1 = $_
+		set f2 = $_
+		point_input (ptoi($f1,2,1)) (ptoi($f2,2,2))
+	endwhile
+	marker				; simply performed by calling marker again
+else
+   Print "Command unknown"
+endif

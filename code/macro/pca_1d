@@ -1,0 +1,91 @@
+; pca_1d  algo
+;
+; applies the PCA analysis on a set of 1D
+; (Stoyanova et al JMR Ser A 115 (1995) p 265)
+; (Brown et al JMR Ser B 112 (1996) p 32)
+; 
+;       algo is 0 or 1
+; 0 : directly computes the intensity of the line,
+;
+; 1 : iteratively correct for 1st order errors
+;     on shift and phase
+;
+; in all cases, the result is in the 1D buffer
+; and the initial data kept in the DATA buffer
+;
+
+; dim 2 row 3 dim 1 mult -2 add tt evaln 1 9
+
+set alg = $_
+put data
+if ($alg == 0) then
+  evaln 1 1 $si1_2d $si2_2d  addbase %   ; center
+  backprod  diagonalize                  ; PCA
+  row 1  dim 1          ; PC1
+  max  if (abs($max[1]) < abs($max[2])) mult -1   ; could be up-side-down
+  leftprod              ; mult series of spectra with PC1
+elsif ($alg == 1) then
+  set tmp = "/tmp/gifa_pca"
+  for i = 1 to $iter
+    get data
+    set nb = $si1_2d   ; number of experiment
+;    evaln 1 1 $si1_2d $si2_2d  addbase %
+    backprod    diagonalize
+    chsize 3 %            ; keep PC1 2 3
+    chsize 5 %            ; and make room for PCprime and PCi
+    row 1  dim 1          ; PC1
+    max  dim 2 if (abs($max[1]) < abs($max[2])) mult -1  \
+         print "=================================================RETOURNE" ; could be up-side-down
+    row 1 dim 1
+    iftbis phase 90 0 ftbis  ; hilbert tf of PC1
+    dim 2 put row 5
+    row 1 dim 1
+    iftbis phase 90 0 tm $si1_1d $SI1_1D ftbis  ; PCprime
+    dim 2 put row 4
+    for i = 1 to 5     ; normalize
+       dim 2 row $i dim 1
+       evaln 1 $SI1_1D   mult (1/$noise)
+       dim 2 put row $i
+    endfor
+    write $tmp
+    chsize 8 % transpose chsize % 5 backprod  ; compute cross products
+    set t11 = (val2d(2,4))     ; get passage matrix
+    set t12 = (val2d(2,5))
+    set t21 = (val2d(3,4))
+    set t22 = (val2d(3,5))
+    set p = ($t11*$t22 -  $t12*$t21)  
+; determinant
+    if (abs($p) < 1.0e-10) error "singular matrix in pca_1d !"  ; may die here with a *** error in arithmetic format
+    if ($p>0) then
+      set p = (sqrt($p))
+    else
+      print "=================================================DISC" ; could be up-side-down
+      set p = (-sqrt(-$p))
+    endif
+    set u11 = ($t22/$p)  ; inverse (cramer method) and normalize to det = 1.0
+    set u12 = (-$t12/$p)
+    set u21 = (-$t21/$p)
+    set u22 = ($t11/$p)
+    join $tmp
+    dim 2 chsize 3 $nb zero
+    dim 1 getc f2 1 %% leftprod   ; S1
+    dim 2 put row 1
+    dim 1 getc f2 2 %% leftprod   ; S2
+    dim 2 put row 2
+    dim 1 getc f2 3 %% leftprod   ; S3
+    dim 2 put row 3
+    disjoin
+    for i = 1 to $si2_2d  ; transform to shift and phase, using computed uxx
+      set t = ($u11*val2d(2,$i)+$u21*val2d(3,$i))
+      set v = ($u12*val2d(2,$i)+$u22*val2d(3,$i))
+      setval 2 $i ($t/val2d(1,$i))
+      setval 3 $i (atan(-$v/val2d(1,$i)))
+;print (val2d(2,$i); val2d(3,$i)*45/atan(1))
+    endfor
+exit
+  endfor
+  dim 1 getc F2 1 %% leftprod    ; finish with value
+else
+  error "Wrong parameter"
+endif
+

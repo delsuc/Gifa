@@ -1,0 +1,35 @@
+; testing DBM file opening et dbm exist function
+
+dbopen yip toto
+report (dbm('toto')) 'DBM exist function'
+
+; testing DBM element assignment
+set toto['Pic181'] = 'HA(1)HB2(3)'
+set toto['Pic164'] = 'HA(10)HB(13)'
+set toto['Pic203'] = 'HN(24)HN(25)'
+set a = (($toto['Pic181'] s= 'HA(1)HB2(3)') & ($toto['Pic164'] s= 'HA(10)HB(13)'))
+set b = ($toto['Pic203'] s= 'HN(24)HN(25)') 
+report ($a & $b) "DBM assignment"
+
+; testing DBM nextlm: attention ces trois commandes doivent etre faites en se suivant
+report (nextlm('toto',' ') s! ' ') "DBM nextlm for the first key"
+report ((nextlm('toto','iur') s! ' ') & (nextlm('toto','ciwnr') s! ' ')) "DBM nextlm"
+report (nextlm('toto','uervr') s= ' ') "DBM nextlm for the last key"
+
+; testing foreach
+set i = 0
+foreach j in toto
+  set i = (%+1)
+endfor
+report ($i == 3) "DBM and foreach scanning"
+
+; testing unset and DBM nextlm
+unset toto['Pic164']
+set a = ((nextlm('toto',' ') s! ' ') & (nextlm('toto','ci') s! ' ')) 
+set b = (nextlm('toto','u') s= ' ') 
+report ($a & $b) "nextlm or unset"
+
+; cleaning temporary files
+dbclose toto 
+sh 'rm yip*'
+quit

@@ -1,0 +1,50 @@
+; to correct the ppm/Hz computation in Gifa
+; with version < 4.10
+;
+; in Gifa version < 4.10 ,  (i.e up to 4.09)
+; computation of ppm and Hz is slightly wrong, by a factor (size-1)/size.
+; This macro corrects the internal values of specw and offset
+; to give a correct computation of ppm and Hz.
+; however, ppm definition will shift a little for spectral region at high field.
+; so you might want to recalibrate afterward.
+; It should be applied only ONCE to a data-set.
+;
+; Since it modifies the spectral parameters of the data-set,
+; this data-set, if wrote onto a file will be wrong when read with
+; a corrected version of Gifa.
+;
+; so the following procedure is proposed :
+; Do not touch to your files, version 4.10 should be available by sept. 1996
+; Rather read your files, and apply correctppm after reading, so that the
+; in-memory file is correct. Do not write it back, at least not on file
+; you wish to use later on.
+;
+; Note also that peak-files are stored in ppm format
+; so peak-tables stored in corrected ppm, will be Ok when read with the
+; corrected version of Gifa.
+; If you have already peak-tables that you wish to keep,
+; and you want to correct the ppm values, do the following :
+;   read file         ; get file
+;   pkread peaks.old  ; load peaks
+;   correctppm        ; peaks won't move because they are internally in index !
+;   pkwrite peaks.new ; store corrected peak values.
+; next time you use it
+;   read file    correctppm   pkread peaks.new   ; is fine
+
+if ((head(tail($version))) >= 4.10) then
+;This version verification line will not work on old Gif version !
+   print 'This macro is not needed any-more with this version of Gifa'
+   exit
+endif
+
+if ($dim == 1) then
+   offset (%+$specw_1_1d/$si1_1d)
+   specw  (%*($si1_1d-1)/$si1_1d)
+elsif ($dim == 2) then
+   offset (%+$specw_1_2d/$si1_2d) (%+$specw_2_2d/$si2_2d)
+   specw  (%*($si1_2d-1)/$si1_2d) (%*($si2_2d-1)/$si2_2d)
+elsif ($dim == 3) then
+   offset (%+$specw_1_3d/$si1_3d) (%+$specw_2_3d/$si2_3d) (%+$specw_3_3d/$si3_3d)
+   specw  (%*($si1_3d-1)/$si1_3d) (%*($si2_3d-1)/$si2_3d) (%*($si3_3d-1)/$si3_3d)
+endif
+

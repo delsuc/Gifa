@@ -1,0 +1,63 @@
+; interactive 
+; permits to assign chemical shift to a given point
+; will change the offset
+;
+;see also : UNIT SPECW OFFSET FREQ point calibdosy
+
+  ; if ($unit s= 'INDEX' | $unit s= 'SECOND') error 'UNIT should be either PPM or HZ'
+if ($unit s= 'INDEX' | $unit s= 'SECOND') unit P
+;alert "click on the point you want to assign"
+print "click on the point you want to assign"
+refmacro 1
+monopoint
+
+if ($dim == 1) then
+  if ($unit s= 'PPM') then
+    set x = (itop($pointx[1],1,1))
+  elsif ($unit s= 'HZ') then
+    set x = (itoh($pointx[1],1,1))
+  elsif ($unit s= 'DAMPING') then
+    set x = (itod($pointx[1],1,1))
+  endif
+  dialogbox calib \
+     "Enter coordinate of the point :" real calib_c_val $x \
+     "Enter unit :" enum 'PPM,HZ,DAMPING' lunit $unit \
+     *
+  unit $lunit
+  if ($unit s= 'DAMPING') then
+    dfactor ($dfactor*$calib_c_val/itod($pointx[1],1,1))
+  else
+    if ($unit s= 'PPM') set calib_c_val = ($calib_c_val*$freq_1d)
+    set calib_pt_hz = ($specw_1d/$si1_1d)  
+    offset  ($calib_c_val-($si1_1d+1-$pointx[1])*$calib_pt_hz)
+  endif
+elsif ($dim == 2) then
+  if ($unit s= 'PPM') then
+    set x = (itop($pointx[1],2,2))
+    set y = (itop($pointy[1],2,1))
+  elsif ($unit s= 'HZ') then
+    set x = (itoh($pointx[1],2,2))
+    set y = (itoh($pointy[1],2,1))
+  endif
+  dialogbox calib \
+     "Enter coordinates of the point" message \
+     "In F1 :" real calib_c_val $y \
+     "In F2 :" real calib_c_val2 $x \
+     "Enter unit :" enum 'PPM,HZ' lunit $unit \
+     *
+  unit $lunit
+  if ($unit s= 'PPM') set calib_c_val = ($calib_c_val*$freq_1_2d)
+  set calib_pt_hz = ($specw_1_2d/$si1_2d)
+  if ($unit s= 'PPM') set calib_c_val2 = ($calib_c_val2*$freq_2_2d)
+  set calib_pt_hz2 = ($specw_2_2d/$si2_2d)
+  offset  ($calib_c_val-($si1_2d+1-$pointy[1])*$calib_pt_hz)     \
+          ($calib_c_val2-($si2_2d+1-$pointx[1])*$calib_pt_hz2)
+else
+  error "Not implemented in 3d"
+endif
+refmacro 0
+ref
+exit
+
+
+

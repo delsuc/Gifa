@@ -1,0 +1,14 @@
+; exemple de help
+; ....
+formbox FORMULAIRE \
+dump \
+'ceci est un test de formulaire' message \
+'seconde ligne:' message \
+'ceci est un test de formulaire' message \
+'ceci est un test de formulaire' message \
+'ceci est un test de formulaire' message \
+'ceci est un test de formulaire' message \
+'ceci est un test de formulaire' message \
+'ceci est un test de formulaire' message \
+'ceci est un test de formulaire' message \
+*

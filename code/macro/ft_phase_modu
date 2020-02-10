@@ -1,0 +1,16 @@
+; ft_Phase_modu
+;
+; performs the F1 fourier transform of a 2d data-set acquired in 
+; phase modulation mode (Bruker magnitude mode MC2=QF)
+;
+; see also : ft_seq ft_sim ft_sh ft_tppi ft_sh_tppi ft_n+p FT
+
+if ($dim != 2) error "implemented only in 2D"
+;  if ($itype_2d != 1) error "itype should be equal to 1"
+  itype 1
+  flip revf f1 ft f1 flop
+  reverse f1
+;  for i = 1 to $si2_2d
+;    col $i dim 1 reverse dim 2 put col $i
+;  endfor
+

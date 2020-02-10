@@ -1,0 +1,31 @@
+; film_form (interactive)
+;
+; create a formbox for the visualisation of a given peak on a 
+; list of data-sets.
+;
+; see also: SHOWPEAKS JOIN film_peak
+;
+
+alert "Click on the peak you want to analyze"
+
+dim 2
+point_clear
+monopoint
+set f1 = (itop($pointy[1],2,1))  set f2 = (itop($pointx[1],2,2))
+
+find att 2 $f1 $f2
+
+if ($pk_fnd_dst < $tol_click & $pk_fnd_dst != -1) then
+   show_att $pk_fnd
+   set last_click := ("PEAK"; $pk_fnd)
+    formbox 'Peak movie' \
+   'film_peak $peak_no $ls_spec' \
+   'Select the peak index' int peak_no $pk_fnd \
+   'Data-sets list' multienum $list_spectra ls_spec $list_spectra \
+   *
+else
+  alert ("No peak found within"; $tol_click; "ppm")
+endif
+
+
+

@@ -1,0 +1,385 @@
+; easyplot 
+;
+; This tool is a simple interface to preview and realize  plots. 
+; 
+; After choosing the plot parameters, you can visualize the current
+; spectrum (in a postscript format) with the 'preview' button before drawing
+; the current spectrum on a output file (postscript or HPGL).
+; You can superimpose several spectra (with different offset) on the same 
+; output file.
+; The resulting output file can then be visualized, printed or cancelled.
+; 
+;	'Page Set-up'
+; The page orientation can be in a landscape format (rotation off) or 
+; in a portrait format (rotation on). The 'parameters' button permits
+; to activate the form box used to modify the contour parameters.
+; The plot offset values are used to offset the origin of the plot
+; (the lower left corner) at (x,y). The plot size can also be modified.
+;
+;	'Color Set-up'
+; The plot can be :	- 'Monochrome' with a specified color (black, red, 
+; yellow, green, cian, blue, purple or white), 
+;		- 'Bicolor' with the positive signals in blue and 
+; the negative ones in red,
+;		- 'Multicolor'.
+; For the postscript format, the line style can be modified.
+;
+;	'Axes Set-up'
+; Along the X and/or Y axes, projections or diagonal can be added.
+; The unit along X and Y axes can be in ppm, hz, index, damping or none.
+; The tick space can be choosed except for damping unit wich was
+; automatically calculated. A grid can also be added.
+;
+; You can also give a title to your plot.
+;
+; see also : plot? PLOT
+
+ ; easyplot plotter_type rotation X_size Y_size X_offset Y_offset pen_type
+;          plot_color plot_type show_on_X show_on_Y X_unit Y_unit
+;          tick_space_X tick_space_Y grid titre output_file action
+;
+; no arg means : build the formbox, args means do the action (Preview,
+; Draw to file, Preview file, Print file or Reset file).
+
+
+if (!exist('psviewer')) set psviewer := 'ghostscript'
+
+if (!$arg) then
+
+; compute default values
+set pl = $config_plot
+if ($pl s= "HP-GL") then
+  set of7x = (-($cx/2))
+  set of7y = (-($cy/2))
+else
+  set of7x = $PLOTOFFSET[1]
+  set of7y = $PLOTOFFSET[2]
+endif
+set cray = 1
+set xax = 0.5
+set yax = 0.5
+if ($dim == 1) then
+   set cunityd = none
+else
+   set cunityd = ppm
+endif
+set gd = "off"
+set ct = ("File : ";$name)
+set txt = "Gifa_Temp.Plot"
+set cpg = "Draw & Print"
+;set temp = ('gifaplot' // 1000000*int($random) // '.ps')
+
+           ; remember that lines should be smaller than 256 !!! (the Preview button)
+formbox "Easyplot" \
+     "easyplot $cpl $crot $ccx $ccy $cof7x $cof7y $ccray $cpcol $cbw $cxshow $cyshow $cunitx $cunity $cxax $cyax $cgd $titre $ctxt 'Draw & Print'" \
+     "Page Set-up" message \
+     "Plotter Type   " enum "postscript,HP-GL" cpl $pl \
+     noreturn "Rotate is . . ." enum "on,off" crot "off" \
+     noreturn "Modify 2D Contour" message noreturn "Parameters" action dispcont \
+     "Plot Size (cm)  : X-axis " real ccx $cx \
+     noreturn "Y-axis" real ccy $cy \
+     "Plot OffSet (cm): X-axis " real cof7x $of7x  \
+     noreturn "Y-axis" real cof7y $of7y  \
+     separator \
+     "Color Set-up" message \
+     "Plot type " enum "Monochrome,Bicolor,MultiColor" cbw "Monochrome" \ 
+     noreturn "Color (for Monochrome plots)" enum "black,red,yellow,green,cian,blue,purple,white" cpcol "black" \
+     "Pen number . . . (Line Style for a PostScript Print)" enum "1,2,3,4,5,6,7,8" ccray $cray \
+     separator \
+     "Axes Set-up" message \
+     "Show on X axis" enum "none,proj skyline,proj mean,proj_loc skyline,proj_loc mean,diag" cxshow "none" \
+     noreturn "Y axis" enum "none,proj skyline,proj mean,proj_loc skyline,proj_loc mean,diag" cyshow "none" \
+     "Unit along X Axis" enum "none,ppm,hz,index,damping" cunitx "ppm" \
+     noreturn "Y Axis" enum "none,ppm,hz,index,damping" cunity $cunityd \
+     noreturn "Grid " enum "solid,dashed,off" cgd $gd  \
+     "Tick space along X Axis" real cxax $xax  \
+     noreturn "Y Axis" real cyax $yax  \
+     noreturn "(unit above) (useless in damping)" message \
+     separator \
+     "Title to print... " string titre $ct \
+     "Output File :  " string ctxt $txt \
+     noreturn "(Gifa_Temp.Plot for dummy plot file)" message \
+"Preview" action "set tp = ('plot'//1000000*int($random//'.ps')) easyplot $cpl $crot $ccx $ccy $cof7x $cof7y $ccray $cpcol $cbw $cxshow $cyshow $cunitx $cunity $cxax $cyax $cgd $titre $tp 'Draw Only' sh ($psviewer;$tp) forget $tp sh ('/bin/rm'; $tp)" \
+     noreturn "Draw to file" action "easyplot $cpl $crot $ccx $ccy $cof7x $cof7y $ccray $cpcol $cbw $cxshow $cyshow $cunitx $cunity $cxax $cyax $cgd $titre $ctxt 'Draw Only'" \
+     noreturn 'Command to use for preview :' string psviewer $psviewer \
+     "Preview file" action "sh ($psviewer; $ctxt)" \
+     noreturn "Print file" action "page $ctxt" \
+     noreturn "Reset file" action "forget $ctxt sh ('rm -f'; $ctxt)" \ 
+     noreturn "For Draw & Print use Apply or Ok button" message \
+     noreturn "Help" action "help easyplot" \
+     *
+else
+ set cpl = $_
+ set crot = $_
+ set ccx = $_ 
+ set ccy = $_
+ set cof7x = $_
+ set cof7y = $_
+ set ccray = $_
+ set cpcol = $_
+ set cbw = $_
+ set cxshow = $_
+ set cyshow = $_
+ set cunitx = $_
+ set cunity = $_
+ set cxax = $_
+ set cyax = $_
+ set cgd = $_
+ set titre = $_
+ set ctxt = $_
+ set cpg = $_
+
+; garde l'echelle et le plotoffset en entree
+ set inscale = $scale
+ set invheight = $vheight
+
+; nom de l'auteur du formulaire
+ print "Gifa easyplot Form. :  S.A. 1998"
+ 
+; Calcul de la hauteur de l'eventuel plot du spectre 1D ($tcy)
+; (10% de la taille du plot en y et au minimum 2cm)
+; le separateur ($sep) est fixe a 0.1cm 
+ set sep = 0.1 
+ set tcy = (0.1 * $ccy) 
+ if ($tcy < 2) set tcy = 2
+
+; restitution de la couleur
+ if ($cpcol s= "black") set cpcol = 1
+ if ($cpcol s= "red") set cpcol = 2
+ if ($cpcol s= "yellow") set cpcol = 3
+ if ($cpcol s= "green") set cpcol = 4
+ if ($cpcol s= "cian") set cpcol = 5
+ if ($cpcol s= "blue") set cpcol = 6
+ if ($cpcol s= "purple") set cpcol = 7
+ if ($cpcol s= "white") set cpcol = 8
+
+;Choix du plotter
+plotter $cpl
+if (!($cpg s= "Print Only")) then
+   print "Opening File..."
+   if ($crot s= "on") then
+     rotate 1
+   else 
+     rotate 0
+   endif
+
+   ;choix de CX et CY
+   if ($ccx > 0 ) then
+      cx $ccx
+   else
+      error "cx should be >0"
+   endif
+   if ($ccy > 0 ) then
+      cy $ccy
+   else
+      error "cy should be >0"
+   endif
+
+;Choix des coordonnees de l'origine (calcule pour HPGL ou Postscript) 
+;[varie suivant la presence ou non des projections latterales]
+;
+   plotoffset $cof7x $cof7y ;reinitialise plotoffset pour le cas ou la
+                            ; macro serait lancee plusieurs fois sinon
+                            ; on observe un decalage du a plotoffset % ...
+
+; initialise
+   if ($cpl s= "postscript") then
+      pcolor 1 $ctxt
+   endif
+   pen 1 $ctxt
+
+;print map in b&w or color
+   pen $ccray $ctxt
+;   if ($cpl s= "postscript") then
+   if ($cbw s= "Monochrome") then
+      pcolor $cpcol $ctxt
+      plot $ctxt
+      pcolor 1 $ctxt pen 1 $ctxt
+      if (($cpcol != 1 | $ccray != 1) & $dim != 1) scale (%/100000) plot $ctxt scale (%*100000)
+   elsif ($cbw s= "Bicolor") then
+      if ($sign == 0) then
+         sign 1 pcolor 6 $ctxt plot $ctxt
+         sign -1 pcolor 2 $ctxt plot $ctxt
+         sign 0
+      elsif ($sign == -1)
+         pcolor 2 $ctxt plot $ctxt
+      else
+         pcolor 6 $ctxt plot $ctxt
+      endif
+      pen 1 $ctxt pcolor 1 $ctxt
+      if ($dim != 1) scale (%/100000) plot $ctxt scale (%*100000)
+   else
+      plotcolordisp $ctxt
+      pen 1 $ctxt pcolor 1 $ctxt
+      if ($dim != 1) scale (%/100000) plot $ctxt scale (%*100000)
+   endif
+;   else
+;      if ($cbw s= "Monochrome") then
+;        plot $ctxt
+;      else
+;        plotcolordisp $ctxt
+;      endif
+;   endif
+
+;Print axis
+   if ($cunitx s! 'none' & $cunitx s! 'damping') then
+	plotaxis? $cunitx $cxax $cyax
+	plotaxis F2 $ctxt
+   elsif ($cunitx s= 'damping') then
+	plotdamp_x 0.1 $ctxt
+   endif
+
+   if ($cunity s! 'none' & $cunity s! 'damping') then
+        plotaxis? $cunity $cxax $cyax
+        plotaxis F1 $ctxt
+   elsif ($cunity s= 'damping') then
+        plotdamp_y 0.1 $ctxt
+   endif
+
+;Print grid
+   if ($cgd s="solid") then
+      if ($dim == 1) grid F2 $ctxt
+      if ($dim == 2) grid F12 $ctxt
+   elsif ($cgd s="dashed") then
+      if ($CONFIG_PLOT s= "postscript") pen 4 $ctxt
+      if ($dim == 1) grid F2 $ctxt
+      if ($dim == 2) grid F12 $ctxt
+      pen 1 $ctxt
+   endif
+   
+;Print title
+   if (!($cxshow s= "none")) then 
+      set oldcy = $cy
+      cy ($cy+$sep+$tcy)
+      title $titre $ctxt
+      cy $oldcy
+   else
+      title $titre $ctxt
+   endif
+ if ($dim == 2) then ; otherwise projection not print
+
+; print side spectra
+   set orx = $PLOTOFFSET[1] ;recupere l'origine du contour plot en x
+   set ory = $PLOTOFFSET[2] ;recupere l'origine du contour plot en y
+   
+; recupere dans tous les cas la taille de l'eventuel zoom 2D
+    set rap = ($SI2_2D/$SI1_2D)
+    set za = $zoom_2d[1]
+    set zb = $zoom_2d[2]
+    set zc = $zoom_2d[3]
+    set zd = $zoom_2d[4]
+
+; Projection selon F1
+   if (!($cxshow s= "none")) then 
+       dim 2
+       if ($cxshow s= "proj skyline") then
+          proj F1 S
+       elsif ($cxshow s= "proj mean") then 
+          proj F1 M
+       elsif ($cxshow s= "proj_loc skyline") then
+          if ($zoom == 0) then
+             proj F1 S
+          else
+             proj_loc F1 S $zoom_2d[1] $zoom_2d[3]
+          endif
+       elsif ($cxshow s= "proj_loc mean") then
+          if ($zoom == 0) then
+             proj F1 M
+          else
+             proj_loc F1 M $zoom_2d[1] $zoom_2d[3] 
+          endif
+       elsif ($cxshow s= "diag") then
+          diag
+       endif
+       dim 1 scale 1 cx $ccx cy $tcy
+       if ($zoom != 0) then
+          if (($cyshow s= "diag") & ($rap < 1)) then
+             zoom 1 ($zb/$rap) ($zd/$rap)
+          else
+             zoom 1 $zb $zd
+          endif
+       endif
+       vheight 0.1
+       if ($cpl s= "postscript") plotoffset $orx ($ory+$ccy+$sep)
+       if ($cpl s= "HP-GL") plotoffset $orx ($cof7y+$ccy+$sep-($tcy/2))
+       plot $ctxt
+       dim 2 cx $ccx cy $ccy scale $inscale
+   endif 
+
+; Projection selon F2
+  if (!($cpl s= "HP-GL")) then ; pas cette projection en HP-GL
+   if (!($cyshow s= "none")) then
+       dim 2
+       if ($cyshow s= "proj skyline") then 
+          proj F2 S
+       elsif ($cyshow s= "proj mean") then
+          proj F2 M
+       elsif ($cyshow s= "proj_loc skyline") then
+          if ($zoom == 0) then
+             proj F2 S
+          else
+             proj_loc F2 S $zoom_2d[2] $zoom_2d[4]
+          endif
+       elsif ($cyshow s= "proj_loc mean") then
+          if ($zoom == 0) then 
+             proj F2 M
+          else
+             proj_loc F2 M $zoom_2d[2] $zoom_2d[4]
+          endif
+       elsif ($cyshow s= "diag") then
+          diag
+       endif
+       if ($crot s= "off") then
+          dim 1 scale -17 cx $ccy cy $tcy ; ?? taille scale -1 # taille de scale 1 ??
+          if ($cpl s= "postscript") plotoffset (20.285-$ory-$ccy) ($orx-$sep-$tcy)
+          reverse 
+          if ($zoom != 0) then
+             if (($cyshow s= "diag") & ($rap > 1)) then
+                zoom 1 ($SI2_2D + 1 - ($rap*$zc)) ($SI2_2D + 1 - ($rap*$za))
+             else
+                zoom 1 ($SI1_2D + 1 - $zc) ($SI1_2D + 1 - $za)
+             endif
+          endif
+          rotate 1
+          vheight 0.9
+          plot $ctxt
+          rotate 0
+       else
+          dim 1 scale 1 cx $ccy cy $tcy ; 
+          if ($cpl s= "postscript") plotoffset $ory (20.285-$orx)
+          if ($zoom != 0) then
+             if (($cyshow s= "diag") & ($rap > 1)) then
+                zoom 1 ($za/$rap) ($zc/$rap)
+             else
+                zoom 1 $za $zc
+             endif
+          endif
+          rotate 0
+          vheight 0.1
+          plot $ctxt
+          rotate 1
+       endif
+       reverse vheight $invheight ;permet de recuperer le zoom de depart en 1D
+       dim 2 cx $ccx cy $ccy scale $inscale
+   endif 
+  else
+    if (!($cyshow s= "none")) print "Show on Y axis NOT AVAILABLE with HP-GL"
+  endif
+ else
+  if ((!($cyshow s= "none")) | (!($cxshow s= "none"))) \
+               print "Side Projection Not Available with 1D plot"
+ endif
+plotoffset $cof7x $cof7y
+endif 
+
+;End of Drawing
+
+; Write EOF and send it to the printer if Print is on!     Printing...
+if (!($cpg s= "Draw Only")) page $ctxt
+
+; unref to remove a redraw on exit
+unref
+
+; EOmacro 
+endif
+

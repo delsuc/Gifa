@@ -1,0 +1,5 @@
+; save db on file
+;
+if (dbm("att")) dbclose att dbopen $cur_db att
+if (dbm("spin")) dbclose spin dbopen db/spin spin
+if (dbm("sys")) dbclose sys dbopen db/spin_syst sys

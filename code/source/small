@@ -1,0 +1,17 @@
+#!/bin/sh
+if diff  sizebase.small sizebase.inc   > /dev/null ; then
+        echo "no difference";
+else
+        cp sizebase.small sizebase.inc;
+fi
+if diff  variable.small variable.inc  > /dev/null ; then
+        echo "no difference";
+else
+        cp variable.small variable.inc ;
+fi
+if diff  sizebasec.small sizebasec.h  > /dev/null ; then
+        echo "no difference";
+else
+        cp sizebasec.small sizebasec.h ;
+fi
+

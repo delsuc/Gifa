@@ -1,0 +1,132 @@
+; calib_integ  (interactive)
+;
+; creates a tool which permits to handle several peaks used for intensity 
+; calibration
+;
+;   This calibration is used to estimate the intensity of the NOESY peaks,
+; when building the constraints for a structure generation.
+;   Choose a set of peaks, spanning the intensities observed on your data-set
+; and associate to each peak a 'typical' distance. 
+;   Then, when building building the constraint file, each peak intensity is compared
+; to the set of reference intensities, and a constraint is thus obtained, either
+; in a qualit`tive fashion (large / medium / small ) or in a semi quantitative fashion.
+;
+; With this tool, you can
+;  - enter peaks in the calibration list, and associate distance
+;  - remove defined peaks
+;  - display the chosen peaks, and drae the calibartion set.
+;  -  store and load a set of peak definitions (stored as macro commands)
+;
+; when loaded, the peak definition are stored in an associative array called
+; calib_dst[]
+;
+; see also : cnst_qualit
+
+set fnm = "calib_int"		; the name of the storage file
+
+=redo
+
+if ($arg == 0) then
+; first prepare every thing for form.
+	set tmp = ('tmp' // int(1000000*$random))
+	open $tmp
+	fprint $tmp "formbox 'Calibration tool' DO_NOTHING \"
+	if (exist('calib_dst[]')) then
+	  foreach i in calib_dst
+		if (exist('att[' // $i // ']')) then
+		  compute_label $i
+		  if ($returned s= ' ') then
+		   set lab = 'UNK'
+		  else
+		   set lab = $returned
+		  endif
+		  fprint $tmp ($lab; 'action "local_pk'; $i; '" noreturn \')
+		  set int = (head(tail(tail($att[$i]))))
+		  fprint $tmp ($int; 'real calib_dst[' // $i // '] % noreturn \')
+		  fprint $tmp ('Remove action "calib_integ Remove'; $i; ' $widget" \')
+		else
+		  unset ('calib_dst[' // $i // ']')
+		  close $tmp
+		  sh ("/bin/rm"; $tmp)
+		  goto redo
+		endif
+	  endfor
+	else
+	  fprint $tmp '"Peak definition list empty" message \'
+	endif
+	fprint $tmp	' separator "draw curve" action "calib_integ Draw" \'
+	fprint $tmp	' noreturn Define action "closeform $widget calib_integ Define" \'
+	fprint $tmp	' noreturn "Show All" action "calib_integ ShowAll" \'
+	fprint $tmp	' noreturn Load action "closeform $widget calib_integ Load" \'
+	fprint $tmp	' noreturn Store action "calib_integ Store" \'
+	fprint $tmp '*'
+	close $tmp
+	@($tmp)
+	sh ("/bin/rm"; $tmp)
+
+else
+	set action = $_
+      if ($action s= "ShowAll") then
+		foreach i in calib_dst
+                   @show_att $i
+		endfor
+	elsif ($action s= "Draw") then
+		set maxd = 0
+		set maxi = 0
+		foreach i in calib_dst
+			set maxd = (max($maxd, $calib_dst[$i]))
+			set maxi = (max($maxi, head(tail(tail($att[$i])))))
+		endfor
+		refmacro 1
+		set vh = (100*$vheight)
+		dim 1 chsize 100 zero zoom 0 disp1d 1 unit s specw (0.5*0.9*$si1_1d/$maxd) ref
+		set delta = (int($si1_1d*0.01))
+		showtext Intensity 1 90
+		showtext Distance (0.8*$si1_1d) 5
+		foreach i in calib_dst
+			set x = ($si1_1d*0.9*$calib_dst[$i]/$maxd)
+			set y = ($vh + 50*head(tail(tail($att[$i])))/$maxi)
+			showline ($x-$delta) ($y-1) ($x+$delta) ($y+1)
+			showline ($x-$delta) ($y+1) ($x+$delta) ($y-1)
+			compute_label $i
+			if ($returned s= ' ') then
+			   set lab = 'UNK'
+			else
+			   set lab = $returned
+			endif
+			showtext $lab $x ($y+2)
+		endfor
+		refmacro 0
+		dim 2 zoom 1 %% unit p unref
+	elsif ($action s= "Define") then
+                alert "Click on the peak you want to add to the calibration list"
+                @find_att
+                set pic = $returned
+                set calib_dst[$pic] := '***'
+                goto redo
+	elsif ($action s= "Remove") then
+                set pic = $_
+                set t = $_
+                set var = ("calib_dst[" // $pic // "]")
+                unset $var
+                closeform $t
+                goto redo
+	elsif ($action s= "Store") then
+                dialogbox Read 'Enter file name' message ' ' file fnm $fnm * 		
+                set t = ("constraints/"//$fnm)
+                open $t
+	   	foreach i in calib_dst
+                 fprint $t ("set calib_dst[" // $i // "] := " // $calib_dst[$i])
+		endfor
+		close $t
+		alert ("Written to a file called :"; $fnm)
+	elsif ($action s= "Load") then
+		dialogbox Read 'Enter file name' message ' ' file fnm $fnm * 		
+		print ("Loading from file '"; $fnm; "'")
+                set t = ("constraints/"//$fnm)
+		@($t)
+		goto redo
+	else
+		print "Unknown action"
+	endif		; $action
+endif			; $arg

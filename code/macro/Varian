@@ -1,0 +1,14 @@
+; This command switches to Varian mode
+;
+; if you wish to be be permanently in Varian mode, simply
+; put the first liine (SETPATH etc..) as the first line in
+; your startup.g file (either global or personnal)
+;
+; see also: /usr/local/gifa/macro/varian/README.varian
+
+if (index($gifapath,'varian')==0) then
+   SETPATH ('/usr/local/gifa/macro/varian' ; $gifapath)
+endif
+closebutton
+button.g
+

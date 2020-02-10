@@ -1,0 +1,71 @@
+; promote 'list  of peak id'
+;
+; promotes all peaks in the list as a spin syst.
+;
+; wrapper around mod_sys
+
+
+message "enter list of peaks"
+set ll_res = $_
+
+; find spin ppms
+@list2spin $ll_res
+
+
+set sysid = ($sys['largest']+1)
+
+; create new spins
+set nsp = 0
+while ($returned s! " ")
+   set sp = (head($returned))   set returned = (tail($returned))  set nsp = (%+1)
+   print ("Creating a new spin at :"; $sp; "ppm")
+   set spid = ($spin["LARGEST"]+1)
+   set nm = "unk"
+   if ($sp > 6.8 & $sp < 9) then
+      set nm = "HN"
+   elsif ($sp > 3.5 & $sp < 5.5) then
+      set nm = "HA"
+   endif
+   set spin[$spid] = ($sp; $nm; $sysid)
+   set spin["LARGEST"] = $spid
+endwhile
+
+; assign peak to then
+set ll = $ll_res
+while ($ll s! ' ')
+    set pkid = (head($ll))
+    set pk = $att[$pkid]    set ll = (tail($ll))
+    set f1 = (head($pk))
+    set pk = (tail($pk)) set f2 = (head($pk))
+    set pk = (tail($pk))  set amp = (head($pk))
+    set pk = (tail($pk))  set sp1 = (head($pk))
+    set pk = (tail($pk))  set sp2 = (head($pk))
+    set note = (tail($pk))
+    for i = 0 to ($nsp-1)
+       set ppm = (head($spin[$spid-$i]))	; thru the newly created
+       if (($ppm - $f1)< $tol_align) then
+         set sp1 = ($spid-$i)
+       endif
+       if (($ppm - $f2)< $tol_align) then
+         set sp2 = ($spid-$i)
+       endif
+    endfor
+    if ($sp1 s= "unk" | $sp2 s= "unk") error ("Erreur pour pic"; $pkid)
+    set att[$pkid] = ($f1;$f2;$amp;$sp1;$sp2;$note)
+endwhile
+
+
+
+; create dumb sys
+
+set syst = "unk unk"
+for i = ($nsp-1) to 0 step -1
+    set syst = ($syst; $spid-$i)
+endfor
+set sys[$sysid] = $syst
+
+; then modify
+mod_sys $sysid
+
+; increments if no error
+set sys['largest'] = $sysid

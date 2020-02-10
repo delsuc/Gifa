@@ -1,0 +1,43 @@
+; rem_spin $sp_id
+;
+; removes $sp_id from peak data base
+; unassign related peaks
+; DOES NOT check spin_systems
+
+set sp_id = $_
+
+set dpl = (head($spin[$sp_id]))
+
+;check peaks
+for i = 1 to 2
+  if ($i == 1) then
+     set lrgm = ($dpl - 2*$tol_align)
+     set lrgp = ($dpl + 2*$tol_align)
+     set htp = (itop(1,2,1))
+     set htm = (itop($si1_2d,2,1))
+  else
+     set htm = ($dpl - 2*$tol_align)
+     set htp = ($dpl + 2*$tol_align)
+     set lrgp = (itop(1,2,2))
+     set lrgm = (itop($si2_2d,2,2))
+  endif
+;  print ($htm; $lrgm; $htp; $lrgp)
+foreach pkid in att within 2 $htm $lrgm $htp $lrgp
+    set pk = $att[$pkid]
+    set f1 = (head($pk))
+    set pk = (tail($pk)) set f2 = (head($pk))
+    set pk = (tail($pk))  set amp = (head($pk))
+    set pk = (tail($pk))  set sp1 = (head($pk))
+    set pk = (tail($pk))  set sp2 = (head($pk))
+    set note = (tail($pk))
+    if ($sp1 s= $sp_id) set att[$pkid] = ($f1; $f2; $amp; 'unk'; $sp2; $note) print ('Changed peak #';$pkid)
+    if ($sp2 s= $sp_id) set att[$pkid] = ($f1; $f2; $amp; $sp1; 'unk'; $note) print ('Changed peak #';$pkid)
+endfor
+endfor
+
+; unset
+unset ("spin[" // $sp_id // "]")
+
+;  if it is the last when, then we can backtrack one
+; (Should we ?) if ($spin["LARGEST"] == $sp_id) set spin["LARGEST"] = ($sp_id-1)
+

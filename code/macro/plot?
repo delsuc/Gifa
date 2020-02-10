@@ -1,0 +1,19 @@
+;PLOT?
+; interactive
+; prompt for parameters for plotting
+;
+; see also : disp? easyplot PLOT
+
+print 'Plotter type (PLOTTER)'
+plotter
+print 'Enter width of plot on X and Y axes (CX, CY) :'
+cx
+cy
+print 'Enter offset along x and y axes (PLOTOFFSET):'
+plotoffset
+print 'Enter height of 1D plot (VHEIGHT) :'
+vheight
+print 'Enter ROTATE state :'
+rotate
+print 'For PLOTAXIS :'
+plotaxis?

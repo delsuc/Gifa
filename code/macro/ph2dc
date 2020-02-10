@@ -1,0 +1,63 @@
+; interactive
+; permits to phase a 2D in F1 by interactively selecting columns
+; and building a composite 1D
+;
+; see also : ph2dr rowint colint PH
+
+if ($dim!=2) error '*** Works only in 2D'
+disp1d 1
+
+; if DATA is used, work on file rather than on memory
+if ($si1_2d*$si2_2d > $MEM_PRO_3D+$MEM_PRO_2D) then
+        set onfile = (1 == 1)
+        set file = ("tmp" // int(100000*$random))
+else
+        set onfile = (1 == 0)
+endif
+
+print "Look at columns with left mouse button"
+print "Add select columns with middle mouse button"
+print "and Exit with right mouse button"
+
+dim 2 col 1 
+if $onfile then
+        dim 1 zero write $file dim 2
+else
+        dim 1 zero put data dim 2
+endif
+
+refmacro 1
+=loop
+   monopoint
+   if ($button==3) then
+	goto end
+   elsif ($button==1) then
+       set sel = (2*round($pointx[1]/2)+1)     ; closest odd (real) col
+       col $sel
+   elsif ($button==2) then
+        print ('selected col :';$sel)
+        if $onfile then
+                dim 1 add $file write $file  dim 2 unref
+        else
+                dim 1 adddata put data  dim 2 unref
+        endif
+   endif
+   goto loop
+=end
+set sc = $scale
+dim 1
+if $onfile then
+        read $file  sh ('rm -f';$file)
+else
+        get data
+endif
+ph
+dim 2 scale $sc unref
+if ($ph0 == 0 & $ph1 == 0) refmacro 0 exit
+gm/al_yesno ('PH0 :'; $ph0+0; ' PH1 :'; $ph1+0; ' -- Ok to apply ?')
+if ($returned s! 'yes') print 'Aborted' exit
+print 'phasing in F1 ...'
+phase % % f1
+refmacro 0 exit
+
+

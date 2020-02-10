@@ -1,0 +1,18 @@
+; dumps the containt of the point stack
+;
+; see also : point POINT_PUSH
+
+if ($npoint == 0) then
+   print "Point Stack Empty"
+else
+   print "Entry     X_coord     Y_coord"
+   if ($dim == 1) then
+     for i = 1 to $npoint
+       print ($i; $pointx[$i]; val1d($pointx[$i]))
+     endfor
+   else
+     for i = 1 to $npoint
+       print ($i; $pointx[$i]; $pointy[$i])
+     endfor
+   endif
+endif

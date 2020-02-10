@@ -1,0 +1,29 @@
+; ft_tppi { axis }
+;
+; performs the fourier transform of a 2d data-set acquired in tppi mode
+; Processing is performed only along the F1 axis
+;
+; in 3D, axis may be either f1 or f2
+;
+; (this one adapted to Varian)
+;
+; see also : ft_seq ft_sim ft_sh ft_sh_tppi ft_phase_modu ft_n+p FT
+
+if ($dim == 2) then
+;  if ($itype_2d == 2 | $itype_2d == 3) error "data should be real"
+  if ($itype_2d == 2 | $itype_2d == 3) itype (%-2)
+  rft f1 reverse f1
+elsif ($dim == 3) then
+  message "Enter axis F1/F2"
+  set axis = $_
+  if (toupper($axis) s= "F1") then
+     if ($itype_3d > 3) itype (%-4)
+  elsif (toupper($axis) s= "F2") then
+     if (($itype_3d % 4) > 1) itype (%-2)
+  else
+     error "Wrong axis"
+  endif
+  rft $axis reverse $axis
+else
+  error "Not implemented in 1D, use ft_seq instead"
+endif

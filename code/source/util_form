@@ -1,0 +1,54 @@
+
+	comment utiliser les formulaires (pour program.)
+
+	
+Exemple d'utilisation :
+
+
+int win1,error,i,j,k,l,n,m;
+unsigned mask;
+char var[256],list[256];
+error = 0;
+
+i = 10;
+j = 4;
+l = 5;
+n = 4;
+k = 4;
+m = 14;
+
+mask = OK_MASK | CANCEL_MASK | NORMVAR_MASK | ORIGC_MASK | BLOQ_MASK;
+creat_formulaire("Titre formulaire",&i,"dump",&j,&win1,&mask);
+strcpy(list,"DIM1,DIM2,DIM3");
+create_champs(win1,"Label",&l,var,&n,"enum",&k,list,&m,error);
+aff_formulaire(error);
+
+
+_______________________________________________
+
+Les Mask :sur le champ de bit : 
+
+#define APPLY_MASK 01	-> mise en place du bouton APPLY
+#define CANCEL_MASK 02	-> mise en place du bouton CLOSE
+#define OK_MASK 04	-> mise en place du bouton OK
+#define HELP_MASK 08	-> mise en place du bouton HELP (pas de callback associe)
+#define BLOQ_MASK 16	-> le formulaire est bloquant 
+#define NORMVAR_MASK 32	-> on utilise des variables non gifa (que l'on recupere)
+				(a utiliser que dans le cas ou le formulaire
+					est bloquant )
+#define ORIGC_MASK 64	-> l'appel est ecrit en C
+
+Par Defaut:
+
+	aucun bouton
+	formulaire non bloquant
+	variables utilisees = variables gifa et contexte = id widget 
+	appel a partir du fortran
+
+remarque:
+
+	Pour un formulaire bloquant et utilisant les variables gifa,
+	le contexte est automatiquement le contexte 20
+	
+
+

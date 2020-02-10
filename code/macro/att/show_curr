@@ -1,0 +1,19 @@
+; Show on screen the peak current database
+;
+Print "Current project :"
+pwd
+
+if ($att['largest'] == 0) error "Database Empty !"
+if ($zoom == 0) error "Does not work in 'Full' mode" 
+
+set f1min = (itop($zoom_2d[3],2,1))
+set f2min = (itop($zoom_2d[4],2,2))
+set f1max = (itop($zoom_2d[1],2,1))
+set f2max = (itop($zoom_2d[2],2,2))
+set pk = 0    set apk = 0   set wpk = 0
+
+foreach i in att  within 2 $f1min $f2min $f1max $f2max
+  show_att $i   
+endfor
+endif
+

@@ -1,0 +1,35 @@
+; conv_n+p_onfile filename
+;
+; preprocess a n+p experiment  - WORKS IN PLACE !!!
+; i.e. PFG enhanced acquisition, with positive and negative gradients alternated
+; and make it States-Haberkorn
+;
+; Can actually be applied before or after Fourier Transform in F2
+;
+; see also : conv_n+p
+
+
+refmacro 0
+message 'Enter filename :'
+set fin = $_
+join $fin
+if ($c_dim != 2) disjoin  error "works only on a 2D data-set"
+if ($c_type == 0 | $c_type == 2) then
+   set phase_todo = 'hphase'
+else
+   set phase_todo = 'phase'
+endif
+dim 1
+for i = 2 to ($c_sizef1) STEP 2
+    set k = ($i-1)
+    getc f2 $k %%
+    put data       ; keep (i-1) in data
+    getc f2 $i %%
+    adddata
+    putc f2 $k %%      ; (i-1) + (i)   in  (i-1)
+
+    getc f2 $i %% mult -1
+    adddata $phase_todo 90 0     ; (i-1) - (i)  x 90  in (i)
+    putc f2 $i %%
+endfor
+disjoin

@@ -1,0 +1,35 @@
+; mov_att $pic
+set pic = $_
+
+if (exist("att[" // $pic //"]")) then
+   set l = $att[$pic]
+else
+   error "Unknown peak"
+endif
+
+compute_label $pic
+set label = $returned
+
+print "Click on new peak center"
+monopoint
+if ($BUTTON == 3) exit
+set ppm1 = (itop($POINTY[1],2,1))
+set ppm2 = (itop($POINTx[1],2,2))
+
+set lppm1 = (head($l))    set l = (tail($l))
+set lppm2 = (head($l))    set l = (tail(tail($l)))
+
+if ( abs($lppm1-$ppm1)>$tol_click | abs($lppm2-$ppm2)>$tol_click) then
+	alert ("Peak moves by more than"; $tol_click; "are you sure ?")
+endif
+
+
+set sc = $scolor
+scolor 8
+show_att $pic
+set att[$pic] = ($ppm1;$ppm2;val2d(ptoi($ppm1,2,1),ptoi($ppm2,2,2)); $l)
+scolor $sc
+show_att $pic
+
+
+

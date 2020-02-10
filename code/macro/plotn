@@ -1,0 +1,52 @@
+; plotn total_cx total_cy partial_cx partial_cy  y/n
+;
+; plot on several pages to fit size
+; permits to build large composite plots on size limited plotters
+;
+; see also : easyplot PLOT
+
+message "total X length"
+set tcx = $_
+message "total Y length"
+set tcy = $_
+message "page X length" 
+set lcx = $_
+message "page X length"
+set lcy = $_
+set nx = (int(($tcx/$lcx)+1))    set ny = (int(($tcy/$lcy)+1))
+if (($nx-1)*$lcx == $tcx) set nx = (%-1)
+if (($ny-1)*$lcy == $tcy) set ny = (%-1)
+print ("this will be :"//sp(1)//$nx//"x"//$ny//" pages   total="//($nx*$ny))
+message "is this correct (y/n)"
+set ans = $_  if ($ans s! 'y') goto exit
+;
+set ccx = $cx set ccy = $cy 
+set flbase = Gifa_Temp.Plot
+set incx = ( int( $si2_2d*($lcx/$tcx)))
+set incy = ( int( $si1_2d*($lcy/$tcy)))
+set y1 = 1  set y2 = ($incy+1)
+cy   $lcy
+set tbase = ($name//' : quadrant')
+=loopy
+  set x1 = 1 set x2 = ($incx+1)   cx   $lcx
+  if ($y2>$si1_2d) set y2 = $si1_2d cy ($lcy*($y2-$y1)/$incy)
+=loopx
+    set fl = ($flbase // $x1 // $y1)
+    if ($x2>$si2_2d) set x2 = $si2_2d cx ($lcx*($x2-$x1)/$incx)
+    zoom 1 $y1 $x1 $y2 $x2    plot $fl
+    plotaxis f12  $fl
+    title ($tbase//sp(1)//$x1//'-'//$x2//' x'//sp(1)//$y1//'-'//$y2) $fl
+    page $fl
+    sh ('rm '//$fl)
+    set x1 = ($x1+$incx)  set x2 = ($x2+$incx) if ($x1 < $si2_2d)   goto loopx
+  set y1 = ($y1+$incy)  set y2 = ($y2+$incy) if ($y1 < $si1_2d)   goto loopy
+;    
+;
+cx $ccx cy $ccy
+;
+munset x1 x2 y1 y2 incx incy ccx  ccy  fl  tbase flbase *
+;
+=exit
+munset tcx  tcy  lcx  lcy  nx  ny ans *
+exit
+

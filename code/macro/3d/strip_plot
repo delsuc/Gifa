@@ -1,0 +1,117 @@
+; strip_plot axis strip_width  first_peak last_peak plotfile
+;
+; make a strip plot from the currently JOINed 3D file.
+;
+; assumes the 2d peak table holds the peak pick of the projection of the 3D
+; perpendicular to the strip axis.
+;
+; axis : long axis for the strip, usually the axis of the projection
+;        f3 is always the short dimension
+; strip_width : the width in pixel of the extracted strips 
+; first_peak last_peak : part of the peak table to process
+; plotfile: the name of the output plot file
+;
+; assumes a postscript printer and A4 pages.
+; CX and CY are hard-wired into the macro. 
+
+if ($CONFIG_PLOT s! 'postscript') error "Works only on Postscript printer"
+if ($c_dim!=3) error 'Works only on a JOINed 3D'
+
+if (!$arg & $CONFIG_GRAPH ) then          ; adapted to dialogbox on 21/09/98 M.A.D.
+   formbox 'strip_plot' \
+       'strip_plot $axis $w $first $last $file' \
+        Help action 'help strip_plot' \
+        "Axis to process" enum 'F1,F2' axis 'F1' \
+        noreturn \
+        "Strip width" cursor 1 20 0 w 4 \
+        "index of first peak" int first 1 \
+        noreturn \
+        "Enter index of last peak" int last $npk2d \
+        "output plot file (Gifa_Temp.Plot for temporary)" string file 'Gifa_Temp.Plot' \
+	*
+else
+
+set axis = F1
+message "Axis to process F1/F2"
+set axis = $_
+set axis = (toupper($axis))
+
+set w = 4    ; 'strip' width in pixel
+message "Strip width"
+set w = $_
+
+set first = 1
+message "Enter index of first peak"
+set first = $_
+if ($first <1 | $first >$npk2d) error 'wrong peak index'
+
+set last = $npk2d
+message "Enter index of last peak"
+set last = $_
+if ($last <= $first | $last >$npk2d) error 'wrong peak index'
+
+set file = '*PL'
+message "Plot file name:"
+set file = $_
+
+; set static params
+initinprogress $last
+cx 1
+cy 26
+set ofy = 0.5
+plotaxis? p 1 1
+zoom 0
+dim 2
+rotate 1
+if ($axis s= 'F1') then
+	set long =  $C_SIZEF1
+	set axx = 1
+	set ax_ext = 'F2'
+elsif ($axis s= 'F2') then
+	set long =  $C_SIZEF2
+	set axx = 2
+	set ax_ext = 'F1'
+else
+	error 'Error with axis'
+endif
+
+; initialise les param variables
+set ofx = 1
+
+print ('Plotting along';$axis; 'from'; $first; 'to'; $last; 'into'; $file)
+
+for i = $first to $last
+  inprogress $i
+  getc $ax_ext (round($PK2D_F1F[$i])) 1 ($PK2D_F2f[$i]-$w) $long ($PK2D_F2f[$i]+$w)  absmax $C_ABSMAX
+  plotoffset $ofx $ofy
+  plot $file
+  plottext $i 0 ($cy+1)  $file
+;  plottext (int($PK2D_F1F[$i]+0.5)) 0 ($cy+0.7) $file
+;  plottext (int($PK2D_F2F[$i]+0.5)) 0 ($cy+0.4) $file
+  set pf1 = (itop($PK2D_F1F[$i],0,$axx))
+  set pf1 = (0.01*int(100*$pf1))
+  set pf2 = (itop($PK2D_F2F[$i],0,3))
+  set pf2 = (0.01*int(100*$pf2))
+  plottext $pf1 0 ($cy+0.7) $file
+  plottext $pf2 0 ($cy+0.4) $file
+  set ofx = ($ofx+$cx)
+  if ($ofx > 18) then
+    plotaxis f1 $file
+    plottext 'Peak:' ($cx+0.1) ($cy+1)  $file
+    plottext 'F1 #'  ($cx+0.1) ($cy+0.7) $file
+    plottext 'F2 #'  ($cx+0.1) ($cy+0.4) $file
+    set ofx = 2
+    sh ("echo 'gsave showpage grestore' >>"; $file)
+  endif
+endfor
+
+plotaxis f1 $file
+plottext 'Peak:' ($cx+0.1) ($cy+1)  $file
+plottext 'F1 #'  ($cx+0.1) ($cy+0.7) $file
+plottext 'F2 #'  ($cx+0.1) ($cy+0.4) $file
+
+page $file
+plotoffset 1 1
+refmacro 0
+endif
+

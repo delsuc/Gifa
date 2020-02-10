@@ -1,0 +1,26 @@
+On a une serie d'amortissements	et d'amplitudes :	Kj ,  Aj
+   on cherche la fonction de reponse echantillonnee
+   					au temps   ti :	Fi
+
+1)	Fi = SUM(j=1..n; Aj*exp( -Kj*ti ) )   i = 1..p
+
+
+les amortissements sont supposes ranges de manieres exponentielle
+de Kmin a Kmax dans un tableau[j = 1..n]
+
+2)	Kj = Kmin * exp( k*(j-1) )
+
+	log(Kmax/Kmin) =  k*(n-1)
+3)	k = log(Kmax/Kmin) / (n-1)
+
+On peut voir eq 1) comme :
+
+4)	Fi = SUM(j=1..n, Mij * Aj )
+
+	ou	Mij = exp( -Kj*ti )
+
+donc la transformee de cette transformation est :
+
+5)	Aj = SUM( i=1..p, Mij * Fi )  j=1..n
+
+	Aj = SUM( i=1..p, Fi * exp( -Kj*ti ) )

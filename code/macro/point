@@ -1,0 +1,60 @@
+; interactive mode on screen
+;
+; Permit to interactively inspect the content of the data-set,
+; using the mouse on the graphic-screen.  Exit when you click
+; the 3rd button of the mouse
+; Clicked point are stacked onto the POINT_STACK
+;
+; see also : point_cross point_dump POINT_PUSH MONOPOINT ZM
+
+refmacro 1
+if ($dim ==1 & $disp1d == 0) error "Display must be on"
+if ($dim == 2 & ($disp2d == 0 & $cdisp2d == 0 )) error "Display must be on"
+if ($dim == 3) error "Not available in 3D"
+print "Click on spectrum with left and middle button"
+print "Exit by clicking on right button"
+if ($dim == 2) print "F1 coord.           F2 coord.        intensity"
+if ($dim == 1) print "coord.              intensity"
+point_clear
+=loop
+  monopoint
+  if ($button == 3) goto exit
+  if ($dim == 1) then
+    if ($unit s= 'PPM') then
+      print (itop($pointx[1],1,1); "ppm : "; val1d(round($pointx[1])))
+    elsif ($unit s= 'HZ') then
+      print (itoh($pointx[1],1,1); "Hz : "; val1d(round($pointx[1])))
+    elsif ($unit s= 'DAMPING') then
+      print (itod($pointx[1],1,1); "Damp : "; val1d(round($pointx[1])))
+    else
+      print (round($pointx[1]);" : "; val1d(round($pointx[1])))
+    endif
+    showline $pointx[1] 1 $pointx[1] 100
+  elsif ($dim == 2) then
+    if ($unity s= 'PPM') then
+      set fy = (itop($pointy[1],2,1);"ppm -")
+    elsif ($unity s= 'HZ') then
+      set fy = (itoh($pointy[1],2,1);"Hz -")
+    elsif ($unity s= 'DAMPING') then
+      set fy = (itod($pointy[1],2,1);"Dp -")
+    else
+      set fy = (round($pointy[1]);"-")
+    endif
+    if ($unit s= 'PPM') then
+      print ($fy; itop($pointx[1],2,2);"ppm : "; val2d(round($pointy[1]),round($pointx[1])))
+    elsif ($unit s= 'HZ') then
+      print ($fy; itoh($pointx[1],2,2); "Hz : "; val2d(round($pointy[1]),round($pointx[1])))
+    elsif ($unit s= 'DAMPING') then
+      print ($fy; itod($pointx[1],2,2); "Dp : "; val2d(round($pointy[1]),round($pointx[1])))
+    else
+      print ($fy;round($pointx[1]);" : "; val2d(round($pointy[1]),round($pointx[1])))
+    endif
+    showline 1 $pointy[1] $si2_2d $pointy[1]
+    showline $pointx[1] 1 $pointx[1] $si1_2d
+  endif
+  point_push
+  goto loop
+=exit
+point_pop
+refmacro 0
+exit

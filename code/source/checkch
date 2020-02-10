@@ -1,0 +1,22 @@
+for i in *.for
+do
+if [ -f `basename $i .for`.c ]
+then
+rm -i `basename $i .for`.c
+fi
+if [ -f `basename $i .for`.h ]
+then
+rm -i `basename $i .for`.h
+fi
+done
+for i in *.inc
+do
+if [ -f `basename $i .inc`.c ]
+then
+rm -i `basename $i .inc`.c
+fi
+if [ -f `basename $i .inc`.h ]
+then
+rm -i `basename $i .inc`.h
+fi
+done

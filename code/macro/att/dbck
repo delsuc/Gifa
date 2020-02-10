@@ -1,0 +1,339 @@
+; dbck
+;
+; check all current assignment data-bases for integrity
+;
+; default is to keep as much as possible wrong entries
+;
+; due to a bug in the foreach code, This command may have to
+; be applied more than once in case of wrong entries.
+;
+
+sh '/bin/rm -f dbck.log'
+connect dbck.log
+
+set case = (1 == 0)
+if ($arg) then
+   set case = $_
+   if (toupper($case) s= "REMOVE") then
+      set case = (1 == 1)
+   else
+      print 'Usage : dbck [ remove ]'
+      error 'Wrong argument to dbck'
+   endif
+endif
+      
+;loop over the tests to insure redundancy
+print "Will loop over corrections until everything is clean..."
+
+set done = (1==0)    ; loop until done
+set error = 0        ; will count errors at each loop
+set deleted = 0      ; will count deleted entries
+set clean = (1==1)   ; flag if there are any errors
+
+while ( ! $done)
+
+set done = (1==1)       ; assumes clean now
+;===============================================================
+Print "checking ATT (peaks)......."
+set lsp = $LIST_SPECTRA    ; will do it for every spectra in the spectra directory
+dbclose att               ; unplug current
+set lll = (len($lsp))
+initinprogress $lll
+set exp = (headx($lsp,','))   set lsp = (tailx($lsp,','))
+while ($exp s! ' ')
+ Print ("   for"; $exp; "spectrum")
+ dbopen ('db/' // $exp) att
+ if (!exist('att[LARGEST]')) then
+    print "Warning, att[LARGEST] missing, creating it."
+    set att['LARGEST'] = 0
+ endif
+ set atmax = 0
+ set lrg = $att['LARGEST']
+ set i = 1
+ for i = 1 to $att["LARGEST"]
+   if (exist('att[' // $i // ']')) then
+; check index
+     if ($i > $lrg) then
+        print ("Error in ATT, peak #",$i, "present, whereas LARGEST is";$lrg)
+        print "Removing this one"
+        unset ('att[' // $i // ']')   ; this is probably a bit risky !
+        set error = (%+1)
+        set deleted = (%+1)
+     else
+        set atmax = (max($atmax,$i))
+     endif
+; check coordinates
+     set at = $att[$i]
+     set f1 = (ptoh(head($at),2,1)) set at = (tail($at))
+     set f2 = (ptoh(head($at),2,2)) set at = (tail($at))
+     if ($f1 < $OFFSET_1_2D | $f1 > ($SPECW_1_2D +$OFFSET_1_2D) ) then
+        print ("Peak #" ; $i; $att[$i]; "outside F1 spectral limit")
+     endif
+     if ($f2 < $OFFSET_2_2D | $f2 > ($SPECW_2_2D +$OFFSET_2_2D) ) then
+        print ("Peak #"; $i; $att[$i]; "outside F2 spectral limit")
+     endif
+; check amplitude
+     set amp = (head($at))  set at = (tail($at))
+     if ($amp s= ' ') then
+        print ("Peak #" ; $i; $att[$i]; ": Wrong amplitude")
+        print "Setting it to 1.0"
+        set amp = 1.0
+        set att[$i] = (htop($f1,2,1); htop($f2,2,2); $amp; $sp1; $sp2; $at)
+        set error = (%+1)
+     endif
+     set sp1 = (head($at))  set at = (tail($at))
+     set sp2 = (head($at))  set at = (tail($at))
+; check spin existence and alignment
+     if ($sp1 s= ' ') then
+          print ("Peak #" ; $i; $att[$i]; " - Entry truncated, no spin defined")
+          print "Setting it to 'unk'"
+          set sp1 = 'unk'
+          set att[$i] = (htop($f1,2,1); htop($f2,2,2); $amp; $sp1; $sp2; $at)
+          set error = (%+1)
+     endif
+     if ($sp2 s= ' ') then
+          print ("Peak #" ; $i; $att[$i]; " - Entry truncated, no spin defined")
+          print "Setting it to 'unk'"
+          set sp2 = 'unk'
+          set att[$i] = (htop($f1,2,1); htop($f2,2,2); $amp; $sp1; $sp2; $at)
+          set error = (%+1)
+     endif
+     if (toupper($sp1) s! 'UNK') then
+        if (! exist('spin[' // $sp1 // ']')) then
+          print ("Peak #" ; $i; $att[$i]; "assigned to Spin #"; $sp1; "not in SPIN db")
+          print "Setting it to 'unk'"
+          set sp1 = 'unk'
+          set att[$i] = (htop($f1,2,1); htop($f2,2,2); $amp; $sp1; $sp2; $at)
+          set error = (%+1)
+        else
+          set spf1 = (head($spin[$sp1]))
+          set ddd = (abs(htop($f1,2,1)-$spf1))
+          if  ($ddd > $tol_align) then
+            set ddd = (0.001 * int(1000*$ddd))
+            print ('Warning: Peak #' ; $i; "assigned to Spin #"; $sp1; "- but are"; $ddd;"ppm apart")
+          endif
+        endif
+     endif
+     if (toupper($sp2) s! 'UNK') then
+        if  (! exist('spin[' // $sp2 // ']')) then
+          print ("Peak #" ; $i; $att[$i]; "assigned to Spin #"; $sp2; "not in SPIN db")
+          print "Setting it to 'unk'"
+          set sp2 = 'unk'
+          set att[$i] = (htop($f1,2,1); htop($f2,2,2); $amp; $sp1; $sp2; $at)
+          set error = (%+1)
+        else
+          set spf2 = (head($spin[$sp2]))
+          set ddd = (abs(htop($f2,2,2)-$spf2))
+          if  ($ddd > $tol_align) then
+            set ddd = (0.001 * int(1000*$ddd))
+            print ('Warning: Peak #' ; $i; "assigned to Spin #"; $sp2; "- but are"; $ddd;"ppm apart")
+          endif
+        endif
+     endif
+; check spin alignment
+
+   endif
+ endfor
+;if ($lrg != $atmax) then
+;    set att['LARGEST'] = $atmax
+;    print ("Resetting LARGEST to"; $atmax; "(was"; $lrg; ")" )
+;endif
+ inprogress ($lll - len($lsp))
+ set exp = (headx($lsp,','))   set lsp = (tailx($lsp,','))
+ dbclose att
+endwhile
+inprogress $lll
+dbopen $cur_db att     ; replug current
+;===============================================================
+Print "checking SPIN......."
+set spmax = 0
+set lrg = $spin['LARGEST']
+initinprogress $lrg   set j = 0
+for i = 1 to $spin["LARGEST"]
+   if (exist('spin[' // $i // ']')) then
+; check index
+     if ($i > $lrg) then
+        print ("Error in SPIN #";$i; "present, whereas LARGEST is"; $lrg)
+        print "Removing this one"
+        unset ('spin[' // $i // ']')
+        set error = (%+1)
+        set deleted = (%+1)
+     else
+        set spmax = (max($spmax,$i))
+     endif
+; check sys
+     set sp = $spin[$i]
+     set f1 = (head($sp))   set sp = (tail($sp))
+     set nm = (head($sp))   set sp = (tail($sp))
+     set ss = (head($sp))   set sp = (tail($sp))
+     if (toupper($ss) s= 'UNK') then
+        print ("Warning : Spin #" ; $i; $spin[$i]; ": not in any Spin System")
+        if ($case) then
+           unset ('spin[' // $i // ']')
+           print 'Removed'
+           set error = (%+1)
+           set deleted = (%+1)
+        endif
+     else
+        if ((! exist('sys[' // $ss // ']')) | $ss s= ' ') then
+          print ("Spin #" ; $i; $spin[$i]; "defined to belong to a not existing System"; $ss)
+          print "      Removing it from SPIN db"
+          unset ('spin[' // $i // ']')
+          set error = (%+1)
+          set deleted = (%+1)
+        else                 ; check return assignment
+          set sy = $sys[$ss]
+          set sy = (tail(tail($sy)))    ; skip 2 first entries
+          set ok = (1 == 0)
+          while ($sy s! ' ')
+             set s = (head($sy))  set sy = (tail($sy))
+             set ok = ($ok | ($s == $i) )
+          endwhile
+          if (! $ok) then
+             print ("WARNING : Spin #" ; $i; $spin[$i]; "defined to belong to Sys"; $ss)
+             print ("   but Sys #"; $sys[$ss]; "does not know about it")
+             if ($case) then
+                unset ('spin[' // $i // ']')  print 'Removed'
+                set deleted = (%+1)
+             else
+                print "Assigning it to to unk" 
+                set spin[$i] = ($f1; $nm; 'unk'; $sp)
+             endif
+             set error = (%+1)
+          endif
+        endif
+     endif
+   endif
+
+   set j = (%+1)   inprogress $j
+endfor
+;if ($lrg != $spmax) then
+;    set spin['LARGEST'] = $spmax
+;    print ("Resetting LARGEST to"; $spmax; "(was"; $lrg; ")" )
+;endif
+inprogress ($lrg+1)
+
+;===============================================================
+Print "checking SYS......."
+set ssmax = 0
+set lrg = $sys['LARGEST']
+initinprogress $lrg   set j = 0
+for i = 1 to $sys["LARGEST"]
+   if (exist('sys[' // $i // ']')) then
+     if ($i > $lrg) then
+       print ("Error in SYS #";$i; "present, whereas LARGEST is"; $lrg)
+       print "Removing this one"
+       unset ('sys[' // $i // ']')
+       set error = (%+1)
+       set deleted = (%+1)
+     else
+       set ssmax = (max($ssmax,$i))
+     endif
+;detect system without spin
+     set ss = $sys[$i]
+     set num = (head($ss))
+     set aa = (head(tail($ss)))
+     set splist = (tail(tail($ss)))
+     if ($splist s= " ") then
+        print ("Error in SYS #";$i; ": System without spin")    
+        print "Removing this one"
+        unset ('sys[' // $i // ']')
+        set error = (%+1)
+        set deleted = (%+1)
+;detect system with unknown spins
+     else
+        while ($splist s! " ")
+           set sp = (head($splist))  
+           set splist = (tail($splist))
+           if (! exist('spin[' // $sp // ']')) then
+                print ("Error in SYS #";$i; " unknow spin"; $sp)
+                print "Removing this one"
+                @rem_spin_sys $i $sp    
+                set error = (%+1)
+                set deleted = (%+1)
+          endif
+        endwhile
+     endif
+;check topology
+     check_topo $i
+   endif
+   set j = (%+1)   inprogress $j
+endfor
+;if ($lrg != $ssmax) then
+;    set sys['LARGEST'] = $ssmax
+;    print ("Resetting LARGEST to"; $ssmax; "(was"; $lrg; ")" )
+;endif
+
+inprogress ($lrg+1)
+
+;end of loop
+if ($error > 0) then
+	set done = (1==0)     ; we're not done yet !
+	Print ($error;"errors detected, looping over")
+	set error = 0
+	set clean = (1==0)      ; flag not clean
+else
+	set done = (1==1)
+endif
+
+endwhile
+
+;===============================================================
+Print "checking Duplicate Spins......."
+
+initinprogress $sys["LARGEST"]
+for i = 1 to $sys["LARGEST"]
+   inprogress $i
+   if (exist('sys[' // $i // ']')) then
+     set ss = $sys[$i]
+     set num = (head($ss))
+     set aa = (head(tail($ss)))
+     set splist = (tail(tail($ss)))
+        while ($splist s! " ")
+          set sp = (head($splist))
+          set splist = (tail($splist))
+          for k = ($i+1) to $sys["LARGEST"]
+            if (exist('sys[' // $k // ']')) then
+                set ss2 = $sys[$k]
+                set num2 = (head($ss2))
+                set aa2 = (head(tail($ss2)))
+                set splist2 = (tail(tail($ss2)))
+                while ($splist2 s! " ")
+                  set sp_2 = (head($splist2))
+                  set splist2 = (tail($splist2))
+                  if ( $sp s= $sp_2 ) then
+                    print (" Warning, Spin #";$sp; "is found in two systems: #";$i;"and #";$k)
+                    set clean = (1==0)
+                  endif
+                endwhile 
+            endif
+          endfor
+    endwhile
+    endif
+endfor
+inprogress ($sys["LARGEST"] +1)
+
+print " "
+if ($clean) then
+	print "Congratulation, your db is perfectly clean !"
+else
+	print "Some errors have been found"
+	if ($deleted > 0) then
+		if ($deleted == 1) then
+		  print "One entry has been deleted from the db"
+		else
+		  print ($deleted; "entries have been deleted from the db")
+		endif
+		print "If you consider that important information has been deleted,"
+		print "you should exit the assignment module,"
+		print "enter again and chose the 'recover form you previous back-up' option"
+		print "Then clean carefully by hand, using the low-level editor"
+	else
+		print "No entry has been deleted from the db,"
+		print "However, some changes may have been made."
+		print "you may want to verify with the low-level editor ((utilities menu)"
+	endif
+endif	
+disconnect
+print 'this data base check has been logged to the file dbck.log'
+

@@ -1,0 +1,33 @@
+; find_spin_low (F1/F2) ppm
+;
+; returns the spins in the db close to ppm
+;
+
+set axe = $_
+set ppm = $_
+
+set ss = $scolor
+
+foreach sp in spin within 1 ($ppm-$tol_align) ($ppm+$tol_align)
+    if ($scolor <6) then
+      scolor (%+1)
+    else
+      scolor 1
+    endif
+    show_spin $sp
+    scolor $ss
+    comp_spin_label $sp
+    if (exist('found')) then
+       set found = (% // ',' // $sp ; '-' ; $axe // ':'; $returned  )
+    else
+       set found = ($sp ; '-' ; $axe // ':'; $returned  )
+    endif
+endfor
+
+if (!exist('found')) then
+   set returned := 0
+else
+   set returned := $found
+endif
+
+

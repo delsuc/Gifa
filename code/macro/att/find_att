@@ -1,0 +1,31 @@
+; find_att (interactive)
+;
+; permits click on the data-set, and high-light the closer
+; peak in the db
+;
+
+print "Click on a peak on the data-set"
+
+point_clear
+monopoint
+set f1 = (itop($pointy[1],2,1))  set f2 = (itop($pointx[1],2,2))
+
+find att 2 $f1 $f2
+
+if ($pk_fnd_dst < $tol_click & $pk_fnd_dst != -1) then
+  set ss = $scolor
+  if ($scolor <6) then
+    scolor (%+1)
+  else
+    scolor 1
+  endif
+  show_att $pk_fnd
+  scolor $ss
+  set last_click := ("PEAK"; $pk_fnd)
+  print $last_click
+  set returned := $pk_fnd
+else
+  alert ("No peak found within"; $tol_click; "ppm")
+  set returned := 0
+endif
+

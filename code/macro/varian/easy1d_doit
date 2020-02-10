@@ -1,0 +1,118 @@
+; easy1d_doit
+; used by the easy1d form
+;
+; see also easy1d
+
+set ffn = $_
+set fw2 = $_
+set fw2p = $_
+set fz2 = $_
+set fft2 = $_
+set fmod = $_
+set fph20 = $_
+set fph21 = $_
+set fb2 = $_
+set fact = $_
+;prepare ft
+set fft2 = ("ft_" // $fft2)
+;switch on action
+set phasedf2 = (1==0)
+if ($fact s= "Do it" |  $fact s= "Do it but phase") then
+	readv $ffn
+	if ($dim != 1) error 'This is not a 1D file'
+	if ($fz2 < $si2_2d) chsize $fz2  ; truncate BEFORE apod.
+
+	if ($fw2 s! "none") $fw2 $fw2p   ; apod
+
+	chsize $fz2                      ; zero-fill AFTER apod.
+	$fft2                            ; and FT in F2
+
+endif
+
+if ($fact s= "Do phase only" | $fact s= "Do it") then
+   if ($fmod s= 'modulus') then
+	modulus
+   else
+	if ($fph20 != 0 | $fph21 != 0) phase $fph20 $fph21
+   endif
+endif
+
+if ($fact s= "Do b.corr only" | $fact s= "Do it") then
+	if ($fb2 s! "none" & $itype_1d != 0) 	   real 
+	if ($fb2 s= "polynomial") then
+	   bcorr 3
+	elsif ($fb2 s= "2 stages") then
+	   bcorrp1 bcorr 3
+	   bcorrp0 bcorr 3
+	endif
+endif
+
+if ($fact s= "Write macro") then
+	dialogbox macro "Macro name" string mname ($name//'.g') *
+	open $mname
+	fprint $mname "; macro generated automagically by easy1d"
+	fprint $mname  ("readv" ; $ffn)
+	join $ffn			; to check sizes of input file
+	if ($fz2 < $c_sizef1) fprint $mname ("chsize";$fz2)
+
+	if ($fw2 s! "none") 	fprint $mname  ($fw2 ; $fw2p )
+	fprint $mname  ("chsize" ;$fz2)
+	fprint $mname  $fft2
+
+	disjoin
+
+	if ($fmod s= 'modulus') then
+	   fprint $mname 'modulus'
+	else
+	   if ($fph20 != 0 | $fph21 != 0) fprint $mname  ("phase"; $fph20; $fph21)
+	endif
+	if ($fb2 s! "none" & $fmod s! 'modulus') fprint $mname "real"
+	if ($fb2 s= "polynomial") then
+	   fprint $mname "bcorr 3"
+	elsif ($fb2 s= "2 stages") then
+	   fprint $mname "bcorrp1 bcorr 3 bcorrp0 bcorr 3  ; 2 stages "
+	endif
+	close $mname
+	alert ("Macro '"//$mname//"' written, just type its name for applying it")
+elsif ($fact s= "Load macro") then
+	dialogbox macro "Macro name" file mname ($name//'.g') *
+	open $mname
+	set fw2 = 'none'
+	set fw2p = 0
+	set fmod = 'phase-sensitive'
+	set fph20 = 0
+	set fph21 = 0
+	set fb2 = "none"
+	set in = <$mname
+	while (!eof($mname))
+		set cmd = (head($in))	; parse commande
+		set param = (tail($in))
+		if ($cmd s= ";") then	; show comments
+			print $param
+		elsif ($cmd s= "readv") then
+			set ffn = $param
+		elsif ($cmd s= "sin" | $cmd s= "sqsin" | $cmd s= "expbroad" | $cmd s= "gaussbroad") then
+				set fw2 = $cmd
+				set fw2p = $param
+		elsif ($cmd s= "chsize") then
+				set fz2 = $param
+		elsif ($cmd s= "ft_sim" | $cmd s= "ft_seq") then
+			set fft2 = (subst($cmd,4,len($cmd)))
+		elsif ($cmd s= "modulus") then
+			set fmod = 'modulus'
+		elsif ($cmd s= "phase") then
+				set fph20 = (head($param))
+				set fph21 = (head(tail($param)))
+		elsif ($cmd s= "bcorr") then
+				set fb2 = "polynomial"
+		elsif ($cmd s= "bcorrp1") then
+				set fb2 = "2 stages"
+		endif
+		set in = <$mname
+	endwhile
+	close $mname
+	easy1d $ffn $fw2 $fw2p $fft2 $fz2 $fmod $fph20 $fph21 $fb2
+endif
+
+
+

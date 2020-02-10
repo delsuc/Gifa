@@ -1,0 +1,114 @@
+;This macro is a wrapper around the getnmr / getexp utilities,
+; permitting to bring UXNMR data-sets from a BRUKER spectrometer to the computer,
+; and to convert them to Gifa format.
+;
+; It is to be used if you want to copy the data files from the spectrometer
+; to the workstation through the network (actually getnmr / getexp does this)
+; In the case you simply want to convert from UXNMR files to Gifa files
+; on the local disk, use the ux2cach.sh shell script instead.
+
+; note, it is based on the assuption that there is a guest account on the spectrometer,
+; which is accessible via rcp commands.
+
+if (!$arg) then    ; if no arg, build a form
+formbox 'get from Bruker instrument ' \
+   'getuxnmr $spec $user $data $disk $expno $finexp $job' \
+   'permits to bring the data-set from a Bruker NMR spectrometer' message \
+   'Spectrometer name' string spec ' ' \
+   'User name' string user ' ' \
+   'Dataset name' string data ' ' \
+   'Disk name' string disk 'u' \
+   'First ExpNo (put zero for the entire tree)' int expno 0 \
+   noreturn 'Final ExpNo' int finexp 0 \
+   separator \
+   'Do you want to keep Bruker-specific files on the Gifa workstation ?' enum 'no,yes' job % \
+   separator \
+   'Click on Ok or Apply to execute (Cancel to close the box)' message \
+   *
+else    ; if arg, do the job
+; get the args with the same names for convenience
+  set spec = $_
+  set user = $_
+  set data = $_
+  set disk = $_
+  set expno = $_
+  set finexp = $_
+  set job = $_ 
+  if ($job s= 'yes') then          ; need to reverse the logic of job
+      set job = 'n'
+  else
+      set job = 'y'
+  endif
+
+;create temporary file names :
+  set tmp = (int(1000000*$random))
+  set tmp1 = ("tmp" // $tmp)   set tmp2 = ("tmp" // ($tmp+1))
+
+; construct the shell command
+  if ($expno == 0) then    ; whole tree
+     set todo = ("getnmr ."; $spec; $user; $disk; $data; "y"; $job; "y")
+     set loc = ("/" // $disk // "/data/" // $user // "/nmr/" // $data)   ; file name
+     set lloc = $data   ; local file name
+    ; call it
+     print ("executing :"; $todo)
+;     sh ("("; $todo; "; touch"; $tmp1; ") &" )    ; in background, touch permit to tell when it is finished !
+     sh  $todo
+  else
+     for i = $expno to $finexp 
+        set todo = ("getexp ."; $spec; $user; $disk; $data; $i; "y"; $job; "y")
+        set loc = ("/" // $disk // "/data/" // $user // "/nmr/" // $data // "/" // $i )
+        set lloc = ($data // "/" // $i )
+       ; call it
+        print ("executing :"; $todo)
+;        sh ("("; $todo; "; touch"; $tmp1; ") &" )    ; in background, touch permit to tell when it is finished !
+        sh  $todo 
+     endfor
+  endif
+
+; check what is going on, and draw a nice growing bar.
+; use remsh for it, rsh / remsh depends on the OS, you may have to adapt yours
+  if (index($config_os,"HP") != 0) then
+     set rmsh = "remsh"
+  else
+     set rmsh = "rsh"
+  endif
+
+; all the following stuff has been removed, it was buggy
+; if the getexp/getnmr operation was finished before the du in the loop could see it
+;
+;; under Linux, 'du' returns in k not in blocks (well usually, so I inforce it with -k)
+;; thank you Georgy S. for pointing out
+;  if (index($config_os,"LINUX") != 0) then
+;      sh ($rmsh;$spec; "-l guest du -sk"; $loc; "| awk ' { print $1/2}' > "; $tmp2)
+;  else
+;      sh ($rmsh;$spec; "-l guest du -s"; $loc; "| awk ' { print $1}' > "; $tmp2)
+;  endif
+;
+;  open $tmp2   set up = <$tmp2   close $tmp2  
+;  initinprogress $up
+;  set prev = 0
+;=loop 
+;      sh ("sleep 1; du -s"; $lloc; "| awk ' { print $1}' >"; $tmp2)
+;      open $tmp2   set now = <$tmp2   close $tmp2  
+;      inprogress $now
+;      if ($now < $up) goto loop
+;  inprogress $up  ; to be sure that it will close
+
+
+; now wait for $tmp1 to appear
+;  sh ("while test ! -r"; $tmp1; "; do sleep 1; done")
+
+; now display it
+  if ($expno == 0) then    ; whole tree
+    print ("Files can be found in"; $data // "/*/data") 
+    ls -s ($data // "/*/data")
+;       ls is already a macro
+  else    ; read in the file
+    read ($data // "/" // $expno // "/data")
+  endif
+
+; finally remove temporary files
+;sh ("/bin/rm"; $tmp1; $tmp2)
+endif
+
+  

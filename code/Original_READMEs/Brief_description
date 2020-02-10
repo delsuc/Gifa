@@ -1,0 +1,113 @@
+The Gifa v4.5 program is a software meant for processing and
+analysis high resolution NMR spectra, in 1D, 2D and 3D.
+
+It includes :
+
+Classical processing includes :
+===============================
+o Full capabilities in 1D, 2D and 3D processing.
+o Full array of apodisation functions (shifted sine-bells and 
+  squared sine-bells; exponential; Gaussian; trapezoid, and 
+  combinations).
+o Fast Fourier transform (direct and inverse; real, complex, 
+  and hypercomplex). Hilbert transforms.
+o Zero-filling and truncation.
+o Phasing of 1D, 2D and 3D spectra.
+o Processing in memory (for regular data size) or on disk (for 
+  very large data-set) with similar syntaxes
+o Non-limited size data-set with optimised file access 
+  protocol.
+o Very fast processing : (figures not garantied)
+	* 15.5" on SGI INDY PC (100MHz)
+	* 12.6" on IBM Risc 6000-560
+	* 12.3" on SUN Sparc 20
+	* 10.5" on SGI INDY (174MHz)
+	* 10"   on HP 715/80
+	* 9.5"  on PC Pentium 133MHz Linux
+	* 7.5"  on HP 735/99
+	* 6.5"  on SGI-O2 R5000-PC 
+	* 5.06" on Pentium Pro 200 Linux
+	* 3.25" on SUN/Enterprise CPU UltraSparcII 250Mhz
+        * 1.31" on Pentium III 800 Linux
+	for the complete processing of a 512x2048 data points data-
+	set, including :
+	-exponential windowing in F2, shifted sine bell in F1.
+	-hypercomplex FT with zero-filling in F1 and phasing in both axes.
+	-cubic spline baseline correction through 5 points in F2.
+
+o Post-processing filters; module, real part extraction,
+  absolute value, smoothing, etc...
+o Complete baseline correction module (linear, cubic spline 
+  correction, and a comprehensive polynomial module with 
+  automatic peak detection).
+o Extraction of sub-spectra for local processing.
+o Simulation of pseudo data-sets. Simulation of 2D NOESY from 
+  intensity files (CORMA type)
+o Addition, multiplication of data-sets.
+
+Graphic capabilities
+====================
+o 2D Displays in -density mode -contour mode -stacked plot mode
+o 3D Display in 3D perspective
+o Random access to rows, columns, diagonals or projections in 
+  2D mode.
+o Random access to planes and rows in any direction or diagonal 
+  in 3D mode.
+o Multi-windowing facilities : up to 4 active windows in the 
+  same time, many passive windows.
+o Fast zoom mode - Fast interactive phasing mode.
+o Complete plotting facilities. On screen : 1D plots; 2D : full 
+  colours density maps, zoom, contour plots and stacked plots; 3D 
+  : automatic series of 2D plots, 3D graphics. All 1D, 2D and 3D 
+  graphics may be sent to a plotter (HP-plotter or PostScript 
+  laser printer). Several plots may be disposed on the same sheet 
+  of paper, and plot files can be stored separately.
+
+Special processing includes :
+=============================
+o A protein assignment module is available for 2D homonuclear spectra.
+  Completely written in the macro language.
+o Maximum Entropy processing of 1D as well as 2D data-sets. A 
+  generalised iteration scheme, (Gifa stands for Generalised 
+  Iterative Fixed-point Algorithm) as well as more classical 
+  algorithms : Gull & Daniel, conjugated gradients.
+o Maximum Entropy deconvolution of Lorentzian line-shape, of J-
+  coupling pattern, or of any user-provided function.
+o Comprehensive Linear Prediction module, including Burg, LP-
+  SVD, forward and backward methods, etc…
+o Processing of DOSY experiments,using the Maximum Entropy technique.
+o Integrated processing of NOESY build-up curves, permitting to 
+  accurately evaluate distances.
+o Automatic peak-picker in 1D 2D and 3D; Automatic peak 
+  integrator in 1D and 2D.
+o Line fitting of mixed Lorentzian and Gaussian Line Shapes
+o Several file formats are available, notably a FT-NMR(tm) 
+  compatible format, a MATLAB(tm) compatible format, a compressed 
+  format, a generic file format, permitting direct random access, 
+  and several others.
+
+A Complete set of Macro :
+=========================
+o A complete graphic user interface written in the macro 
+  language
+o Calibration, integration, peak-picking, etc..
+o Fast interaction with the mouse on 2D and 3D
+o Help for attribution, on screen and on plotter
+o Easily extensible with the control language
+
+The User Interface is characterised by :
+========================================
+o Most command are available through a graphic interface
+o Interactive commands for beginners as well as fast entry mode 
+  for advanced users
+o Complete on-line HELP.
+o Comprehensive manual.
+o Versatile command parser which permits to build macro 
+  commands with alias, tests, local and global variables, loops, 
+  graphic interaction and display capabilities, support for data-
+  bases and associative arrays.
+o graphical interface completely modifiable and definable by 
+  the user.
+o Possibility to run in interactive mode as well as Batch mode 
+  (display less).
+o The operating system is fully available from Gifa.

@@ -1,0 +1,26 @@
+; title string_of_characters plot_file
+; Draw the string at x=0, y=cy+1.0 on the designed plot_file.
+; 
+; see also : PLOT PAGE PLOTTEXT PLOTTEXTS
+
+  ; used tobe a command,
+; added a font change for postscript plots
+
+message "Enter title string"
+set st = $_
+set pl = "*PLOTTER"
+message "Enter Plot file"
+set pl = $_
+
+if (subst($pl,1,3) s= '*PL') set pl = 'Gifa_Temp.Plot'
+
+if ($config_plot s= 'postscript') then
+   plottext ' ' 0 ($cy+1.0) $pl
+   sh ("echo gsave /Times-Roman findfont 12 scalefont setfont >>"; $pl)
+endif
+
+plottext $st 0 ($cy+1.0) $pl
+
+if ($config_plot s= 'postscript') then
+   sh ("echo grestore >>"; $pl)
+endif

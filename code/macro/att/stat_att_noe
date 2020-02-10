@@ -1,0 +1,200 @@
+; stat_att_noe
+;
+;  noe assignment statistic.
+;
+
+if ($att['largest'] == 0) error "Database Empty !"
+
+initinprogress $att["LARGEST"]
+
+foreach i in sys
+   if ($i s! "LARGEST") then
+	set nb_noe_inter_seq[$i] = 0
+	set nb_noe_inter_med[$i] = 0
+	set nb_noe_inter_long[$i] = 0
+	set nb_noe_intra[$i] = 0
+	set near_syst[$i] = ": "
+	set csi[$i] = 0
+   endif
+endfor
+set nb_total_noe = 0
+set nb_total_noe_inter_seq = 0
+set nb_total_noe_inter_med = 0
+set nb_total_noe_inter_long = 0
+
+;set-up for CSI
+set ha['ALA'] = 4.19
+set ha['CYS'] = 4.52
+set ha['ASP'] = 4.63
+set ha['GLU'] = 4.24
+set ha['PHE'] = 4.42
+set ha['GLY'] = '4.11 3.65'
+set ha['HIS'] = 4.59
+set ha['ILE'] = 4.09
+set ha['LYS'] = 4.23
+set ha['LEU'] = 4.35
+set ha['MET'] = 4.32
+set ha['ASN'] = 4.62
+set ha['PRO'] = 4.33
+set ha['GLN'] = 4.28
+set ha['ARG'] = 4.32
+set ha['SER'] = 4.38
+set ha['THR'] = 4.37
+set ha['VAL'] = 4.11
+set ha['TRP'] = 4.42
+set ha['TYR'] = 4.43
+set thresh = 0.05     ; threshold for CSI comput.
+
+
+
+; this part copied from cnst_qualit
+
+dbopen hash hash
+set uu = 0
+set ncp = 0
+set nbhash = 0
+print "Collecting Peaks Informations..."
+foreach i in att
+    if ($i s= "LARGEST")  goto break
+      inprogress $uu
+      set uu = (%+1)
+
+      ; get the assigned peak label
+      set l = (toupper($att[$i]))
+      if (index($l,'UNK') != 0) goto break     ; processing of the assigned peaks
+
+
+      set t = (tail(tail(tail($l))))
+      set sp1 = (head($t))
+      set sp2 = (head(tail($t)))
+      if ($sp1 s= $sp2) goto break 
+      set s1 = ($spin[$sp1])
+      set s2 = ($spin[$sp2])
+      if ((index(toupper($s1),'UNK') != 0)  | (index(toupper($s2),'UNK') != 0) ) goto break  ;and of named spins
+
+      set sys1 = (head(tail(tail($s1))))
+      set sys2 = (head(tail(tail($s2))))
+      set syst1 = (toupper($sys[$sys1]))
+      set r1 = (head($syst1))				;r1, r2 : system primary index
+      set r2 = (toupper(head($sys[$sys2])))
+
+      if (($r1 s= "UNK") | ($r2 s= "UNK")) goto break    ; in assigned systems
+
+      ; clean up the base 
+      set a1 = (head(tail($s1)))		;a1, a2: spin name
+      set a2 = (head(tail($s2)))
+      if ($a1 s= $a2 & $r1 == $r2) goto break   ; case of  SER-QB  with SER-QB
+
+; this part is not copied from cnst_qualit
+          
+      ; hash for each side of diag
+      if (exist("hash[" // $sp2 // '-' // $sp1 // ']')) goto break
+      set hash[$sp1//'-'//$sp2] = ($sp1;$sp2)
+
+           set d = (abs($r1 - $r2))
+
+           if ($d == 0) then
+		      set nb_noe_intra[$sys1] = (% + 1)
+              set nb_noe_intra[$sys2] = (% + 1)
+           elsif ($d == 1) then
+			  set nb_noe_inter_seq[$sys1] = (% + 1)
+		      set nb_noe_inter_seq[$sys2] = (% + 1)
+		      set nb_total_noe_inter_seq = (% + 1)
+		   elsif ($d <= 3) then
+			  set nb_noe_inter_med[$sys1] = (% + 1)
+			  set nb_noe_inter_med[$sys2] = (% + 1)
+		      set nb_total_noe_inter_med = (% + 1)
+		   else
+		      set nb_noe_inter_long[$sys1] = (% + 1)
+              set nb_noe_inter_long[$sys2] = (% + 1)
+		      set nb_total_noe_inter_long = (% + 1)
+           endif
+           if ($d > 0) then
+		     if (index($near_syst[$sys1],(':'; $r2; ':') ) == 0 ) \
+                            set near_syst[$sys1] = ($near_syst[$sys1]; $r2; ':')
+		     if (index($near_syst[$sys2],(':'; $r1; ':') ) == 0 ) \
+                            set near_syst[$sys2] = ($near_syst[$sys2]; $r1; ':')
+           endif
+
+		set nb_total_noe = (% + 1)
+ ; comput CSI
+     if ($a1 s= 'HA') then            
+        set delta = (head($s1))                     ; get spin chem shift
+        set tt = $ha[head(tail($syst1))]     ; get mean chem shift from syst name 
+        if ($delta < ($tt-$thresh) ) then
+           set csi[$sys1] = -1
+        elsif ($delta > ($tt+$thresh) ) then
+           set csi[$sys1] = 1
+        endif
+     endif
+
+=break
+endfor
+inprogress $att["LARGEST"]
+
+
+print "Setting-up output..."
+
+;scan prim seq
+open db/primary
+set l = <db/primary
+set p = 1
+while (!eof('db/primary'))
+   set seq[$p] = $l
+   set p = (%+1)
+   set l = <db/primary
+endwhile
+close db/primary
+
+open stat_noesy
+fprint stat_noesy "Noe statistics"
+fprint stat_noesy " "
+fprint stat_noesy ("CSI is Extended / Coil / Helix  given with a threshold of"; $thresh; "ppm")
+fprint stat_noesy "Number of Noe : int:intra / seq:sequential / med:medium (i,i+2 i,i+3) / long"
+fprint stat_noesy "(Noe duplicated on each side of the diagonal are counted only once)"
+fprint stat_noesy " "
+fprint stat_noesy "Res-name     E C H int seq med long ----  neighbours"
+initinprogress ($p-1)
+; for all residues
+for j = 1 to ($p-1)
+  foreach i in sys within 1 ($j-0.5) ($j+0.5)
+   	set r = (head(tail($sys[$i])))
+	    set t = $nb_noe_intra[$i]
+		set s = $nb_noe_inter_seq[$i]
+		set m = $nb_noe_inter_med[$i]
+		set l = $nb_noe_inter_long[$i]
+		if (($r s= 'GLY') | (index($r,'Arom') != 0) ) then
+			fprintf stat_noesy "%-12s       %3d %3d %3d %3d  ----  %s" ($j // ':' // $r) $t $s $m $l $near_syst[$i] *
+        elsif ($csi[$i] == 1) then
+			fprintf stat_noesy "%-12s E     %3d %3d %3d %3d  ----  %s" ($j // ':' // $r) $t $s $m $l $near_syst[$i] *
+        elsif ($csi[$i] == -1) then
+			fprintf stat_noesy "%-12s     H %3d %3d %3d %3d  ----  %s" ($j // ':' // $r) $t $s $m $l $near_syst[$i] *
+        else
+			fprintf stat_noesy "%-12s   C   %3d %3d %3d %3d  ----  %s" ($j // ':' // $r) $t $s $m $l $near_syst[$i] *
+		endif
+;		fprint stat_noesy ($j // ':' // $seq[$j]; $t; $s; $m; $l; '---'; $near_syst[$i])
+  endfor
+  inprogress $j
+endfor
+fprint stat_noesy (' ')
+fprint stat_noesy (' ')
+fprint stat_noesy ('General Statistic:')
+fprint stat_noesy (' ')
+fprint stat_noesy (' ')
+fprint stat_noesy ("Totla Number of Noe's : ";$nb_total_noe)
+set nb_total_noe_inter = ($nb_total_noe_inter_seq + $nb_total_noe_inter_med + $nb_total_noe_inter_long)
+fprint stat_noesy ("Inter Residues Noe's :";$nb_total_noe_inter)
+set s = $nb_total_noe_inter_seq
+set m = $nb_total_noe_inter_med
+set l = $nb_total_noe_inter_long
+fprint stat_noesy ('decomposed as follow :')
+fprint stat_noesy ('     Sequential: ';$s;' - Medium: ';$m;' - Long: ';$l)
+close stat_noesy
+
+dbclose hash
+sh '/bin/rm hash.dir hash.pag'
+
+formbox "Noesy Peaks Statistic" DO_NOTHING \
+    'File is stat_noesy' message \
+    stat_noesy text \
+   'Print file' action 'sh "gifaprint stat_noesy"' *

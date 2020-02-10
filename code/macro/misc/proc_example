@@ -1,0 +1,45 @@
+; example of a macro processing a 3D on file
+; can be used as a starting point
+;
+;
+sh date       ; permits to now how long it takes
+dim 2
+if (!$arg) print 'Input file'
+set jfi = $_
+join $jfi
+set jfo = ($jfi // '~')
+set sz1 = (2*power2(c_sizef1))
+set sz2 = (2*power2(c_sizef2)
+set sz3 = ($c_sizef3/2)
+; create output file
+newfilec $jfo 3D $sz1 $c_offsf1 $c_specwf1 $c_freq $c_freq1 \
+                 $sz2 $c_offsf2 $c_specwf2 $c_freq2 \
+                 $sz3 $c_offsf3 $c_specwf3 $c_freq3 0
+join $jfo
+; listfilec
+set i = 1
+; process 3D_f3 first  (no zerofilling there => does modify the size)
+=loopi
+   print ("Plane :"//$i)
+   join $jfi
+   getc f2 $i %%
+   sin 0.2 f2 revf f2 ft f2 phase 0 55 f2 real f2
+   join $jfo
+   putc f2 $i 1 $sz1 1 $sz3
+   set i = (%+1) if ($i <= $c_sizef2) goto loopi
+join $jfi disjoin
+join $jfo
+listfilec
+set i = 1
+; then process f3 planes (3D_F1 & 3D_F2)
+=loopj
+   print ("Plane :"//$i)
+   getc f3 $i %%
+   sin 0.2 f1 chsize % $sz2 ft f2  phase 0 26 f2
+   sin 0.2 f2 chsize $sz1 % ft f1  phase 0 30 f1
+   real f12
+   putc f3 $i 1 $sz1 1 $sz2
+   set i = (%+1) if ($i <= $sz3) goto loopj
+sh date
+quit
+

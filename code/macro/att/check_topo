@@ -1,0 +1,67 @@
+; check_topo sys
+;
+; checks the topology of a given spin system
+
+message 'Enter Spin system id :' 
+set i = $_
+
+     set ss = (tail($sys[$i]))
+     set res = (head($ss))	; residue name
+     set splist = (tail($ss))   ; list of spin in sys
+     if (!exist('topo[' // $res // ']')) then   ; res not in db
+        if ($res s! 'unk') then
+           print ("Warning: residue #"; $i ; "type :"; $res)
+           print "      unknown type in topology db"
+        endif
+        set prot = $topo["proton"]     ; prot is the list of spins for this res
+     else                      ; (proton is the list of ALL known protons)
+        set prot = $topo[$res]
+     endif
+
+; 1st check Primary sequence
+     set prim = (head($sys[$i]))
+     if (tolower($prim) s! 'unk') then
+       open db/primary
+       for j = 1 to $prim
+          set l = <db/primary
+       endfor
+       if (eof('db/primary')) then
+          print ("Warning: residue #"; $i ; "type :"; $res)
+          print ("  Index in primary sequence:"; $prim; " is outside range")
+       endif
+       close db/primary
+       dbopen /usr/local/gifa/macro/att/1let_3let code
+       if (index($code[$l],$res) == 0) then
+          print ("Warning: residue #"; $i ; "type :"; $res)
+          print ("  Index in primary sequence:"; $prim; "Residue types do not match")
+       endif
+       dbclose code
+     endif
+
+; Then check spin-system topology
+     while ($splist s! ' ')        ; for all spins of residue
+         set sp = (head($splist))
+         set spname = (head(tail($spin[$sp])))  ; name of given spin
+         set splist = (tail($splist))
+         if (tolower($spname) s= 'unk') goto breakout      ; donot check 'unk' spins
+; check for duplicate name
+         if (index($spname,'Q') != 1) then    ; nor Qx for duplicate
+           set spp = $splist
+           while ($spp s! ' ')       ; for all remaining spins
+              if (head(tail($spin[head($spp)])) s= $spname) then
+                print ("Warning: residue #"; $i ; "type :"; $res)
+                print ("   there is more than one spin of type"; $spname; "    #"; head($spp); "and   #"; $sp)
+              endif
+              set spp = (tail($spp))
+           endwhile
+         endif
+; check for 'official' name
+         set spp = $prot
+         while ($spp s! ' ')
+           if (headx($spp,',') s= $spname) goto breakout
+           set spp = (tailx($spp,','))
+         endwhile
+         print ("Warning: residue #"; $i ; "type :"; $res)
+         print ('  spin #'; $sp; 'type :'; $spname;' not defined in topology db')
+=breakout
+     endwhile

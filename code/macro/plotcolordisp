@@ -1,0 +1,83 @@
+; plotcolordisp <Filename>
+;
+; Makes a color contour plot on plotter
+;
+; see also : easyplot PLOT
+
+set filename = '*PL'
+message 'Enter *S(creen), *PR(inter), *PL(otter) or file_name'
+set filename = $_
+set a = $level
+set s = $scale
+set si = $sign
+
+set s1 = ($s/($loga*$loga))
+set s2 = ($s1/($loga*$loga))
+set s3 = ($s2/($loga*$loga)) 
+if ($loga==1) then
+  set s1 = ($s*0.75)
+  set s2 = ($s*0.5)
+  set s3 = ($s*0.25)
+endif
+
+set i = 0 
+; initialisation des couleurs
+; partie positive ++ yellow green cian blue +
+set coul[$s] = 6
+set coul[$s1] = 5
+set coul[$s2] = 4
+set coul[$s3] = 3
+; partie negative - pourpre red red black --
+set couln[$s3] = 1
+set couln[$s2] = 2 
+set couln[$s1] = 2
+set couln[$s] = 7
+
+level 1
+while ($i <= $a) 
+  if ($scale >= 0) set cval = $s3
+  if ($scale > $s3) set cval = $s2 
+  if ($scale > $s2) set cval = $s1
+  if ($scale > $s1) set cval = $s 
+
+if ($CONFIG_PLOT s= "postscript") then
+  ; positif
+  if ($si >= 0) then 
+    sign 1 pcolor $coul[$cval] $filename
+    plot $filename
+  endif
+  ; negatif  
+  if ($si <= 0) then
+    sign -1 pcolor $couln[$cval] $filename
+    plot $filename
+  endif
+else
+  ; positif
+  if ($si >= 0) then
+    sign 1 pen $coul[$cval] $filename
+    plot $filename
+  endif
+  ; negatif 
+  if ($si <= 0) then
+    sign -1 pen $couln[$cval] $filename
+    plot $filename
+  endif
+endif
+
+  set i = (%+1)
+
+  if ($loga!=1) scale (%/$loga)
+  if ($loga==1) scale (%*$i/($i+1))
+
+endwhile
+
+;ecrit en noir en sortie
+if ($config_plot s= "postscript") then
+   pcolor 1 $filename
+else
+   pen 1 $filename
+endif
+;restaure level, scale et signe
+level $a
+scale $s
+sign $si

@@ -1,0 +1,135 @@
+; multi_zoom
+;
+; creates a tool which permits to handle several zoom box on a data-set.
+;
+; you can define zoom regions
+;         jump to a given window
+;         store and load a set of zoom definitions (stored as macro commands)
+;         draw the zoom definitions on screen
+;
+; when loaded, the zoom definition are stored in an associative array called
+; zmem[]
+;
+;related contexts : $ZOOM $ZOOM_1D[1..2] $ZOOM_2D[1..4] $ZOOM_3D[1..6]
+;
+;related variable : $ZMEM[]
+;
+;see also : ZM zoom point zoom3di rzoom center 
+
+
+set fnm = "zoom_window"		; the name of the storage file
+
+
+if ($arg == 0) then
+=redo
+; =redo is used by the "define" action
+     ; first prepare every thing for form.
+	set zoom_list = " "
+	if (exist("zmem[]")) then
+	  set i = (nextlm("zmem"," "))
+	  while ($i s! " ")
+		set zoom_list = ($i // ',' // %)
+		set i = (nextlm("zmem",$i))
+	  endwhile
+	endif
+	if ($zoom_list s= "") set zoom_list = "Empty!"
+	formbox "multi_zoom" \
+		"multi_zoom Jump $area" \
+		"Zoom region :" enum $zoom_list area % \
+		noreturn Rzoom action rzoom \
+		Jump action "multi_zoom Jump $area" \
+		noreturn Define action "multi_zoom Define closeform $widget" \
+		noreturn Draw action "multi_zoom Draw" \
+		noreturn Load action "multi_zoom Load closeform $widget" \
+		noreturn Store action "multi_zoom Store" \
+		*
+else
+	set action = $_
+	if ($action s= "Jump") then
+		set area = $_
+		set d = (head($zmem[$area]))
+		set z1 = (head(tail($zmem[$area])))
+		set z2 = (head(tail(tail($zmem[$area]))))
+		set z = (tail(tail(tail($zmem[$area]))))
+		if ($d s= "1D") then
+			dim 1 zoom 1 $z1 $z2
+		elsif ($d s= "2D") then
+			set z3 = (head($z))
+			set z4 = (head(tail($z)))
+			dim 2 zoom 1 $z1 $z2 $z3 $z4
+		else			; 3D
+			set z3 = (head($z))
+			set z4 = (head(tail($z)))
+			set z5 = (head(tail(tail($z))))
+			set z6 = (head(tail(tail(tail($z)))))
+			dim 3 zoom 1 $z1 $z2 $z3 $z4 $z5 $z6
+		endif
+	elsif ($action s= "Define") then
+		if ($zoom == 0) error "Should be in zoom mode"
+		dialogbox "Define name" \
+		  "Give a name (no blank) to the current region" message \
+		  "Area name :" string nm "new-name" *
+		; to define zoom regions, use ppm
+		if ($dim == 1) then
+			set zmem[$nm] := ("1D";itop($zoom_1d[1],1,1)//'p';itop($zoom_1d[2],1,1)//'p')
+		elsif ($dim == 2) then
+			set zmem[$nm] := ("2D";itop($zoom_2d[1],2,1)//'p';itop($zoom_2d[2],2,2)//'p';itop($zoom_2d[3],2,1)//'p';itop($zoom_2d[4],2,2)//'p')
+		else
+			set zmem[$nm] := ("3D";itop($zoom_3d[1],3,1)//'p';itop($zoom_3d[2],3,2)//'p';itop($zoom_3d[3],3,3)//'p';itop($zoom_3d[4],3,1)//'p';itop($zoom_3d[5],3,2)//'p';itop($zoom_3d[6],3,3)//'p')
+		endif
+		goto redo
+	elsif ($action s= "Remove") then
+		set area = $_
+		set var = ("zmem['" // $area // "']")
+		dump
+		unset $var
+	elsif ($action s= "Draw") then
+	   set i = (nextlm("zmem"," "))
+	   while ($i s! " ")
+		set d = (head($zmem[$i]))
+		set z1 = (head(tail($zmem[$i])))
+		set z2 = (head(tail(tail($zmem[$i]))))
+		set z = (tail(tail(tail($zmem[$i]))))
+		if (($d s= "1D") & ($dim == 1)) then
+			set y = ($random*40+50)
+			showline $z1 0 $z1 $y
+			showline $z1 $y $z2 $y
+			showline $z2 0 $z2 $y
+			showtext $i $z1 $y
+		elsif (($d s= "2D") & ($dim == 2)) then
+			set z3 = (head($z))
+			set z4 = (head(tail($z)))
+			showline $z2 $z1 $z2 $z3
+			showline $z2 $z3 $z4 $z3
+			showline $z4 $z3 $z4 $z1
+			showline $z4 $z1 $z2 $z1
+			showtext $i $z2 $z1
+		endif
+		set i = (nextlm("zmem",$i))
+	   endwhile
+	elsif ($action s= "Store") then
+		open $fnm
+	   	set i = (nextlm("zmem"," "))
+	   	while ($i s! " ")
+			fprint $fnm ("set zmem['" // $i // "'] := '" // $zmem[$i] // "'")
+			set i = (nextlm("zmem",$i))
+		endwhile
+		close $fnm
+		alert ("Written to a file called :"; $fnm)
+	elsif ($action s= "Load") then
+		print ("Loading from file '"; $fnm; "'")
+		@($fnm)
+		goto redo
+	endif		; $action
+endif			; $arg
+	
+
+
+
+
+
+
+
+
+
+

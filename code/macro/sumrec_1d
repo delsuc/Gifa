@@ -1,0 +1,20 @@
+; sumrec_1d  radius_of_box
+; 
+; integrate 1D peak on a box around each peak in the peak table
+;
+; see also : SUMREC INTEG
+
+if ($dim !=1) error " Only in 1D"
+if (!$arg) print "Enter radius of box"
+set size = $_
+set i = 1
+=loop_on_peak
+  if ($i > $npk1d) goto end
+  set vol = 0  set j = (-$size)
+  =loop_on_point
+     set vol = (% + val1d($j+$pk1d_f[$i]) )
+     set j = (%+1) if ($j <= $size) goto loop_on_point
+  print ("Peak : "//$i//" Volume : "//$vol)
+  set i = (%+1)  goto loop_on_peak
+=end
+

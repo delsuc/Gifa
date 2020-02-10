@@ -1,0 +1,48 @@
+; This test should be considerably extended.
+; for the moment, only Inverse Laplace/Tabulated is tested
+; the minimum would be to add 2D FT Maxent
+
+dim 1 itype 0
+dmin .001
+dmax 1
+; create dump tab[]
+chsize 30
+for i = 1 to 30
+  setval $i (0.1*exp($i/3))
+endfor
+put tab
+
+;create asym damping distrib
+chsize 15 one mult 1000 tm 1 1
+chsize 30 reverse chsize 40
+tlaplace
+addnoise (0.001*val1d(1)) 123
+
+gifa
+algo 11
+iter 200 miniter 4 ndisp 50
+invtlap 100
+iter 1000
+invtlapcont
+
+; I get on my ref machine (HP-UX) :
+; noise = 114.7  shift = 80.2
+; #68 = 350.9
+; chi2 = 2.01
+
+set a = ($iterdone == 1000 & $chi2 < 2.5)
+evaln 1 100
+set a = ($a & abs($shift-80)<5 & abs($noise-115)<10 & val1d(68)>300)
+
+report $a 'Inverse Laplace Transform'
+
+if ( $chi2 > 2.5) then         ; if chi2 is off
+   if ($chi2 < 4) then         ; but not so badly
+      if (index($CONFIG_OS,'Sun-Sparc')!=0) then  ; and we're running a SUN
+        print ('You are running on'; $CONFIG_OS)
+        print 'and the Inverse Laplace Transform fails because of a convergence slower than normal'
+        print 'You can still use this module, but will have not optimal convergence'
+      endif
+   endif
+endif
+

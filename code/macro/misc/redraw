@@ -1,0 +1,16 @@
+; redraw drawing_file
+; redraw on the spectrum a drawing entered with the macro draw
+;
+if (!$arg) print 'Enter coordinate file name'
+set outfile := $_    open $outfile
+=loop
+  set dr_x = <$outfile 
+  if (eof($outfile)) goto end
+  set dr_y1 = (head(tail($dr_x)))
+  set dr_x2 = (head(tail(tail($dr_x))))
+  set dr_y2 = (head(tail(tail(tail($dr_x)))))
+  showline (head($dr_x)) $dr_y1 $dr_x2 $dr_y2
+  goto loop
+=end
+close $outfile
+exit

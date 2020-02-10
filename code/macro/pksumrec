@@ -1,0 +1,28 @@
+; pksumrec  { height(F1) width(F2)}
+;
+; permit to integrate all the peaks in the current peak table
+; over a given rectangle.
+;
+; if called with no argument, build a graphic interface,
+; if called with arguments, uese them as the width and the height of the box
+; (n means -n +n range, e.g. 2 means integrate over 5 points)
+; see also SUMREC INTEG
+
+if ($dim != 2) error "Works only in 2D"
+
+if (!$arg) then
+  formbox pksumrec \
+     'pksumrec $h $w' \
+     'Will integrate over a given rectangle' message \
+     'For all peaks present in the peak table' message \
+     'Box Height (in F1)' int h 1 \
+     'Box  Width (in F2)' int w 1 \
+     *
+else
+  set h = $_
+  set w = $_
+  for pic = 1 to $npk2d
+	sumrec ($pk2d_f1f[$pic]-$h) ($pk2d_f2f[$pic]-$w) ($pk2d_f1f[$pic]+$h) ($pk2d_f2f[$pic]+$w)
+	setpeak $pic $sumrec % % % %
+  endfor
+endif

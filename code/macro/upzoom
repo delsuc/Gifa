@@ -1,0 +1,31 @@
+; upzoom permits to propagate a zoom window to a higher dimension
+;
+;Normally, each dim buffer (i.e. 1D, 2D 3D) has an independent zoom definition.
+; however, commands like
+;    ROW, COL, PROJ (2D->1D)
+;    PLANE, PROJ (3D->2D)
+;    VERT (3D->1D)   etc...
+; copy the zoom definition from the higher dimension to the lower one.
+;
+; upzoom realizes exactly the opposite.
+; if you are in nD, upzoom will copy the current zoom definition to (n+1)D
+;  using the last commands to guess the axis.
+;
+; see also : ZOOM zoom3di
+
+if ($dim == 1) then
+   if ($ROW[1] s= 'F1') then
+	dim 2 zoom 1 $zoom_1d[1] % $zoom_1d[2] % dim 1
+   else
+	dim 2 zoom 1 % $zoom_1d[1] % $zoom_1d[2] dim 1
+   endif
+elsif ($dim == 2) then
+   if ($plane[1] s= 'F1') then
+      dim 3 zoom 1 % $zoom_2d[1] $zoom_2d[2] % $zoom_2d[3] $zoom_2d[4] dim 2
+   elsif ($plane[1] s= 'F2') then
+      dim 3 zoom 1 $zoom_2d[1] % $zoom_2d[2] $zoom_2d[3] % $zoom_2d[4] dim 2
+   elsif ($plane[1] s= 'F3') then
+      dim 3 zoom 1 $zoom_2d[1] $zoom_2d[2] % $zoom_2d[3] $zoom_2d[4] % dim 2
+   endif
+endif
+

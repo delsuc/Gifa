@@ -1,0 +1,6 @@
+for i = 1 to 10
+control
+variable
+arithmetics
+dbm
+endfor

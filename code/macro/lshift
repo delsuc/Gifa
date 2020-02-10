@@ -1,0 +1,15 @@
+; lshift n_points
+;
+; makes a left shift of the data
+;
+; see also : rshift EXTRACT CHSIZE
+
+if ($dim != 1) error "Implemented in 1D only"
+
+message "Enter number of points for left shift"
+set n = $_
+set it = $itype_1d  itype 0
+set sz = $si1_1d
+
+extract (1+$n) $si1_1d   chsize $sz
+itype $it

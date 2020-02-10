@@ -1,0 +1,20 @@
+; used to test file I/O
+set ff = '/usr/tmp/gifa_testfile'
+open README		; open for read
+open $ff		; open for write
+set l = <README
+while (!eof('README'))
+  fprint $ff $l
+  set l = <README
+endwhile
+close README
+close $ff
+
+sh ('diff README';$ff;'>';$ff // '.res')
+open ($ff // '.res')
+set l = <($ff // '.res')
+report (eof($ff // '.res')) "Text File I/O"
+
+close ($ff // '.res')
+sh ('/bin/rm';($ff // '.res');$ff)
+

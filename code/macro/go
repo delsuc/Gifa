@@ -1,0 +1,7 @@
+; obsolete, for compatibility
+print "GO command is now obsolete, use MAXENT instead"
+if ($dim == 1) then
+	maxent $_
+elsif ($dim == 2) then
+	maxent $_ $_
+endif

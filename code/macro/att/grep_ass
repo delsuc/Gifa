@@ -1,0 +1,99 @@
+; grep_ass (interactive)
+;
+; permits to search for residue name and number, spin name or chemical 
+; shift range in an ASCII assignement file. 
+; The chemical shift range is defined by an upper value and/or a lower value. 
+; The criteria for residue name and number, and for spin name are checked 
+; as parts of the corresponding parameters of the peak.
+; The criteria can be applied according to a logical parameter: 
+; 'and' means that all the given criteria must be verified to display 
+; the peak, 'or' means that one verified criterion is sufficient 
+; to display the peak.
+;
+; see also: grep_peak, check_ass
+
+Print "Current project :"
+pwd
+
+set list = 'Off,Res Name,Res Numb,Spin Name,Upper Chem Shift,Lower Chem Shift' 
+if (!$arg) then
+
+  formbox 'Browse assignment file' \
+   'grep_ass $assfil $grep_typ[1] $cr_par[1] $grep_typ[2] $cr_par[2] $grep_typ[3] $cr_par[3] $grep_typ[4] $cr_par[4] $op' \
+   'Select the assignment file' file assfil assignement \
+   'Criterion' enum $list grep_typ[1] 'Off' noreturn \
+   'Parameter' string cr_par[1] ' ' \
+   separator \
+   'Criterion' enum $list grep_typ[2] 'Off' noreturn \
+   'Parameter' string cr_par[2] ' ' \
+   separator \
+   'Criterion' enum $list grep_typ[3] 'Off' noreturn \
+   'Parameter' string cr_par[3] ' ' \
+   separator \
+   'Criterion' enum $list grep_typ[4] 'Off' noreturn \
+   'Parameter' string cr_par[4] ' ' \
+   separator \
+   'Logical operator' enum 'or,and' op 'or' \
+   *
+
+else
+ 
+  set assfil = $_
+  for k = 1 to 4
+    set grep_typ[$k] = $_
+    set cr_par[$k] = $_
+  endfor
+  set op = $_
+
+  set tmp = ('tmp' // int(1000000*$random))
+  open $tmp
+  fprint $tmp ("formbox primary DO_NOTHING \\")
+  fprint $tmp ("'Scanning assignement file "//$assfil//"...' message \\")
+
+  open $assfil
+  set line = <$assfil
+  while (!eof($assfil))
+
+   if (subst((head($line)),1,1) s! "#") then
+;       print $line
+; no comment line
+     set ok = 0
+     set next = 0
+     set k = 1
+     while (($k <= 4) & ($next == 0))
+;       print ($grep_typ[$k] ; $cr_par[$k] ;$i)
+       check_ass $grep_typ[$k] $cr_par[$k] $line
+;       print ("line";$line;"grep_typ";$grep_typ[$k];"returned";$returned)
+; for logical parameter 'or', if one criterion is met: 
+       if (($op s= "or") & ($returned == 1)) then
+          fprint $tmp $line
+          set next = 1
+       endif
+; for logical parameter 'and', if one criterion is not met:
+       if (($op s= "and") & ($returned == 0)) then
+          set ok = 0
+          set next = 1
+       endif
+       if (($op s= "and") & ($returned == 1)) then
+          set ok = 1
+       endif
+       set k = (%+1)
+     endwhile
+     if (($op s= "and") & ($ok == 1)) fprint $tmp ("'"//$line//"' message \\")
+   endif
+
+   set line = <$assfil
+  endwhile
+  
+  close $assfil
+  fprint $tmp ("* ")
+  close $tmp
+  @($tmp)
+; sh ("/bin/rm"; $tmp)
+
+endif
+
+
+
+
+

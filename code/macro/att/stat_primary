@@ -1,0 +1,31 @@
+dbopen /usr/local/gifa/macro/att/1let_3let code2
+set p =  'db/primary'
+open $p
+set tot = 0
+set l = <$p
+while (!eof($p))
+  if (!exist('c[' // $l // ']')) set c[$l] = 0
+  set c[$l] = (%+1)
+  set tot = (%+1)
+  set l = <$p
+endwhile
+print 'Statistic on the current Primary sequence'
+print ('Total number of residue:'; $tot)
+
+set ii = 0
+set l = ' '
+foreach i in code2
+   if (!exist('c[' // $i // ']')) then
+     set l = ($l ; head($code2[$i]); ': 0')
+   else
+     set l = ($l ; head($code2[$i]); ':'; $c[$i])
+   endif
+   set ii = (%+1)
+   if ($ii == 5) then       ; print 5 by 5
+      print $l
+      set ii = 0     set l = ' '
+   endif
+endfor
+if ($ii != 0) print $l
+close $p
+dbclose code2

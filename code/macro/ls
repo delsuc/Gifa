@@ -1,0 +1,10 @@
+;as in unix
+;
+; see also : pwd more rm vi vim vip SH CD
+
+set ls_l = "ls -C"
+while ($arg)
+   set ll = $_
+   set ls_l = ($ls_l ; $ll)
+endwhile
+sh $ls_l 

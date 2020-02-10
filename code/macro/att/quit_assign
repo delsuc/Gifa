@@ -1,0 +1,24 @@
+; closes data_bases, unset static variables
+; and quit the assignment environment
+
+gm/al_yesno "Do you want to check the database before quitting?"
+
+if ($returned s= 'yes') then
+   dbck
+endif
+
+if (dbm("att")) dbclose att
+if (dbm("sys")) dbclose sys
+if (dbm("spin")) dbclose spin
+if (dbm("topo")) dbclose topo
+if (dbm("rescode")) dbclose rescode
+
+sh '/bin/rm -f tmp*'
+closebutton button.g
+munset tol_click tol_align build_list LAST_CLICK *
+munset att_version LIST_SPECTRA list_pdb *
+munset cur_exp cur_db *
+munset box_f1 box_f2 *
+if (exist("marker")) unset marker
+disp1d 1
+

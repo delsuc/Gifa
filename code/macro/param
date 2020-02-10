@@ -1,0 +1,109 @@
+; param
+;
+; generates a form with all the pertinent parameter for the current file
+;
+; see also : SPECW FREQ OFFSET ITYPE list listd dataset size
+
+
+ ; first compute size
+if ($dim == 1) then
+  if ($itype_1d == 1) then
+      set i = ("(Complex)";$si1_1d/2)
+  else
+      set i = ("(Real)";$si1_1d+0)
+  endif
+  set tt = $si1_1d
+elsif ($dim == 2) then
+  if ($itype_2d > 1) then
+      set i = ("(Complex)";$si1_2d/2)
+  else
+      set i = ("(Real)"; $si1_2d+0)
+  endif
+  if ($itype_2d == 1 | $itype_2d == 3) then
+      set i = ($i;"x (Complex)";$si2_2d/2)
+  else
+      set i = ($i;"x (Real)"; $si2_2d+0)
+  endif
+  set tt = ($si1_2d*$si2_2d)
+elsif ($dim == 3) then
+  if ($itype_3d > 3) then
+      set i = ("(Complex)";$si1_3d/2)
+  else
+      set i = ("(Real)";$si1_3d+0)
+  endif
+  if ($itype_3d == 2 | $itype_3d == 3 | $itype_3d == 6 | $itype_3d == 7 ) then
+      set i = ($i;"x (Complex)";$si2_3d/2)
+  else
+      set i = ($i;"x (Real)";$si2_3d+0)
+  endif
+  if ($itype_3d == 1 | $itype_3d == 3 | $itype_3d == 5 | $itype_3d == 7 ) then
+      set i = ($i;"x (Complex)";$si3_3d/2)
+  else
+      set i = ($i;"x (Real)";$si3_3d+0)
+  endif
+  set tt = ($si1_3d*$si2_3d*$si3_3d+0)
+endif
+
+print ("Total Size :"; $tt; " : "; int($tt/1024); "k")
+
+if ($dim == 1) then
+  if ($freq < $freq_1d) then
+     print ('Warning, FREQ was'; $freq; 'resetting it to'; $freq_1d)
+     freq $freq_1d $freq_1d
+  endif
+  formbox 'Data set parameters' \
+    'dim 1 freq $f0 $f specw $sw' \
+    $name_1d message noreturn \
+    ('    size :';$i) message \
+    separator \
+    'Spectrometer frequency (in MHz)' real f0 $freq \
+    'spectrum frequency ' real f $freq_1d \
+    separator \
+    'Spectral width (Hz)' real sw $specw_1d \
+    separator \
+    'DOSY setup' action dosy_setup \
+   *
+elsif ($dim ==2) then
+  if ($freq < max($freq_1_2d,$freq_2_2d) ) then
+     print ('Warning, FREQ was'; $freq; 'resetting it to'; max($freq_1_2d,$freq_2_2d))
+     freq (max($freq_1_2d,$freq_2_2d)) $freq_1_2d $freq_2_2d
+  endif
+  formbox 'Data set parameters' \
+    'dim 2 freq $f0 $f1 $f2 specw $sw1 $sw2' \
+    $name_2d message noreturn \
+    ('    size :';$i) message \
+    ('Total buffer size :';$tt) message \
+    separator \
+    'Spectrometer frequency (in MHz)' real f0 $freq \
+    'frequency in F1' real f1 $freq_1_2d \
+    noreturn 'in F2' real f2 $freq_2_2d \
+    separator \
+    'Spectral width in F1 (Hz)' real sw1 $specw_1_2d \
+    noreturn 'in F2     ' real sw2 $specw_2_2d \
+    separator \
+    'DOSY setup' action dosy_setup \
+   *
+else
+  set fm = (max(max($freq_1_3d,$freq_2_3d),$freq_3_3d))
+  if ($freq < $fm ) then
+     print ('Warning, FREQ was'; $freq; 'resetting it to'; $fm)
+     freq $fm
+  endif
+  formbox 'Data set parameters' \
+    'dim 3 freq $f0 $f1 $f2 $f3 specw $sw1 $sw2 $sw3' \
+    $name_3d message noreturn \
+    ('    size :';$i) message \
+    ('Total buffer size :';$tt) message \
+    separator \
+    'Spectrometer frequency (in MHz)' real f0 $freq \
+    'frequency in F1' real f1 $freq_1_3d \
+    noreturn 'in F2' real f2 $freq_2_3d \
+    noreturn 'in F3' real f3 $freq_3_3d \
+    separator \
+    'Spectral width in F1 (Hz)' real sw1 $specw_1_3d \
+    noreturn 'in F2     ' real sw2 $specw_2_3d \
+    noreturn 'in F3     ' real sw3 $specw_3_3d \
+    separator \
+    'DOSY setup' action dosy_setup \
+   *
+endif

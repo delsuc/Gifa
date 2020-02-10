@@ -1,0 +1,15 @@
+; exemple de help
+; ....
+set var_enum123 := enum_2 \
+formbox FORMULAIRE \
+dump \
+ENUM1 enum var_enum123 'enum_1,enum_2,enum_3' \
+ENUM2 enum var_enum4567 'enum_4,enum_5,enum_6,enum_7' \
+ENUM3 enum var_enum323 'enum_1,enum_2,enum_3' \
+ENUM4 enum var_enum423 'enum_1,enum_2,enum_3' \
+ENUM5 enum var_enum523 'enum_1,enum_2,enum_3' \
+ENUM6 enum var_enum623 'enum_1,enum_2,enum_3' \
+ENUM7 enum var_enum723 'enum_1,enum_2,enum_3' \
+ENUM8 enum var_enum823 'enum_1,enum_2,enum_3' \
+separator \
+*

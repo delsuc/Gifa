@@ -1,0 +1,20 @@
+; tab_buffer
+;
+; Load ascii file as a 1D data-set and put the square in a buffer 'TAB'
+;
+; see also : PUT TAB, GET TAB, showtab, load
+
+set dd = $dim
+
+if (!$arg) then
+   dialogbox File_name 'Enter file name' file tt ' ' * 
+else
+   set tt = $_
+endif
+
+dim 1
+load $tt
+put data multdata
+puttab
+print ("Size of the Tab buffer :"; $si_tab; "points") 
+dim $dd

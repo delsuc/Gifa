@@ -1,0 +1,14 @@
+; removes all peaks along the diagonal
+;
+; asks for the width of the diagonal to remove.
+;
+; see also : pkrmi pkrmz PKRM
+
+gm/test2d
+if ($npk2d == 0) error "No peak in peak table"
+message "width (in Hz) of the diagonal to remove"
+set width = $_
+for i = $npk2d to 1 step -1
+     if (abs(itoh($PK2D_F1F[$i],2,1)-itoh($PK2D_F2F[$i],2,2)) <= $width) pkrm $i 0
+endfor
+

@@ -1,0 +1,61 @@
+; dispcont no_arg 
+;
+; creates a form box which permits to modify the contour parameters
+;
+; calls itself with parameters for the update
+;
+; see also : CDISP2D LEVEL LOGA SIGN
+
+; no arg means : build the formbox, args means do the update
+
+if (!$arg) then
+  ; compute default val
+  if ($cdisp2d==1) then
+     set cdef = on
+  else
+     set cdef = off
+  endif
+  if ($sign == 1) then
+     set pndef = positive
+  elsif ($sign == 0) then
+     set pndef = both
+  else
+     set pndef = negative
+  endif
+  formbox "Display control" \
+	"dispcont $cont $posneg $lev $log" \
+	"Contour (cdisp2d)" enum "on,off" cont $cdef \
+	noreturn "Sign" enum "positive,negative,both" posneg $pndef \
+	"level" cursor 1 64 0 lev $level \
+	noreturn 'help' action 'help level' \
+	"spacing (loga)" cursor 1.0 5.0 1 log $loga \
+	noreturn 'help' action 'help loga' \
+	*
+else
+  set cont = $_
+  set posneg = $_ 
+  set lev = $_ 
+  set log = $_
+  if ($cont s= "off" ) then
+   cdisp2d 0
+  else
+   if ($lev != $level )	then
+     if ($lev < 1 | $lev >64) error "Wrong number of levels"
+     level $lev ref
+   endif
+   if ($log != $loga ) then
+      if ($log <1) error "Loga should be > 1"
+      loga $log ref
+   endif
+   cdisp2d 1
+  endif
+  if ($posneg s= "positive") then
+ 	sign 1
+  elsif ($posneg s= "negative") then
+ 	sign -1
+  else
+ 	sign 0
+  endif
+endif
+exit
+

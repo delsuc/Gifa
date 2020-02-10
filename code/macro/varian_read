@@ -1,0 +1,14 @@
+; varian_read
+;
+; reads-in a Varian file and load parameters.
+; The macro asks for the name of the directory which is supposed to
+; hold the data file (called fid) and the parameters (called procpar)
+;
+; see also : READV varian_param
+
+formbox 'Read Varian File' \
+  "readv ($f // '/fid') varian_param ($f // '/procpar')" \
+  'Enter the name of the directory where the acquisition files are located' message \
+  'Varian directory name' file f ' ' \
+  *
+

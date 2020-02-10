@@ -1,0 +1,38 @@
+if ($dim > 2) error "Not implemented in 3D yet"
+if ($dim == 1) then
+   if ($itype_1d != 0) real
+elsif ($dim == 2) then
+   if ($itype_2d == 1 | $itype_2d == 3) real f2
+   if ($itype_2d == 2 ) real f1
+endif
+refmacro 1
+alert 'Zoom on the selected region of the data-set THEN click on Ok'
+if ($zoom == 1) then
+  if ($dim ==1) then
+   alert ("Size of region is :"; $zoom_1d[2]-$zoom_1d[1]+1 )
+  elsif ($dim == 2) then
+   alert ("Size of region is :"; $zoom_2d[3]-$zoom_2d[1]+1 ; "x"; $zoom_2d[4]-$zoom_2d[2]+1)
+  endif
+  set ans = 'yes' message 'Ok to extract ?' set ans =
+  zoom 0 
+  if ($ans s! 'yes') exit
+  if ($dim == 1) then 
+    extract $zoom_1d[1] $zoom_1d[2]
+  elsif ($dim == 2) then
+     extract $zoom_2d[1] $zoom_2d[2] $zoom_2d[3] $zoom_2d[4]
+  endif
+  scale 1 zoom 0
+else
+  alert 'Use full spectrum'
+endif
+alert 'inverse Fourier Transform'
+if ($dim == 1) then
+   chsize (2*(power2($si1_1d-1)))
+   iftbis
+elsif ($dim == 2) then
+   chsize (2*(power2($si1_2d-1))) (2*(power2($si2_2d-1)))
+   iftbis f12
+endif
+
+
+

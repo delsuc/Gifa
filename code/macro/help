@@ -1,0 +1,135 @@
+;help {COMMAND or macro}
+;
+;Type help Name_of_item to get info about a specific command.
+;Use apropos topic, to find commands name related to a specific
+;topic.
+;Use help primer for a first introduction.
+;
+;see also : apropos
+
+if (!$arg) then
+   set comm = primer
+else
+   message 'Enter command on which you want information'
+   set comm = $_
+endif
+
+set i = (index($comm,'*')) 
+if ($i > 2) then        ; switch apropos
+   set comm = (subst($comm,1,$i-1))
+   apropos $comm
+   exit
+endif
+
+set liste = "primer,file,processing,plotting,dosy,assignment,display,zoom_interactive,peak-picking,macro,functions,contexts"
+
+;Test de l'existence du fichier dans
+;les directories /usr/local/gifa/help; ./; et 
+;ceux definis dans $GIFAPATH 
+
+   set tmpfile = ("/usr/tmp/hgifa" // int(100000*$random))
+   set file_out = ("/usr/tmp/gifahelp" // int(100000*$random))
+   set path = $GIFAPATH
+
+   sh ("ls  /usr/local/gifa/help/"//$comm//".hlp >";$file_out;" 2> /dev/null")
+   sh ("ls ./"//$comm;">>";$file_out;" 2> /dev/null")
+   while ($path s! " ")
+	set item = (head($path))
+        set path = (tail($path))
+	sh ("ls ";$item//"/"//$comm;">>";$file_out;" 2> /dev/null")
+   endwhile
+
+;creation du fichier help
+
+   open $file_out
+   set file = <$file_out
+   close  $file_out
+   sh ("/bin/rm -f ";$file_out)
+
+
+   if ( $file s= " " ) then
+	alert ("No help available for <";$comm;"> command")
+	sh ("cp /usr/local/gifa/help/primer.hlp";$tmpfile)
+	set orig = help  
+
+   elsif ( $file s= ("/usr/local/gifa/help/"//$comm//".hlp") ) then
+	sh ("cp ";$file;$tmpfile)
+	set orig = help  
+
+   else
+	sh ( "awk '/^;/ {print substr($0,2)} /^[^;]/ {exit}'";$file;">"; $tmpfile) 
+	set orig = macro 
+	set orig_file = $file
+
+   endif
+
+; test de fichier vide
+
+open $tmpfile
+set file = <$tmpfile
+close  $tmpfile
+if ( $file s= " " ) then
+   alert ("No help available for <";$comm;"> command")
+   sh ("cp /usr/local/gifa/help/primer.hlp";$tmpfile)
+endif
+
+
+; creation formulaire
+
+set title_form = ("Help for:";$comm)
+if (($comm s= "variables") | ($comm s= "functions") | ($comm s= "help") | ($comm s= "primer") | ($comm s= "contexts")) then 
+	set run_comm = DO_NOTHING
+else
+	set run_comm = $comm
+endif
+if ($CONFIG_GRAPH==1) then
+  if ($orig s= "macro") then
+	formbox $title_form \
+	  "help $topic" \
+	  "choose topic :"  enum $liste gene $comm noreturn \
+          "Help" action "help $gene closeform $widget"  \
+	  separator \
+	  " " string topic $comm noreturn \
+	  Help action "help $topic"  \
+	  " " string kw " " noreturn \
+	  "apropos" action "apropos $kw" \
+	  separator \
+	  $tmpfile text \
+	  Execute action $run_comm \
+	  noreturn \
+	  "Show Macro" action ("formbox";$comm ;"DO_NOTHING";$orig_file;" text Print action 'sh"; '"gifaprint'; $orig_file; '"'; "' *" ) \
+       		*
+  elsif ($run_comm s= 'DO_NOTHING') then
+        formbox $title_form \
+	  "help $topic" \
+	  "choose topic :"  enum $liste gene $comm noreturn \
+          "Help" action "help $gene closeform $widget"  \
+	  separator \
+	  " " string topic $comm noreturn \
+	  Help action "help $topic" \
+          " " string kw " " noreturn \
+          "apropos" action "apropos $kw" \
+          separator \
+	  $tmpfile text \
+                *
+  else
+        formbox $title_form \
+	  "help $topic" \
+	  "choose topic :"  enum $liste gene $comm noreturn \
+          "Help" action "help $gene closeform $widget"  \
+	  separator \
+	  " " string topic $comm noreturn \
+	  Help action "help $topic"  \
+          " " string kw " " noreturn \
+          "apropos" action "apropos $kw" \
+          separator \
+	  $tmpfile text \
+	  Execute action $run_comm \
+                *
+  endif
+else
+	sh ("more";$tmpfile);
+endif
+sh ("/bin/rm -f ";$tmpfile)
+exit
+

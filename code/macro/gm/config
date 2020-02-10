@@ -1,0 +1,45 @@
+; equivalent to the config command
+;
+
+if ($CONFIG_GRAPH==1) then
+ set out = ('/tmp/gifaconf' // (int(100000*$random)))
+ open $out
+ fprint $out ("Licensed to :"; $licence)
+ fprint $out " "
+ fprint $out ("Memory available (in kwords) :";$MEM_MAX/1024 )
+ fprint $out ("        protected area in 3D :";$MEM_PRO_3D/1024)
+ fprint $out ("        protected area in 2D :";$MEM_PRO_2D/1024)
+ fprint $out ("        protected area in 1D :";$MEM_PRO_1D/1024)
+ fprint $out " "
+ fprint $out ("     max number of variables :";$VAR_MAX)
+ fprint $out " " 
+ fprint $out ("Operating system :";$config_os)
+ fprint $out ("Graphic manager :";$config_win)
+ fprint $out "Graphic mode is ACTIVE"
+ fprint $out ("Plotter driver :";$config_plot)
+ close $out
+ formbox Config DO_NOTHING \
+  " " message \
+  ("GIFA Version :"; $version) message \
+  " " message \
+  "configuration :" message \
+  $out text 'Help' \
+  action 'help' noreturn \
+  'History file' action 'formbox History DO_NOTHING /usr/local/gifa/History text *'  *
+ sh ('/bin/rm'; $out)
+else
+ print ("GIFA Version :"; $version)
+ print ("Licensed to :"; $licence)
+ print " "
+ print ("Memory available (in kwords) :";$MEM_MAX/1024 )
+ print ("        protected area in 3D :";$MEM_PRO_3D/1024)
+ print ("        protected area in 2D :";$MEM_PRO_2D/1024)
+ print ("        protected area in 1D :";$MEM_PRO_1D/1024)
+ print " "
+ print ("     max number of variables :";$VAR_MAX)
+ print " " 
+ print ("Operating system :";$config_os)
+ print ("Graphic manager :";$config_win)
+ print "Graphic mode is INACTIVE"
+ print ("Plotter driver :";$config_plot)
+endif

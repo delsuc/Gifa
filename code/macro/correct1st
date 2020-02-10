@@ -1,0 +1,13 @@
+; no parameter
+;
+; corrects for the 1st point by dividing it by 2
+;
+; see also : FT
+
+if ($dim == 1) then
+   setval 1 (val1d(1)/2)
+elsif ($dim == 2) then
+   row 1 dim 1 mult 0.5 dim 2 put row 1
+elsif ($dim == 3) then
+   plane f1 1 dim 2 mult 0.5 dim 3 put plane f1 1
+endif

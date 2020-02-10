@@ -1,0 +1,34 @@
+; list_assign
+;
+; list all assign entries to a file
+set tmp = ('tmp' // int(1000000*$random))
+sh ('pwd >'; $tmp)
+open $tmp
+set pwd = <$tmp
+close $tmp
+sh ('/bin/rm -f';$tmp)
+open assign_list
+set prim = "db/primary"    open $prim
+set aa = 0
+fprint assign_list ("# Project :"; $pwd)
+set laa = <$prim   set aa = ($aa+1)
+while (!eof($prim))
+  set found = 0
+  foreach p in sys within 1 ($aa-0.1) ($aa+0.1)
+        set found = 1
+        set ss = $sys[$p]
+	fprint assign_list ($aa; $laa; "assigned to :"; $ss)
+	set ss = (tail(tail($ss)))    ; keep only the spin part
+	while ($ss s! ' ')
+	   set sp = $spin[head($ss)]      set ss = (tail($ss))
+	   fprint assign_list ("------";$sp)
+	endwhile
+  endfor
+  if ($found == 0) fprint assign_list ($aa; $laa; "- not assigned -")
+  set laa = <$prim   set aa = ($aa+1)
+endwhile
+close assign_list
+formbox "List of Spin-Systems" DO_NOTHING  \
+   'File is assign_list' message \
+   assign_list text \
+   'Print file' action 'sh "gifaprint assign_list"' *

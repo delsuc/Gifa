@@ -1,0 +1,20 @@
+; burg_back new_size
+;
+; extend backward the FID up to new_size, using burg method
+; to be used when the beginning of the FID got truncated for some reason.
+;
+; this is probably not optimum, as burg is phase-minimum
+; what we need here is rather a 'phase maximum' method.
+; This has the advantage of being MUCH faster than what would be optimum,
+; and will work probably just as well, as long as the number of points
+; to reconstruct is 'small enough'
+;
+; see also : BURG burg2d_back burg2d burg3d
+
+if ($dim != 1) error "Available in 1D only"
+set nsz = $si1_1d
+message "Enter new size"
+set nsz = $_
+if ($nsz <= $si1_1d) error "Wrong size"
+if (2*int($nsz/2) != $nsz) error "size should be even"
+itype 1 reverse burg $nsz reverse

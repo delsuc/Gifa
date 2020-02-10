@@ -1,0 +1,52 @@
+; marker
+;
+; creates an interactive marker on the screen.
+; click as many time as wished on the screen with left mouse button,
+; exit with right button,
+; when exiting, will create a small box that will redraw the lines selected with the click.
+; lines can Symmetric (homonuclear) or asymmetric
+;
+; in the marker box, the following actions can be applied :
+; - Redraw the marked lines
+; - Extend the marker with new locations
+; - Show peaks detected at the intersection of the marked lines
+; - Add missing peaks at the intersections of the marked lines
+; - Add the detected peaks to the Build-List
+;
+; The following parameters can be selected
+; - Lines can be either diagonal symmetric (COSY-type) or Asymmetric (HSQC-type)
+; - The color of the line can be selected
+;
+   ; the macro should actually be called after a point, it uses the 
+   ; content of the point stack to build the call back
+   ; this permit to set-up the stack at will before building the marker.
+   
+; point_dump
+if ($npoint >= 1) then
+  if (!exist("marker")) then
+    set marker := 1
+  else
+    set marker := (%+1)
+  endif
+  set tmp = ('tmp' // int(1000000*$random))
+
+  open $tmp
+  fprint $tmp ("formbox 'marker"; $marker;"' \")
+  set list_coord = " "
+  for i = 1 to $npoint
+    set list_coord = ($list_coord; 0.001*int(1000*itop($pointy[$i],2,1)); 0.001*int(1000*itop($pointx[$i],2,2)) )
+  endfor
+  fprint $tmp ("'do_marker $sym dra $col "; $list_coord; "' \")
+  fprint $tmp ("'Redraw' action 'do_marker $sym dra $col "; $list_coord; "' noreturn \")
+  fprint $tmp "' ' enum '1 (white),2 (red),3 (yellow),4 (green),5 (cian),6 (blue),7 (purple)' col $scolor noreturn \"
+  fprint $tmp "' ' enum 'Symm,Asymm' sym % noreturn \"
+  fprint $tmp '-Help- action "help marker" \'
+  fprint $tmp ("'Extend' action 'do_marker $sym ext "; $list_coord; "' noreturn \")
+  fprint $tmp ("'Show peaks' action 'do_marker $sym sho "; $list_coord; "' noreturn \")
+  fprint $tmp ("'Create peaks' action 'do_marker $sym cre "; $list_coord; "' noreturn \")
+  fprint $tmp ("'Add peaks to list' action 'do_marker $sym add "; $list_coord; "' *")
+  close $tmp
+  @($tmp)
+  sh ("rm -f"; $tmp)
+endif
+   

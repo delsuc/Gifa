@@ -1,0 +1,167 @@
+; mult_integ (interactive)
+;
+; permits the integration of peaks along a series of 
+; experiments according to an assignment database, an amoeba file
+; and a data-sets list. 
+; For each peak, the integral values are written in Tela source file format 
+; in an independent file, located in processing directory
+; The amoeba file basename is also the name of the hash data-base between 
+; the indexes of peaks in assignment data-base and peak file.
+;
+; mult_integ calls compute_label
+;
+
+Print "Current project :"
+pwd
+
+if ($att['largest'] == 0) error "Database Empty !"
+if ($dim != 2) error "Command available in 2D only !"
+if ($zoom == 0) error "Command not available in full ZOOM mode"
+
+if (!$arg) then
+  formbox 'Peak integration tool' \
+   'mult_integ.new $ambfil $lookfil $ls_spec $format' \
+   'Select the pk/amoeba basename' file ambfil amoeba \
+   'Select the lookup basename' file lookfil hash \
+   'Data-sets list' multienum $list_spectra ls_spec $list_spectra \
+   'Format' enum 'free,Tela' format 'free' \
+   *
+else
+  set ambfil = $_
+  set lookfil = $_
+  set ls_spec = $_
+  set format = $_
+
+; determine the number of peaks in the assignment data-base
+  set u = 0
+  foreach i in att
+    if ($i s! "LARGEST") then
+      set u = (%+1)
+    endif
+  endfor
+  print ("u "//$u)
+
+; read the peak file and check that the number of peaks in this 
+; file is the same that the number of peaks in the assignment data-base
+  pkread ($ambfil//".pek") y
+  if ($npk2d != $u) then 
+    error "Difference between the number of peaks in the assignment data-base and the peaks list"
+  endif
+
+; open the hash data-base
+  dbopen ($lookfil//".hash") hash
+
+; determination of the data-set names from the data-set list
+  set nbspec := 0
+  set tmp = $ls_spec
+  while ($ls_spec s! " ")
+    set nbspec := (%+1)
+    set name[$nbspec] := (headx($ls_spec,","))
+    set ls_spec = (tailx($ls_spec,","))
+  endwhile
+  set ls_spec = $tmp
+
+set f1min = (itop($zoom_2d[3],2,1))
+set f2min = (itop($zoom_2d[4],2,2))
+set f1max = (itop($zoom_2d[1],2,1))
+set f2max = (itop($zoom_2d[2],2,2))
+
+; eval noise
+zoom 0 
+alert 'First select an empty area to evaluate noise of each data-set, THEN click on Ok'
+set x1 = $zone[1]
+set x2 = $zone[2]
+set x3 = $zone[3]
+set x4 = $zone[4]
+
+set u = 0
+foreach i in att  within 2 $f1min $f2min $f1max $f2max
+   if ($i s! "LARGEST") then
+      set u = (%+1)
+   endif
+endfor
+
+initinprogress $u
+set uu = 0
+set i = 1
+foreach i in att  within 2 $f1min $f2min $f1max $f2max
+  if ($i s! "LARGEST")  then 
+    compute_label $i
+    set label = $returned
+    if ($label s! " ") then
+      set pkname = ("processing/integ_"//$i)
+      print ($i ; $label ; $pkname)
+      open $pkname
+      read ("spectra/"//$name[1])
+      zoom 0 join ($ambfil//".amb")
+      if ($format s= "Tela") then
+        fprint $pkname ("// data-sets list:" ; $ls_spec)
+        fprint $pkname ('name_pk = "'//$label//'" ;')
+        fprint $pkname ('pk_id = '//$i//' ;')
+        fprint $pkname ('name_out = "integ_'//$i//'.res" ;')
+        fprint $pkname ("intens = zeros("//$nbspec//") ;")
+        fprint $pkname ("err = zeros("//$nbspec//") ;")
+      elsif ($format s= "free") then
+        fprint $pkname ("#data-sets list:" ; $ls_spec)
+        fprint $pkname ('#name_pk "'//$label//'"')
+        fprint $pkname ('#pk_id '//$i)
+      endif
+      set l = $att[$i]
+      set tmp = (tail(tail(tail(tail(tail($l))))))
+      set t = (tail(tail(tail($l))))
+      set s1 = ($spin[(head($t))])
+      set s2 = ($spin[(head(tail($t)))])
+      set note1 = (tail(tail(tail($s1))))
+      set note2 = (tail(tail(tail($s2))))
+; get the peak index 
+      set ipk = $hash[$i]
+      set tmp1 = (itop($pk2d_f1f[$ipk],2,1))
+      set tmp2 = (itop($pk2d_f2f[$ipk],2,2))
+      if ($format s= "Tela") then
+        fprint $pkname ('pk_note = "'//$tmp//' " ;')
+        fprint $pkname ('pk_note1 = "'//$note1//' " ;')
+        fprint $pkname ('pk_note2 = "'//$note2//' " ;')
+        fprint $pkname ('crd_f1 = '//$tmp1//' ;')
+        fprint $pkname ('crd_f2 = '//$tmp2//' ;')
+      elsif ($format s= "free") then
+        fprint $pkname ('#pk_note '//$tmp)
+        fprint $pkname ('#pk_note1 '//$note1)
+        fprint $pkname ('#pk_note2 '//$note2)
+        fprint $pkname ('#crd_f1 '//$tmp1)
+        fprint $pkname ('#crd_f2 '//$tmp2)
+      endif
+      getc ($pk2d_f1f[$ipk]-30) ($pk2d_f2f[$ipk]-30) ($pk2d_f1f[$ipk]+30) ($pk2d_f2f[$ipk]+30)
+      put amoeba
+      set k = 1
+      for k = 1 to $nbspec
+        zoom 0 join ("spectra/"//$name[$k])
+        getc $x1 $x2 $x3 $x4
+        evaln 1 1 ($x3-$x1) ($x4-$x2)
+        getc ($pk2d_f1f[$ipk]-30) ($pk2d_f2f[$ipk]-30) ($pk2d_f1f[$ipk]+30) ($pk2d_f2f[$ipk]+30)
+        mskinteg
+        if ($format s= "Tela") then
+          fprint $pkname ("intens["//$k//"] = "//$pk2d_a[$ipk]//" ;") 
+          fprint $pkname ("err["//$k//"] = "//(abs($pk2d_a_err[$ipk]*$pk2d_a[$ipk]/100))//";")
+;          fprint $pkname ("err["//$k//"] = "//(abs($pk2d_err[$ipk]*$pk2d_a[$ipk]/100))//";")
+        elsif ($format s= "free") then
+          fprint $pkname ($pk2d_a[$ipk] ; (abs($pk2d_a_err[$ipk]*$pk2d_a[$ipk]/100)))
+;          fprint $pkname ($pk2d_a[$ipk] ; (abs($pk2d_err[$ipk]*$pk2d_a[$ipk]/100)))
+        endif
+      endfor
+      close $pkname
+    endif
+    set uu = (%+1)   inprogress $uu
+  endif
+endfor
+
+read ("spectra/"//$name[1])
+set x1 = (ptoi($f1min,2,1))
+set x2 = (ptoi($f2min,2,2))
+set x3 = (ptoi($f1max,2,1))
+set x4 = (ptoi($f2max,2,2))
+zoom 1 $x3 $x4 $x1 $x2
+
+dbclose hash 
+
+endif
+

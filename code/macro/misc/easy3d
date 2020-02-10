@@ -1,0 +1,47 @@
+; easy3d args...
+; DOES NOT WORK
+; builds and apply a standard action for 3D processing
+;
+; args permit to set default values for parameters
+; easy3d %% is valid though
+;
+; see also : easy3d_doit easy2d FT
+
+formbox "easy 3d" \
+	"easy3d_doit $ffn $f1st $fw1 $fw1p $fw2 $fw2p $fw3 $fw3p $fz1 $fz2 $fft1 $fft2 $fph10 $fph11 $fph20 $fph21 $fb1 $fb2 $fact" \
+	Filename file ffn $_ \
+	separator \
+	"1st point correction" enum "yes,no" f1st $_ \
+	"F1 apodisation" message \
+	window enum "sin,sqsin,em,gm,none" fw1 $_ \
+	parameter real fw1p $_ \
+	"F2 apodisation" message \
+	window enum "sin,sqsin,em,gm,none" fw2 $_ \
+	parameter real fw2p $_ \
+	"F3 apodisation" message \
+	window enum "sin,sqsin,em,gm,none" fw3 $_ \
+	parameter real fw3p $_ \
+	"Size after FT" message \
+	"Size in F1" enum "64,128,256,512,1024,2048,4096" fz1 $_ \
+	"Size in F2" enum "64,128,256,512,1024,2048,4096" fz2 $_ \
+	"Size in F3" enum "64,128,256,512,1024,2048,4096" fz2 $_ \
+	"Use Burg" enum "no,F1,F2,both" fburg $_ \
+	"Fourier Transform type" message \
+	"in F1" enum "sh,tppi,sh_tppi,phase_modu,n+p" fft1 $_ \
+	"in F2" enum "sim,seq" fft2 $_ \
+	separator \
+	"Phase parameters" message \
+	"F1 0 order" real fph10 $_ \
+	"   1 order" real fph11 $_ \
+	"F2 0 order" real fph20 $_ \
+	"   1 order" real fph21 $_ \
+	"F3 0 order" real fph30 $_ \
+	"   1 order" real fph31 $_ \
+	separator \
+	"Baseline correction (will extract real part)" message \
+	"in F1" enum "none,polynomial" fb1 $_ \
+	"in F2" enum "none,polynomial" fb2 $_ \
+	"in F3" enum "none,polynomial" fb3 $_ \
+	separator \
+	Action enum "Do it,Do it but phase,Do phase only,Do b.corr only,Write macro,Load macro" fact $_ \
+	*

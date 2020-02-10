@@ -1,0 +1,27 @@
+; show_spin $i
+;
+; display on screen a spin.
+
+
+set mm = 1
+set i = $_
+if (exist("spin[" // $i //"]")) then
+   set l = $spin[$i]
+else
+   error "Unknown spin"
+endif
+set ff = (head($l))
+set ff2 = (ptoi($ff,2,2))
+set ff1 = (ptoi($ff,2,1))
+comp_spin_label $i
+set ll = $returned
+
+showline $ff2 1 $ff2 $si1_2d
+showtext $ll $ff2 ($zoom_2d[1]+1)
+
+showline 1 $ff1 $si2_2d $ff1
+showtext $ll ($zoom_2d[2]+1) $ff1
+
+
+
+

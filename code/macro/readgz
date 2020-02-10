@@ -1,0 +1,13 @@
+; readgz filename
+;
+; read a regular Gifa file and compresses it
+;
+; see also : writegz WRITEZ ZEROING
+
+message 'Enter file name (without .gz extension)'
+set f = $_
+set i = (index($f,'.gz'))
+if ($i != 0) set f = (subst($f,1,$i-1))
+sh ('gunzip -c '; $f // '.gz >';$f)
+read $f
+sh ('/bin/rm';$f )

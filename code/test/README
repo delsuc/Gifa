@@ -1,0 +1,12 @@
+This a test directory for Gifa.
+ 
+The macro TEST does all the work (tests to be done are in TEST_LIST)
+Some tests will need the data directory to be there.
+ 
+To use it, you can either :
+- start Gifa from within this directory, tests will start by themself
+- start Gifa elsewhere, cd to this directory, type TEST.
+ 
+Note that all functionalities of Gifa are not tested !
+(Note also that this file is used for the test File I/O test, so the blank lines should
+contain at least one blank)

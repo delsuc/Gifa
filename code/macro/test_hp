@@ -1,0 +1,7 @@
+cat /dev/tty02 > temp &
+pid=$!
+echo 'OW;' | lp -s -dhp7575a -
+sleep 4
+echo 'IP' `cat temp` ';' | lp -s -dhp7575a -
+sed -e "s/,/ /g" temp
+kill $pid

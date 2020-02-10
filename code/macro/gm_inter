@@ -1,0 +1,25 @@
+; interactive
+;
+; Permits to explore the effect of a gaussian apodisation
+;
+; start with a FID in memory, and with the correct phase correction
+; in memory
+;
+; GB is the size in Hz of the feature you want to select
+; -LB/GB rration selects the strength of the enhancement
+; Click on Apply to see the effect.
+;
+; try DO_NOTHING as ft if you want to see the effect on the FID
+;
+; To start with a new data set, read it in and click on 'New FID'
+; see also : GM EM 
+
+put data
+formbox 'Gaussian apodisation' \
+   'get data gm $gg em (-$ll*$gg) $fft phase %%' \
+   '.   GB value' cursor 0 20 2 gg 3 noreturn Hz message \
+   '-LB/GB ratio' cursor 0.1 3 2 ll 1  \
+   'FT type' enum 'ft_sim,ft_seq,ft,DO_NOTHING' fft % \
+   noreturn 'New FID' action 'put data' \
+   noreturn Help action 'help gm_inter' \
+   * 

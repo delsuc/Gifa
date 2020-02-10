@@ -1,0 +1,19 @@
+
+;scan prim seq
+open db/primary
+set l = <db/primary
+set i = 1
+while (!eof('db/primary'))
+   set seq[$i] = $l
+   set i = (%+1)
+   set l = <db/primary
+endwhile
+close db/primary
+
+set primout = 'constraints/seq'
+   
+; for all residues
+for j = 1 to ($i-1)
+  print $seq[$j]
+endfor
+

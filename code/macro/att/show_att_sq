@@ -1,0 +1,32 @@
+; show_att_sq $i
+;
+; display on screen a square delinating a peak.
+;
+set mm1 = (($freq_1_2d*$box_f1)*($si1_2d-1)/($specw_1_2d+$si1_2d))
+set mm2 = (($freq_2_2d*$box_f2)*($si2_2d-1)/($specw_2_2d+$si2_2d))
+set i = $_
+set l = $att[$i]
+
+set f1 = (head($l)) set f2 = (head(tail($l)))
+set f1i = (ptoi($f1,2,1))
+set f2i = (ptoi($f2,2,2))
+
+set t = (tail(tail(tail($l))))
+set u = (tolower(head($t))) 
+set v = (tolower(head(tail($t)))) 
+
+if (($u s! "unk" ) & ($v s! "unk" )) then
+;   showline ($f2i-$mm2) ($f1i-$mm1) ($f2i+$mm2) ($f1i-$mm1)
+;   showline ($f2i+$mm2) ($f1i-$mm1) ($f2i+$mm2) ($f1i+$mm1)
+;   showline ($f2i+$mm2) ($f1i+$mm1) ($f2i-$mm2) ($f1i+$mm1)
+;   showline ($f2i-$mm2) ($f1i+$mm1) ($f2i-$mm2) ($f1i-$mm1)
+  showpattern $f2i $mm2 $f1i $mm1 s
+
+else
+;   showline ($f2i-$mm2) $f1i ($f2i+$mm2) $f1i
+;   showline $f2i ($f1i-$mm1) $f2i ($f1i+$mm1)
+  showpattern $f2i $mm2 $f1i $mm1 +
+
+endif
+
+

@@ -1,0 +1,19 @@
+; plot_label (interactive)
+;
+; permits click on the data-set, high-light the closer
+; peak in the db, and plot its label on a postscript file
+;
+
+message 'Plotter file :'
+set f = '*PLOTTER'
+set f = $_
+if ($att['largest'] == 0) error "Database Empty !"
+
+alert "Click on the peak the label of which you want to plot"
+@find_att
+set i = $returned 
+if ($i != 0) then
+  if ($i s! "LARGEST")  plot_att $i $f  
+endif
+
+

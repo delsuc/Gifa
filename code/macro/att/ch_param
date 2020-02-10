@@ -1,0 +1,39 @@
+; ch_param
+;
+; change the parameters for the current project
+
+parameters
+
+dialogbox "Change parameters" \
+  "Peak displacement tolerances" message \
+  "Tolerance for peak alignement" real tol_align $tol_align \
+  noreturn "ppm" message \
+  "Tolerance for finding peaks" real tol_click $tol_click \
+  noreturn "ppm" message \
+  separator \
+  "Display parameters" message \
+  "Scale" int sc $scale noreturn \
+  "Loga" real lg $loga noreturn \
+  "Number of levels" int lv $level \
+  sign enum "1,0,-1" ss (0+$sign) \
+  separator \
+  "Integration box sizes" message \
+  "In F1" real b1 $box_f1 \
+  noreturn "ppm    in F2" message noreturn \
+  " " real b2 $box_f2 \
+  noreturn "ppm" message noreturn \
+  *
+sign $ss
+level $lv
+open parameters
+fprint parameters ("set tol_align :="; $tol_align)
+fprint parameters ("set tol_click :="; $tol_click)
+fprint parameters ("scale"; $sc)
+fprint parameters ("loga"; $lg)
+fprint parameters ("sign"; $ss)
+fprint parameters ("level"; $lv)
+fprint parameters ("set box_f1 :="; $b1)
+fprint parameters ("set box_f2 :="; $b2)
+close parameters
+@./parameters
+

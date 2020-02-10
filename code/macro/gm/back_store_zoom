@@ -1,0 +1,21 @@
+; jumps back to a zoom window memorized with store_zoom
+
+; first parse
+set zz = $stored_zoom
+set sc = (head($zz))
+set zz = (tail($zz))
+
+for i = 1 to 12
+   set z[$i] = (head($zz))
+   set zz = (tail($zz))
+endfor
+
+; then jump
+if ($dim == 1) then
+  zoom 1 $Z[1] $Z[2]
+elsif ($dim == 2) then
+  zoom 1 $Z[3] $Z[4] $Z[5] $Z[6]
+else
+  zoom 1 $Z[7] $Z[8] $Z[9] $Z[10] $Z[11] $Z[12]
+endif
+scale $sc

@@ -1,0 +1,93 @@
+; tests the control structures and the basic syntaxes
+
+set i = 1
+if ($i == 1) then
+        report 1 "if"
+else
+        report 0 "if"
+endif
+
+set i = 0
+  if ($i == 1) then
+        report 0 "if-then-else"
+  else
+        report 1 "if-then-else"
+  endif
+
+  if ($i == 1) set i = 1 \
+                set i = 1
+report ($i == 0)  \
+   "if and continuation"
+
+set i = 0
+  while ($i <10)
+        set i = ($i+1)
+  endwhile
+  while ($i > 10)
+       set i = ($i+1)
+  endwhile
+report ($i == 10) "while"
+
+set   j = 0
+  for i = 1 to 5
+    set j = (%+1)
+    for k = 5 to 1 step -1
+        set j = (%+1)
+    endfor
+  endfor
+  for i = 10 to 1 
+        set j = (%+1)
+  endfor
+report ($j == 30) "for"
+
+for i = 1 to 10
+    set a[$i] = (2*$i)
+endfor
+set cmp = 0
+foreach i in a
+    set cmp = (%+$a[$i])
+endfor
+report ($cmp == (10*11)) "foreach"
+
+set cmp = 0
+foreach i in a within 1 5 9
+    set cmp = (%+$a[$i]) 
+endfor
+report ($cmp == 2*(3+4)) "foreach .. within"
+
+   
+
+set i = 0
+  while ($i<10)
+     if (1==0) then
+          set i = 20
+     elsif (0 == 0) then
+	for j = 1 to 10
+		set i = ($j-1)
+		if ($i == 9) then
+			set i = 10
+		endif
+	endfor
+     else
+          set i = 20
+     endif
+     if (1 == 0) set j = 20
+  endwhile
+report ($i == 10 & $j != 20) "nested mixed structures"
+
+set i = 0
+  =loop
+        set i = ($i+1)
+        if ($i<10) goto loop
+        if ($i == 10) goto hop
+set i = 0
+=hop
+report ($i == 10) "goto"
+
+set returned := 0
+@('control'//'_sub') 1    ; note that @('control' // '_sub') will not work !
+set nm = 'control_sub'
+@($nm) 2
+report ($returned == 3) "@(expression) syntax"
+unset returned
+

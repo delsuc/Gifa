@@ -1,0 +1,16 @@
+; cadzow n_of_line n_of_iter
+;
+; apply the cadzow procedure to remove noise from the current FID.
+; should be followed with an FT or an LP-SVD analysis
+;
+; see also : SVDCLEAN1 ORDER
+
+message "Enter of line to keep"
+set n = ($order/2) set n = $_
+message "Enter number of iterations"
+set it = 5 set it = $_
+for i = 1 to $it
+  dt->svd %
+  svdclean1 $n y
+  svd->dt
+endfor

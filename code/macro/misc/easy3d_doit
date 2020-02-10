@@ -1,0 +1,147 @@
+; easy3d_doit
+; used by the easy3d form
+;
+; see also : easy3d
+
+set ffn = $_
+set f1st = $_
+set fw1 = $_
+set fw1p = $_
+set fw2 = $_
+set fw2p = $_
+set fw3 = $_
+set fw3p = $_
+set fz1 = $_
+set fz2 = $_
+set fz3 = $_
+set fft1 = $_
+set fft2 = $_
+set fft3 = $_
+set fph10 = $_
+set fph11 = $_
+set fph20 = $_
+set fph21 = $_
+set fb1 = $_
+set fb2 = $_
+set fact = $_
+;prepare ft
+set fft1 = ("ft_" // $fft1)
+set fft2 = ("ft_" // $fft2)
+set fft3 = ("ft_" // $fft3)
+;switch on action
+if ($fact s= "Do it" |  $fact s= "Do it but phase") then
+	read $ffn
+	if ($f1st s= 'yes') correct1st
+	if ($fz2 < $si2_2d) chsize % $fz2  ; truncate BEFORE apod.
+	if ($fz1 < $si1_2d) chsize $fz1 %
+
+	if ($fw2 s! "none") $fw2 $fw2p f2
+	if ($fw1 s! "none") $fw1 $fw1p f1
+
+	chsize % $fz2                      ; zero-fill AFTER apod.
+	$fft2
+	chsize $fz1 %
+	$fft1
+endif
+
+if ($fact s= "Do phase only" | $fact s= "Do it") then
+	if ($fph10 != 0 | $fph11 != 0) phase $fph10 $fph11 f1
+	if ($fph20 != 0 | $fph21 != 0) phase $fph20 $fph21 f2
+endif
+
+if ($fact s= "Do b.corr only" | $fact s= "Do it") then
+	if ($fb1 s! "none" | $fb2 s! "none") real f12
+	if ($fb1 s! "none") bcorr 3 f1
+	if ($fb2 s! "none") bcorr 3 f2
+endif
+
+if ($fact s= "Write macro") then
+	dialogbox macro "Macro name" string mname ($name//'.g') *
+	open $mname
+	fprint $mname "; macro generated automagically by easy2d"
+	fprint $mname  ("read" ; $ffn)
+	if ($f1st s= 'yes') fprint $mname "correct1st"
+	if ($fz2 < $si2_2d) fprint $mname ("chsize %";$fz2;)
+	if ($fz1 < $si1_2d) fprint $mname ("chsize";$fz1;"%")
+	if ($fw2 s! "none") 	fprint $mname  ($fw2 ; $fw2p ; "F2")
+	if ($fw1 s! "none") 	fprint $mname  ($fw1 ; $fw1p ; "F1")
+	fprint $mname  ("chsize %" ;$fz2)
+	fprint $mname  $fft2
+	fprint $mname  ("chsize" ; $fz1 ; "%")
+	fprint $mname  $fft1
+	if ($fph10 != 0 | $fph11 != 0) fprint $mname  ("phase"; $fph10; $fph11; "F1")
+	if ($fph20 != 0 | $fph21 != 0) fprint $mname  ("phase"; $fph20; $fph21; "F2")
+	if ($fb1 s! "none" | $fb2 s! "none") fprint $mname "real f12"
+	if ($fb1 s! "none") fprint $mname "bcorr 3 F1"
+	if ($fb2 s! "none") fprint $mname "bcorr 3 F2"
+	close $mname
+	alert ("Macro '"//$mname//"' written, just type its name for applying it")
+elsif ($fact s= "Load macro") then
+	dialogbox macro "Macro name" file mname ($name//'.g') *
+	open $mname
+	set fw1 = 'none'
+	set fw1p = 0
+	set fw2 = 'none'
+	set fw2p = 0
+	set f1st = 'no'
+	set fph10 = 0
+	set fph11 = 0
+	set fph20 = 0
+	set fph21 = 0
+	set fb1 = "none"
+	set fb2 = "none"
+	set in = <$mname
+	while (!eof($mname))
+		set cmd = (head($in))	; parse commande
+		set param = (tail($in))
+		if ($cmd s= ";") then	; show comments
+			print $param
+		elsif ($cmd s= "read") then
+			set ffn = $param
+		elsif ($cmd s= "correct1st") then
+			set f1st = "yes"
+		elsif ($cmd s= "sin" | $cmd s= "sqsin" | $cmd s= "em" | $cmd s= "gm") then
+			set dd = (tail($param))
+			if ($dd s= "F1") then
+				set fw1 = $cmd
+				set fw1p = (head($param))
+			elsif ($dd s= "F2") then
+				set fw2 = $cmd
+				set fw2p = (head($param))
+			endif
+		elsif ($cmd s= "chsize") then
+			if (head($param) s= "%") then
+				set fz2 = (tail($param))
+			else
+				set fz1 = (head($param))
+			endif
+		elsif ($cmd s= "ft_sim" | $cmd s= "ft_seq") then
+			set fft2 = (subst($cmd,4,len($cmd)))
+		elsif ($cmd s= "ft_sh" | $cmd s= "ft_tppi" | $cmd s= "ft_sh_tppi" | $cmd s= "ft_phase_modu" | $cmd s= "ft_n+p") then
+			set fft1 = (subst($cmd,4,len($cmd)))
+		elsif ($cmd s= "phase") then
+			set dd = (tail(tail($param)))
+			if ($dd s= "F1") then
+				set fph10 = (head($param))
+				set fph11 = (head(tail($param)))
+			elsif ($dd s= "F2") then
+				set fph20 = (head($param))
+				set fph21 = (head(tail($param)))
+			endif
+		elsif ($cmd s= "bcorr") then
+			set dd = (tail($param))
+			if ($dd s= "F1") then
+				set fb1 = "polynomial"
+			elsif ($dd s= "F2") then
+				set fb2 = "polynomial"
+			endif
+		endif
+		set in = <$mname
+	endwhile
+	close $mname
+	easy2d $ffn $f1st $fw1 $fw1p $fw2 $fw2p $fz1 $fz2 $fft1 $fft2 $fph10 $fph11 $fph20 $fph21 $fb1 $fb2 %
+	alert "Please close the old Form with the Cancel button"
+endif
+
+
+

@@ -1,0 +1,6 @@
+;as in unix
+;
+; see also : ls pwd rm vi vim vip SH CD
+
+message ' Which file ?'
+set more_l = $_  sh ("more " // $more_l) 

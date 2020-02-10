@@ -1,0 +1,28 @@
+; interactive
+; put the clicked point at the level zero
+; 
+if ($dim!=1) error 'works only in 1d'
+print "click points on the data-set,"
+print " click OK in the dialog box to finish."
+point
+print "Working..."
+set i = 1
+=setting_0
+  set ptx_[$i] = $pointx[$i]
+  set cval[$i] = (val1d($ptx_[$i]))
+  ;setval $ptx_[$i]  0
+  set i = ($i+1)
+  if ($i>$npoint) goto loopa
+goto setting_0
+=loopa
+  set ptx_[$npoint+1] = ($si1_1d)
+  set i = 1
+  set j = 1
+    =loopij
+    if ($j>$si1_1d) goto end
+    setval $j ($val[$j]-$cval[$i])
+    set j = ($j+1)
+    if ($j>=($ptx_[$i+1])) set i = ($i+1)
+    goto loopij
+=end
+print "Operation executed ."

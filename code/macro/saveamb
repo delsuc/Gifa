@@ -1,0 +1,26 @@
+; saveamb (interactive)
+;
+; saveamb save the peak and amoeba files 
+; according to a given basename. 
+; If peaks/amoeba files already exist with the 
+; same basename, the user is asked to remove them.
+;
+; see also : INTEG MSKINTEG saveamb setamb
+
+if (!$arg) then
+  formbox 'Save peak/amoeba Files' \
+   'saveamb $_f' \
+   'Select the Peaks/Amoeba basename' file _f $pkname \
+   *
+else
+  set _f = $_
+  print ("remove old peaks/amoeba files?")
+  set cmd = ("/bin/rm -i "//$_f//".pek") 
+  sh $cmd
+  set cmd = ("/bin/rm -i "//$_f//".amb") 
+  sh $cmd
+  mskwrite $_f
+  disjoin
+endif
+
+

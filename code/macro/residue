@@ -1,0 +1,29 @@
+; residue exp
+;
+; compute the residue (difference between calc and data values)
+; from a given expression, with the same syntax as FITGENE
+;
+; exp should be an equation in $X, 
+; $X will take the values $TAB[1] to $TAB[n]
+; where n is the size of the current TAB buffer
+;
+; see also : showexp FITGENE showtab PUT DISP1D SHOWLINE 
+
+message 'Enter equation in $X'
+
+set exp = $_
+gm/test1d
+set tmp = ('/tmp/gifa' // int(100000*$random))
+open $tmp
+fprint $tmp ';temporary file created by residue'
+fprint $tmp 'set x = $_'
+fprint $tmp ('set returned := (' // $exp // ')' )
+close $tmp
+
+for i = 1 to $si_tab
+	@($tmp) $tab[$i]
+	setval $i (val1d($i)-$returned)
+endfor
+
+sh ('/bin/rm' ; $tmp)
+

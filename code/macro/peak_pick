@@ -1,0 +1,77 @@
+; peak_pick  - interactive
+;
+; sets - up every thing for peak picking and realizes it
+; permits peakpicking in a interactive, graphical manner.
+;
+; related contexts : $NOISE $MAX[] $NPK1D $NPK2D $NPK3D and all $PKXX
+;
+; see also : PEAK MAX MINIMAX pklist
+
+
+if ($noise == 0) then
+    alert "Noise not yet defined, it's now time to do it"
+    evaln.g  ; zoom 0
+endif
+
+if (!exist('pp_fact')) set pp_fact := 10
+
+if ($sign_peak == 1) then
+    set pp_sign = '1 positive'
+else
+    set pp_sign = '-1 negative'
+endif
+
+refmacro 1
+if ($dim==1) then
+  if ($disp1d == 0) error ' Display should be on'
+  if ($itype_1d != 0) then
+        gm/al_yesno ' Data should be real, do you want to throw imaginaries away ?'
+        if ($returned s! 'yes') exit
+        real
+  endif
+  dialogbox 'Enter parameters' 'First, zoom on the region to peak-pick' message \
+     'Then, enter mult. factor for the noise level (typically 10)' real pp_fact % \
+     '  detect peak' enum '1 positive,-1 negative' pp_sign % \
+     'Finally, Click ok Ok' message *
+  sign_peak (head($pp_sign))
+  max minimax ($pp_fact*$noise) (%+1)
+  zoom 1 $zone[2] $zone[4]
+  peak
+  if ($npk1d > 0 ) then
+    showpeaks
+  else
+    alert "No peak detected in selected region"
+  endif
+else
+  if ($disp2d == 0 & $cdisp2d == 0 ) error 'Display should be on'
+  if ($itype_2d != 0) then
+        gm/al_yesno ' Data should be real, do you want to throw imaginaries away ?''
+    evaln.g  ; zoom 0
+        if ($returned s! 'yes') exit
+        real f12
+  endif
+  dialogbox 'Enter parameters' 'First, zoom on the region to peak-pick' message \
+     'Then, enter mult. factor for the noise level (typically 10)' real pp_fact % \
+     '  detect peak' enum '1 positive,-1 negative' pp_sign % \
+     'Finally, Click ok Ok' message *
+  sign_peak (head($pp_sign))
+  if ($sign_peak == -1) then
+	max minimax ($max[2]-1) (-$pp_fact*$noise)
+  else
+	max minimax ($pp_fact*$noise) (1+ % )
+  endif
+refmacro 1
+;  zoom 1 $zone[1] $zone[2] $zone[3] $zone[4]
+  peak %
+  if ($npk2d > 0 ) then
+    showpeaks
+  else
+    alert "No peak detected in selected region"
+  endif
+endif
+print ' You can list the peak table with the   pklist %% command'
+print ' If there are too many (or too few) peaks detected'
+print ' try to raise (lower) the value of the mult. factor'
+refmacro 0
+exit
+

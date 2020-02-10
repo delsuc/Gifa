@@ -1,0 +1,54 @@
+; build_att_one_sys $ss_id  
+;
+; build a set of att from the current spin system
+;
+
+set ss = $_
+
+; remember border
+set f1low = ($offset_1_2d/$FREQ_1_2D)
+set f2low = ($offset_2_2d/$FREQ_2_2D)
+set f1up = (($offset_1_2d+$specw_1_2d)/$FREQ_1_2D)
+set f2up = (($offset_2_2d+$specw_2_2d)/$FREQ_2_2D)
+
+set attl = $att["LARGEST"]
+  set splist = (tail(tail($sys[$ss])))   ; spin list
+  set spl1 = $splist
+; print $splist
+  while ($spl1 s! ' ')             ; go through the spin list twice
+     set spid1 = (head($spl1))       set spl1 = (tail($spl1))
+     set spf1 = (head($spin[$spid1]))    ; spin 1 freq
+     if ($spf1>= $f1low & $spf1 <= $f1up) then   ; if in window
+       set spfi1 = (ptoi($spf1,1,2))
+       set spl2 = $splist
+       while ($spl2 s! ' ')
+         set spid2 = (head($spl2))   set spl2 = (tail($spl2))
+         if ($spid1 != $spid2) then
+           set spf2 = (head($spin[$spid2]))
+           if ($spf2>= $f2low & $spf2 <= $f2up) then   ; if in window, add an att
+             set spfi2 = (ptoi($spf2,2,2))
+             find att 2 $spf1 $spf2
+             set cree = 1  ; assumes, peak is to be created
+             if ($pk_fnd_dst < $tol_align) then
+               set pk = (tail(tail(tail($att[$pk_fnd]))))
+               if (head($pk) s= $spid1 & head(tail($pk)) s= $spid2) then ; it's already there
+                 set cree = 0   ; no need
+               endif
+             endif
+             if ($cree == 1) then
+               set attl = (%+1)
+               set att[$attl] = ($spf1;$spf2;val2d($spfi1,$spfi2);$spid1;$spid2;'automatic')
+               show_att $attl
+             endif
+           endif
+         endif
+       endwhile
+     endif
+  endwhile
+  alert ("Created"; $attl-$att["LARGEST"]; "peaks")
+set att["LARGEST"] = $attl
+
+
+
+
+

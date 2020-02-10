@@ -1,0 +1,16 @@
+; build a set of att from the current spin and sys
+;
+set attl = $att['LARGEST']
+set prev = $attl
+if ($attl != 0) then
+   gm/al_yesno "Peak data-base not empty, Ok to continue ?"
+   if ($returned s! 'yes') alert 'aborted' exit
+endif
+
+; go through spin systems
+initinprogress $sys['LARGEST']    set i = 1
+foreach ss in sys
+  inprogress $i   set i = (%+1)
+  set alert = 0
+  @build_att_one_sys $ss $alert
+endfor

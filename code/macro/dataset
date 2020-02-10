@@ -1,0 +1,50 @@
+; list the parameters of the currently JOINed data file
+;
+; see also : LISTFILEC JOIN  param
+
+if ($c_joined == 0) then
+  print "No currently JOINed file"
+else
+
+	if $CONFIG_GRAPH then
+		dialogbox 'Dataset parameters:' \
+		 "Currently JOINed file :" message \
+		 ("Filename       = " // $c_name) message \
+		 ("Dim            = " // $c_dim) message \
+		 ("Dim1 (Size F1) = " // $c_sizef1) message \
+		 ("Dim2 (Size F2) = " // $c_sizef2) message \
+		 ("Dim3 (Size F3) = " // $c_sizef3) message \
+		 ("Type           = " // $c_type) message \
+		 ("Frequency (1H) = " // $c_freq) message \
+		 ("Freq1          = " // $c_freq1) message \
+		 ("Freq2          = " // $c_freq2) message \
+		 ("Freq3          = " // $c_freq3) message \
+		 ("Specw1         = " // $c_specwf1) message \
+		 ("Specw2         = " // $c_specwf2) message \
+		 ("Specw3         = " // $c_specwf3) message \
+		 ("Offset1        = " // $c_offsf1) message \
+		 ("Offset2        = " // $c_offsf2) message \
+		 ("Offset3        = " // $c_offsf3) message \
+		 ("Absmax         = " // $c_absmax) message *
+	else
+		print "Currently JOINed file :"
+		print ("Filename       = " // $c_name)
+		print ("Dim            = " // $c_dim)
+		print ("Dim1 (Size F1) = " // $c_sizef1)
+		print ("Dim2 (Size F2) = " // $c_sizef2)
+		print ("Dim3 (Size F3) = " // $c_sizef3)
+		print ("Type           = " // $c_type)
+		print ("Frequency (1H) = " // $c_freq)
+		print ("Freq1          = " // $c_freq1)
+		print ("Freq2          = " // $c_freq2)
+		print ("Freq3          = " // $c_freq3)
+		print ("Specw1         = " // $c_specwf1)
+		print ("Specw2         = " // $c_specwf2)
+		print ("Specw3         = " // $c_specwf3)
+		print ("Offset1        = " // $c_offsf1)
+		print ("Offset2        = " // $c_offsf2)
+		print ("Offset3        = " // $c_offsf3)
+		print ("Absmax         = " // $c_absmax)
+	endif
+
+endif

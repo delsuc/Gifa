@@ -1,0 +1,8 @@
+; closes all opened view
+;
+; see also CLOSE_VIEW OPEN_VIEW
+if (exist('view[]')) then
+   foreach i in view
+      close_view $i
+   endfor
+endif

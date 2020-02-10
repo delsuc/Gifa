@@ -1,0 +1,7 @@
+; this is to prepare a pseudo-data set for benchmarking GIFA
+; set-up a 512 x 2k real data set
+timer 1 verbose 1    ; check what you're doing
+dim 2
+chsize 128 128 one sin 0 f12 revf f1 revf f2  ; put something in it
+chsize 512 2k itype 0                     ; and zero-fill
+exit

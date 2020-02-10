@@ -1,0 +1,59 @@
+; mod_spin spin_id
+;
+; permits to interactively modify a spin
+;
+message "Modify Spin :"
+set id = $_
+
+if (exist("spin[" // $id //"]")) then
+   set sp = $spin[$id]
+else
+   error "Unknown spin"
+endif
+set delta = (head($sp))
+set name = (head(tail($sp)))
+set sysid = (head(tail(tail($sp))))
+set note = (tail(tail(tail($sp))))
+
+if (tolower($sysid) s! 'unk') then
+  set sysname = (head(tail($sys[$sysid])))
+  if (exist("topo[" // $sysname // "]")) then
+     set prot = $topo[$sysname]
+  else
+     set prot = $topo["proton"]
+  endif
+else
+    set sysname = 'unk'
+    set prot = $topo["proton"]
+endif
+set prot = ('UNK,' // %)
+
+; build dialog
+set tmp = ('tmp' // int(1000000*$random))
+open $tmp
+fprint $tmp "formbox \"
+fprint $tmp ("'Modif Spin #";$id;"' \")
+fprint $tmp ('"set spin[' // $id // '] = ($delta;$name;$sysid;$note)" \')
+fprint $tmp ("  'chem. shift' real delta"; $delta; " \")
+fprint $tmp ("  'spin name' enum"; $prot; "name"; $name; " \")
+fprint $tmp (" noreturn  '( System :" ; $sysname; ")' message \")
+fprint $tmp ("'spin system #' int sysid"; $sysid; "noreturn \")
+fprint $tmp  ('Show action "show_sys $sysid" noreturn \')
+fprint $tmp  ('Edit action "mod_sys $sysid" \')
+fprint $tmp ("'Note :' string note '" // $note // " ' \")
+fprint $tmp  ('separator Show action "show_spin'; $id; '" noreturn \')
+fprint $tmp  ('Move action "mov_spin'; $id; ' closeform $widget mod_spin'; $id; '" noreturn \')
+fprint $tmp  ('Remove action "rem_spin_clean'; $id; ' closeform $widget" \')
+fprint $tmp  ('"Align peaks to this spin" action "align_pk_spin'; $id; '" *')
+
+
+close $tmp
+
+; call it
+@($tmp)
+
+sh ("/bin/rm -f"; $tmp)
+
+
+
+

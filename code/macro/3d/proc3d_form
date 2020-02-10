@@ -1,0 +1,15 @@
+; prepares a form for proc3d
+;
+; see also : proc3d
+
+formbox "proc3D" \
+    "proc3d $fin $fout $ax $cmd join $fout" \
+    "This form is a graphic interface to the macro <proc3d>" message noreturn \
+    "more Help" action "help proc3d" \
+    separator \
+    "input file" file fin $c_name \
+    "output file" file fout ($c_name // "~") \
+    "Planes to process" enum "F1,F2,F3" ax % \
+    "Enter a (2D) command for processing the selected planes" message \
+    "command line" string cmd "your commands here.." \
+    *

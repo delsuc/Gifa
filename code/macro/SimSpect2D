@@ -1,0 +1,102 @@
+; Macro to simulate a 2D spectrum from an intensity file and a DBM ppm file,
+; used by SimSpect2D_form
+;
+; SimSpect2D dbm_ppm_filename intensity_filename F1_modulation Symetrical_option
+;
+; the ppm DBM file can be generated from an ascii ppm file by the
+; macro mkdbppm
+;
+; the ascii intensity file has the following free-format:
+;
+; INT residu_name1 residu_number1 atom_name1 residu_name2 residu_number2 
+; atom_name2 intensity_value
+;
+; F1_modulation can be either sh_tppi or phase_modu
+;
+; if Symetrical_option is sym, then each entry in the intensity file is duplicated on 
+; the other side of the spectral diagonal.
+;
+; see also: SimSpect2D_form mkdbppm DBOPEN SIMUN 
+
+; atom PPM file (DBM file)
+if (!$arg) print "DBM ppm filename ?"
+set ppmdb = $_
+; intensity file (CROWD file)
+if (!$arg) print "Intensity filename ?"
+set intfil = $_
+; F1 Modulation
+if (!$arg) print "F1 modulation (sh_tppi/phase_modu) ?"
+set fft1 = $_
+;prepare ft
+if ($fft1 s= "sh_tppi") then
+   set type := 1
+elsif ($fft1 s= "phase_modu") then
+   set type := 0
+else
+   error "The F1 modulation has a wrong value"
+endif
+; Symetrical or non symetrical spectrum
+if (!$arg) print "Symetrical or asymetrical spectrum (sym/asym) ?"
+set sm = $_
+if (($sm s! "sym") & ($sm s! "asym")) then
+   error "wrong value for the sym/asym option"
+endif
+; set unit to ppm
+unit ppm
+; prepare buffer
+dim 2
+zero
+;
+;open the PPM DBM file
+;
+if (!dbm('PPM')) then 
+  dbopen $ppmdb PPM
+endif
+sh ('wc '//$intfil//" > wcint")
+open wcint
+set line = <wcint
+close wcint
+sh ('/bin/rm wcint')
+initinprogress (head($line))
+;
+;open the intensity file
+;
+open $intfil
+set i = 0
+while (!eof($intfil))
+   set line = <$intfil
+   if ((head($line)) s= 'INT') then
+      set i = (%+1)
+      set queue = (tail($line))
+      set res1 = (head($queue))
+      set res1 = (toupper($res1))
+      set num1 = (head(tail($queue)))
+      set ato1 = (head(tail(tail($queue))))
+      set ato1 = (toupper($ato1))
+      set res2 = (head(tail(tail(tail($queue)))))
+      set res2 = (toupper($res2))
+      set num2 = (head(tail(tail(tail(tail($queue))))))
+      set ato2 = (head(tail(tail(tail(tail(tail($queue)))))))
+      set ato2 = (toupper($ato2))
+      set ampli := (head(tail(tail(tail(tail(tail(tail($queue))))))))
+      set spin1 = ($res1//"-"//$num1//"-"//$ato1)
+      set spin2 = ($res2//"-"//$num2//"-"//$ato2)
+      set ppm1 := (headx($PPM[$spin1],"-"))
+      set ppm2 := (headx($PPM[$spin2],"-"))
+      set linew1 := (tailx($PPM[$spin1],"-"))
+      set linew2 := (tailx($PPM[$spin2],"-"))
+;	print ("simun "//$type//" "//$ampli//" "//$ppm1//" "//$ppm2//" "//$linew1//" "//$linew2//" 0. 0.")
+      simun $type $ampli $ppm1 $ppm2 $linew1 $linew2 0. 0. 
+      inprogress $i 
+      if (($sm s= "sym") & ($ppm1 != $ppm2)) then
+         simun $type $ampli $ppm2 $ppm1 $linew2 $linew1 0. 0. 
+      endif
+   endif
+endwhile
+close $intfil
+dbclose PPM
+quit
+
+
+
+

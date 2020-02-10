@@ -1,0 +1,91 @@
+; grep_peak (interactive)
+;
+; permits to show peaks in the zoom window, according to criteria 
+; given by the user.
+; The criterion can be on the peak note, the spins note, the residue 
+; numbers or types, the spins type and the peak intensity (maximum  
+; value or threshold).
+; The criteria for peak and spin notes and spin types are checked 
+; as parts of the corresponding parameters of the peak.
+; The criteria can be applied according to a logical parameter: 
+; 'and' means that all the given criteria must be verified to display 
+; the peak, 'or' means that one verified criterion is sufficient 
+; to display the peak.
+;
+; see also: show_curr SHOWPEAKS show_unass check_peak
+
+Print "Current project :"
+pwd
+
+if ($att['largest'] == 0) error "Database Empty !"
+if ($dim != 2) error "Command available in 2D only !"
+
+set list = 'Off,Peak_note,Spin_note,Res Type,Res Numb,Spin Type,Max Int,Min Int,Unassigned' 
+if (!$arg) then
+
+  formbox 'Show selected peaks' \
+   'grep_peak $grep_typ[1] $cr_par[1] $grep_typ[2] $cr_par[2] $grep_typ[3] $cr_par[3] $grep_typ[4] $cr_par[4] $op' \
+   'Criterion' enum $list grep_typ[1] 'Off' noreturn \
+   'Parameter' string cr_par[1] ' ' \
+   separator \
+   'Criterion' enum $list grep_typ[2] 'Off' noreturn \
+   'Parameter' string cr_par[2] ' ' \
+   separator \
+   'Criterion' enum $list grep_typ[3] 'Off' noreturn \
+   'Parameter' string cr_par[3] ' ' \
+   separator \
+   'Criterion' enum $list grep_typ[4] 'Off' noreturn \
+   'Parameter' string cr_par[4] ' ' \
+   separator \
+   'Logical operator' enum 'or,and' op 'or' \
+   *
+
+else
+
+  for k = 1 to 4
+    set grep_typ[$k] = $_
+    set cr_par[$k] = $_
+  endfor
+
+  set op = $_
+
+  set f1min = (itop($zoom_2d[3],2,1))
+  set f2min = (itop($zoom_2d[4],2,2))
+  set f1max = (itop($zoom_2d[1],2,1))
+  set f2max = (itop($zoom_2d[2],2,2))
+
+  foreach i in att  within 2 $f1min $f2min $f1max $f2max
+    if ($i s! "LARGEST")  then
+
+      set ok = 0
+      set next = 0
+      set k = 1
+      while (($k <= 4) & ($next == 0))
+;        print ($grep_typ[$k] ; $cr_par[$k] ;$i)
+        check_peak $grep_typ[$k] $cr_par[$k] $i
+;        print ("k";$k;"returned";$returned)
+; for logical parameter 'or', if one criterion is met: 
+        if (($op s= "or") & ($returned == 1)) then
+           show_att $i
+           set next = 1
+        endif
+; for logical parameter 'and', if one criterion is not met:
+        if (($op s= "and") & ($returned == 0)) then
+           set ok = 0
+           set next = 1
+        endif
+        if (($op s= "and") & ($returned == 1)) then
+           set ok = 1
+        endif
+        set k = (%+1)
+      endwhile
+      if (($op s= "and") & ($ok == 1)) show_att $i
+
+    endif
+  endfor
+
+endif
+
+
+
+

@@ -1,0 +1,60 @@
+; proj2d axis algo abs
+;
+; axis is F1 or F2
+; algo is M or S
+; if abs is Y, absolute value is taken first
+;
+; equivalent to proj in 2D, but on a 2D joined file
+;
+; see also :  proj3d PROJ proj_loc JOIN proc2d
+
+if ($c_dim!=2) error 'Works only on a JOINed 2D'
+
+message "enter axis (F1,F2)"
+set axis = $_
+set axis = (toupper($axis))
+
+dim 1
+if ($axis s= "F1") then
+   chsize $c_sizef2
+   set siz = $c_sizef1
+   set ax = F2
+elsif ($axis s= "F2") then
+   chsize $c_sizef1
+   set siz = $c_sizef2
+   set ax = F1
+else
+   error "Wrong axis"
+endif
+
+message "enter algorithm, Skyline or Mean : (S/M)"
+set alg = $_
+set alg = (toupper($alg))
+if ($alg s= 'S') then
+   set todo = MAXDATA
+elsif ($alg s= 'M') then
+   set todo = ADDDATA
+else
+   error "wrong algorithm"
+endif
+
+message "Take absolute value : (Y/N)"
+set tabs = $_
+set tabs = (toupper(subst($tabs,1,1)))
+
+initinprogress $siz
+;prepare data buffer
+getc $ax 1 % %
+if ($tabs s= 'Y') itype 0 abs
+put data
+
+for i = 2 to $siz
+    inprogress $i
+    getc $ax $i % %
+    if ($tabs s= 'Y') itype 0 abs
+    $todo  put data
+endfor
+
+get data
+
+if ($alg s= 'M') mult (1/$siz)

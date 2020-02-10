@@ -1,0 +1,35 @@
+; pdb2primary
+;
+; Reads a PDB file and extract the primary sequence
+;
+ ; MAD oct 98
+
+if (!$arg) message "Name of PDB file?"
+set fich = $_
+
+    set tmp = ("gifatemp" // int(1000000*$random))
+    sh ("wc" ; $fich; ">"; $tmp)
+    open $tmp    set nl = <$tmp    close $tmp  ; sh ("/bin/rm"; $tmp)   ; determine file length
+    set nl = (head($nl))
+    initinprogress ($nl+20)
+    open $fich             ; input file
+    open db/primary        ; output file
+    set i = 0   set j = 0
+    dbopen /usr/local/gifa/macro/att/3let_1let code   ; used for 1let coding
+    set l = <$fich
+    while (!eof($fich))
+	set j = (%+1) inprogress $j
+        set t = (head($l))  set atom = (head(tail(tail($l))))
+        if ($t s= 'ATOM' & $atom s= 'CA') then
+           set t = (head($code[head(tail(tail(tail($l))))]))
+           fprintf db/primary "%s" $t *      set i = (%+1)
+        endif
+        set l = <$fich
+    endwhile
+    inprogress ($nl+10)
+    close db/primary
+    close $fich
+    dbclose code
+    inprogress ($nl+20)
+    gm/al_yesno ($i; "residues, Ok ?")
+

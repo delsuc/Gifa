@@ -1,0 +1,54 @@
+; rem_h2o -no param-
+;
+; this macro will remove most of water signal (large zero-frequency
+; signal) by fitting and removing the water FID in the time domain
+; based from an idea of Marion, D., Ikura, M. and Bax,
+; A. J.Magn.Reson. 84 p425 (1989).
+;
+; used in 1D, will overflow the 2D area !!
+;
+; to be used before any processing, on the FID.
+;
+
+refmacro 0
+;check size (uses bcorr 3)
+if ($dim == 1) then
+	set i = $si1_1d
+elsif ($dim == 2) then
+	set i = $si2_2d
+else
+  error "Not implemented in 3D"
+endif
+
+; $MEM_PRO_2D/22 is the magic size for bcorr 3
+if ($i > ($MEM_PRO_2D/22)) error "Size too big for operation"
+
+if ($dim == 1) then
+;  alert "2D region will be overflowed !"
+  dim 2 itype $itype_1d chsize 1 $si1_1d
+  set _rem_1d = 1
+  put row 1
+elsif ($dim == 2) then
+  set _rem_1d = 0
+endif
+
+row 1
+if ($itype_1d != 0) then     ; if complex, has to uswap first
+  set _rem_uswa = 1
+  uswa f2
+  modifysize (2*$si1_2d) %
+else
+  set _rem_uswa = 0
+endif
+bcorrp1 bcorr 3 f2           ; do correction
+if ($_rem_uswa != 0) then    ; reswap if needed
+  modifysize ($si1_2d/2) %
+  swa f2
+endif
+
+if ($_rem_1d == 1)  then     ; was a 1D
+  row 1
+  dim 1
+endif
+exit
+

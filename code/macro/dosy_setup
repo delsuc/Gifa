@@ -1,0 +1,38 @@
+; dosy_setup
+;
+; interactive Graphic interface to set most of the parameters
+; needed for dosy processing
+;
+; Dmin - Dmax : the range of dampings that should be considered during the
+;    present processing.
+;    unit is in 1/tab[i]  that is in inverse of the experimetal value
+; Dfactor : this is the coefficient which is used to convert dampings value
+;    from arbitrary units (in 1/tab[i]) to real life values (eg in micron^2/sec)
+;    This can be computed with the "calibrate" macro
+;    DO NOT call "calibrate" while this menu is on
+; 'From Tabulated' use the entries in tab[] to preset Dmin Dmax values
+; 'from Time' use specw to do the same.
+;
+; Iter : number of iterations used either by the
+;    Fit (use 20-50) or the MaxEnt (use 200-1000) processing
+; Ndisp : screen refresh rate used by MaxEnt
+; Lambsp : constant used to increment lambda  
+;
+; see also : DMIN DMAX DFACTOR ITER NDISP LAMBSP dosy.g
+;
+
+formbox 'Preparation for DOSY processing' \
+  'gifa algo 11 dmin $dn dmax $dx iter $it ndisp $nd lambsp $lambsp' \
+  Dmin real dn $dmin \
+  noreturn Dmax real dx $dmax \
+  noreturn ('( Dfactor :';$dfactor+0; ')') message \
+  'Find Dmin and Dmax' message \
+  noreturn 'From tabulated' action 'dmax ($dfactor*10/$tab[2]) dmin ($dfactor*0.1/$tab[$si_tab]) closeform $widget dosy_setup' \
+  noreturn 'From time' action 'dmax ($dfactor*20*$SPECW_1D) dmin ($dfactor*0.2*$SPECW_1D/$si1_1d) closeform $widget dosy_setup' \
+  separator \
+  Iter int it $iter \
+  noreturn 'Ndisp' int nd $ndisp \
+  'Lambsp' int lambsp $lambsp \
+  separator \
+  'Help' action 'help dosy_setup' \
+  *

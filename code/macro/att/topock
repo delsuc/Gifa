@@ -1,0 +1,19 @@
+; topock
+;
+; check all spin systems for topology
+;
+; check that all spins of the system are defined in the current topology db
+
+print "checking topology....."
+SET LRG = $sys["LARGEST"]
+initinprogress $lrg
+set k = 0
+foreach i in sys
+  set k = (%+1)
+  inprogress $k
+  if ($i s! 'LARGEST') then
+    check_topo $i
+  endif
+endfor
+if ($k <  $LRG ) inprogress  $LRG
+

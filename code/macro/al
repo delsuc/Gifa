@@ -1,0 +1,4 @@
+print 'Obsolete command !'
+refmacro 1
+dialogbox "alert" $_ message *
+refmacro 0

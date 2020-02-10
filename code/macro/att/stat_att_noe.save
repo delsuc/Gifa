@@ -1,0 +1,133 @@
+; stat_att_noe
+;
+;  noe assignment statistic.
+;
+
+if ($att['largest'] == 0) error "Database Empty !"
+
+foreach i in sys
+   if ($i s! "LARGEST") then
+	set nb_noe_inter_seq[$i] = 0
+	set nb_noe_inter_med[$i] = 0
+	set nb_noe_inter_long[$i] = 0
+	set nb_noe_intra[$i] = 0
+   endif
+endfor
+
+
+initinprogress $att["LARGEST"]
+set cpt = 1
+foreach i in att
+   if ($i s! "LARGEST") then
+
+	set l = $att[$i]
+	set f1 = (head($l)) set f2 = (head(tail($l)))
+	set f1i = (ptoi($f1,2,1))
+	set f2i = (ptoi($f2,2,2))
+	set t = (tail(tail(tail($l))))
+	set sp1 = (tolower(head($t))) 	
+	set sp2 = (tolower(head(tail($t))))
+
+	if (($sp1 s! "unk" ) & ($sp2 s! "unk" )) then ;attribues
+	   set s1 = ($spin[(head($t))])		;spin 1
+	   set s2 = ($spin[(head(tail($t)))])	;spin 2
+
+	   set t = (head(tail($s1)))		;texte
+	   set syst1 = (head(tail(tail($s1))))	;syst 1
+           set syst2 = (head(tail(tail($s2))))	;syst 2
+
+	   if (($syst1 s! "unk") & ($syst2 s! "unk")) then  ;attribues
+		
+	      set r1 = (head($sys[$syst1]))
+	      set t = ($t // ":" // $r1)
+	      set r2 = (head($sys[$syst2]))
+	      set t = ($t; "-"; head(tail($s2)))
+	      set t = ($t // ":" // $r2)
+
+
+	       if (($r1 s! "unk") & ($r2 s! "unk"))then
+	   	if ($r1 s! $r2) then
+		   set d = ($r1 - $r2)
+		   set d = (abs($d))
+			;print ("texte: "//$t)
+		    if ($d == 1) then
+			set nb_noe_inter_seq[$syst1] = ($nb_noe_inter_seq[$syst1] + 1)
+			set nb_noe_inter_seq[$syst2] = ($nb_noe_inter_seq[$syst2] + 1)
+		        set nb_total_noe_inter_seq = (% + 1)
+		    elsif (($d <= 3) & ($d > 1)) then
+			set nb_noe_inter_med[$syst1] = (% + 1)
+			set nb_noe_inter_med[$syst2] = (% + 1)
+		    	set nb_total_noe_inter_med = (% + 1)
+		    elsif ($d > 3) then
+		        set nb_noe_inter_long[$syst1] = (% + 1)
+                        set nb_noe_inter_long[$syst2] = (% + 1)
+		        set nb_total_noe_inter_long = (% + 1)
+		    else print ('error noesy classification')
+		    endif
+		    set nb_total_noe_inter = (% + 1)
+		else
+		    set nb_noe_intra[$syst1] = (% + 1)
+                    set nb_noe_intra[$syst2] = (% + 1)
+		endif
+		set nb_total_noe = (% + 1)
+	     endif
+	   endif
+	endif
+   endif
+   inprogress $cpt set cpt = (%+1)
+endfor
+inprogress $att["LARGEST"]
+
+;scan prim seq
+open db/primary
+set l = <db/primary
+set p = 1
+while (!eof('db/primary'))
+   set seq[$p] = $l
+   set p = (%+1)
+   set l = <db/primary
+endwhile
+close db/primary
+
+open stat_noesy
+initinprogress ($p-1)
+; for all residues
+for j = 1 to ($p-1)
+  foreach i in sys 
+   if ($i s! "LARGEST") then
+   	set r = (head(tail($sys[$i])))
+	set ind = (head($sys[$i]))
+	if ($ind s= $j) then 
+		fprint stat_noesy (' ')
+		fprint stat_noesy ($j//':'//$seq[$j];'=>';$r;'(system:'//$i//')')
+		fprint stat_noesy ('      Assigned Peaks Intra Residues: ';$nb_noe_intra[$i])
+		set s = $nb_noe_inter_seq[$i]
+		set m = $nb_noe_inter_med[$i]
+		set l = $nb_noe_inter_long[$i]
+		fprint stat_noesy ('      Noesy Peaks Inter Residues: Sequential: ';$s;' - Medium: ';$m;' - Long: ';$l)
+	endif
+   endif
+ endfor
+inprogress $j
+endfor
+fprint stat_noesy (' ')
+fprint stat_noesy (' ')
+fprint stat_noesy ('            General Statistic:')
+fprint stat_noesy (' ')
+fprint stat_noesy (' ')
+fprint stat_noesy ('Assigned Peaks : ';$nb_total_noe)
+fprint stat_noesy ('Noesy Peaks Inter Residues :';$nb_total_noe_inter)
+set s = $nb_total_noe_inter_seq
+set m = $nb_total_noe_inter_med
+set l = $nb_total_noe_inter_long
+fprint stat_noesy (' ')
+fprint stat_noesy ('     Sequential: ';$s;' - Medium: ';$m;' - Long: ';$l)
+close stat_noesy
+
+
+formbox "Noesy Peaks Statistic" DO_NOTHING \
+    'File is stat_noesy' message \
+    stat_noesy text \
+   'Print file' action 'sh "gifaprint stat_noesy"' *
+
+

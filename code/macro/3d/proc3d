@@ -1,0 +1,137 @@
+; proc3d sourcefile destinationfile plane_to_process commands
+;
+; this macro processes a 3D file using the cache system (join, getc, putc)
+; it permits to handle very large files, which would not fit into memory.
+;
+; sourcefile         : is the initial data-set
+; destinationfile    : is the result of the process
+; plane_to_process   : either F1, F2 or F3 (NOT F12 or F123)
+; commands           : the commands to be applied to each plane in 2D notation
+;
+; the commands are the regular commands you would used to process a 2D data-set.
+; when called without parameters, 'commands' can be several line long, as typed
+; when proc3d is called with parameters on the line, then 'commands' should be a single
+; command line within quotes.
+;
+; e.g.
+; proc3 ser_file F1_proc F1  'sin 0.2 f12 ft_sim  phase 30 -40 f2 real f12 ft_tppi '
+;  process axes f3 and f2 as 2D
+; proc3 F1_proc full_proc F2 'sin 0.2 f1  ft_tppi real f1  bcorr 3 f1'
+;  process axis f1
+;
+; would process a whole 3D in 2 steps.
+;
+; see also : proc2d easy3d FT JOIN
+
+
+  message 'enter input filename:'
+; get parameters
+  set infile := $_
+  join $infile
+  if ($c_dim != 3) error 'available on 3D data only' 
+  if (!exist('outfile')) set outfile := ($infile // '~')
+  message 'enter output filename:'
+  set outfile := $_
+  if ($infile s= $outfile) error 'input file must be different of output file'
+  message 'enter plane (F1, F2 or F3)'
+  set axis = $_
+  set axis = (toupper($axis))
+  if (($axis s! 'F1') & ($axis s! 'F2') & ($axis s! 'F3')) error 'error with axis'
+
+; get commands ...
+ if (!$arg) then
+    print 'enter commands (finish by typing ^D)'
+    sh ('cat > proc_temp')
+ else
+    set commac = $_ 
+    open proc_temp fprint proc_temp $commac
+    unset commac close proc_temp
+ endif
+
+; check commands
+ sh ('wc -c proc_temp > cmpt') open cmpt  set trf = <cmpt
+ set trf = (head($trf)) close cmpt
+ if ($trf == 0) sh '/bin/rm cmpt proc_temp' error 'Empty command file'
+ sh ('echo exit >> proc_temp')
+
+  set ancdim = $dim
+
+; check how the size and itype changes
+  dim 2
+  join $infile
+  getc $axis 1 % % % %
+  @proc_temp
+  set it = $itype_2d
+
+;  set it = ($itype_2d-$it)   ; itype offset
+;  if ($it >=0) then
+;    set it2 = ($it % 2)
+;    set it1 = ( ($it-$it2)/2 )
+;  else
+;    set it2 = (-(-$it % 2))
+;    set it1 = ( ($it-$it2)/2 )
+;  endif
+
+; find type along unprocessed axis
+; then compute final itype
+   if ($axis s= 'F1') then
+	set it2 = (int($c_type/4))
+        set it = (4*$it2 + $it)
+   elsif ($axis s= 'F3') then
+	set it2 = ($c_type % 2)
+	set it = ($it2 + 2*$it)
+   elsif ($axis s= 'F2') then
+        set it2 = (int($c_type / 2))
+	set it2 = ($it2 % 2)
+	set it1 = (int($it / 2))
+	set it3 = ($it % 2)
+	set it = ($it3 + 2*$it2 + 4*$it1)
+   endif 
+
+; then create large out_file
+  if ($axis s= 'F1') then
+      newfilec $outfile 3D \
+        $c_sizef1 $c_offsf1 $c_specwf1 $c_freq1 \
+        $si1_2d $OFFSET_1_2D $specw_1_2d $freq_1_2d \
+        $si2_2d $OFFSET_2_2D $specw_2_2d $freq_2_2d  \
+        $c_freq $it
+      set iter = $c_sizef1
+  elsif ($axis s= 'F2') then
+      newfilec $outfile 3D \
+        $si1_2d $OFFSET_1_2D $specw_1_2d $freq_1_2d \
+        $c_sizef2 $c_offsf2 $c_specwf2 $c_freq2 \
+        $si2_2d $OFFSET_2_2D $specw_2_2d $freq_2_2d  \
+        $c_freq $it
+      set iter = $c_sizef2
+  elsif ($axis s= 'F3') then
+      newfilec $outfile 3D \
+        $si1_2d $OFFSET_1_2D $specw_1_2d $freq_1_2d \
+        $si2_2d $OFFSET_2_2D $specw_2_2d $freq_2_2d  \
+        $c_sizef3 $c_offsf3 $c_specwf3 $c_freq3 \
+        $c_freq $it
+      set iter = $c_sizef3
+  endif
+
+   print ('output file : ';$outfile)
+
+; process
+dim 2
+initinprogress $iter
+for i = 1 to $iter
+  inprogress $i
+  join $infile
+  getc $axis $i % % % %
+  @proc_temp
+  join $outfile
+  putc  $axis $i % % % %
+endfor
+
+  dim $ancdim
+  join $infile
+  disjoin 
+  join $outfile
+  disjoin
+
+  sh '/bin/rm proc_temp cmpt'
+exit
+

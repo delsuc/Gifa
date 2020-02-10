@@ -1,0 +1,55 @@
+; trans2d sourcefile destinationfile commands 
+; traite une manip 2D selon son plan (le fichier d' entre peut etre 
+; identique au fichier de sortie)
+
+
+
+  if (!$arg) print 'enter input filename:'
+  set file = $_
+  join $file
+  if ($c_dim != 2) error 'available on 2D data only' goto 100
+  set outfile = $file
+  if (!$arg) print 'enter output filename:'
+  set outfile = $_
+
+; entree des commandes ...
+ if (!$arg) print 'enter commands (get back by typing ^D)' \
+        sh ('cat > doit') goto suite
+ ;else
+ set commac = $_
+ open doit fprint doit $commac
+ unset commac close doit
+
+ =suite
+ sh ('wc -c doit > cmpt') open cmpt set trf = <cmpt
+ set trf = (head($trf)) close cmpt
+ if ($trf == 0) goto 100
+ print 'please wait ...'
+
+  set ancdim = $dim
+  dim 2
+
+  join $file
+
+  getc 1 $c_sizef1 1 $c_sizef2
+  doit
+
+    newfilec $outfile 2D $si1_2d $offset_1_2d $specw_1_2d \
+      $freq $freq_1_2d $si2_2d $offset_2_2d $specw_2_2d $freq_2_2d \
+      $itype_2d
+    print ('output file :'//sp(2)//$outfile)
+
+  join $outfile
+  putc 1 $c_sizef1 1 $c_sizef2
+  disjoin join $outfile
+
+
+=end 
+  dim $ancdim
+  munset trf *
+=100
+  sh 'rm doit cmpt'
+exit
+
+;*****************************************************************************
+

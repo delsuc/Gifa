@@ -1,0 +1,138 @@
+; pklist start end
+;
+; lists the content of the internal peak table from entry `start' to entry `end'
+;
+; Values are display with the current unit
+;
+; (formats have been chosen in order to have compact outputs,
+;  If you want more accuracy, then go to the $PKXX contexts themselves )
+;
+;related contexts : $NPK1D $NPK2D $NPK3D and all $PKXX
+;
+;see also : PEAK peak_pick PKSELECT PKWRITE PKREAD
+  ; (used to be a command)
+
+
+set start = 1
+if ($dim == 1) then
+   set end = $npk1d
+elsif ($dim == 2) then
+   set end = $npk2d
+elsif ($dim == 3) then
+   set end = $npk3d
+endif
+
+if ($end == 0) error ' Peak Table Empty !'
+message 'From which element ?'
+set start = $_
+message 'To which element ?'
+set end = $_
+
+if ($unit s! 'INDEX' & $unit s! 'PPM' & $unit s! 'HZ') then
+  set lunit = 'PPM'
+else
+  set lunit = $unit
+endif
+if ($lunit s= 'PPM') then
+  print ('******* Values are in'; $lunit; ' widths are in Hz *****')
+else
+  print ('******* Values are in'; $lunit; '  *********************')
+endif
+
+if ($dim == 1) then  
+  print 'index   amp                    freq                    width           type'
+  set hpp = ($specw_1d/$si1_1d)
+  set ppp = ($specw_1d/$si1_1d/$freq_1d)
+  for i = $start to $end
+    if ($lunit s= 'INDEX') then
+      sprintf '%4d %9.3g +/-%6.2g   %9.5g +/-%6.2g    %9.3g +/-%5.2g  %s\n' \
+        $i $pk1d_a[$i] $pk1d_a_err[$i] \
+        $pk1d_f[$i] ($pk1d_f_err[$i]+0) \
+        $pk1d_w[$i] ($pk1d_w_err[$i]+0) \
+        (tolower($pk1d_t[$i])) *
+    elsif ($lunit s= 'HZ') then
+      sprintf '%4d %9.3g +/-%6.2g   %9.5g +/-%6.2g    %9.3g +/-%5.2g  %s\n' \
+        $i $pk1d_a[$i] $pk1d_a_err[$i] \
+        (itoh($pk1d_f[$i],1,1)) ($pk1d_f_err[$i]*$hpp) \
+        ($pk1d_w[$i]*$hpp) ($pk1d_w_err[$i]*$hpp) \
+        (tolower($pk1d_t[$i])) *
+    elsif ($lunit s= 'PPM') then
+      sprintf '%4d %9.3g +/-%6.2g   %9.5g +/-%6.2g    %9.3g +/-%5.2g  %s\n' \
+        $i $pk1d_a[$i] $pk1d_a_err[$i] \
+        (itop($pk1d_f[$i],1,1)) ($pk1d_f_err[$i]*$ppp) \
+        ($pk1d_w[$i]*$hpp) ($pk1d_w_err[$i]*$hpp) \
+        (tolower($pk1d_t[$i])) *
+    endif
+    print $returned
+  endfor
+elsif ($dim == 2) then
+   print 'index   amp                 freq-F1             freq-F2              width-F1           width-F2       type'
+
+  set hpp1 = ($specw_1_2d/$si1_2d)
+  set hpp2 = ($specw_2_2d/$si2_2d)
+  set ppp1 = ($specw_1_2d/$si1_2d/$freq_1_2d)
+  set ppp2 = ($specw_2_2d/$si2_2d/$freq_2_2d)
+  for i = $start to $end
+    if ($lunit s= 'INDEX') then
+      sprintf '%4d %9.3g +/-%6.2g %9.5g +/-%6.2g %9.5g +/-%6.2g' \
+        ($i+0) ($pk2d_a[$i]+0) ($pk2d_a_err[$i]+0) \
+        ($pk2d_f1f[$i]+0) ($pk2d_f1f_err[$i]+0) \
+        ($pk2d_f2f[$i]+0) ($pk2d_f2f_err[$i]+0) *
+      set st = $returned
+      sprintf '%8.4g +/-%6.2g %8.4g +/-%6.2g  %s\n' \
+        ($pk2d_f1w[$i]+0) ($pk2d_f1w_err[$i]+0) \
+        ($pk2d_f2w[$i]+0) ($pk2d_f2w_err[$i]+0) \
+        (tolower($pk2d_t[$i])) *
+    elsif ($lunit s= 'HZ') then
+      sprintf '%4d %9.3g +/-%6.2g %9.5g +/-%6.2g %9.5g +/-%6.2g' \
+        ($i+0) ($pk2d_a[$i]+0) ($pk2d_a_err[$i]+0) \
+        (itoh($pk2d_f1f[$i],2,1)) ($pk2d_f1f_err[$i]*$hpp1) \
+        (itoh($pk2d_f2f[$i],2,2)) ($pk2d_f2f_err[$i]*$hpp2) *
+      set st = $returned
+      sprintf '%8.4g +/-%6.2g %8.4g +/-%6.2g  %s\n' \
+        ($pk2d_f1w[$i]*$hpp1) ($pk2d_f1w_err[$i]*$hpp1) \
+        ($pk2d_f2w[$i]*$hpp2) ($pk2d_f2w_err[$i]*$hpp2) \
+        (tolower($pk2d_t[$i])) *
+    elsif ($lunit s= 'PPM') then
+      sprintf '%4d %9.3g +/-%6.2g %9.5g +/-%6.2g %9.5g +/-%6.2g' \
+        ($i+0) ($pk2d_a[$i]+0) ($pk2d_a_err[$i]+0) \
+        (itop($pk2d_f1f[$i],2,1)) ($pk2d_f1f_err[$i]*$ppp1) \
+        (itop($pk2d_f2f[$i],2,2)) ($pk2d_f2f_err[$i]*$ppp2) *
+      set st = $returned
+      sprintf '%8.4g +/-%6.2g %8.4g +/-%6.2g  %s\n' \
+        ($pk2d_f1w[$i]*$hpp1) ($pk2d_f1w_err[$i]*$hpp1) \
+        ($pk2d_f2w[$i]*$hpp2) ($pk2d_f2w_err[$i]*$hpp2) \
+        (tolower($pk2d_t[$i])) *
+    endif
+    print ($st // $returned)
+  endfor
+
+elsif ($dim == 3) then
+   print 'index   amp                 freq-F1             freq-F2              freq-F3'
+
+  for i = $start to $end
+    if ($lunit s= 'INDEX') then
+      sprintf '%4d %9.3g  %9.5g %9.5g %9.5g\n' \
+        ($i+0) ($pk3d_a[$i]+0)  \
+        ($pk3d_f1f[$i]+0)  \
+        ($pk3d_f2f[$i]+0) \
+        ($pk3d_f3f[$i]+0) *
+    elsif ($lunit s= 'HZ') then
+      sprintf '%4d %9.3g  %9.5g %9.5g %9.5g\n' \
+        ($i+0) ($pk3d_a[$i]+0)  \
+        (itoh($pk3d_f1f[$i],3,1)) \
+        (itoh($pk3d_f2f[$i],3,2)) \
+        (itoh($pk3d_f3f[$i],3,3)) *
+    elsif ($lunit s= 'PPM') then
+      sprintf '%4d %9.3g  %9.5g %9.5g %9.5g\n' \
+        ($i+0) ($pk3d_a[$i]+0)  \
+        (itop($pk3d_f1f[$i],3,1)) \
+        (itop($pk3d_f2f[$i],3,2)) \
+        (itop($pk3d_f3f[$i],3,3)) *
+    endif
+    print $returned
+  endfor
+endif
+
+exit
+

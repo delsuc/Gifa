@@ -1,0 +1,1702 @@
+14 oct 2002 mad
+corrected a typing error in math3d:trap3d
+corrected a typing error in plotlib:pltexset and plotlib_post:pltexset
+added a 'external func1d' to powel declaration
+
+10 april 2002 mad
+added OPEN_RAW CLOSE_RAW READ_RAW
+added import_jeol.g import_bruker.g
+
+3 april 2002
+corrected a bug in PKSYM 0
+corrected a potential 'out of array' bug in 
+rselect* RTSELECT rtfreq* RTPIV
+icopvect* icopsvect* cicopvect cicopsvect
+*: changed calling convention
+
+15 mar 2002 mad
+corrected a bug with ppm in flat_solvent
+
+5 mar 2002 mad
+added the MIRROR command and the burg_mirror and bug2d_mirror macros
+adapted the easy2d macros
+
+3 mar 2002 mad
+corrected memory smash bug in burg
+passed all FREQs in double precision - for autocalib
+corrected bug which prevented from joining a file on a CD-ROM
+corrected bug which prevented onerrorgoto on certain errors (OPEN)
+added $TIMER - adapted TEST
+
+27 fev 2002 mad
+corrected bug in PKRM in 3D
+corrected bug in BURG command, was crashing now and then on linux, and unavailable in MaxcOsX
+
+22 fev 2002 mad
+added $ENTROPY version 4.411
+
+18 fev 2002 mad
+correction in bruker_add_param if working in .
+
+18 jan 2002 mad
+corrected error code with onerrorgoto
+cleaned exiting error condition in CH_OPEN and CH_CREATE
+
+9 jan 2002 dom
+fichier peakintp.inc commande PKPROJ
+correction : call peakproj (error,zz,st,z) -> call peakproj (error,zz,st(1:1),z)
+
+4 jan 2002 mad
+correction inprogress graphic code
+
+3 jan 2002 mad
+corrected some bug in ONERROR, making 'change on constant' bug on solaris
+
+RELEASE 4.4 29 nov 2001
+29 nov 2001 mad
+added overflow protection in win_plot_array, was killing the
+   kernel in linux / mandrake 8 / Xfree 4
+mv att/mult_integ.new to mult_integ
+
+21 nov 2001 mad
+removed graphic error code
+added iter 20 in dosy_fit & dosy_fit2
+changed the look of dosy_setup
+
+12 10 2001 mad
+adapterd ux2cach to handle digital filter parameters
+
+11 10 2001 mad
+added bruker digital filter in easyxD
+added BRUKER_CORR and bruker_add_param
+corrected bug with fexist()
+
+12 09 2001 mad
+modify dosyfit and dosy2d to use fitexp (1 and 2 comp)
+
+07 09 2001 mad
+pkread is available form menu again
+
+17 08 2001 mad et Thierry
+in LINEFIT 2D F1 and F2 errors were interchanged
+in LINEFITD 2D F1 and F2 questions were also interchanged
+in levenberg, added protection code for covariance matrix when curvature is non-inversible
+
+9 07 2001 mad
+added C(wrong !) code for dealing with 15bits and 24bit planes
+added some if on_x_win tests in execute
+
+5 07 2001 mad/andre
+$CACHE[] oublie dans newfilec
+
+22 05 2001 jluc
+sortie Xplor/CNS qui marche
+
+9 05 2001 mad
+used refpeaks instead of showpeaks in Peak menu
+
+23 4 2001 mad
+correction when calling getbool2 code to compare in uppercase.
+added disjoin_all and listfilec macros
+
+3 4 2001 jluc
+modif dans marker: on cree directement le spin system a partir du marker
+"promote to spin system" enleve
+le create pic du marker + convivial
+
+3 4 2001 jluc
+debug show_sys: ne prend plus en consideration les dep chim des spin N et C pour 
+tracer les spin systemes
+
+28-3-2001 manu
+ajout de la macro "flat_solvent" accesible dans le menu Apod. et qui remplace 
+la macro rem_h2o dans le menu Advanced proc.
+Modification des macro easy1d, easy1d_doit, easy2d et easy2d_doit : ajout de la
+fonction Flatten Solvent et modification des possibilite de correction de 
+ligne de base.
+
+28-3-2001 jluc
+ajout de " Write to NMRStar File" dans les menus 
+
+28-3-2001 mad
+added the 'error bar weigth' cursor in dyna module for T1,T2 fitting
+
+27_3_2001 jluc
+WriteNV dans write all format 
+sortie nmrview (fichier data.mat + data.par)
+topology locale
+build_static.g est lance dans new_proj, les fichiers sont crees dans db
+
+23_3_2001 jluc
+modification du backup et restore: l'ensemble du projet est sauvegarde
+
+21-03-2001 mad
+modified all the  macros to adapt to the new RETURN mecanism.
+created the FITEXP command (~ 100 fold improvement over fitgene)
+and implemented it in the dyna module resulting in a total 4 fold speed-up.
+
+9-3-2001 mad
+added att/compute_aa
+changed dyna to issu results in primary seq order
+and changed output file format
+
+6-3-2001 jluc
+ajout de ./constraints dans backup et restore
+added handling of arommatic spin syst in att/build_strip
+
+26/02/2001 mad
+added PROFILER and wrote the profile macro
+added segm1 0 in remh2o, which results in much better water removal
+
+21/02/2001 mad
+added the RETURN command
+added the $CLEAR $MACRONAME $RETURNED contexts
+
+19/02/2001 mad
+added $alpha $beta $gama $offset3d[1..3] $scaled3d $axis3d $znot
+created and debuged the ONERRORGOTO cmde
+added the $CACHE assoc. array for join
+
+29/01/2001 mad
+added header() and hexist()
+
+26/1/2001 jluc
+txt2att et att2txt permettent de faire un dbimport et dbexport sur l'ensemble
+de la base ( constraint + db)
+
+25/1/2001 mad
+dbimport and dbexport
+corrected a bug in env_att.g for checking the availibity of SH
+
+27 dec 2000 mad
+created the PKFILTER command
+added the internal call getenum2() in paramio.for
+
+26 dec 2000 mad
+wrote write_nmrstar
+added the sh() function
+moved all the 256 in *.c to MAX_CHAR
+added debug = 2 to printstack
+cleaned the code in eval, now head("a b c") works, added uncode() decode()
+
+22 dec 2000 mad
+remove output msg from READ EVALN MAX
+small correction in rem_h2o to adapt non power of 2 sizes
+
+18 dec 2000 mad
+$PKRADIUS added
+rewrote SHOWPEAK and SHOWPEAK in showpeak.for - now uses pk_id for display
+added the REFSPECTRA and REFPEAKS controls
+mode 'box' in SHOWPATTERN
+
+8 dec 2000 mad
+new field in pk table : peakid holds 32 chars $PK1D_ID[i], SETPEAKID i 'texte'
+headx was not working when the string started with the separator
+added SUMREC in 1D
+created maxinbox 1D and 2D, and $MAXINBOX
+
+7 dec 2000 mad
+new version of build2d and build3d, reads cache files
+new version of peak_pick, corrected for negative peaks (1D AND 2D)
+
+15 nov 2000 mad
+modification in licence code
+
+23 oct 2000 mad
+corrected border tests for extract in 3D (was a bit too harsh)
+
+9  oct 2000 mad
+corrected tunset (was buggy for string key starting with a digit)
+
+26/9/2k mad
+added $pulldownmenu $debug $verbose
+
+26/9/2k jluc
+installation de la dbase de contraintes, les macro sont:
+cnst["#spin1:#spin2"] = "lowerlimit;upperlimit;correction;(active/inactive);note"
+
+*build_cnst_db: 
+        creation complete: 
+-la creation de la base des contraintes se fait a partir de la 
+base d'attribution courante (att)
+-il n'y a pas de renommage des spins (les HB? gardent les memes noms)
+-il y a correction des pseudo de la carte RMN (distance corrigee)
+
+        update:
+-ajout des spins nouvellement attrtraintes specifiee
+*new_cnst_db : ouvre une nouvelle base de contraintes
+*add_cnst_db : ajout d'une entree dans cnst (base courante)
+*rem_cnst_db : remove une entree dans cnst (base courante)
+*edit_cnst_db : edite une entree de la base courante
+
+*output_cnst_db : 
+-fabrique le fichier des contraintes format DYANA ou XPLOR
+-Les proton indifferencies (methylene et double methyl) sont
+remplaces par un pseudo et la distance est corrigees
+eg -> HB? et HB? => QB et QB (avec correction)
+
+
+
+21/9/2k mad
+corrected for wrong display with show linewidth
+
+19/9/2K jluc
+ajout de la commande fexist 
+-> teste l'existence d'un fichier
+(fonctionne comme exist)
+
+debug Plantage lors de creation d'un pulldown menu
+pb de Malloc dans X_formulaire.c
+
+1 sept 2000 mad
+removed the alert for easyxd/write macro
+added ref after pkclear
+added test for zero selection in ph2dr/ph2dc
+better display in pkrmz
+used perror in ux2cach.c rather than sys_errlist
+
+========================= Version 4.31 =================
+25 aug 2000 mad
+finalized distribution
+modified the test suit
+modified and improved the instakllation makefile
+
+2 aout 2000 mad
+added 'file' in test suit.
+
+21 juillet mad
+modif in gifshellp.inc about output format for FPRINT
+remove tt and ttt in /test/
+debug 1 and macro name
+added showpattern
+adapted show_att and show_att_sq to showpattern
+added Clear for phases in easyxd forms
+added preservation of gifaplot and gifaprint in install
+Added display after linefit in menu.
+Changed Load to Read in GUI of easyxd
+Enhanced the Peak picker interface
+corrected bug for $pk2d_t when lorentzian
+small correction in pklist (widths are in Hz)
+
+17 juillet 00 jluc
+Ajout des spin Azote dans build_static_db.g (format IUPAC)
+
+13 juin jluc
+ajout bouton "show peaks" dans le formulaire du spin system
+ce qui permet d'afficher les peaks relatif au system 
+de spin .... tres long...
+
+15 mai mad
+small correction in pklist (was buggy and did not work in 3D)
+ 
+31 march 00 mad
+autocalib
+
+15 march mad
+modif of the splash screen
+
+29 fev 00 mad - Patrick Ladam
+check of version number compatibilities in startup.g
+cured the mkdir sickness in the assignment module
+
+19 jan 00 mad
+noesy walk now is from - to
+
+4 jan 00 (jluc)
+mise en place d'un environnement de compilation specifique hpux10 (ecir)
+
+15 dec 99 (mad)
+the residue macro for computing residues from fitgene
+
+19 nov 99 (mad)
+dans macro/att/dyna, modified listfile to be handles as 'string' rather than 'file'
+remove the alert in calib
+  
+3 novem 99 (sophie)
+ modif in dosy2d macro 
+ 	replace 5*$si1_1d by $si1_1d in the FIT_2_COMP test
+	replace $p1-$dp1 by max(0,$p1-$dp1) in the left pic calculation
+
+14 oct 99 (mad)
+  enhancement of the About menu, help interface, gm/config macro
+
+11 oct 99 (mad)
+leftprod et pca_1d NON DOCUMENTE !
+
+6 oct 99 (mad)
+added the LP backward stuff in easy2d
+created burg_back and burg2d_back macros
+
+14 septembre jluc (sur tome)
+/include/ndbm.h necessaire a la compil sur linux (ajoute dans le ftp sur tome)
+Il faut Recompiler f2c (97) sur Linux (dans le ftp sur tome)
+Pb avec l'installation rpm de lesstif-0.87.0: XmCreateFileSelectionDialog plante
+					      closeWidget ne marche pas
+Compilation et installation de lesstif-0.89.0: (derniere version, moins de bogues) 
+	(ftp://ftp.lesstif.org/pub/hungry/lesstif/srcdist)
+	ajout de "setenv LD_LIBRARY_PATH /usr/local/lib"
+	=> tout marche bien sauf:
+	 on peut resizer les form et les dialog et c'est pas beau
+	lesstif-0.89.0.tar.gz mis sur le site ftp
+
+ajout de /usr/lib/X11/app-defaults/XMgifa sur tome
+
+10 sept 99 mad
+added scale in dispcont
+remove a join n varian/easy2d_doit
+changed test1d,2d,3d
+dmin and dmax were wrong in dosy_setup
+
+19 aout 99 mad
+corrected for " foreach .. unset .. endfor " 
+corrected wrong error handling in @(expression) code
+nearly finished VIEW stuff, mosaic macro, viewfinder...
+
+17 aout 99 MAD
+new help set-up, new apropos
+reverse f1/f2 in dim=3 has been corrected
+paramio.for/getstring2 has been corrected for dead-lock
+   when a macro was finishing with a \
+
+5 aug 99 MAD
+started to code VIEW stuff
+added test for postscript in setfont
+added zero when entering assignment module
+
+3 aug 99 MAD
+cleaned many things in the C code of X_stuff, changed the include files arch.
+Does not work on HP-UX 10 (?)
+
+30 jul 99 MAD
+  - macro exec speed tune-up -
+added lfunc() in eval to speed-up function evaluation
+modif in find_var(), leading(), parsest(), to minimize string copies and comparisons
+modif in allocate, not to search the whole table if no collision => collisions counting needed then
+  - coupled viewfinder -
+created unit.for to hold all unit conversions (from tools.for and X_interface.for)
+created index2winr() and win2indexr() from unit2winr() and recup_unit()
+added d_xtox() as internal functions, prototypes in W_windef.h
+heavily modified the viefinder() stuff in X_zoom.c
+added window_dim() for viewfinder stuff
+changed '10' by NWindows here and there; and changed the loops
+cleaned up the 'fortran' processor for linux
+
+22 june 99 mad
+added the showpattern command, still in progress
+
+25 mai 99 mad
+correction of for error bar due to wrong chi2 in line fitter
+
+19 mai 99 mad
+mode 'just extract real' in Bcorr of easy2d => usefull for on_file proc.
+added the 'read $fout' cmd when possible after on-file processing with easy2d
+added doc on EXCHDATA which was missing for some unknown reason
+new dataset command, with a graphic interface.
+Complete rewrite of calib_integ
+
+17 mai 99 mad
+new version of dispcont
+new version of ft_n+p : conv_n+p con_n+p_onfile modif dans easy2d
+"refresh" in att/add_spec
+
+17 avril mad
+change of stat_att_noe and added CSI computation
+write_param_maxent and put in dosy2d/dosy3d
+modification of dipeptide search in att/search_spin
+
+13 avril mad
+added mode varian in easy2d, easy1d,
+changes in  varian/ ft_sim bruker
+
+2 avril mad
+added macro param and change of $NAME_xd in list
+
+29 mars mad / jluc
+wrote stat_att_noe
+change of const_qualit / pseudo - peaks duplicated
+remove test of duplicated pseudo-atoms in check_topo
+remove win_update in showxx in disptypep.inc (speedup of show_att)
+
+19 mars mad
+fix in integ_att
+added move to top in mod_att (macro mov_att_top)
+
+15 mars jluc
+added viewfinder: cross associated with mouse button 2, and pivot on 3
+
+1 mars terez
+added $name_1d $name_2d $name_3d
+
+============ version 4.22
+
+15 fev 1999 mad
+release 4.22 - enleve tout READLINE pour l'instant
+changer la doc html
+
+27 janv mad
+bon comptes dans assignment
+rajoute show_att_sq et l'entree sow all peaks dans assignment
+enleve la redescente de LARGEST : ne peut plus que monter
+installe et paufine le module dynamics
+24 janv mad
+racourci le nom de fichier dans sprintf (qui tronque parfois)
+rajoute create missing peaks dans mod_sys
+18 jan mad
+modif de search_spin avec test des dipeptides
+erreur dans super2d
+dataset et help dans file_selector
+15 jan mad
+rajoute search spin dans mod_att
+factorise find_spin_low
+14 jan 1999 mad
+correction dans tt : find_* (message) show_curr (et zoom=0) basic_db (HA2,HA3)
+   do_marker (create pk et mode assym)
+rajoute align_peaks, align_pk_spin mov_spin
+21 dec mad
+nouvelles corrections pour readline
+CH_ERRLIST (reste a finir)
+modif dans peak_pick pour les pics negatifs
+11 dec sophie
+macro getuxnmr ajout : rapatriment d'une serie de spectres
+modification du menu DOSY, simplification de dosy3d 
+(uniquement on file) dosy3d_on_file -> dosy3d
+Calibration des DOSY suivant le type de noyau et de manip
+correction des bugs pour tracer les projections dans easyplot
+10 dec mad
+petites correction dans X_biblidialog pour readline/lesstif
+dans cache_mad, rajoute CH_ERRLIST et enleve le commentaire
+sur Absmax dans c_putparam_type
+9 dec mad
+rajoute rem_h2o dans easy2d,
+correction de DIAG en 2D si si1 > si2
+3 dec 98 mad
+portage de readline finit sur linux, HP et IRIX
+1 dec 98 jluc
+debug formulaire non resizes sur lesstif 
+27 nov mad-sophie
+mis a jour de la nouvelle version de easyplot
+change affichage de la souris en delta
+rajoute \t dans head() (en fait dans parsest/tools.for)
+26 nov mad
+DMIN et DMAX * par DFACTOR dans dosy_setup
+DMIN et DMAX et DFACTOR dans NEWFILEC et GETC
+corrige le bug du tableau dans win_plot_array
+20 nov mad sophie
+dosy_on_file et macro pour compter les colonnes a processer
+round() dans 3d/vertint
+rajoute swap de freq dans transpose
+17 nov mad
+adapte point a unity
+2-nov mad
+ enleve name dans dbopen
+30 oct
+ isnumeral construit avec readval()
+ evaln.g avec warning et enlever le test de itype sur evaln
+ build_strip finie et mis dans les menus att
+22 oct mad
+ 2d_on_file et toutes les macros.
+ bogue du 1/2 pixel dans plot2d et plot2dj
+20 oct mad
+ modif dans ux2cach pour adapter les tailles != de n*256
+ bouton print dans les help/show_macro
+ abs oublie dans initialisation de proj3d % Y
+16 oct mad
+ edit direct dans ATT
+ import dans new_proj, et sorti pdb2primary, bmrb2spin, ascii2spin
+ new_proj accepte les '#commentaire' dans les fichiers de seq prim
+ modif dans hash_find.for, rajout d'un test (& $pk_fnd_dst != -1) apres tout les find dans att/*
+   corrige le bug du 'nouveaux pic' sur une base vide sur HP
+1 oct mad
+ choose_unit get_plane
+22 sep mad
+  rajoute move dans mod_att, modif dans local_pk (taille prop a box_f1/f2)
+21 sep mad
+  dbck log dans dbck.log, et modif cosmetiques
+  changer dmin et dmax en unite dfactor, et non plus absolue
+  ameliore strip_file et strip_plot, inverse la logique de axis (qui etait fausse)
+10 sep mad
+  rajoute add dans le menu File
+18 aout mad
+  align spins to peak dans mod_att
+14 aout mad
+  initialisation dans peakintp n'etait pas complete
+  CD sans argument -> home
+  rajoute msg d'erreur pour fit
+  simplifie un peu add_spectra
+30 juillet mad
+  passe a unitx et unity, commande UNIT_Y
+  zoom et coordonnees en delta
+  modif dans ux2cach.sh getnmr getexp pour la 3D et AQORDER
+18 juillet mad
+  les noms des 1H sont IUPAC   -> assign version 0.22
+  2rr_to_cache  (pour adrien !)
+  modif dans dbck quit_assign add_spec file_selector et marker(extend)
+  rajoute tests dans val1d() val2d() val3d() !
+16 juillet mad
+  rowint et colint sur les manipes complexes
+  petites corrections dans new_proj, build_pdb, multi_zoom
+  ZM 1  fait aussi catch spectrum, et modif dans 'Read..' et dans att/
+14 juillet mad
+  apropos corrige sur SGI et Linux
+  ( et ) dans les fichiers postscript
+  modif dans easy2d pour on_file processing
+  bouton dataset dans easyxd
+  proc2d travaille aussi in_place maintenant
+9 juillet mad jluc
+  modif dans att: modif dans topo, AMPTX, enleve basic_db.g, corrige quit_assign
+        enleve peak diag dans do_marcker/create
+        promote remet build_list a 0
+        rajoute mod_sys/RESCUE show_all_sys recalibrate
+  modif dans multi_zoom
+  rajoute 'none' dans easy2d/ft
+8 juillet mad
+  porte sur Linux 2.0 - petite modif dans util.c et setlocale.
+2  juillet jluc
+   File selection box : repertoire courant
+15  juin mad
+   EVALN fait erreur si itype != 0
+   integrate et showlinetab, elargissement de TAB[] a sizemax
+   PUT VERT F3 etait faux
+   easy3d easy3d_doit
+3 juin mad
+  commentaire dans ft_phase_modu
+25 mai mad
+ dmxphase
+========== Version 4.21
+15 avril mad-sophie
+  plotdamp_* dosy2d dosy3d
+  correction dans plot1d.for
+  commande 'PUT VERT' en 3D
+  correction de real dans easy2d
+14 Avril jluc
+	Debug gestion zoom via shift pour linux 
+13-avril 98 mad
+  corrections pour swapbyte
+  fichiers VNMR tronques 
+  itype dans proc3d !!!???
+10-avril-98 mad
+  correction des tests dans 'load easy2d'
+  scale dans store_zoom
+  easy1d et modif dans easy2d (interactive phase)
+  env_basic.g
+  qq modif autour de Read all format
+3-avril-98 sophie
+  creation de la macro proj_loc (projection locale)
+  ajout du choix des projections (skyline, mean, local skyline ou mean) dans easyplot
+
+11-mars-98 mad
+  petites corrections pour le mode Varian
+
+22-jan-98 jluc
+	Nouveau controle clavier et souris:
+
+        Bmotion1 + Bpress2 => debut_cadre_zoom
+        Bmotion1 + Bmotion2 => trace_cadre_zoom
+        Bmotion1 + Brelease2 => fin_cadre_zoom
+        Bpress1 + Bpress3 => zoom_in
+        Bpress2 + Bpress3 => zoom_out
+        shift + Bpress1 => debut_cadre_zoom
+        shift + Bmotion1 => trace_cadre_zoom
+        shift + Brelease1 => fin_cadre_zoom
+
+	1 bug : pour le shift, il faut etre dans la fenetre 
+
+19-jan-98 mad
+avec sophie Auge : plotdamp_* et changement dans easyplot
+modifie dosy2d et dosy.g pour adapter maaxent_dosy et la reconstruction par FT
+
+15-jan mad
+le calcul de l'errur etait faux avec sumrec
+
+5-jan mad
+mis de round(pointx[]) dans gm/pointf
+deplacer les fichiers tmp dans ph2dc / ph2dr
+corriger get_form_uxnmr
+ 
+3-jan-1998 mad
+le graphique marche maintenant sur un serveur X 32 bits, et passer en malloc()
+
+2-jan-1998 mad
+corrige le calcul des barres d'erreurs si chi2 trop grand ou trop petit.
+
+29 dec mad
+corrige ADD en 1D
+
+15 dec terez
+ajout d'un contexte $SIGN_PEAK correspondant a la commande du meme nom
+ajout d'une commande MSKZERO  qui met a zero les amibes
+
+11 dec mad
+corrige gt_param pour Dim Dim1, etc...
+rajouter le parametre Byteorder pour les PC dans cache_mad
+
+3 dec mad
+rajoute des round() dans point
+rm -r marche maintenant
+
+19 nov mad
+cree la macro title, enleve la commande
+enleve l'affichage a iter=0 en MaxEnt
+
+10 nov mad
+cree le directory varian, avec ft_* et easy2d
+corrige reverse dans ft_phase_modu
+rajoute une README dans macro/
+corrige une horrible bogue dans le calcul de la derivee de FITGENE
+
+7 nov mad
+rajoute des help dans dosy, reorganise les menus et les boites
+
+6 nov mad
+rajoute le code BIG_ENDIAN dans ux2cach !!!!
+
+28 oct mad
+modif du GUI de pkrmi
+
+24 oct mad
+help de easy2d
+
+10 oct mad
+modifie le choix des colonnes dans ph2dc ph2dr,
+corrige les tailles par defaut dans easy2d
+rajoute le test de noise dans FITGENE (!)
+
+8 oct mad
+modifie dans easy2d_doit pour que phase F2 se fasse avant burg
+rajoute le mode '2 stages' pour bcorr dans easy2d
+
+26 sept mad
+copier SGEDI
+calcul d'erreur correct dans FITGENE et LINEFIT
+
+24 sept mad
+Passe FITGENE en Levenberg, modif dans minimize et fitp.inc et rajout dans fitv.inc
+  calcule des incertitudes dans $DPi
+Changement dans Levenberg
+  mis covar dans work3 => limite la taille des donnees fitables
+  changer sizelev de ldmax a 2*ldmax, et reduit tlmxpk1 a sizelev
+    => double le nbr de peak qui peuvent etre fittes
+  rajoute le calcule de l'inverse de la matrice de covariance
+rajoute les incertitudes dans peakxd() en 1D et 2D
+   cree les contexts Gifa associes (enleve $PK2D_ERR !)
+   reste a etendre les incertitudes pour :
+   PKRESET pklist integ mskinteg somrec pksym pkproj
+debogue de excvect dans EXCHDATA (execute.for)
+$abs dans proj3d_all et deboguee
+
+19 sept Terez
+rajoute en Fortran dans Gifa une cmd MSKSEARCH, on lui passe le no du pic, et elle 
+te donne les coordonnees des pixels appartenant a l'amibe de ce pic.
+
+17 sept Terez
+modifie la macro show_curve dans att pour qu'elle ne depende plus de
+l'existence ou non d'un blanc en debut de ligne. 
+
+15 sept mad
+change les coord souris en float:
+ execute.for paramio.for powell.for zoomparamv.inc X_zoom.c X_interface.for variable.for
+ disptypep.inc linecor2p.inc peakintp.inc tools.for X_windows.c
+adapte les macros avec round():
+  vertint setamb  planeint ph2dc ph2dr mdfamb integrate2 integrate colint
+ tools.for eval.for peakintp.inc execute.for confidence.for conjgrad.for X_interface.for
+
+11 sept mad
+cree la fonction round(), rajoute dim=0 dans les itoh...
+cree macro/3d et y copie proj3d, proc3d
+fait strip_plot strip_file vertintf proj3d_all get_plane
+rajoute le mode valeur absolue dans proj3d et enleve file
+corrige disp3d_form, et met des cursor.
+enleve les messages 'appending'
+
+4 sep mad
+modif dans alert - marche en mode non-graphique
+
+3 sep mad
+modifie dans att/new_proj pour le fprint dans pdb->db/primary et mis un joli inprogress
+corrige le decalage avec SHOWC
+change un peu att/read_file
+
+1sep terez
+modif dans find_dist, dialog->form , debugge le perl, rajoute calc_dist
+
+1 sep mad
+remplace / par // dans env_att.g (OH!!)
+echange la place de Redraw dans les markers
+rajoute HN dans trp arom
+
+25 aout terez
+j'ai commence a developper les nouvelles commandes de manipulation des amibes.
+les fichier ambtools.c, amoeba.for et ambp.inc ont ete ecrits. et j'ai 
+rajoute des lignes de commentaires dans peaksize.inc qui deviendront 
+actives quand je commencerait a compiler.
+les commandes devraient avoir les noms suivants:
+AMBPUT, AMBREM, AMBDEL, AMBSTO, AMBREAD (dis-mois ce que tu en penses, 
+Marc-Andre)
+
+7 aout mad
+  rajoute la commande EXCHDATA
+
+6 aout mad
+  rajoute scolor et max0 pour SHOW DATA
+  change le scaling dans intvect (INT1D) faisait la moyenne, fait
+
+===== version 4.2  date du 14 juillet 1997 =====================
+16 juillet mad
+change dans minimize.for tout les format (I) en (I6) pour $Pi (pour AIX)
+
+12 juillet mad
+rajoute gifa algo 11 dans dosy_setup
+
+===== pre-version 4.2
+
+10 juillet mad
+corrige load_macro dans easy2d
+modifie iterdone dans controlgull et FITGENE/MINIMIZE
+change  float(0.5*..) par 0.5*float(..) dans laplacep.inc et laplib.for
+change dans unix_lib.for chdir pour AIX -> qui marche
+derniere modif dans les swab/READV/Linux
+
+7 juillet jluc
+  Passage de Xm_FONTLIST_DEFAULT_TAG en XmSTRING_DEFAULT_CHARSET 
+	---> LORS DE LA CREATION DE LA VERSION POUR AUVERGNE !!!!!
+
+2 juillet mad
+rajoute SHOW DATA
+corrige dosy_setup, pour le preset de dmin/dmax
+rajoute le swab dans READV/Linux
+
+30 juin jluc
+gestion des ifdef UNDERSCORE, dans X_windef.h
+elimination de la commande de test TESTDIAG
+
+27 juin mad-jluc
+corrige encore une bogue dans powell (initialisation de direc())
+derniere main a AXIS, $AXIS (dorefresh.for X_windows.c)
+
+19 juin mad
+fini FITGENE et MINIMIZE, change $PAR[i] en $Pi => 2 fois plus rapide
+corrige une bogue dans powell
+
+16 juin mad
+Changer le bouton Cancel en Close dans les FORMBOX
+Modifie le code d'erreur pour etre plus clean avec les Dialogbox
+
+13 juin mad
+enleve leading dans getstring, mais le rajoute dans les formulaires.
+pkname n'etait pas initialise.
+change la logique dans FOR : la valeur de la variable courante est relue
+     permet de faire  SET I = 10  dans une boucle FOR I
+on peut faire un GOTO a l'exterieur d'un FOR ou FOREACH et revenir
+
+6 juin Terez
+ajoute function valamb(), identique a val2d(), mais sur les amibes.
+
+6 juin mad
+corrige dans READV : plus de 'core dump' si le fichier n'existe pas
+                     taille max = smxmax
+29 mai mad
+expbroad et gaussbroad : 2 macro qui donne la syntax 'sin' a 'em'
+mis dans easy2d ainsi que burg.
+
+29 mai jluc
+debug:	correction des valeurs limites pour le cursor lorsqu'on le gere
+	par les fleches 
+
+26 mai mad
+varian_read varian_param
+calib corrige pour tenir compte de la modif precedente ppm/Hz
+
+15 mai 1997 Terez
+corrige bug dans evaln.g en 1D; il faut mettre: 
+  evaln $zone[2] $zone[4]
+et non pas:
+  evaln $zone[1] $zone[2]
+Quand on recupere les limites de zones en 1D, elles sont stockees 
+dans $zone[2] et $zone[4].
+corrige bug analogue dans pick_peak
+
+30 avril mad
+corrige la bogue de setpeak et la premiere coordonnee pas modifiee
+
+28 avril mad
+dmxclean
+
+21 avril mad
+remis en place la doc *.hlp, avec lien sur les contexts
+
+10 avril mad
+rajoute gm_inter
+rajoute FITGENE et MINIMIZE
+
+3 avril mad
+qq modifs dans att/ (show_primary, stat_primary, low_level, promote)
+2 avril mad
+POINT_INPUT bogue en 1D, confondait x et y
+
+1 avril jluc
+
+Modifications de l'ordre des champs de CURSOR:
+Nouvel Ordre:
+----------------------------------------------------------
+Widget_mere
+Titre_formulaire
+Commande_formulaire
+Label/Nom_de_fichier
+Champs: string     message     text     action     enum     cursor     file
+        var        *           *        commande   list     min        var
+        def_val                         *          var      max        def_val
+        *                                          def_val  dec_point  *
+                                                   *        var
+                                                            def_val
+                                                            *
+----------------------------------------------------------
+26 mars mad
+  readgz writegz
+10 mars mad
+  calib avec valeur initiale et damping
+  calibdosy
+  dmin dmax dfactor dans les fichiers, $c_dmin $c_dmax $c_dfactor
+  t1fit
+7 mars terez
+  svd2d
+7 mars mad
+  mets en place le menu DOSY avec les macros associees :
+	load dosy2d showtab user_apod
+  $ITER .... $chi2 avec MaxEnt
+28 fev mad
+  Je propage tout le travail DOSY :
+     UNIT : TAB, DAMPING
+     itokr ktoir ttoir itotr ...
+     tout laplacep.inc
+     nvo param (memmode) dans (t)transform
+     nvelle gestion du concentring
+     nvel interface pour les iterations MaxEnt
+     nvo mode de smoothing dans qaddvect
+     modif dans maxent pour sizedata en 1D
+     test de lambdacont == 3 (a finir)
+13 fev jluc
+  ajout des fleches de part et d'autre du curseur
+11 fev mad
+  mis les macro gm_bruker et sin_bruker
+  mis au point de super1d et super2d avec les cursor
+8 fev jluc
+  mise en place du champ cursor
+28 janv jluc
+  amelioration de la gestion du curseur horloge et debug
+27 janv jluc 
+  debug du deplacement du cadre zoom dans la vignette lorsqu'on n'utilise
+  pas les commandes de zoom graphiques.
+20 janv jluc
+  amelioration de dbck dans le module d'attribution
+  ajout de la commande remove system
+14 janv mad
+  un peu de nettoyage dans l'attribution (help en ligne, aide sur new_proj)
+10 janv terez
+  att->fil
+6 jan mad
+  corrige les bogues de foreach .. within dans les $att[]
+3 jan mad
+   modifie dans show_att (couleur pour les noe) et show_prim_seq,list_att (aromatiques)
+   corrige petites bogues dans list_att, ch_param
+30 dec mad
+   reecrit ONE pour tenir compte de itype
+   etendu INVF en 2D et 3D
+   rajoute un 'no valid license' dans les plot (HP-GL et postscript)
+23 dec jluc
+   Possibilite de positionner la boite de zoom a partir de la vignette
+16 dec jluc
+   debug: blocage du zoom in a 5 pixels de cotes
+   rajoute des CB en 1D pour les fleches vers le haut et le bas en zoom = 0
+   debug de la commande PULLDOWNMENU (variable pdmenu remise a jour)
+13 dec mad
+   corrige les bogues dans test/pkhandle
+   enleve la bogue des variables manquantes ! finalement !
+   rajoute des CB en 1D pour les fleches vers le haut et le bas.
+10 dec jluc
+   ajout d'un bouton Clear-Info dans la boite de zoom: sert a 
+   enlever + facilement les labels et les traces de fit...
+6 dec mad
+   remis les codes maxentp, linepredp, danielp dans la version f2c
+   enleve plclose_ps de plotlibpost, pas utilise !
+5 dec jluc
+   correction du bug de inprogress. Close de la widget si > ou = a max
+   activation du close sur les widgets inprogress
+4 dec mad
+  correction dans manuel (enleve les http:...ball_red.gif)
+  propage modifs Georgy : gifaprint/plot checkch getuxnmr
+21 nov jluc
+   mise en place d'une bitmap lors de l'iconification
+   des fenetres
+20 nov jluc
+  reecriture de formulairep.inc
+	(filtre des champs, uppercase...)
+  mise en place champ CURSOR (en integer)
+14 nov mad
+  mis le pivot de ph en scolor, et rajoute vheight
+  rajoute hph
+6 nov mad
+  modif dans multi_zoom quit_att
+1 nov mad
+  ecrit dbck - 1ere version -
+  trouve la bogue foreach i in db;  set db[$i] = ... ; enfor
+
+=========Version 4.10 mise en distribution le 20 octobre 1996 ====
+17 oct mad
+   $SUMREC, pksumrec pkrmz
+15 oct mad
+   passe en entier selectx1,2,y1,2 et corrige set_zoom_param 
+2 oct jluc
+	nouvelle commande PULLDOWNMENU 0 ou 1 pour basculer du mode
+	boites a boutons en mode menus deroulants.
+27 sept mad
+   'ameliore' easy2d
+16 aout mad
+   corrige WITHIN
+   change la syntaxe de zoom en 3D, modifie zoom3di, disp3d_form zoom_old
+15 aout mad (et oui, meme le 15 aout)
+   modif display1d en 1D pour afficher jusqu'au bords
+   modif recupunit/X_interface.for
+   modif SHOWLINE/TEXT 1D  SHOWPEAK(S) 1D
+   htoir() et itohr()
+13 aout mad
+   etends zoom_out et showpeak(s) a la 3D
+   modif un peu les test dans dbopen, ainsi que les msg d'erreur
+   enleve ALERT et fait la macro alert
+   renomme REPL_AMOEBA -> MSKCONC / MODIF_AMOEBA -> MSKMODIF
+   rajoute les context ROW[1] ROW[2] ROW[3] et upzoom
+9 aout mad
+   cree ZEROING
+   rajoute le test de control-C dans SHOW/GET LINEFIT
+26 juillet mad
+   cree un nouveau SETPEAK, passe l'ancien dans SETPEAK2
+   change un peu PKRM pour etre moins bavard
+8 juillet mad
+   changer qq les alert en al
+3 juillet mad
+   change un peu l'interface graphique de bcorr
+   corrige la bogue avec la FT cpx et les tailles non multiple de 2
+   rajoute qq chmod ds le Makefile d'installation, ainsi que le backup
+      des anciennes versions
+26 juin mad
+   reecrit rzoom en macro
+   corrige les commentaires apres le \
+20 juin mad
+   installe le module d'attribution
+
+17 juin mad
+   rajoute la macro center
+
+29 mai: jluc
+	debug: test de la presence de barre de menu lors du closebutton.
+
+28 mai: mad
+    change le sens de la plume dans GRID
+
+18 mai: mad
+    rajoute la commande FOREACH index IN array { WITHIN nD coord_set }
+
+15 mai: mad
+    rajoute la couleur dans les markers
+    corrige burg3d grace a Kalle G.
+
+30 avril: terez
+         corrige bug dans dataparamv.inc (les offset, freq et specw
+         etaient entiers et non pas reels...)
+         essaye d'ecrire une commande pour superposer les
+         manipes de specw diff, sans succes...
+
+29 avril terez
+        dans peakintp.inc
+        rajoute une commande REPL_AMOEBA nopkold nopknew, qui rajoute
+        l'amibe du pic nopkold a l'amibe du pic nopknew.
+        syntaxe: REPL_AMOEBA nopkold nopknew
+        a ete testee
+
+22 avril mad
+	je rajoute la command FIND  (hash_wrap.for, peakintp.inc, variable.for)
+	je rajoute ccolor dans le Reset graphic
+	gm/al_yesno pour faire des beau dialogues
+
+19 avril mad-terez
+	modif dans dbtools.c pour permettre le dbopen en readonly
+
+18 avril : terez
+        ajout de la variable $pk2d_err, qui contient l'erreur
+        sur l'amplitude calculee par integ
+16 avril : jluc
+	ajout de la commande "CLOSEFORM $widget"
+	$widget etant le no de widget dans le contexte du form.
+	$zone[] determine la zone dessinnee par la souris
+12 avril: jluc
+	debug:set du path en local dans les files selection box
+
+11 Avril: jluc
+	debug:gestion de GIFAPATH dans apropos
+	Ajout d'une macro DO_NOTHING : tres tres agreable...
+	Ajout bouton Execute et "show macro" dans le help
+	Ajout de NORETURN dans les formulaires et les dialogbox
+	debug:	champ action actif dans le contexte du formulaire
+
+9 Avril: jluc
+	Reecriture de Apropos en macro
+	Ajout du champ action dans les formulaires
+
+5 Avril: jluc
+	Reecriture du help en macro
+
+1 Avril : jluc
+	Ajout du champ texte dans les formulaires et les dialogbox
+	c'est pas une blague ...
+
+=========Version 4.09 beta mise en distribution le 3 avril =====
+3 avril mad
+corrige pour R3000 un unsigned char dans X_windows.c
+change dalign en complex*16 dans sizeparam.inc pour AIX
+
+2 avril mad
+corrige la copie dans DATA pour la commande MAXENT
+change un peu le menu MaxEnt
+ 
+28 mars jluc
+qlq debug:
+	Modif apres remarques de Georgy
+	callback du button titre reporte apres creation du shell de commande
+	(moins de code et plus simple)
+
+28 mars mad
+debogue finalement les READV et READL et rajoute test/inout
+
+21 mars mad
+corrige dans gifshellp.inc pour le bug du compilateur SGI avec st4 -> porte en 5.3
+
+18 mars mad
+rajoute apsl dans proc_1d
+corrige l'oubli du rm dans test/cache
+
+14 mars jluc
+ajout des fleches obliques dans la boite de zoom
+
+14 mars mad-terez
+correction de readl en 1D et 2D
+correction de exist(entree[dbm])
+copie dis2cache et cache2pc dans la distribution
+
+11 mars mad
+bogue des parametres dans le cache
+correction de readv
+
+23 fev mad
+correction dans X_formulaire.c pour le nombre max de pop-up
+
+21 fev mad
+nettoyage dans lvarian.c (256 char, verif sur dim)
+
+19 fev mad
+un peu de nettoyage dans le menu peak (linefit.g evaln.g peack_pick)
+
+16 fev mad
+modifier topcross pour ne pas afficher si a l'exterieur de l'ecran
+mise au point att
+
+12 fevrier jluc
+in progress graphique
+
+8 fevrier jluc
+debug:	allocation automatique de la valeur par defaut des variables 
+dans les zones de saisie des formulaires et des boites de dialogues.
+
+29 janv mad
+modifie dans FPRINT pour le bug write dans HP
+
+20 janv mad
+=========Version 4.08 beta mise en distribution=====
+
+
+17/18-janv mad
+modifie dans cache_mad.c pour mettre des parametres de plus de 12 char
+modifie les write dans help et text pour que ca marche sur HP
+modifie la logique de @ pour pouvoir faire @(expression)
+corrige le bug d'affichage dans PH
+fait que le zoom disparait si il faux apres un read
+
+29-dec mad
+modifie la logique dans store_zoom
+mis des showpeak dans show_fit
+changer la syntaxe de LINEFITD => dans fit1d et fit2d .for
+modifie dans pkadjust
+rajoute point_cross, et modifie le bouton 'add peaks' dans le menu peak
+
+27-28 dec mad
+rajoute la commande SETPEAK index F1 (F2 (F3))
+change le prompt de REAL en 2D
+change $PATH en $GIFAPATH
+mis un blanc dans la version 4.08b => 4.08 beta
+  (pour verif de la version dans les macros)
+change le mecanisme du gifapath, pour toujour chercher dans .
+fait que showpeak(s) montre dans tous les ecrans en 2D/3D
+corrige le bug avec phase en 2D en taille != 2*n
+etendu exist() a tableaux (interne et dbm) : exist("a[]")
+
+22 dec mad
+enleve la commande LIST et les formats associes, reecrit en macro.
+
+18 dec jluc
+ajout du mode SGIV5
+
+13 dec mad
+change abs en fabs pour la gestion de absmax dans cache_mad.c
+enleve plein de malloc dans dbtools.c
+corrige l'erreur avec FPRINT sur fichier ferme
+enleve le test de negativite dans getfreq2 (LB)
+
+13 dec jluc
+rajout de l'information d'intensite dans la boite de zoom
+
+12 dec jluc
+rajout de la commande SETPROMPT
+
+8dec mad
+corriger une bogue dans cache_mad.c pour les fichiers 2D,3D tres assymetriques
+
+7 dec mad
+rajoute $PATH $HOME, SETPATH, change dans tools.for
+
+6 dec mad
+rajoute pkname et $PKNAME
+
+21 nov mad
+rajoute les coordonnees Y en 1D dans point_dump
+faute d'orthographe dans le menu peak
+
+20 nov mad
+corrige le bug dans plot2d.for pour les contours-plots
+ecrit la macro pkadjust
+
+15 nov mad
+rajoute la copie de tout les parametres spectraux dans put/get data
+
+9 nov mad
+corrige POINT->PK en 2D (intensite fausse)
+corrige dans PKRESET pour faire l'arithmetique en entier.
+   etait completement bogue en 3D.
+rajoute la command POINT_INPUT { F1 } F2
+
+8 nov mad/terez
+modifier exist() pour marcher sur les tableau dbm. Modifie dans
+ variable.for , dbm.for et dbtools.c
+
+7 nov mad/terez
+corrige un bug avec INTEG pour une table de pic chargee
+ -> dans  mkmask.for et detmsk.for
+
+7 nov jluc
+elimination du code inutile (OLD) 
+
+6 nov jluc
+debug: reaffichage du cadre de zoom dans l'icone du spectre 
+a chaque expose event
+
+3 nov jluc
+adapter le close_widget dans X_main et X_windows a AIX
+
+2 nov 
+=========Version 4.07b mise en distribution=====
+
+1 nov mad
+deplacer update_label_dim en tete de execute et enlever dans cachep.inc
+rajouter un tableau dans hphase.for
+corriger integ1d.for
+
+30 octobre jluc
+ajout de :
+XMgifa*topShadowColor:  medium turquoise 
+XMgifa*bottomShadowColor: dark slate grey
+dans XMgifa. (couleur du relief des boutons de commandes)
+
+28 octobre
+=========Version 4.06b mise en distribution=====
+
+18 octobre jluc
+ajout de "*" dans le filter du file selection box
+
+11 octobre terez
+ajoute un fichier integ1.for, pour l'integration en 1D
+installe l'integration en 1D et 2D (avec signpic et zq)
+
+9 oct mad
+change tous les MODULE en MODULUS
+
+7 oct mad
+corrige un bug de "put plane f3" dans putplane.for
+remis l'ancienne lib3d (voir 31 aout) -> les boutons de check3d sont ok
+corrige qq form et menus
+
+29 sept Terez
+ modifie format 46 dans peakintp.in
+ modifie format 274 et 273 dans linpredp.inc
+
+27 sept jluc
+debug: ajuster le label DIM durant un read
+       catch spectrum possible qu'en 2d
+
+20 sept mad
+modifie un horrible bug (readblock writeblock) dans cache_mad.c
+rajoute un code protection au chargement de startup.g
+rajoute $CONFIG_GRAPH et change startup.g en consequence
+
+9 sept jluc
+debug calcul de PH0 lors d'un PH de premier ordre
+cp /d1bis/people/melanie/gifav4/source/hp_obj/gifa /usr/local/bin/gifa
+
+4 sept mad
+adapte point avec UNIT
+
+4 sept jluc 
+ajout de 2 boutons; refresh et znot dans 3dbox
+
+31 aout mad
+change dans le Makefile d'installation : chmod pour les directories, XMgifa
+bricole dans lib3d et rrrup => sans resultats
+
+30 aout jluc
+cp /d1bis/people/melanie/gifav4/source/hp_obj/gifa /usr/local/bin/gifa
+	sur HP et SGI
+mise en place du menu Choice lancant la commande Dim 1,2,3 (boite de zoom)
+mise du fichier /usr/lib/X11/app-defaults/XMgifa contenant les fonts et couleurs.
+	A prevoir dans le Make install
+
+29 aout jluc
+debug : action du zoom et du scale durant le ph 
+
+28 aout jluc
+ajout des parametres: check3d 0 (fermeture) et check3d 1 (ouverture)
+ajout des parametres: zm 0 (fermeture) et zm 1 (ouverture)
+
+25 aout jluc
+reecriture de la commande check3d en version callback
+
+22 aout jluc
+reecriture de la commande PH en version callback
+
+21 aout jluc
+debug ne crache plus apres un Wrong wind parameters suivit d'un Zoom out
+
+21 aout terez
+bricolage dans le calcul des amibes -> diverses modifs
+creation des sub doslide.for et nbneigh.for
+
+18 aout jluc
+debug : les variables pointx[] et pointy[] recoivent des coordonnees en index
+debug : inversion axe 1 et 2 lors de l'appel de currunit
+les coordonnees restent affiches dans la boite de zoom apres avoir
+relache le bouton de la souris
+
+15 aout mad
+modifie la doc html, melange les commandes et les macros, modifi la page de garde.
+modifie com/do_list_html
+
+13 aout mad
+corrige dans gifshellp.inc, pour les commentaires apres FOR
+
+12 aout mad
+corriger un bug dans getc de 3D - > 2D, la parametres copies etaient faux
+la fenetre 3d s'ouvre toujour en 15x15 maintenant
+cree les commandes mindata et maxdata
+
+11 aout jluc 
+modification du filtre de recherche dans les file selection. Le directory
+par defaut est celui ou on travaille
+debug:fermeture de la fenetre disp3d
+debug: possibilite de zoomer jusqu'au bord de la fenetre disp2d ou cdisp2d
+
+10 aout mad
+fait les menus 3D
+rajoute proj3d
+
+9 aout mad
+corrige plot3d qui etait assez bogue, ainsi que un petit point dans zoom
+dans getdim, prompt si dim > f12 (3)
+f1-f3 dans check3d etait a l'envers
+initialisation de axis2d et axis1d
+petite correction dans X_zoom, pour nD mode
+
+7 aout mad
+rajoute les commandes POINT_(push, pop, clear), et fait les modifs
+ necesaires dans X_interface.for
+change qq messages F1, F2, F3 (un peu partout (*p.inc + execute))
+corrige un bug avec la syntaxe %% (recemment introduit)
+mis des "see also" dans les macros
+apsl : automatic phase correction
+
+10 juillet Terez
+1) detmsk.for:
+ecriture d'un algo de determination des amibes
+syntaxe de la commande integ2 factor slope 
+threshold radius
+radius: rayon maximum sur lequel est calculee chaque amibe
+ne marche qu'en 2D, la variable zq n'est pas active.
+2) ajout d'une commande MODIF_AMOEBA pour aller
+modifier les amibes directement a la main
+
+29 juin Terez
+mskintg.for:
+1) correction d'un bug 
+         peak2d(i,3) = peak2d(zz,3)-(signpic*peak2d(zz,6)*shift)
+remplace par   
+         peak2d(i,3) = peak2d(i,3)-(signpic*peak2d(i,6)*shift)
+2) Quand le volume trouve est egal a zero, on met l'erreur a -1000,
+pour eviter de diviser par zero.
+3) ait ajoute un message Warning quand NOISE est nul 
+4) masktab(taille1*taille2) est devenu masktab(taille2,taille1)
+calcintg.for:
+1) ait ajoute un message Warning quand NOISE est nul 
+2) Quand le volume trouve est egal a zero, on met l'erreur a -1000,
+pour eviter de diviser par zero.
+
+28 juin mad
+enlever oldmonopoint, multipoint point zm-old
+fait ppp et pt comme macro
+modifier dans ph2dr et ph2dc (j'aurais pu le faire plus tot)
+
+28 juin jluc
+debug: on ne peut maintenant zoomer que dans la fenetre correspondante
+a la dimemsion courante.
+
+27 juin jluc
+reecriture de la commande Freeze
+
+19 juin mad
+correction dans execute.for pour enlever nlick ds ROW COL VERT
+rajoute la verif de itype dans adddata
+
+15 juin mad
+corrige un bug de plottexts plotline showline showtext en zoom en 1d
+SHOWC en 1d en mode full
+
+13-14 juin mad
+corrige max0 pour SHOW LINEFIT en 2D
+corige JMULT
+rajoute en test de ^C dans levenberg
+corrige un bug sur les sorties de tableau dans plot2dj
+rajoute shift dans super1d et super2d
+
+11 juin terez
+creation des commandes integ2 et mskinteg2 en 2D.
+revient a reorganiser les commandes integ et mskintg:
+le but est de remplacer mskintg et integ par 
+mskintg2 et integ2.
+correction d'un bug dans le calcul de l'erreur: les
+erreurs pours des pics negatifs etaient negatives
+correction de l'interface pour mskintg2: on ne lui
+passe plus de parametres.
+
+10 juin mad
+rajoute qq protection size>sizemax si on utilise work1d :
+    PH, SHOWFIT, BCORR 2
+macro calib reecrite
+modif dans le makefile pour pouvoir cacher la licence.
+
+8 juin mad
+corrige le message d'erreur dans LINEFIT et fait un nouveau message "too many peaks"
+agrandit la taille des buffers de travail
+
+6 juin mad
+corrige dans easy2d_doit l'erreur "unknown function"
+
+1 juin jluc
+debug : zoom out et shift marchent apres avoir modifie
+les parametres de zoom avec la commande non graphique ZOOM.
+
+29 mai mad
+correction dans plot2dj - mais il reste des bugs.
+un bug avec gtparambase dans READ 
+rajoute la memoire du zoom dans le menu display, et refait tout le menu
+corrige dan ux2cache
+
+22 mai mad
+ecris showc, super1d super2d
+rajoute $CCOLOR
+misajour de absmax dans cache_mad.c
+micro bugs ds plot2d
+tests dans show amoeba
+modif dans big/norm/small pour accelerer la compile
+commande unref
+rajoute trailingzero dans plotaxis
+
+7 mai mad
+fit2d MARCHE ! : LINEFIT; LINEFITD; SHOW LINEFIT; GET LINEFIT; show_fit
+nouvelle facon de rentrer les coordonnees (getcoord)
+lhare(1D,2D,3D) et meilleure gestion d'erreur
+clear dans plot2d, permet la superposition
+change les msg d'erreur pour itype (un peu plus clairs)
+corrige checkdim dans 'REVERSE'
+rajoute clear dans controlgull
+enlever un refresh dans dim
+
+23 avril mad
+corrige une enorme bogue dans MULTDATA en 2D
+corrige une bogue potentiel dans allocate et findvar dans variable.for
+rajoute REVERSE en 2D et 3D
+
+10 avril Mon Apr 10 18:16:02 METDST 1995  Terez
+ecriture de commandes INTEG2 et MSKINTEG2 modifiees
+ont la meme syntaxe que les anciennes commandes,
+mais ne marchent qu'en 2D.
+ajout d'une 6eme dimension au tableau de pics 2D peak2d,
+contenant l'error sur les ampltudes calculees par PARIS
+
+========== version 4.03b ======
+17-mars jluc
+debug les sous menus se ferment quant on ferme le menu titre.
+debug du cadrage dans le zoom out.
+
+16-mars mad
+corrige TM quand itype = 1
+
+15-mars mad
+change le format dans readval() pour (4.5e12+1)
+rajoute un code d'erreur dans plopen()
+modifie le GUI de sortie
+rajoute un code de sortie pour SUN
+
+Wed Mar 15 10:19:07 MET 1995 Terez
+corrige bus error dans SOMREC. Il y avait une
+variable error dans subroutine intrec et pas dans call intrec.
+definition d'un message d'error avec l'etiquette 169
+
+13-mars mad
+corrige message incoherents (simu par exemple), rajoute tout ce qui est "cleanable"
+
+13-mars jluc
+debug : affichage de la partie reele seulement lors du shift en 1d avec itype = 1
+
+========== version 4.02b (binaire seulement) ======
+13-mars jluc
+debug colormap hpux 9.05/carte HCRX8Z 715-80  irix 5.2 (indy)
+
+10-mars mad
+corriger ph2dc ph2dr pour travailler sur fichier
+rem_h2o sort proprement sur erreur
+enlever le message de collision
+corrige une erreur de taille pour bcorr 3 (sizemax au lieu de smxmax) !
+
+8-mars mad
+modifie un peu easy2d
+     -1st point correction parametrable, -troncature bien geree,
+     -Load macro marche
+
+7-mars mad
+corrige getexp
+	ai decouvert avec horreur que rcp -r marche differement entre sgi et HP
+
+5-mars mad
+correction de SIN dans le manuel commands
+
+3-mars 1995 mad
+rajoute un close(15) pour le help des macros
+rajoute itype dans macro/dataset
+change valeur par defaut dans COLOR
+enleve le fgcolor(white) dans plot2d.for
+change la syntaxe de newfilec FREQ est maintenant a la fin.
+getnmr marche sur SGI
+correction dans proc2d qui marche maintenant.
+newfilec marche (itype en 2D)
+
+3-mars-1995 terez
+meilleur suivi des erreurs dans DBM
+corrige nextlm() avec ' ' et vairable vide, avec dbm
+
+2-mars 1995 mad
+corrige GRID dans le manuel.
+enleve big dans disp?
+modifie message (mise a zero de imsg)
+
+Wed Feb 22 17:24:26 MET 1995  Terez
+Bug DBM corrige ; le test tourne maintenant sur SGI
+correction dans dbm.for, dans la subroutine dbmnext.
+les flags end et error etaient mal testes
+end: correspond a la fin du fichier
+error: correspond a une errreur de malloc
+
+=====version 401b====== le 16 fev 1995 (mis a jour)===
+20 fev 1995 mad
+rajoute le bouton pour la licence
+
+15 fev 95 mad
+fini ux2cach avec le cache_mad
+changer GO en MAXENT et CONT en MAXENTCONT
+
+13 fev 95 Terez
+modif dans pkproj.for et pksym.for. On travaille maintenant avec les coord des
+pics et les tolerances en Hertz. 
+Rque: il faudrait etoffer le help de PKSYM et PKPROJ avec des warnings.
+
+13 fev 95 mad
+modif : NEWFILEC realise le join maintenant, il ne faut pas le suivre disjoin
+	MODIFYHEADER => GETHEADER, PUTHEADER
+	fini la macro de test cache.
+debug : rajoute c_comp_update dans cache_mad
+	changer la logique d'acces au fichier CF_mode et CB_mode
+	le cache marche !!!
+
+11 fev 95 mad
+debug : dans levenberg.for inverse #include et save resoud la bogue sur SGI(!)
+	dans cache_mad, alloc de MAXDATA pour les 3D.
+	.............. et cachep.inc modifier les mode write
+		en read_write (pour putc)
+	dans plot2d, cdisp ne crashe plus sur une taille de 1.
+
+7 fev 95 jluc
+debug:
+	kill gifa a partir du close des widgets commandes sur IBM X11R5
+	mise en place de la montre sur tout les widgets mappes.
+	possibilite d'imposer la valeur par defaut des variables.
+6 fev 95 jluc 
+debug:
+        shift et zoom out actif si on affiche une autre fenetre
+        les frames ne sont plus entoures sur SGI
+
+====version 4.09a -- 6 fev 1995
+6 fev 95 mad
+mis le nouveau cache pour tout le monde (plein de modifs partout)
+rajoute pour itype dans WRITEC
+le cancel pour exit marche
+chsize avec taille impair et itype.ne.0 donne un msg d'erreur
+call ch_flushall() en sortant
+documente le cache dans cache_mad.c
+fait la copie a anne-gael
+NEWFILEC propose dim = $dim par defaut
+
+30 janv 95 jluc
+modif des formbox; debug arrangement widget et ajout du scrollbar 
+pour les gros formulaires
+
+27 janv 95 mad
+rajoute le mecanisme de licence
+	(dans gifabcom.inc gifa.for variable.for, execute.for, get_licence.c)
+
+19 janv 95 mad
+modifie un peu HELP (interface graphique avec $_)
+debogue USWA
+
+Wed Jan 18 19:21:55 MET 1995 Terez
+debugge commande SIMUN 1D, 2D, 3D, unit = hz,ppm ou index
+ecrit nouvelle commande ADDNOISE qui ajoute du bruit sur des
+donnes
+macro de test de ADDSIMU ecrite: testsimu et mise
+dans TESTLIST.t
+
+16 janv 95 mad
+rajoute la correction de 1er point (easy2d, apodisation)
+mit des petits dialog par ci - par la (quit, cd,)
+enleve void free dans X_windows.h
+rajoute la sortie (exit(0)) dans les formulaires
+Protocols.h est dans Xm au lieu de X11 sur SUN (?)
+
+14 janv 95 mad
+rajoute les commandes GAUSS_CPX (a faire dans manuel) MULTDATA et INVF (faits)
+modifie SWA et USWA pour marcher en 2D
+
+13 janv 95 mad
+modifie RT->PK pour mettre le type des pics a Lorentzian
+modifie un peu dans le menu Peak/Pkclear
+maintenant cdisp2d ouvre toujour une fenetre de 15x15
+enleve la commande BIG
+
+Tue Jan 10 12:25:59 MET 1995 Terez
+modifie le fichier addsimu1d.for pour corriger
+bug des largeurs de raies.ajoute z = t2l/4000
+
+Mon Jan  9 17:54:11 MET 1995 Terez
+modifie le fichier linpredp.inc pour corriger un
+petit bug dans RTSELECT. On ne pouvait pas selectionner
+des indices de racines dans le desordre
+ecrit les routines de test de la prediction lineaire 
+(linpred dans test)
+ 
+====version 4.08a -- 10 janv 1995
+
+9 janv 95 mad
+le menu Linear Prediction  est fonctionnel
+
+Fri Jan  6 17:13:33 MET 1995 Terez
+modifies les commentaires dans dbtools.c de facon a ce
+qu'ils apparaissent dans la doc programmeur.
+
+5 janv 95 mad
+petit nettoyage dans unix_lib.for (portage AIX)
+
+23 dec 94 mad
+rajoute les macro burg2d burg3d, et mis dans le menu proc2d
+rajoute la syntaxe $_ dans le context 20 => peut servir dans les buttonbox
+rajoute la doc automatique programmeur
+
+23 dec 94  jluc
+debug du floting point exception... lorsque l'on zoomait trop
+debug de la variable non initialisee dans le champ file des dialogbox (si
+variable non changee )
+prise en considerartion des itype (complexe) dans le zoom out et les shift
+
+21 dec 94 - mad
+corrige un bug avec if..then  for..  while.. et les tabulations
+cree les macros easy2d et easy2d_doit
+
+20 dec 94 - jluc
+modif du look de la boite de zoom pour l'adaptee au XManager SGI
+debug : pour dialogbox, recherche de la valeur par defaut de la 
+variable dans le contexte courant.
+debug du popup des buttonbox de commande sur SGI 
+ajout d'1 bouton reset dans la boite a zoom : zoom 0
+l'ancien bouton Zoom OUT permet maintenant un retour en arriere 
+dans le zoom (hp et sgi)
+
+19 dec 94 - jluc
+branchement des fleches (shift) de la boite a zoom (hp et sgi)
+
+16 dec 1994 - mad
+rajouter un bouton rzoom
+
+16 dec 1994 - jluc
+debug XmCreateFileSelectionBox sur SGI 
+
+14 dec 1994 - mad
+(portage SPEC1) rajoute quelque #ifdef SPEC1
+cpp de SPEC1 n'accepte pas #elif -> change en #else
+
+13 dec 1994 - jluc
+ modif dans X_formulaire.c :
+    remplacement des XtMalloc par des strcpy directement dans la struct
+    pour debugger sur silicon. 
+
+12 dec 1994 - mad
+modifie README a propos de crypt qui manque sur les IBM.
+rajoute make build et modifie make install dans Makefile
+
+8 dec 1994 - mad
+fait chmod o+r dans macro/* com/* et help/*
+(portage SUN) changer dans block data de variable.for
+
+6 dec 1994 - Terez
+mis les largeurs de raies en Hz dans SIMUN 1D, 2D, 3D
+utilise getfreq2
+
+7 dec 1994 - mad
+corrige CLOSEBOX en CLOSEBUTTON dans buttonp.inc
+
+6 dec 1994 - mad
+adapte les macro read write gm/readf gm/writef dispcont a la nouvelle
+syntaxe des dialog
+  => enlever les unset, enleve les dump (!)
+     corriger algo par loga dans dispcont
+dans READM et WRITEM il manquait #aix pour l'erreur
+   => les commandes ne marchaient plus
+remis matlab.inc dans inoutp.inc
+
+6 dec 1994 - jluc
+modif dans execute.for,formulaire.inc,X_formulaire.c:
+		ajout de la saisie de la valeur par defaut de la valeur
+====version 4.07a -- 1 dec 1994
+
+====version 4.06a -- 27 nov 1994
+
+

@@ -1,0 +1,6 @@
+;as in unix
+;
+; see also : ls pwd more rm vim vip SH CD
+
+message ' Which file ?'
+set vi_l = $_  sh ("vi "//$vi_l) 

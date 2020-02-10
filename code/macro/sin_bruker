@@ -1,0 +1,15 @@
+; sin_bruker SSB
+; 
+; realizes the exact counter part of the SIN Bruker command.
+; see also: SIN gm_bruker
+
+message 'Enter SSB :'
+set i = $_
+if ($i == 0 | $i == 1) then
+	set x = 0.5
+elsif ($i > 1) then
+	set x = (1 -0.5*($i/($i-1)))
+else
+	error 'Wrong Parameter'
+endif
+sin $x

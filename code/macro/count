@@ -1,0 +1,45 @@
+; count value
+;
+; Count the data_point which have an intensity above the value.
+; The results are stored in the returned variable.
+;
+; see also : count_3d_dosy 
+
+message "Enter the limit value"
+set value = $_
+
+put data
+set noise2 = $noise
+set shift2 = $shift
+
+; do the processing
+
+; set to zero the data-point which are negative or below the value
+plus		
+ZEROING $value
+
+; Remove 1 to the data  and set to zero the data-point which are positive
+;	data-point which are negative or below the value -> -1
+; 	data-point which are above value -> 0
+ADDBASE 1
+MINUS
+
+; Add 1 to the data
+;       data-point which are negative or below the value -> 0
+;       data-point which are above value -> 1
+ADDBASE -1
+
+; Count the number of ones (data-point which are above value)
+if ($dim == 1) then
+   evaln 1 $si1_1d
+   set returned := (round($si1_1d*$shift))
+elsif ($dim == 2) then
+   evaln 1 1 $si1_2d $si2_2d
+   set returned := (round($si1_2d*$si2_2d*$shift))
+elsif ($dim == 3) then
+   evaln 1 1 1 $si1_3d $si2_3d $si3_3d
+   set returned := (round($si1_3d*$si2_3d*$si3_3d*$shift))
+endif
+get data
+noise $noise2
+shift $shift2

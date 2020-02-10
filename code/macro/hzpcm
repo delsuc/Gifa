@@ -1,0 +1,31 @@
+; hzpcm { hz_per_cm_in F1 } hz_per_cm_in F2
+; determines CX an CY to give the correct Hz per cm
+; depending on the current zoom window
+;
+if ($dim == 1) goto F2
+ message 'Enter Hz per cm in dim 1 :'
+ set hzpcm1 := $_
+ if ($zoom == 1) \
+   cy ((($zoom_2d[3]-$zoom_2d[1])*$specw_1_2d)/(($si1_2d-1)*$hzpcm1)) \
+ goto F2    ; else
+   cy ($specw_1_2d/$hzpcm1)
+;
+=F2
+message  'Enter Hz per cm in dim 2 :'
+set hzpcm2 := $_
+if ($dim != 1) goto dim2
+  if ($zoom == 1) \
+    cx ((($zoom_1d[2]-$zoom_1d[1])*$specw_1d)/(($si1_1d-1)*$hzpcm2)) \
+  goto fin   ; else
+    cx ($specw_1d / $hzpcm2)
+goto fin  ; else
+;
+=dim2
+  if ($zoom == 1) \
+    cx ((($zoom_2d[4]-$zoom_2d[2])*$specw_2_2d)/(($si2_2d-1)*$hzpcm2)) \
+  goto fin   ; else
+    cx ($specw_2_2d / $hzpcm2)
+;
+=fin
+print ('CX = ' // $cx // ' CY = ' // $cy)
+exit

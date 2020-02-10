@@ -1,0 +1,48 @@
+; testing PKSYM in 2D, unit Hertz and PPM (using SIMUN)
+dim 2 specw 5283.0 4230. freq 600.13 600.13 600. offset 500. 500.
+chsize 512 1k zero unit h
+simun 1 1.0 3461 999 2.1 1.5 0. 0. 
+simun 1 1.0 5000 601 2.1 1.5 0. 0. 
+sin 0. f12 ft f12 max
+minimax 5000 ($max[1]*2)
+real f12 peak 0
+set a = (abs($pk2d_f1f[1] - 114)<0.01)
+set b = (abs($pk2d_f1f[2] - 39)<0.01)
+set c = (abs($pk2d_f2f[1] - 453)<0.01)
+set d = (abs($pk2d_f2f[2] - 501)<0.01)
+set e = (abs($pk2d_a[1] - 9228.83)<1.0)
+report ($a & $b & $c & $d & $e) "PEAK in 2D"
+pksym 1 1.0
+set a = (abs($pk2d_f1f[3] - 232.98 )<0.01)
+set b = (abs($pk2d_f2f[3] - 155.804)<0.01)
+set c = (abs($pk2d_f1f[4] - 252.196)<0.01)
+set d = (abs($pk2d_f2f[4] + 31.536 )<0.01)
+report ($a & $b & $c & $d) "PKSYM 2D with option add"
+pkselect 1 2 3 0
+pksym 0 1.0
+set a = ($npk2d == 2)
+set b = (abs($pk2d_f1f[1] - 114)<0.01)
+set c = (abs($pk2d_f1f[2] - 232.980)<0.01)
+report ($a & $b & $c) "PKSYM 2D with option remove"
+
+; testing PKPROJ in 2D, unit Hertz (using SIMUN)
+
+dim 2 specw 5283.0 4230. freq 600.13 600.13 600. offset 500. 500.
+chsize 512 1k zero unit h
+simun 1 1.0 3461 999 2.1 1.5 0. 0. 
+simun 1 1.0 5000 601 2.1 1.5 0. 0. 
+sin 0. f12 ft f12 max
+minimax 5000 ($max[1]*2)
+real f12 peak 0
+dim 1 specw 5283.0 freq 600.13 600. offset 500. chsize 256 dim 2
+pkproj f2 s 1.0
+set c = (abs($pk1d_f[1] - 114)<0.01)
+set d = (abs($pk1d_f[2] - 39)<0.01)
+report ($c & $d) "PKPROJ 2D along F2"
+dim 1 specw 4230.0 freq 600.13 600. offset 500. chsize 512 dim 2
+pkproj f1 s 1.0
+set a = (abs($pk1d_f[1] - 453)<0.01)
+set b = (abs($pk1d_f[2] - 501)<0.01)
+report ($a & $b) "PKPROJ 2D along F1"
+
+quit

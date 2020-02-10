@@ -1,0 +1,41 @@
+; fprintf file format_string arg1 arg2 ... *
+;
+; realises the equivalent of a C  `fprintf'
+; all the remaining of the line  up to the star is taken as arguments
+; and output the result to "file" (which should have been OPENed before)
+;
+; (known bug : a \n is inserted at the end of the format)
+;
+; see also : printf sprintf FPRINT PRINT OPEN
+
+; (the trick is to use awk !)
+
+if (!$arg) error "A file name is needed"
+set file = $_
+
+if (!$arg) error "A format is needed"
+set format = $_
+set cmd = ('{ printf "' // $format // '\n"')	; the \n is due to a bug in <from_file
+
+if (!$arg) error "An argument list is needed"
+set argi = $_
+while ($argi s! "*")
+	set cmd = ($cmd // ', "' // $argi // '"')
+	if (!$arg) error "List must be ended with a *"
+	set argi = $_
+endwhile
+set cmd = ($cmd // '}')
+
+set ff = ("gifatemp" // int(10000*$random))
+sh ("echo | awk '" ; $cmd; "' >"; $ff) 
+; has to go to another file !
+open $ff
+set ll = <$ff
+while (!eof($ff))
+	fprint $file $ll
+	set ll = <$ff
+endwhile
+close $ff
+
+sh ("/bin/rm" ; $ff)
+

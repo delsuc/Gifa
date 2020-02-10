@@ -1,0 +1,13 @@
+; create a form to acces interactively planes from a joined 3D
+
+formbox "get 1D" \
+  "dataset" \
+  "Select the row/col you want to acces :" message \
+  "Get col (F1)" action "dim 1 getc f1 $inf1 % % zoom 0 absmax $c_absmax" \
+  noreturn \
+  ' ' cursor 1 $c_sizef2 0 inf1 1 \
+  "Get row (F2)" action "dim 1 getc f2 $inf2 % % zoom 0 absmax $c_absmax" \
+  noreturn \
+  ' ' cursor 1 $c_sizef1 0 inf2 1 \
+  *
+

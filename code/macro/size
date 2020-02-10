@@ -1,0 +1,46 @@
+; list the size parameters of the current data-set
+;
+; see also : CHSIZE LIST
+
+if ($dim == 1) then
+  if ($itype_1d == 1) then
+      set i = ("(Complex)";$si1_1d/2)
+  else
+      set i = ("(Real)";$si1_1d)
+  endif
+  print ("Size of data";$i)
+  set tt = $si1_1d
+elsif ($dim == 2) then
+  if ($itype_2d > 1) then
+      set i = ("(Complex)";$si1_2d/2)
+  else
+      set i = ("(Real)"; $si1_2d)
+  endif
+  if ($itype_2d == 1 | $itype_2d == 3) then
+      set i = ($i;"x (Complex)";$si2_2d/2)
+  else
+      set i = ($i;"x (Real)"; $si2_2d)
+  endif
+  print ("Size of data";$i)
+  set tt = ($si1_2d*$si2_2d)
+elsif ($dim == 3) then
+  if ($itype_3d > 3) then
+      set i = ("(Complex)";$si1_3d/2)
+  else
+      set i = ("(Real)";$si1_3d)
+  endif
+  if ($itype_3d == 2 | $itype_3d == 3 | $itype_3d == 6 | $itype_3d == 7 ) then
+      set i = ($i;"x (Complex)";$si2_3d/2)
+  else
+      set i = ($i;"x (Real)";$si2_3d)
+  endif
+  if ($itype_3d == 1 | $itype_3d == 3 | $itype_3d == 5 | $itype_3d == 7 ) then
+      set i = ($i;"x (Complex)";$si3_3d/2)
+  else
+      set i = ($i;"x (Real)";$si3_3d)
+  endif
+  print ("Size of data";$i)
+  set tt = ($si1_3d*$si2_3d*$si3_3d)
+endif
+print ("Total Size :"; $tt; " : "; int($tt/1024); "k")
+

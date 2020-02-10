@@ -1,0 +1,40 @@
+; This macro outputs all the important parameters
+;
+; Replaces the built-in command list.
+;
+; see also : param listd dataset size
+
+print '--Dataset--'
+print   ('Last accessed data file:         ';$name)
+size
+if ($dim == 1) then
+  print ('Filename:         '; $name_1d)
+  print ('Spectral width:   ';$specw_1d)
+  print ('Spectral offset:  ';$offset_1d)
+elsif ($dim == 2) then
+  print ('Filename:         '; $name_2d)
+  print ('Spectral widths:  ';$specw_1_2d;$specw_2_2d)
+  print ('Spectral offsets: ';$offset_1_2d;$offset_2_2d)
+elsif ($dim == 3) then
+  print ('Filename:         '; $name_3d)
+  print ('Spectral widths:  ';$specw_1_3d;$specw_2_3d;$specw_3_3d)
+  print ('Spectral offsets: ';$offset_1_3d;$offset_2_3d;$offset_3_3d)
+endif
+print "--Display--"
+if ($disp1d == 0 & $disp2d == 0 & $cdisp2d == 0) then
+   print "OFF !"
+else
+   print ('Scale for display: ';$scale)
+   print ('Number of levels:  ';$level)
+   print ('Loga for contours: ';$loga)
+   if ($zoom == 0) then
+       print ("Zoom Off")
+   else
+; ( the +0 trick is to force a nicer output format)
+       print ('Zoom in 1D:'; $zoom_1d[1]+0; "-"; $zoom_1d[2]+0)
+       print ('Zoom in 2D:'; $zoom_2d[1]+0; $zoom_2d[2]+0; "-"; $zoom_2d[3]+0; $zoom_2d[4]+0)
+       print ('Zoom in 3D:'; $zoom_3d[1]+0; $zoom_3d[3]+0; $zoom_3d[5]+0; "-"; $zoom_3d[2]+0; $zoom_3d[4]+0; $zoom_3d[6]+0)
+   endif
+endif
+exit
+

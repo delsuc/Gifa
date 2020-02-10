@@ -1,0 +1,27 @@
+; interactive
+; to setup a zoom window in 3D
+;
+; see also : ZOOM disp3d_form upzoom disp3d?
+
+formbox 'Zoom 3D' \
+   DO_NOTHING \
+   'Select planes or projection from 3D' message \
+   'Choose a zoom window in the 2D display' message \
+   'and propagate back the window to 3D' message \
+   separator \
+   'F1' int f1p 1 noreturn \
+   'Select plane' action 'dim 3 plane f1 $f1p dim 2' noreturn \
+   'Projection' action 'dim 3 proj f1 s dim 2' \
+   separator \
+   'F2' int f2p 1 noreturn \
+   'Select plane' action 'dim 3 plane f2 $f1p dim 2' noreturn \
+   'Projection' action 'dim 3 proj f2 s dim 2' \
+   separator \
+   'F3' int f1p 1 noreturn \
+   'Select plane' action 'dim 3 plane f3 $f1p dim 2' noreturn \
+   'Projection' action 'dim 3 proj f3 s dim 2' \
+   separator \
+   'Propagate Zoom window to 3D' action upzoom \
+   *
+
+exit

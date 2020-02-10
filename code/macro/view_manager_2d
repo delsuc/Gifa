@@ -1,0 +1,87 @@
+;2D view manager
+;
+;permits to set up the views for 2D analysis
+
+if (!$arg) then
+formbox '2D View Manager' \
+  'view_manager_2d $f1axis $f2axis $szx $szy' \
+  'F1 axis' enum 'none,Proj M,Proj S,file' f1axis % noreturn \
+  'F2 axis' enum 'none,Proj M,Proj S,file' f2axis %  \
+  'size in X (cm)' real szx $cx noreturn \
+  'size in Y (cm)' real szy $cy \
+  separator \
+  'Close all view' action 'close_all_view' \
+  *
+
+else
+   dim 2
+   if ($zoom == 0) zoom 1 1 1 $si1_2d $si2_2d  ; set up zoom
+   set f1axis = $_
+   set f2axis = $_
+   set szx = $_
+   set szy = $_
+
+   disp1d 0 disp2d 0 cdisp2d 0   ; closes every thing
+   set i = (int(100000*$random))
+   set file1 = ('gifa1d' // $i)
+   set file2 = ('gifa1d' // $i+1)
+   if ($f1axis s= 'Proj M') then
+     dim 2 proj f2 M
+     dim 1 max absmax $max[1]
+     write $file1
+   elsif ($f1axis s= 'Proj S') then
+     dim 2 proj f2 S
+     dim 1 max absmax $max[1]
+     write $file1
+   elsif ($f1axis s= 'file') then
+     if (!exist('f1file')) set f1file := 'F1_file'
+     dialogbox 'Enter F1 file name' 'filename' file f1file % *
+     set file1 = $f1file
+   endif  
+
+   if ($f2axis s= 'Proj M') then
+     dim 2 proj f1 M
+     dim 1 max absmax $max[1]
+     write $file2
+   elsif ($f2axis s= 'Proj S') then
+     dim 2 proj f1 S
+     dim 1 max absmax $max[1]
+     write $file2
+   elsif ($f2axis s= 'file') then
+     if (!exist('f2file')) set f2file := 'F2_file'
+     dialogbox 'Enter F2 file name' 'filename' file f2file % *
+     set file2 = $f2file
+   endif
+
+; now, do display set-up
+   close_all_view
+   set ofy = 2
+   if ($f1axis s! 'none' & $f2axis s! 'none') then
+	set szy1v = ($szx/3)			; will be used for 1D window heights
+	set szy1d = (2*$szx/3+1)
+   else
+	set szy1v = ($szx/2)
+        set szy1d = ($szx/2)
+   endif
+   if ($f1axis s! 'none') then
+	open_view 'F1 axis' $szx $szy1v 0 $ofy
+	join $file1
+	disp_view 'F1 axis' 1D (itop($zoom_2d[1],2,1)) (itop($zoom_2d[3],2,1))
+	disjoin
+	if ($f1axis s! 'file') sh ('/bin/rm';$file1)
+	set ofy = (% + $szy1v + 0.5)
+   endif
+   if ($f2axis s! 'none') then
+	open_view 'F2 axis' $szx $szy1v 0 $ofy
+	join $file2
+	disp_view 'F2 axis' 1D (itop($zoom_2d[2],2,2)) (itop($zoom_2d[4],2,2))
+	disjoin
+	if ($f2axis s! 'file') sh ('/bin/rm';$file2)
+	set ofy = (% + $szy1v + 0.5)
+   endif
+
+   cdisp2dsz 1 $szx $szy 0 $ofy
+   disp1dsz 1 $szx $szy1d ($szx+0.5) 2
+   dim 2
+   zm 1
+endif

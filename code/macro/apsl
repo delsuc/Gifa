@@ -1,0 +1,108 @@
+; automatic 1D phase correction
+; APSL method
+;    A.Heuer J.Magn.Reson. 91 p241 (1991)
+;
+; uses the data buffer
+;
+; you may want to adapt :
+;   s_wdth : ration of line width to spectral width used for computing phases
+;   p_wdth : ration of line width to spectral width used for broadening for peak picking
+;   npk :  minimum number of peaks needed for phasing
+;   nfrst : the number of peaks used for first approx
+;
+; see also : PH PHASE apsl_cp
+
+set s_wdth = 400
+set p_wdth = 400
+set npk = 10
+set nfrst = 2
+
+; check errors
+if ($dim != 1) error "On 1D only"
+if ($itype_1d != 1) error "On complex data only"
+if ($si1_1d < 500) error "size too small for operation"
+
+; find at least $npk peaks on a smoothed version of the spectrum
+put data ift em ($specw_1d/$p_wdth) ft modulus
+; zoom 1 ($si1_1d/20) (19*$si1_1d/20)
+max
+set sc = 1
+=loop_sc
+	minimax ($max[1]* $sc) ($max[1]+1)
+	peak
+	if ($npk1D<$npk)  set sc = ($sc/1.5) goto loop_sc
+;	if ($npk1D>4*$npk)  set sc = ($sc*1.1) goto loop_sc
+
+;reset peak coord :
+set off = 0
+for i = 1 to $npk1D
+    if (abs($pk1d_f[$i] - $si1_1d/2) < 10) then       ; remove central peaks
+        set off = (%+1)                               ; (could be water)
+    else
+       set pk[$i-$off] = (2*$pk1d_f[$i]-1 )
+    endif
+endfor
+; actuates peaks
+set npeaks = ($npk1D-$off)
+if ($npeaks < $npk) set sc = ($sc/1.5) goto loop_sc
+
+get data  ; zoom 0
+set pk[0] = 1   set pk[$npeaks+1] = $si1_1D    ; will be used latter on
+
+; compute phase for first peaks
+for i = 1 to $nfrst
+	@apsl_cp $pk[$i] ($si1_1d/$s_wdth)
+	set phi[$i] = $returned
+endfor
+
+; recompute phase correction
+set ph0 = 0
+for  i = 1 to $nfrst
+  set ph0 = ($ph0 + $phi[$i])
+endfor
+set ph0 = ($ph0/$nfrst)
+set slope = 0.0
+phase $ph0 $slope
+
+for  i = 1 to $nfrst
+  set phi[$i] = ($phi[$i]-$ph0)
+endfor
+
+; then redo for all the others
+for i = ($nfrst+1) to $npeaks
+	@apsl_cp $pk[$i] ($si1_1d/$s_wdth)
+	set phi[$i] = $returned
+endfor
+
+; correct on all points
+; by making a weighted linear fit
+;
+; f = sum( wi*(axi+b-yi)^2)
+; wi are = sqrt((modulus of the summit points)*(distance to neighbors))
+;
+;df/db = bW + aX - Y = 0	W=sum(wi) X=sum(xi wi) Y=sum(yi wi)
+;df/da = bX + aQ - Z = 0	Q=sum(xi^2 wi) Z=sum(xi yi wi)
+;
+; a = (YX-ZW)/(X^2-QW)   b = (Y-aX)/W = (Z-aQ)/X
+
+set X = 0  set Y = 0  set Z = 0  set Q = 0  set W = 0
+for i = 1 to $npeaks
+        set wi = (val1d(2*$pk1d_f[$i]-1)^2 + val1d(2*$pk1d_f[$i])^2)
+	set wi = (sqrt($wi * ($pk[$i]-$pk[$i-1]) * ($pk[$i+1]-$pk[$i])))
+ print ($i;($wi/($max[1]*$si1_1d));$pk[$i];$phi[$i])
+        set W = ($W + $wi)
+	set X = ($X + $wi*($pk[$i]-$si1_1d/2))
+	set Y = ($Y + $wi*$phi[$i])
+	set Q = ($Q + $wi*($pk[$i]-$si1_1d/2)^2 )
+	set Z = ($Z + $wi*$phi[$i]*($pk[$i]-$si1_1d/2))
+endfor
+set slope2 = (($Y*$X-$Z*$W)/($X*$X-$Q*$W))
+set ph02 = (($Y-$slope2*$X)/$W)
+
+set slope2 = ($slope2 * $si1_1d)
+
+get data
+print ('0th :';($ph0 + $ph02);'  1st :';($slope + $slope2))
+zoom 0
+phase ($ph0 + $ph02) ($slope + $slope2)
+unset returned

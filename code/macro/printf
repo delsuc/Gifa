@@ -1,0 +1,26 @@
+; printf format_string arg1 arg2 ... *
+;
+; realises the equivalent of a C  `printf'
+; all the remaining of the line  up to the star is taken as arguments 
+;
+; see also : fprintf sprintf FPRINT PRINT
+
+; (the trick is to use awk !)
+
+if (!$arg) error "A format is needed"
+set format = $_
+; print $format
+set cmd = ('{printf "' // $format // '"')
+
+if (!$arg) error "An argument list is needed"
+set argi = $_
+while ($argi s! "*")
+	set cmd = ($cmd // ',"' // $argi // '"')
+        if (!$arg) error "List must be ended with a *"
+	set argi = $_
+endwhile
+set cmd = ($cmd // '}')
+
+;print $cmd
+sh ("echo|awk '" // $cmd // "'") 
+

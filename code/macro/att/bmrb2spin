@@ -1,0 +1,173 @@
+; bmrb2spin
+;
+; This macro extract the chemical shifts of spins 
+; from a BRMN assignment file
+; one line per spin
+;
+ ; therese Malliavin sept 98 - Adapted by MAD oct 98
+
+dialogbox "Import from BMRB" \
+  "Name of BRMB assignment file" file brmbfil 'bmrxxx.str' \
+  "Action to take" enum "append to current spin db,erase current spin db" act % \
+  "Spin to consider" enum "all spins,both H and N,H only" cons % \
+  noreturn " " enum "all spins,valid spins only" valid % \
+  *
+
+
+if (head($act) s= 'erase') \
+  gm/al_yesno "Warning, this action will erase your current spin data-base, do you wish to continue?"
+
+if ($returned s! 'yes') error "Aborted by user"
+
+;check existence of file
+open $brmbfil
+close $brmbfil
+
+print ("Scanning"; $brmbfil; "file for"; $cons; "and"; $act; "keeping"; $valid // '.')
+
+;scan primary sequence
+set prim = db/primary
+open $prim
+set l = <$prim
+set i = 1
+while (!eof($prim))
+   set seq[$i] = $l
+   set i = (%+1)
+   set l = <$prim
+endwhile
+close $prim
+
+; remove $ signs from the  BRMN assignment file
+set tmp = ('gifatmp' // int(1000000*$random))
+set cmd = ("grep -v '\$'";$brmbfil;">";$tmp)
+sh ($cmd)
+
+open $tmp
+set l = <$tmp
+while (!eof($tmp))
+  set test1 = (index($l,"Chemical"))
+  set test2 = (index($l,"shift"))
+  set test3 = (index($l,"assignment"))
+;  print ("l" ; $l ; "test1" ; $test1 ; $test2 ; $test3)
+  if (($test1 != 0) & ($test2 != 0) & ($test3 != 0)) then
+;  print ("l" ; $l ; "test1" ; $test1 ; $test2 ; $test3)
+    goto titrseq
+  endif
+  set l = <$tmp
+endwhile
+
+error "No Chemical shift assignment list"
+
+; detect the beginning of the spin list
+=titrseq
+set u = "0"
+;  print ("1 l" ; $l ; "u" ; $u)
+=loop
+  set l = <$tmp
+  set u = (head($l))
+;  print ("l" ; $l ; "u" ; $u)
+  if ($u s= "1") then
+;  print ("bc l" ; $l ; "u" ; $u)
+    goto beg
+  endif
+goto loop
+
+error "Undecipherable Chemical shift assignment list"
+
+=beg
+; read chemical shift of hydrogen spins, put them into
+; the dbm base and modify the spin system base accordingly
+
+if (head($act) s= 'erase') then
+  if (dbm('spin')) dbclose spin
+  if (dbm('sys'))  dbclose sys
+  sh '/bin/rm -f db/spin.* db/sys.*'
+  dbopen db/spin spin
+  set spin["largest"] = 0
+  dbopen db/spin_syst sys
+  set sys["largest"] = 0
+endif
+
+dbopen /usr/local/gifa/macro/att/1let_3let code
+dbopen /usr/local/gifa/macro/att/3let_1let code3
+
+set n_spin = 0
+set n_sys = 0
+;print ("l";$l)
+while ((head($l)) s! "stop_")
+  if ($l s! ' ') then
+	  ; get sys - and check
+	  set sys_id = (head(tail($l)))
+	  set sys_typ = (head(tail(tail($l))))
+	  if (!exist("code["  // $sys_typ // "]")) then
+	      print ("Warning Residue type:";$sys_typ;"unknown")
+	      set sys_typ = 'UNK'
+	      set tt = " "
+	  else
+	      if ($sys_typ s! $seq[$sys_id]) then
+	         print ("Warning, mismatch between primary sequence and BMRB file for residue"; $sys_id)
+	         print ($sys_id; $sys_typ; $seq[$sys_id])
+	         set sys_typ = 'UNK'
+	         set tt = ' '
+	      else
+	        set sys_typ = (head($code[$sys_typ])) ; sys_typ is now 3let coded
+            set tt = $topo[$sys_typ]
+	        set syss = (tail($code3[$sys_typ]))   ; not empty if 2 spin sys in this residue
+	        set syss = (tailx($syss,','))
+            if (exist("topo[" // $syss // "]")  &  $syss s! ' ') then
+              ; for some strange reasons, $topo[' '] seems to exist ??
+	          set tt = ($tt // ',' // $topo[$syss])
+	        endif
+	      endif
+	  endif
+	
+	  ; get spin
+	  set sp_typ = (head(tail(tail(tail(tail($l))))))
+	  set sp_name = (head(tail(tail(tail($l)))))
+	  set sp_delta = (head(tail(tail(tail(tail(tail($l)))))))
+	  
+	  ; determine keep condition
+	  set keep = ($sp_typ s= "H" | $cons s= 'all spins' | ( $sp_typ s= "N" & ( $cons s= 'all spins' | $cons s= 'both H and N')))
+	  if ($keep) then
+	    set id = ($spin["largest"] + 1)
+		if ($tt s! ' ') then
+	      if (index($tt,$sp_name) == 0) then   ; spin not known
+	        if ($valid s= 'valid spins only') then
+	           print ("Atom:"; $sp_name; "of residue"; $sys_typ; $sys_id; "skipped")
+	           goto skip
+	        else
+	           print ("Atom:"; $sp_name; "of residue"; $sys_typ; $sys_id; "is unknown")
+	        endif
+	      endif
+	    endif
+	    set spin[$id] = ($sp_delta;$sp_name;$sys_id)
+	    set spin["largest"] = $id
+	    set n_spin = (%+1)
+	    
+	    ;then complete spin sys
+	    if (exist("sys["// $sys_id //"]")) then
+	      set sys[$sys_id] = ($sys[$sys_id] ; $id)
+	    else
+	;      print ("toto" ; $seq[$sys_id] ; $sys_id)
+	      set sys[$sys_id] = ($sys_id ; $sys_typ ; $id)
+	      set sys['largest'] = $sys_id
+	      set n_sys = (%+1)
+	    endif
+	  endif
+  endif
+=skip
+  set l = <$tmp
+endwhile
+
+dbclose code
+dbclose code3
+close $tmp
+sh ("/bin/rm"; $tmp)
+
+alert   ("Added"; $n_sys; "spin-systems, and"; $n_spin; "spins") message *
+
+quit
+
+
+
+

@@ -1,0 +1,70 @@
+; proj_loc axis algorithm start end 
+;
+; Permits to perform a local projection of 2D data-set.
+; Projections are done either along F1 or F2 axes, 
+; with either skyline or mean algorithm.
+;       
+;
+; see also : proj3d_all proj3d PROJ 
+
+gm/test2d
+refmacro 0
+
+   set axi = 'F1'
+   set algori = 'M'
+
+   message "Along which axis, F1 or F2 :"
+   set axi = $_
+
+   message "Enter algorithm, Skyline or Mean : (S/M)"
+   set algori = $_
+
+   if (toupper($axi) s= 'F1') then
+      set ax = "row"
+      set st = $zoom_2d[1]
+      set en = $zoom_2d[3]
+     
+      message "First row number"
+      set st = $_
+      message "Final row number"
+      set en = $_
+   elsif (toupper($axi) s= 'F2') then
+      set ax = "col"
+      set st = $zoom_2d[2]
+      set en = $zoom_2d[4]
+     
+      message "First col number"
+      set st = $_
+      message "Final col number"
+      set en = $_
+   else
+      error "Wrong axis"
+   endif
+
+if ($st >= $en) error "Wrong data type"
+
+   if (toupper($algori) s= 'M') then
+      set alg = "ADDDATA"
+   elsif (toupper($algori) s= 'S') then
+      set alg = "MAXDATA"
+   else
+      error "Wrong algorithm"
+   endif
+
+   dim 2
+   $ax $st
+   dim 1 put data
+
+   for i = ($st+1) to $en
+      dim 2
+      $ax $i
+
+      dim 1 
+      $alg
+      put data
+   endfor
+
+   refmacro 1 dim 1
+   refmacro 0
+
+   dim 2 unref 

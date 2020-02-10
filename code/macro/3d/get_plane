@@ -1,0 +1,82 @@
+; create a form to acces interactively planes from a joined 3D
+;
+; When this box is created, the current unit is used to build the cursors,
+; You can change the unit used for each of the dimension,
+; however, you should hit the 'reconfigure' button
+; for these changes to be active
+;
+; see also : GETC UNIT UNIT_Y PLANE get_plane_doit
+;
+;related contexts : $unit $unit_y
+
+  ; action is performed by get_plane_doit macro
+  ; first get units to use
+
+if (!$arg) then
+  set unt[1] = $unit
+else
+  set unt[1] = $_
+endif
+if (!$arg) then
+  set unt[2] = $unit
+else
+  set unt[2] = $_
+endif
+if (!$arg) then
+  set unt[3] = $unit
+else
+  set unt[3] = $_
+endif
+
+; then compute borders
+  set cz[1] = $c_sizef1
+  set cz[2] = $c_sizef2
+  set cz[3] = $c_sizef3
+
+for i = 1 to 3
+   if ($unt[$i] s= 'INDEX') then
+       set i0[$i] = 1
+       set cz[$i] = $cz[$i]
+       set prec[$i] = 0
+   elsif ($unt[$i] s= 'PPM') then
+       set i0[$i] = (itop($cz[$i],0,$i))
+       set cz[$i] = (itop(1,0,$i))
+       set prec[$i] = 2
+   elsif ($unt[$i] s= 'HZ') then
+       set i0[$i] = (itoh($cz[$i],0,$i))
+       set cz[$i] = (itoh(1,0,$i))
+       set prec[$i] = 1
+   elsif ($unt[$i] s= 'DAMPING') then
+       set i0[$i] = $dmin
+       set cz[$i] = $dmax
+       set prec[$i] = 1
+   endif
+;print ($i0[$i]; $cz[$i]; $prec[$i])
+endfor
+
+; finally build form
+
+formbox "get plane" \
+  "dataset" \
+  "Select the plane you want to acces :" message \
+  "Get F1 plane" action "get_plane_doit 1 $inf1 $unit1 $unit2 $unit3" \
+    noreturn \
+    ' ' cursor $i0[1] $cz[1] $prec[1] inf1 $i0[1] \
+    noreturn \
+    'in' enum 'INDEX,PPM,HZ,DAMPING' unit1 $unt[1] \
+  "Get F2 plane" action "get_plane_doit 2 $inf2 $unit2 $unit1 $unit3" \
+    noreturn \
+    ' ' cursor $i0[2] $cz[2] $prec[2] inf2 $i0[2] \
+    noreturn \
+    'in' enum 'INDEX,PPM,HZ,DAMPING' unit2 $unt[2] \
+  "Get F3 plane" action "get_plane_doit 3 $inf3 $unit3 $unit1 $unit2" \
+    noreturn \
+    ' ' cursor $i0[3] $cz[3] $prec[3] inf3 $i0[3] \
+    noreturn \
+    'in' enum 'INDEX,PPM,HZ,DAMPING' unit3 $unt[3] \
+  separator \
+  reconfigure action 'get_plane $unit1 $unit2 $unit3 closeform $widget' \
+    noreturn \
+    help action 'help get_plane' \
+  *
+

@@ -1,0 +1,191 @@
+; testing SIMUN function in 1D
+dim 1 specw 6283.185 freq 600.13 600. offset 0.
+chsize 1k zero unit i
+simun 1.0 221 1.0 0.0 
+ft max
+set a = (abs($max[1] - 419.92673)<0.001)
+set b = (abs($max[2] + 140.58662)<0.001)
+minimax ($max[1]/2) ($max[1]*2)
+real peak
+set c = (abs($pk1d_f[1] - 111.0)<0.001)
+report ($a & $b & $c) "SIMUN 1D with index unit"
+
+chsize 1k zero unit h
+simun 1.0 3461 1.0 0.0 
+simun 1.0 2161 1.0 0.0 
+sin 0. ft max
+set a = (abs($max[1] - 296.48993)<0.001)
+set b = (abs($max[2] + 109.73332)<0.001)
+minimax ($max[1]/2) ($max[1]*2)
+real peak
+set c = (abs($pk1d_f[1] - 231.0)<0.001)
+set d = (abs($pk1d_f[2] - 337.0)<0.001)
+report ($a & $b & $c & $d) "SIMUN 1D with hertz unit"
+
+dim 1 specw 6283.185 freq 600.13 600.
+chsize 1k zero unit p offset 500.
+simun 1.0 7.0 20.0 0.0 
+simun 1.0 3.0 33.0 0.0 
+ft max
+set a = (abs($max[1] - 73.347198)<0.001)
+set b = (abs($max[2] + 44.897629)<0.001)
+minimax ($max[1]/2) ($max[1]*2) real peak
+evaln 10 50 linefit %
+set c = (abs($pk1d_f[1] - 211.496780396)<0.001)
+set d = (abs($pk1d_f[2] - 407.066345215)<0.001)
+set e = (abs($pk1d_w[1] - 1.63042700291)<0.001)
+set f = (abs($pk1d_w[2] - 2.68996524811)<0.001)
+report ($a & $b & $c & $d & $e & $f) "SIMUN 1D with PPM unit, offset = 500 and linefit"
+
+; testing SIMUN function in 2D, unit index, amplitude modulation
+dim 2 specw 7812.5 1893.939 freq 600.13 150.9 600. offset 500. 500.
+chsize 512 1k zero unit i
+simun 1 1.0 241 670 2.1 1.5 0. 0.
+simun 1 1.0 417 365 2.1 1.5 0. 0. 
+sin 0. f12 ft f12 max
+set a = (abs($max[1] - 24396.150)<0.1)
+set b = (abs($max[2] + 18912.082)<0.1)
+minimax 5000 ($max[1]*2)
+real f12 peak 0
+set c = (abs($pk2d_f2f[1] - 183.0)<0.1)
+set d = (abs($pk2d_f1f[1] - 209.0)<0.1)
+set e = (abs($pk2d_f2f[2] - 336.0)<0.1)
+set f = (abs($pk2d_f1f[2] - 121.0)<0.1)
+report ($a & $b & $c & $d & $e & $f) "SIMUN 2D with index unit and ampl. modul."
+
+; testing SIMUN function in 2D, unit Hertz,amplitude modulation
+dim 2 specw 7812.5 1893.939 freq 600.13 150.9 600. offset 500. 500.
+chsize 512 1k zero unit h
+simun 1 1.0 3461 999 2.1 1.5 0. 0. 
+simun 1 1.0 7023 601 2.1 1.5 0. 0. 
+;imun 1 1.0 6001 999 2.1 1.5 0. 0. 
+;imun 1 1.0 2541 227 2.1 1.5 0. 0. 
+sin 0. f12 ft f12 max
+set a = (abs($max[1] - 31308.023)<0.1)
+set b = (abs($max[2] + 14715.346)<0.1)
+minimax 5000 ($max[1]*2)
+real f12 peak 0
+set c = (abs($pk2d_f2f[1] - 378.0)<0.1)
+set d = (abs($pk2d_f1f[1] - 160.0)<0.1)
+set e = (abs($pk2d_f2f[2] - 486.0)<0.1)
+set f = (abs($pk2d_f1f[2] - 43.0)<0.1)
+report ($a & $b & $c & $d & $e & $f) "SIMUN 2D with Hertz unit and ampl. modul."
+
+; testing SIMUN function in 2D, unit PPM, amplitude modulation
+chsize 512 1k zero unit p
+simun 1 1.0 36 2.5 2.1 1.5 0. 0. 
+simun 1 1.0 43 1.2 2.1 1.5 0. 0. 
+sin 0. f12 ft f12 max
+set a = (abs($max[1] - 15827.653)<0.1)
+set b = (abs($max[2] + 16102.342)<0.1)
+minimax 5000 ($max[1]*2)
+real f12 peak 0
+set c = (abs($pk2d_f2f[1] - 243.0)<0.1)
+set d = (abs($pk2d_f1f[1] - 95.0)<0.1)
+set e = (abs($pk2d_f2f[2] - 454.0)<0.1)
+set f = (abs($pk2d_f1f[2] - 61.0)<0.1)
+report ($a & $b & $c & $d & $e & $f) "SIMUN 2D with PPM unit and ampl. modul."
+
+; testing SIMUN function in 2D, unit index, phase modulation
+dim 2 specw 7812.5 1893.939 freq 600.13 150.9 600. offset 300. 200.
+chsize 512 1k zero unit i
+simun 0 1.0 241 670 2.1 1.5 0. 0. 
+simun 0 1.0 217 365 2.1 1.5 0. 0. 
+sin 0.5 f12 ft f2 flip ft f1 flop max
+set a = (abs($max[1] - 35222.922)<0.1)
+set b = (abs($max[2] + 41904.309)<0.1)
+minimax 5000 ($max[1]*2)
+real f2 peak 0
+set c = (abs($pk2d_f2f[2] - 184.0)<0.1)
+set d = (abs($pk2d_f1f[2] - 217.0)<0.1)
+set e = (abs($pk2d_f2f[4] - 336.0)<0.1)
+set f = (abs($pk2d_f1f[4] - 241.0)<0.1)
+report ($a & $b & $c & $d & $e & $f) "SIMUN 2D with index unit and phase modul."
+
+; testing SIMUN function in 2D, unit Hertz, phase modulation
+dim 2 specw 7812.5 1893.939 freq 600.13 150.9 600. offset 300. 200.
+chsize 512 1k zero unit h
+simun 0 1.0 6001 999 2.1 1.5 0. 0. 
+simun 0 1.0 2541 227 2.1 1.5 0. 0. 
+sin 0.5 f12 ft f2 flip ft f1 flop max
+set a = (abs($max[1] - 43453.328)<0.1)
+set b = (abs($max[2] + 42027.289)<0.1)
+minimax 5000 ($max[1]*2)
+real f2 peak 0
+set c = (abs($pk2d_f2f[2] - 297.0)<0.1)
+set d = (abs($pk2d_f1f[2] - 139.0)<0.1)
+set e = (abs($pk2d_f2f[4] - 506.0)<0.1)
+set f = (abs($pk2d_f1f[4] - 366.0)<0.1)
+report ($a & $b & $c & $d & $e & $f) "SIMUN 2D with Hertz unit and phase modul."
+
+; testing SIMUN function in 2D, unit PPM, phase modulation
+dim 2 specw 7812.5 1893.939 freq 600.13 150.9 600. offset 530. 101.
+chsize 512 1k zero unit p
+simun 0 1.0 36 2.5 2.1 1.5 0. 0. 
+simun 0 1.0 43 1.2 2.1 1.5 0. 0. 
+sin 0.5 f12 ft f2 flip ft f1 flop max
+set a = (abs($max[1] - 46297.816)<0.1)
+set b = (abs($max[2] +30157.898)<0.1)
+minimax 5000 ($max[1]*2)
+real f2 peak 0
+set c = (abs($pk2d_f2f[1] - 134.0)<0.1)
+set d = (abs($pk2d_f1f[1] - 192.0)<0.1)
+set e = (abs($pk2d_f2f[2] - 345.0)<0.1)
+set f = (abs($pk2d_f1f[2] - 123.0)<0.1)
+report ($a & $b & $c & $d & $e & $f) "SIMUN 2D with PPM unit and phase modul."
+
+; testing SIMUN function in 3D, unit index
+dim 3 specw 100.0 100.0 100.0 freq 400.0 400.0 400.0 400. offset 8. 0. 5.
+chsize 64 32 128 zero unit i
+simun 1.0 21. 14. 56. 0.2 0.2 0.2 0. 0. 0. 
+simun 1.0 10. 27. 99. 0.2 0.2 0.2 0. 0. 0. 
+sin 0. f123 ft f123 max
+set a = (abs($max[1] - 3064.7778)<0.01)
+set b = (abs($max[2] + 2398.55639648)<0.01)
+minimax 100 3100
+real f123 peak 0
+set c = (abs($pk3d_f3f[1] - 50.0)<0.01)
+set d = (abs($pk3d_f2f[1] - 14.0)<0.01)
+set e = (abs($pk3d_f1f[1] - 6.0)<0.01)
+set f = (abs($pk3d_f3f[2] - 29.0)<0.01)
+set g = (abs($pk3d_f2f[2] - 8.0)<0.01)
+set h = (abs($pk3d_f1f[2] - 11.0)<0.01)
+report ($a & $b & $c & $d & $e & $f & $g & $h) "SIMUN 3D with index unit"
+
+; testing SIMUN function in 3D, unit Hertz
+dim 3 specw 100.0 100.0 100.0 freq 400.0 400.0 400.0 400. offset 8. 0. 5.
+chsize 64 32 128 zero unit h
+simun 1.0 50. 29. 56. 0.2 0.2 0.2 0. 0. 0. 
+simun 1.0 31. 73. 82. 0.2 0.2 0.2 0. 0. 0. 
+sin 0. f123 ft f123 max
+set a = (abs($max[1] - 1940.9633)<0.01)
+set b = (abs($max[2] + 1932.8833)<0.01)
+minimax 1000 3000
+real f123 peak 0
+set c = (abs($pk3d_f3f[1] - 32.0)<0.01)
+set d = (abs($pk3d_f2f[1] - 12.0)<0.01)
+set e = (abs($pk3d_f1f[1] - 20.0)<0.01)
+set f = (abs($pk3d_f3f[2] - 16.0)<0.01)
+set g = (abs($pk3d_f2f[2] - 5.0)<0.01)
+set h = (abs($pk3d_f1f[2] - 26.0)<0.01)
+report ($a & $b & $c & $d & $e & $f & $g & $h) "SIMUN 3D with Hertz unit"
+
+; testing SIMUN function in 3D, unit PPM
+dim 3 specw 100.0 100.0 100.0 freq 400.0 400.0 400.0 400. offset 8. 0. 5.
+chsize 64 32 128 zero unit p
+simun 1.0 0.1 0.2 0.15 0.2 0.2 0.2 0. 0. 0. 
+simun 1.0 0.05 0.17 0.21 0.2 0.2 0.2 0. 0. 0. 
+sin 0. f123 ft f123 max
+set a = (abs($max[1] - 3703.9995)<0.01)
+set b = (abs($max[2] + 3339.1870)<0.01)
+minimax 1000 4000
+real f123 peak 0
+set c = (abs($pk3d_f3f[1] - 30.0)<0.01)
+set d = (abs($pk3d_f2f[1] - 4.0)<0.01)
+set e = (abs($pk3d_f1f[1] - 23.0)<0.01)
+set f = (abs($pk3d_f3f[2] - 14.0)<0.01)
+set g = (abs($pk3d_f2f[2] - 6.0)<0.01)
+set h = (abs($pk3d_f1f[2] - 29.0)<0.01)
+report ($a & $b & $c & $d & $e & $f & $g & $h) "SIMUN 3D with PPM unit"
+
+quit

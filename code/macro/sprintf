@@ -1,0 +1,32 @@
+; sprintf format_string arg1 arg2 ... *
+;
+; realises the equivalent of a C  `sprintf'
+; all the remaining of the line  up to the star is taken as arguments
+; result is returned to the static variable $returned
+;
+; only one line can be put into the string, so \n cannot be used
+;
+; see also : printf fprintf FPRINT PRINT
+
+; (the trick is to use awk !)
+
+if (!$arg) error "A format is needed"
+set format = $_
+; print $format
+set cmd = ('{ printf "' // $format // '\n"')	; add a \n at the end !
+
+if (!$arg) error "An argument list is needed"
+set argi = $_
+while ($argi s! "*")
+	set cmd = ($cmd // ', "' // $argi // '"')
+	if (!$arg) error "List must be ended with a *"
+	set argi = $_
+endwhile
+set cmd = ($cmd // '}')
+
+set ff = ("gf" // int(10000*$random))
+sh ("echo | awk '" ; $cmd; "' >"; $ff) 
+; has to go to another file !
+open $ff   set returned := <$ff  close $ff
+sh ("/bin/rm" ; $ff)
+

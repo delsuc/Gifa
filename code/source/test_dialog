@@ -1,0 +1,17 @@
+; exemple de help
+; ....
+set var_test1 := "un exemple"
+dialogbox DialogBox \
+'ceci est un test de dialog box' message \
+'est ce que ca marche ?' message \
+separator \
+TEST1 string dvar_test1 \
+TEST2 int dvar_test2 \
+TEST3 real dvar_test3 \
+separator \
+ENUM1 enum dvar_enum123 '1,2,3' \
+ENUM2 enum dvar_enum4567 'enum_4,enum_5,enum_6,enum_7' \
+separator \ 
+TEST4 file dvar_file \ 
+separator \
+*

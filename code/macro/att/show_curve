@@ -1,0 +1,77 @@
+; show_curve (interactive)
+;
+; permits the display of the curves obtained with the 
+; multiple integration utility
+; according to the assignment database.
+;
+
+dialogbox 'Integration curve' 'Enter format' enum 'free,Tela' format 'free' *
+
+alert "Click on the peak you want to analyze"
+
+dim 2
+set c = $scale
+
+point_clear
+monopoint
+set f1 = (itop($pointy[1],2,1))  set f2 = (itop($pointx[1],2,2))
+
+find att 2 $f1 $f2
+
+if ($pk_fnd_dst < $tol_click & $pk_fnd_dst != -1) then
+  set ss = $scolor
+  if ($scolor <6) then
+    scolor (%+1)
+  else
+    scolor 1
+  endif
+  show_att $pk_fnd
+  scolor $ss
+  set last_click := ("PEAK"; $pk_fnd)
+
+  set pkname = ("processing/integ_"//$pk_fnd)
+  open $pkname
+  print $pkname
+
+  dim 1 disp1d 1 itype 0
+  set k = 0
+  set line = <$pkname
+  while (!eof($pkname))
+;    print $line
+    set firstff = (head($line))
+    if ($format s= "Tela") then 
+;    print (subst($firstff,1,7))
+      if (subst($firstff,1,7) s= "intens[") then
+;      if (subst($firstff,2,8) s= "intens[") then
+        set k = (%+1)
+        set intval = (tailx($line,'='))
+        set intval = (headx($intval,';'))
+        chsize $k
+        setval $k $intval
+;        print ("setval"; $k ; $intval)
+      endif
+    elsif ($format s= "free") then
+;      if (subst($line,2,1) s! "#") then
+      if (subst($firstff,1,1) s! "#") then
+        set k = (%+1)
+        set intval = (head($line))
+        chsize $k
+        setval $k $intval
+      endif
+    endif 
+    set line = <$pkname
+  endwhile
+  close $pkname
+  refmacro 1
+  zoom 0 absmax 0 scale 1
+  clear 0 scale 1e-6
+  refmacro 0 clear 1 
+  dim 2 zoom 1 %% scale $c unref
+
+else
+
+  alert ("No peak found within"; $tol_click; "ppm")
+
+endif
+
+

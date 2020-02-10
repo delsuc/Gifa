@@ -1,0 +1,7 @@
+; interactive
+;
+set ans = ' '
+message "Enter command name (use apropos if you don't even know the command name)"
+set ans = $_
+
+help $ans

@@ -1,0 +1,14 @@
+; edit_att
+;
+; calls mod_att which
+; builds a dialog box permitting to modify a peak in the data base.
+
+
+;if (head($LAST_CLICK) s! "PEAK") then
+;    alert "Click on the peak you want to modify"
+    @find_att
+    if ($returned == 0) exit
+;endif
+set pic = (tail($last_click))
+@mod_att $pic
+

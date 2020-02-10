@@ -1,0 +1,30 @@
+; to test for reading and writing files.
+; not in the standard test because the file used are not distributed
+;
+; standard file are not tested, because they are in cache
+
+; first Varian
+dim 1
+readv  ../data_test/hpf576hpresat2611af.fid/fid
+max
+report (($max[1] == 219632) & ($si1_1d == 6848)) 'ReadV 1D'
+
+dim 2
+readv  ../data_test/hpf576hnoe1502611af.fid/fid
+max
+report (($max[1] == 111982) & ($si1_2d == 768) & ($si2_2d == 3008)) 'ReadV 2D'
+
+; then NMRi / Tripos
+dim 1
+readl ../data_test/file_1d.nmri toto
+sh "/bin/rm toto"
+max
+report (($max[1] == 15855) & ($si1_1d == 16384)) 'ReadL 1D'
+
+dim 2
+readl ../data_test/file_2d.nmri toto
+sh "/bin/rm toto"
+max
+report (($max[1] == 1232) & ($si1_2d == 256) & ($si2_2d == 1024)) 'ReadL 2D'
+
+

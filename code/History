@@ -1,0 +1,667 @@
+version 4.5 march 2004
+Features:
+Changes:
+Corrected bugs:
+Assignment module 1.4
+
+version 4.4 november 2001
+Features:
+Added handling of Bruker digital filter data from DMX spectrometers.
+  The BRUKER_CORR and bruker_add_param permits to correct the phase problem
+  without any manual operations.
+A new button is present in the easy1d and easy2d macro processing windows
+  for applying the Bruker Digital Filter.
+Modification of the dosy fit and dosy2d to use new FITEXP command (one or two components)
+    The fitting is now 20 times faster.
+added flat_solvent which permits a better solvent removal.
+Added some new display control controls : REFSPECTRA, REFPEAKS
+  peaks remain on screen will zooming !
+New features in the macro langage : ONERRORGOTO PROFILER, RETURN
+   new functions :  sh() fexist() hexist() header()
+   as well as new contexts :  $PKRADIUS, $MAXINBOX, $puldownmenu,
+   $debug, $verbose, $CLEAR, $MACRONAME, $RETURNED, $alpha, $beta, $gama,
+   $offset3d[1..3], $scaled3d, $axis3d, $znot, $CACHE[id]
+Added some commands and macros : PKFILTER, SUMREC,  disjoin_all
+New PK_ID field to give a name to peaks
+
+Changes:
+In Levenberg-Marquardt fit, a protection code has been added for covariance matrix invertion
+   and works when curvature matrix is non-inversible. So the fiter is now increased in robustness.
+The interface works on a X11 with 24 bits color resolution (sort of).
+rem_h2o has been completed which results in a much better water removal.
+A new version of build2d and build3d, reads cache files.
+listfilec and config was moved to macros
+The test suit has been completed and changed.
+Modifcation and improvements had been done on the installation makefile.
+
+Corrected bugs:
+In LINEFIT 2D, F1 and F2 errors were interchanged, as the questions in LINEFITD 2D
+The output format of FPRINT has been modified.
+peak_pick has been corrected fo negative peaks in 1d and 2d dimensions.
+In the env_att.g macro a bug for checking the availibility of SH has been corrected.
+Small correction in the rem_h2o command to adapt it for using the non power of 2 sizes.
+Output message from READ EVALN and MAX had been removed.
+The newfilec bug has been fixed.
+
+Assignment module 1.4
+new output data formats for Xplor/CNS and NMRStar
+added a constrain data base by the way of macros :
+	build_cnst_db a complete creation by the usual attribution base att.
+	cnst[Ç #spn1:#spin2 È] = Ç lowerlimit;upperlimit;correction;(active/inactive);note È
+	txt2att and att2txt to realize the importation or exportation of all the data base.
+Spin System is directly created from markers so the peaks creator is much more convivial.
+The dyna output format has changed to issu results in primary sequence order.
+The att/build_strip macro is now handling arommatic spin system.
+added a 'error bar weigth' cursor in the dyna module for T1 and T2 fitting.
+The new FITEXP command permits a gain of about 5 to 10 times in the MonteCarlo command.
+
+
+version 4.31 1 august 2000 (4.3 was never really released)
+Features:
+viewfinder: Clicking in a spectral window with the middle button draws a cross
+  along the spectral axes. All oher opened window display a related cross
+  at the same chemical shift.
+cross associated with mouse button 2, and pivot on 3
+new macro param, to change all acquisition parameters
+added the showpattern command, used in the assignment module
+new About menu, help set-up, new apropos
+added the LP backward stuff in easy2d (created the burg_back and burg2d_back macros)
+added the clear phase parameters in esay1d and easy2d
+
+Changes:
+Changed the default buffer sizes and increased all buffers by 4.
+   so gifa_norm is as gifa_big used to be; gifa_small as gifa_norm used to be;...
+   gifa_norm is now 64 Mo buffer : up to 4kx4k 2D, 256x256x256 3D in memory 
+   gifa_big is now 256 Mo buffer : up to 8kx8k 2D, 512x512x256 3D in memory 
+   there is room for 4000 user variables
+new contexts : $name_1d $name_2d $name_3d
+moving the pivot point in PH is now on mouse button 3
+new version of dispcont
+new version of ft_n+p : conv_n+p con_n+p_onfile, permit phasing in both dim
+mode 'just extract real' in Bcorr of easy2d => usefull for on_file proc.
+new dataset command, with a graphic interface.
+various improvements in easy2d
+added doc on EXCHDATA which was missing for some unknown reason
+cleaned up the 'fortran' processor for linux
+tune-up of the parser for macro execution speed-up
+added showing macro call in DEBUG mode.
+added a check of version compatibility between binary and macro (in startup.g)
+modif of the splash screen
+Enhanced the Peak picker interface
+
+Corrected bugs:
+In DOSY processing, line width were 5 times too wide in fit_2_component mode
+In DOSY processing, in fit mode, an error was possible when a peak was too close from the border
+correction of error bar due to wrong chi2 in line fitter
+added test for postscript in setfont
+a macro finishing with \ was completely locking Gifa
+reverse f1/f2 in dim=3 has been corrected
+the construct " foreach .. unset .. endfor " did not work over an array
+dmin and dmax were wrong in dosy_setup
+$pk2d_t was wrong when lorentzian line-shape
+small correction in pklist (was buggy and did not work in 3D)
+modif in FPRINT which was causing the first blank for every line
+
+Assignment module 1.3
+New listing of stats on the NOE assignment. Include CSI computation
+Noesy walk can be parametrized now (from i to j)
+Tried to speed-up the display (Show all peaks for instance) but still kind of slow.
+In peak edit, Move the peak to the local top (maximum spectral point)
+several small fixes in integration/calibration tool
+remove test of duplicated pseudo-atoms in check_topo
+changes in the dipeptide search in the search spin tool
+Complete rewrite of calib_integ
+The bug in FPRINT was creating a bug in the project creation on the primary file.
+added zero when entering assignment module
+Added 'show peaks' in spin system form. Very Slow...
+
+
+version 4.22 15 feb 1999
+Features:
+A new module for dynamic datasets quantification is available within the assignment module
+'easy3d' has finally been installed.
+the integrate macro give a 'usual' integration interface. It uses the new SHOWLINETAB command
+New context UNIT_Y permits to handle two independent unit on 2D display
+choose_unit and get_plane (3D on file) has been extended, and adapted to UNIT_Y
+'add' has been added to the File menu to add to dataset together (1D, 2D or 3D)
+'easy2d' now switches to on_file processing if the input or output
+  files are too large to fit in memory
+There is an additional 2D_on_file menu.
+Mouse coordinates are in delta when drawing a zoom box.
+New macro language functiuon : isnumb(p) true if p is a number
+a print button is now available in help boxes
+
+Changes:
+getuxnmr has been extended
+DOSY menu has restructured and simplified
+processing dosy3d on file has been modified
+you can also now count how many columns will be processed
+dosy calibration has been extended to handle different experiments and nuclei
+DMIN DMAX are handled now in scaled quantities BE CAREFULL.
+easyplot has completely been revamped, with a very usefull preview button
+dmxphase has been added to 2D processing menu
+The TAB[] buffer has been extended (used by SHOWLINETAB)
+easy2d has been extended : optionnal processing along axes, rem_h2o option
+multi_zoom has improved
+ZM 1  now restores the vignette display. The Read menu entry has been modified accordingly
+CD without argument brings you back to $HOME (as in Unix)
+The Interactive (HTML) documentation has been improved with frames.
+
+Corrected bugs:
+contour plots were offseted by half a pixel !
+TRANSPOSE was not swapping the FREQ parameters
+DIAG was buggy in 2D if si1 > si2
+absmax could be set with the putheader command
+sprintf was sometime buggy with long lines (in pklist typically)
+PUT VERT F3 was wrong
+use of ( and ) was buggy when plotting in postscript
+apropos was not working correctly on SGI and Linux
+rowint and colint were showing imaginary parts on complex experiments
+functions val1d() val2d() val3d() were not tested for 'out-of-dataset' bug !
+Bruker file conversion (ux2cach, ux2cach.sh getnmr getexp) have been 
+  modified to handle AQORDER in 3D and to handle unusual FID sizes
+peak table was not fully initialized at start-up
+FIND was wrong on empty tables
+proj3d (on file) was wrong with first plane in abs mode
+peak picking negative peaks was buggy when called from GUI
+head() and tail() were incorectly parsing tab separators
+strip_file and strip_plot had a wrong logic for axis selection
+proc2d and proc3d could not work in_place (same file in input and output)
+the readline was tentatively implememted, with no success....
+
+Assignment module 1.22
+Topology database has been modified to follow IUPAC names
+RESCUE (spin system prediction) has been integrated
+primary sequence can be read from BMRB files
+Import spin systems from BMRB and free ascii files
+It is now possible to recalibrate an experiment, without loosing peaks
+You can build assign strip plots from 3D HSQC
+added a show all peaks, which is more readable in dense spectra
+modified the search spin entry, search now for dipeptides in the primary seq.
+you can now create peaks from the spin system formbox
+Logic for object selection has been modified
+Markers have been modified and extended
+database check (dbck) has been extended and is now more robust
+Small modif in new_proj, build_pdb, multi_zoom, quit_assign, 
+  add_spec, file_selector, marker
+Edit peak and spin has been modifed: move peak, move spin, align spins to peak, align peak to spin
+The size of crosses and boxes around peak are customizable from parameters
+#comments are available in primary sequence files
+"LARGEST" pseudo entry cannot decrement anymore
+HP version was buggy on creating the very first peak
+
+version 4.21
+Features:
+The DOSY set-up has been modified and extended:
+        fit is now implemented
+        a more robust MaxEnt procedure has been installed
+        more Helps :-)
+new macro for plotting damping axes
+Error bars in linefitter and in general fitter (with associated contexts)
+new contexts : SUMREC_ERR SIGN_PEAK, PKxx_ERR[] ..
+new Amoeba managment : MSKZERO MSKSEARCH
+added a test on the Endian of the machine, permits to share files between PC and others
+It is also possible to read Varian file on PC/Linux now,
+   associated to a field in the file format : Byteorder
+new zoom mouse short cuts: buttons 1&2 : draw zoom box
+                           buttons 1&3 : zoom in
+                           buttons 2&3 : zoom out
+     for 1 or 2 buttons mouse users
+                           shift + button 1 : draw zoom box   
+                           shift + button 2 : zoom in
+                           shift + button 3 : zoom out
+A Simplified Menu mode (see in About Menu)  - easy1d
+new functions for the macro language round()
+        coordinate functions (itoh().. can use joined data-set (with dim=0) )
+created all the default macros for Varian user
+some new macros for 3D processing strip_plot strip_file vertintf proj3d_all get_plane
+EXCHDATA command
+PUT VERT command
+created macro subdirectory structure: varian 3D
+
+Changes:
+Display works now on 16 bits and 32 bits X server
+The display for 1D is now better for large datasets with sharp lines (19F - 13C)
+general fitter (FITGENE) is much faster, and gives error bars
+linefitter adapt more peaks now
+easyplot has been enhanced (axes plotting)
+easy2d (and easy1d) have been improved (phase, help, debugged, add a baseline corr mode)
+New macro: proj_loc for local projections (in Proc 2D)
+changed scaling in INT1D
+modification in the assignment module:
+   find_dist and calc_dist
+   when creating a new project
+removed the 'appending' messages when plotting
+changed disp3d dialog
+Alert now works if the graphic is off
+in proj3d by adding the absolute value mode.
+mouse coordinates are now returned in an interpolated manner => marker have more resolution.
+pklist is a macro now as well as title
+store_zoom / back_to_store_zoom memorizes the SCALE now
+display has been changed during MaxEnt iterations
+more subdirectories for macros: macro/3d macro/varian
+truncated VNMR datsets are read correctly
+
+Corrected bugs:
+A file could not be read when the field Dim was after Dim1
+ADD was buggy in 1D
+corrected a bug for getting parameters in headers
+get from UXNMR was buggy on a fast machine
+corrected / changed to // in env_att.g (preventing assignment module to work)
+SHOW DATA cleaned
+SHOWC displays correctly now
+finally, itype should be computed correctly by proc3d
+rm -r directory works now
+error on volume was wrong in INTEG and SUMREC
+plot was slightly off in 1D (for very small zoom windows)
+
+14 July 1997 version 4.20
+Features:
+New DOSY processing module. This implies :
+  New optionnal menu 
+  New commands: INVLAP LAPLACE DMIN ... new associated contexts 
+  New data representation mode : Damping and Tabulated
+  New associated units, new internal functions (itod ttoi...)
+  New buffer: TAB, and associated tools ($SI_TAB, $TAB[], showtab,...)
+New general Fitter:
+  Minimize any function of several parameters: MINIMIZE
+  Fit current data to any user defined function: FITGENE
+  Related macro : showexp
+New mode in FORMBOXes :
+  Cursors - sliding cursors for numeric entries
+  Multienum - select several entries in a list.
+  Many formboxes adapted (superxd, dispcont,...)
+You can now move the zoom window by moving the small area in the vignette
+Coordinates are available on screen with the AXIS command
+The assignment module (now V0.2)
+  has been deeply corrected, debugged, extended
+  try it, it is not the same (db have not changed though),
+  use 'check data bases' (dbck) to make a clean start on old db's.
+New macros:
+  hph: same as ph on real data-sets
+  gm_inter: choose interactively your gaussian apodisation
+  gm_bruker sin_bruker: SIN and GM the Bruker way
+  expbroad and gaussbroad EM and GM with a regular syntax
+  dmxclean: to clean out those silly points from Bruker spectrometers
+  userapod: apodize with any user provided fuction
+  readgz - writegz: read write GZIPed files
+  multi_zoom to manage several zoom window at once
+  svd2d: just as burg2d, but slower (probably more accurate also)
+  load: to read-in a 1D from a simple ascii file
+New functions in macro language:
+      valmb() gives the value of an amoeba point
+      
+Changes:
+many improvments in the assignment module
+Added support for Varian users
+	INVF works in 2D and 3D
+	READV now works on Linux machines (thank's Joel ;-)
+	READV understands float data-set
+	varian_param varian_read, 2 new macros to help in reading files
+Burg is now available in easy2d
+ONE now takes care of ITYPE
+Modified slightly the ZM box
+New icons when you iconify the graphic interface.
+Pivot in PH is now in SCOLOR
+You can now SHOW DATA
+Forms and Dialogs slightly enhanced
+	larger buttons, better messages when canceling a dialog
+macros have been modified to use the new WIDGET (super1d, super2d, etc)
+the 1D spectrum can be moved up and down, with the little arrows in the ZM box.
+
+Corrected bugs:
+the calib macro had not been corrected for ppm/Hz bug
+many corrected bugs and improvements in the assignment module
+POINT_INPUT was buggy in 1D
+The 'Missing Variable' Syndrom in FORMBOXes should be definitively cured.
+INPROGRESS is now cleaner (closes when you go over the final point)
+SETPEAK was buggy in 2D and 3D (F1 coor. not updated)
+EM and GM are now available in easy2d (called expbroad and gaussbroad)
+$PKNAME was not correctly initialized.
+FOREACH .. WITHIN now Works !
+Bugs in FOR and FOREACH, preventing from exiting early from a loop
+blanks in the beginning of string should work now.
+Some macros (evaln.g pick_peak) was making a wrong use of $zone[] in 1D
+aggressive zooms (less than 4 pixels wide) do not core-dump anymore.
+CD should now work on AIX.
+
+15 october 1996 version 4.10
+Features:
+New Assignment module (in Mode menu),
+   Try it and tell me what do you think of it.
+   Of course it still has a lot of room for improvement !
+   most of the following new commands are used by this module.
+FROMBOXes have been largely extended :
+  new kind of field : ACTION => active buttons
+                      TEXT   => scrollable text file
+  possibility to have several field on the same line (NORETURN entry)
+New command CLOSEFORM with the $WIDGET context associated
+New context : $pk2d_err[] which holds the error of the last integration
+New context : $zone[] which holds the coord. of the square drawn by the mouse
+New contexts : $row[1] : last axis used by row/col $row[2] $row[3] last coord.
+New command FIND, with 2 contexts associated $fnd_pk and $fnd_pk_dst
+   used to scan a data-base.
+New Command FOREACH, to easily go through all the entries of an (dbm) array.
+    MUCH simpler than nextlm()
+New Command ZEROING, sets to zero data-points below a given threshold
+  (very usefull for file-compression !  see help zeroing)
+New Command MSKCONC to bind an amoeba of one peak to another one
+Some new or modified macros : upzoom zoom3di setfont pksumrec pkrmz
+help and apropos Graphic User Interface fully rewritten in graphic mode.
+
+Changes:
+Menus can now be chosen to be either as pulldown, or as static boxes
+  controlled by the PULLDOWNMENU command
+The command SETPEAK has been changed (actually was a bit silly),
+  the old one has been kept as SETPEAK2
+Renamed MODIF_AMOEBA to MSKMODIF (did ever someone use it ?)
+Optimized pen journeying in GRID
+RZOOM and ALERT rewritten in macro
+Slightly changed the way the standard User Interface looks.
+PKRM is now less verbose
+The Zoom_out button and SHOWPEAK(S) now works in 3D display
+ZOOM has been changed in 3D, zoom_old retains the old syntax
+Modified again the HTML manual
+$SOMREC renamed to $SUMREC ($SOMREC is still there)
+
+Corrected bugs:
+The Hz/ppm calculation have been corrected from a bug creating slight offsets,
+  See the file README_ppm for more info.
+local path is proposed as default in file selection boxes
+It is now possible to open a dbm file with readonly access
+Put and Get DATA were truncating to the integer part the spectral parameters
+The macro burg3d was buggy.
+CLOSEBUTTON with no buttons on was crashing
+FT (in 2D or 3D) was buggy when applied along one axis and when the other
+  axis (axes) had an odd number of points.
+Extraneous errors about DBM arrays have been removed
+The postscript header have been cleaned-up a little
+
+
+28 march 1996 version 4.09
+Features:
+Added 4 buttons in the zoom box to go in diagonal (bitmaps still a bit sloppy !)
+Added two utilities from G.Salnikov :
+	- dis2cache to transfer from DISNMR files
+	- cache2pc to swap byte for those PC/Linux boxes.
+
+Changes:
+INPROGRESS is now graphic (and can be called recursively)
+modified SHOWPEAKS to be faster
+Some changes in menus - Proc_1D has automatic phasing
+                      - MaxEnt has been cleaned-up
+                      - Peak has been reorganized
+Formboxes had a quite limited number of 'enum' available.
+Finally compiled under IRIX 5.3 (had to turn around a bug in the fortran compiler)
+
+Corrected bugs:
+READL and READV were quite buggy indeed !
+FPRINT and HELP were buggy on HP
+default value in dialogbox could not be correctly set
+parameters were searched incorectly in file headers
+exist() on a dbm entry was buggy
+MAXENT was not correctly copying in the DATA area
+
+
+17 jan 1996 version 4.08 beta
+Features:
+The SETPROMPT command permits to change the Gifa prompt
+Now macro are searched in a PATH, as in Unix, the SETPATH command and
+   the $GIFAPATH variable permits to change the active path.
+The Zoom box now displays the intensity of the data-set at the cursor point.
+Two new commands : POINT_INPUT for adding a value in the point stack
+                   SETPEAK for modifying a peak in the peak table
+New macros :  pkadjust, point_cross
+New variables : $PKNAME for the last read peak table
+
+Changes:
+Absmax0 is now read from the file header in the READ command. This may
+  interfere with the bug below, type the command ABSMAX 0 or click on the
+  reset button to clear it.
+exist() now works for arrays and dbm arrays
+	(exist("array[]")) is true if array[x] exists with at least one entry
+PUT DATA and GET DATA now copy all the spectral parameters
+LIST has been rewritten in macro
+SHOWPEAK and SHOWPEAKS now show in all available screens
+LINEFITD has now a different syntax (I hope it won't disturb you !),
+     now prompts for peak index to fix (much easier in macro (see pkadjust))
+@(expression) is now possible
+
+Corrected bugs:
+Absmax0 was not computed correctly in the file header
+File access was not possible for very asymmetric 2D and 3D
+zoom window correctly displayed in the "catch spectrum" area
+INTEG was wrong after a pkread
+PKRESET was slightly wrong (grossly false on 3D)
+POINT->PK was giving wrong intensities in 2D
+dbm package was a memory hog!
+FPRINT on a read_only file now returns an error message
+PHASE was not correct in 2D with one axis with a size not a multiple of 2
+PH was confused with scale whan displaying
+REAL in 2D was giving a wrong prompt
+HELP on HP was truncating to 80 chars
+PUTHEADER can now be used with long entries (even with blanks)
+    (was buggy when length>12)
+No more strange display after a read with a wrong zoom window.
+
+
+2-nov 1995 - version 4.07b
+Due to unfortunate late changes, the 4.06b version had some bugs.
+This version is here to correct them. (Halloween effect ?)
+Corrected bugs:
+Some macro (typically, ft_n+p, proc2d, proc3d, burg2d, in fact all macros
+  that play with DIM) tended to be very (I mean VERY) slow.
+HPHASE was buggy in some cases (hphase in F1 in 2D)
+INTEG was buggy in 1D
+
+
+27-oct 1995 - Version 4.06b
+Features:
+New Zoom control box, with new features :
+  spectral coordinates
+  pop-up for dimension 1D, 2D, 3D selection
+  graphic area for simplified spectral display
+Added a complete set of menus for 3D processing.
+An automatic phasing utility : apsl
+added control on the point stack : POINT_PUSH POINT_POP POINT_CLEAR
+  used for the new POINT, MONOPOINT
+  POINT has been rewritten in macro
+  zoom and display control is now available during macros (MONOPOINT
+  ALERT, etc...)
+printf, fprintf, sprintf utilities
+MINDATA and MAXDATA commands (for custom made symetrisations and projections)
+Motif Resource is now used by Gifa. colors and fonts are customisable
+New commands for simulating data-sets : SIMUN ADDNOISE
+New command for amoebae : MODIFY_AMOEBA.
+
+Changes:
+All calls to the old graphic layer have been removed :
+  PH, CHECK3d, etc.. are now Motif.
+  all the functions of the zoom control box are available during macro
+  execution (see point, rowint, pp, etc..)
+  many macros have been modified accordingly
+ZM and CHECK3D have slightly modified syntax
+Slightly better user messages (for F1, F2, F3 dialogs)
+Changed POINT and MONOPOINT see above
+MODULE has been changed to MODULUS
+new contexts : $CONFIG_GRAPH
+Modified the HTML manual
+INTEG has been internally rewritten, and a paramter has been added.
+some output format have been changed (PEAK, INTEG, REDFIELD)
+SIMUNOE is now obsolete, try the SimSpect2D macro, based on SIMUN
+
+Corrected bugs:
+plot3D and display of cube in 3D now work, as well as Zoom mode in 3D
+FREEZE now works ! available also in the wm menu. FREEZEd windows are closed
+  from the window manager.
+SHOWLINE was buggy in 1D mode
+%% syntax now works, was slightly buggy
+file dialog box was loosing memory of the current directory
+getc 3d->2d was copying wrong spectral parameters
+comments at the end of a FOR line was buggy
+PUT PLANE F3 was buggy (thank you Kalle ;-)
+cache_mad.c was buggy (could cause core dump in certain cases)
+
+
+22-june 1995 - Version 4.05b
+Features:
+SHOWC : new command to display joined data-set without loading them into memory
+super1d/super2d macros which uses the SHOWC command to permit superposition of
+   the display of several data-sets on screen
+Line-fitter (LINEFIT; LINEFITD; SHOW LINEFIT; GET LINEFIT; show_fit)
+   now works for 2D (Lorentzian and Gaussian)
+store zoom/back to stored zoom facility in display menu
+new $CCOLOR context
+New UNIT : seconds
+new entry mode for coordinates : if xxx is a number
+	xxx : in index; xxxp in ppm; xxxh in hertz; xxxs in seconds
+REVERSE now works in 2D and 3D, reverses also in complex mode
+    (depending on itype) : i.e. reverse the complex vector.
+Source is now available to licenced users.
+new command UNREF
+
+Changes:
+the macro calib has been cleaned-up
+expanded buffers for LINEFIT
+clean-up of the display menu
+add Plotpeaks and residue in Peaks menu
+added a Correct1st point button in the Apodisation menu
+correction in ux2cach utility, now handles DMX data-sets
+clear mode now works on CDISP2D window
+ROW COL and VERT was prompting with last point clicked in POINT,
+	not true any more (was buggy)
+better error messages
+
+Corrected bugs:
+ux2cach utility was very buggy ! spectral parameters were ALL wrong.
+LINEFIT seems to be corrected on SGI
+PH, SHOWFIT, BCORR 2 used to crash is sizes > max protected 1D
+bug in initialisation of the ZM box parameters
+READ used not to load correctly spectral parameters
+Absmax0 is now correct in data-sets
+corrected bug in variable allocation, that made long FORMBOXes to miss some variables
+MULTDATA was buggy in 2D
+SHOWTEXT SHOWLINE PLOTTEXTS PLOTLINES were buggy in 1D
+JOIN could be used only once on read-only files
+dim 2 in 2D does not refresh anymore
+slightly better error handling on READH
+better NDISP
+JMULT was wrong by a factor of 4
+command RESET removed
+tail() was letting a leading blank
+wrong format in PLOTAXIS have been corrected
+MachTen distribution was VERY slow -> slightly better now.
+
+
+may-1995 - Version 4.04b (not released)
+
+
+17-mars 1995 - Version 4.03b
+Features:
+ported to SUN
+The rshift and lshift macros
+support of macro documentation by Mosaic
+
+Changes:
+in NEWFILEC, the parameter FREQ has been moved to the end of the list.
+BCORR 3 can now work on larger data-sets
+plot deals more gracefully with errors
+added feaures in easy2d, notably the "load macro" action
+
+Corrected bugs:
+the bug in the color allocation that was showing on INDY is fixed
+DBM set of commands is normally debugged now on SGI and AIX machines
+messages from commands are now cleaner.
+NEWFILEC is debugged now, and the proc2d proc3 macros usable.
+help on macro does not hampers any more the use of the macro (!)
+menus now closes when the menu bar is closed
+zoom out in the ZM box was changing the shape of the zoom window
+TM was bugged on complexe (itype 1) data
+(4.5e12+1) does not give an error any more
+you can now change the color of contours in ccolor 0 mode
+
+
+13-mars-1995 - Version 4.02b (not released)
+
+
+16-feb-1995 - Version 4.01b (first beta)
+Features:
+Complete rewrite of the cache system (join, getc, putc, read, write, ...)
+	=> many new features : (GET/PUTHEADER, etc..)
+	=> executable are now much leaner (gifa_med version is down from 56Meg to 23Meg)
+The source code for the new cache system is available in gifa/util/ux2cache
+test suit for the cache and the peak functions
+
+Changes:
+with the new cache the following commands have changed :
+putc - getc and the order of the parameters (now like in zoom)
+newfilec - does not require a join
+File created with the new cache cannot be accessed with the old one.
+	you can tell by making a more of the file and looking to 
+	the Cacheversion parameter (old is 1, new is 2)
+changed command GO and CONT to MAXENT and MAXENTCONT (cosmetic)
+changed the installation Makefile
+changes in util/get/getrmn (rename into getnmr) (cosmetic)
+
+Corrected bugs:
+Many bugs associated to the previous cache system have been removed,
+	probably many new bugs yet to be discovered !
+when working, the mouse is a watch on all windows
+ZM and shift buttons when 2 windows on screen
+cdisp2d and a size of 1 does not crash any more.
+the line fitter now works on SGI machine (was a bug in the compiler!)
+correction in the macro ft_sh (was rft instead of revf)
+
+Not released - Version 4.09a
+Features:
+licence protection installed
+New commands MULTDATA (mult current with DATA) INVF(invert one every two point)
+USWA and SWA now work in 2D
+a test of Linear Prediction in the test suit
+formboxes now can be larger than the screen, adapted with scrol-bars.
+
+Changes:
+The command BIG have been removed,
+CDISP2D now creates a window of 15cmx15cm, independent of CX,CY
+changes in the several menus
+1st point correction in easy2d
+
+Corrected bugs:
+rtselect was bugged when roots were selected in disorder
+rt->pk sets the line type in pklist
+chsize does not accept anymore an odd size if complex mode
+
+
+10-january-1995 Version 4.08a
+Features:
+New menus and macros:
+	Linear prediction; Hilbert transform; burg2d and 3d; easy2d; easyplot
+	read(f); write(f);
+Support of on-line Hypertext documentation (with Mosaic)
+now the $_ syntax is available at top-level context
+
+Corrected bugs:
+bugs corrected in mouse zooming;
+	and extended functionnalities (now the 4 litle arrows work)
+bug corrected in language (structures idented with tab)
+bug corrected in RTSELECT
+extended tests
+
+
+
+Not released - Version 4.07a
+Changes:
+--------
+syntax changed for FORMBOX and DIALOGBOX
+changed CLOSEBOX in CLOSEBUTTON
+
+Corrected bugs:
+bug corrected on SGI -> now works on silicon
+corrected readm and writem
+changed the installation Makefile
+
+
+
+1-dec-1994 Version 4.06a
+first public release of the alpha version of GIFA
+Many, Many changes from version 3.x - see documentation

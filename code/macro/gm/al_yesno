@@ -1,0 +1,7 @@
+; al_yesno text
+;
+; ask to the user and returns yes or no
+set tt = $_
+dialogbox "Yes/no" \
+  $tt enum "yes,no" yn % *
+set returned := $yn

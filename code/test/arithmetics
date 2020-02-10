@@ -1,0 +1,54 @@
+report (1 & (0 | 1) & !0) "basic logical" 
+
+report (10==10 & 11!=10 & 10<11 & 11>10 & 10<=10 & 11>=10) "comparison"
+
+report ((-.1==-1.E-1) & (1024==1k)) "numeric input"
+
+report ((2*3+5) == (-3+28/2)) "basic 4 ops"
+
+report (abs(-2^3%int(3.1)) == 20e-1) "int abs modulo and exponentiation"
+
+report (1+2*3^2 == 3^2*2+1) "priority"
+
+report ((1+2)*((2+2)*3) == 3*12) "parenthesis"
+
+set a := (atan(1))   set eps = (1e-10)
+report (abs(sin(2*$a)-1)< $eps & abs(cos($a)-sin($a))<$eps ) "trigo"
+
+report (abs(log(sqrt(exp(1)^2))-1) < $eps) "sqrt, log"
+
+report (power2(127.9)==64 & power2(128.1)==128) "power2"
+
+report (min(1,2)==1 & max(1,2)==2) "min, max"
+
+; now string
+set a = "Dans l'oeil du chat qui lecha ma joue, j'ai vu ce gars qui se cachait dedans le matou."
+
+report ("abc"s="abc" & "abc"s!"cba") "string comparison"
+
+report (("abc "//" def") s= "abc  def") "string concatenation"
+
+report (toupper(tolower($a)//sp(3)//$a) s= (toupper($a)//sp(3)//toupper(tolower($a)))) \
+	"tab, tolower, toupper, sp"
+
+report ( head($a) s= "Dans" & head(tail($a)) s= "l'oeil") "head, tail"
+
+report ( len($a)==86 & index($a,"joue")==34 & index($a,"joues") == 0) "len, index"
+
+report ( subst($a,51,52) s= "ga") "subst"
+
+report ( headx($a,"'") s= "Dans l" & tailx($a,"dedans") s= " le matou.") "headx, tailx"
+
+dim 1 chsize 1k specw 1000 freq 400 400 offset 100
+one mult 1.5
+dim 2 chsize 200 100 specw 1000 2000 freq 400 400 100 offset 100 -100
+one mult 2.5
+dim 3 chsize 30 20 10 specw 1000 2000 3000 freq 400 400 100 10 offset 100 -100 0
+one mult 3.5
+
+report (val1d(10) == 1.5 & val2d(20,10) == 2.5 & val3d(15,10,5) == 3.5) "val1d, val2d, val3d"
+
+set a = (itoh(1,2,1)==1100 & itop(1,2,2)==(1900/100)) 
+report ($a & (htoi(ptoh(itop(333,1,1),1,1),1,1)-333)<10E-3 ) "itoh, and all internal conversion"
+
+;report ((.65-1.65) == -1) "HPUX 9.x specific bug"

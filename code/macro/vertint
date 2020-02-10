@@ -1,0 +1,17 @@
+; interactive
+; permits to choose verts interactively on a 3D by clicking on the 2d plane
+;
+;see also : rowint colint planeint ph2dc ROW COL
+
+if ($dim!=3) error 'Works only in 3D'
+refmacro 1
+print "click on the 2D data set, finish by pressing the third button of the mouse"
+=loop
+  dim 2 unref
+  monopoint
+  if ($button==3) goto end
+  print ('vert :'; round($pointy[1]) ; round($pointx[1]))
+  dim  3 vert  (round($pointy[1])) (round($pointx[1])) unref
+  goto loop
+=end
+refmacro 0 dim 3 exit

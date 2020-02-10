@@ -1,0 +1,80 @@
+;This form is a simple interface, which permits to use most of the
+;Gifa features when processing 3D.
+;
+;Simply give   the input and output filename
+;              processing and axis to process for each pass
+;                  (use -none- if 1 pass is enough)
+;              -write macro- can be used 
+;
+;It is based on the proc3d macro which permits to apply a given
+;macro processing on all the plane of a 3D file, the present macro simply
+;helps in the process of building the various macros used for proc3d.
+;
+;A typical processing consists in setting up a 2D processing for all
+;the planes of the 3D, along a given axis, then to set_up for 1D processing
+;for the remaining axis.
+;
+;To get things set-up, select the axis, then use the
+;-practice- button. This will create a dummy 2D file extracted from
+;the 3D, and which can be used for testing a given processing. You will be
+;provided with easy2d form to test things up.
+;
+;When you have found a correct processing, store the macro (with -write macro-
+;on the easy2d form), and get back to easy3d form.
+;You will have to click on the - rem. 'read' action - button to remove the
+;read commande which is in macro written by the easy2d form.
+;
+;The major difficulty is that you have to process all 3 axes with two 2D 
+;passes, and things get a little confuse.
+;To do so, you can typically do the following:
+;1) practice on 1st pass on F1 planes, and find correct parameters for F1 and F2 
+;   of F1 planes (thus F2 and F3 of the 3D)
+;2) store parameters as a macro and close easy2d form
+;3) click on   rem. 'read' action  for 1st pass
+;4) Then practice on 2nd pass on F2 planes. Propagate the parameters you 
+;   have found in 1st pass in F2 to current F2 (it is the same F3 axis of the 
+;   3D) and find correct parameters for F1
+;5) DO NOT store these parameters as is, otherwise F3 of the 3D would
+;   be processed twice !
+;   Rather, change FT type in F2 to "none" in easy2d form before storing the 
+;   macro. 
+;6) click on   rem. 'read' action  for 2nd pass
+;7) Now you have setted-up two macros, the first one (probably called 
+;   plane_F1.g) for processing F1 planes (thus F3 and F2 of the 3D), the second 
+;   one (probably called plane_F2.g) for processing F2 planes, but onbly along 
+;   the F1 axis of the 3D.
+;
+;Note that there is no need to process everything at once, may want to do
+;a partial processing, keep the intermediate file, and use it latter on
+;to finish the 3D processing.
+;
+;
+; see also : proc3d easy3d_doit easy2d
+
+set ee = 'none,F1 (plane F2xF3),F2 (plane F1xF3),F3 (plane F1xF2)'
+
+formbox "easy 3d" \
+       "easy3d_doit doit $fin $axis1 $mac1 $axis2 $mac2 $fout" \
+       "Input 3D file" file fin $_ \
+       noreturn "   info. on" message noreturn \ 
+	   "dataset" action 'join $fin dataset disjoin' \
+       separator \
+       "1st Pass      Process along:" enum $ee axis1 $_ \
+       noreturn "practice" action "easy3d_doit practice 1 $fin $axis1 $mac1" \
+       "macro to apply" file mac1 $_ \
+       noreturn "rem. 'read' action" action  "easy3d_doit clean $mac1" \
+       separator \
+       "2nd Pass      Process along:" enum $ee axis2 $_ \
+       noreturn "practice" action "easy3d_doit practice 2 $fin $axis2 $mac2" \
+       "macro to apply" file mac2 $_ \
+       noreturn "rem. 'read' action" action  "easy3d_doit clean $mac2" \
+       separator \
+       "Output 3D file" file fout $_ \
+       "Do it now" action "easy3d_doit doit $fin $axis1 $mac1 $axis2 $mac2 $fout"  \
+       noreturn "Write macro" action "easy3d_doit  write $fin $axis1 $mac1 $axis2 $mac2 $fout"  \
+       noreturn "Load macro" action "easy3d_doit load"  \
+       noreturn "Help" action "help easy3d" \
+       *
+exit
+
+

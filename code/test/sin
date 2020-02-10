@@ -1,0 +1,11 @@
+; pour tracer une sinusoide
+;
+set i = 1    set max = 40    set ymax = 30   set 2pi = (8*atan(1))
+=loop1
+  set y = ( (sin((($i-1)/$max)*$2pi)+1)*$ymax  ) 
+;  print (sin((($i-1)/$max)*$2pi)+1)
+;  print  ('.'//sp(int($y))//'*')
+  print  (sp(int($y))//'*')
+  set i = ($i+1)  if ($i < $max) goto loop1
+exit
+

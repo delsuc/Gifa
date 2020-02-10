@@ -1,0 +1,21 @@
+; list_sys
+;
+; list all sys entries in a clickable table
+set tmp = ('tmp' // int(1000000*$random))
+open $tmp
+fprint $tmp 'formbox "all spin systems" DO_NOTHING \'
+for sid = 1 to $sys["LARGEST"]
+   if (exist('sys[' // $sid // ']')) then
+	set ss = $sys[$sid]
+	fprint $tmp ('"#'; $sid; ':'; head($ss); head(tail($ss));'" message \')
+        fprint $tmp ('noreturn Show action "show_sys'; $sid; '" \')
+        fprint $tmp ('noreturn Edit action "mod_sys'; $sid; '" \')
+   endif
+endfor
+fprint $tmp ' "Show all" action show_all_sys \'
+fprint $tmp '*'
+close $tmp
+@($tmp)
+
+sh ('/bin/rm' ; $tmp)
+

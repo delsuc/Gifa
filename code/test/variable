@@ -1,0 +1,45 @@
+; tests basic variable and test things
+report 1 "parameter passing"   ; of course as report relies on it
+
+for i = 1 to 10
+        set t[$i] := $i
+endfor
+set i = 4
+report ($t[$i]==$t[2+2] & exist('t[]') ) "associative variables"
+
+report (!exist('cmd') & exist('i') ) "local variables"
+
+report (exist('error')) "global variables"
+
+set cc = 0
+set cc2 = 0
+foreach i in t
+   set cc = (%+1)
+   set cc2 = (%+$t[$i])
+endfor
+report ($cc == 10 & $cc2 == 55) "foreach over array"
+
+unset t[1]
+munset t[2] t[3] *
+for i = 4 to 10
+        unset t[$i]
+endfor
+report (!exist("t[1]") & !exist("t[3]") & !exist("t[5]")) "unset munset"
+
+set t['Pic181'] = 'HA(1)HB2(3)'
+set t['Pic164'] = 'HA(10)HB(13)'
+set t['Pic203'] = 'HN(24)HN(25)'
+set index = ' '
+set ok = (nextlm('t',' ') s! ' ')
+report ($ok & (nextlm('t',$index) s! ' ')) "nextlm for first key"
+set index = (nextlm('t',$index))
+report (nextlm('t',$index) s! ' ') "nextlm generic"
+set index = (nextlm('t',$index))
+set index = (nextlm('t',$index))
+report ($ok & (nextlm('t',$index) s= ' ')) "nextlm for last key"
+
+foreach i in t
+   unset t[$i]
+endfor
+report (!exist('t[]')) "foreach and unset"
+

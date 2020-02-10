@@ -1,0 +1,14 @@
+; as in unix
+;
+; see also : ls pwd more vi vim vip SH CD
+
+if (! $arg) then
+   message 'Which file(s) ?' 
+   set rm_l = $_  sh ("rm -i " // $rm_l)
+else
+   set rm_l = "rm -i"
+   while $arg
+      set rm_ll = $_  set rm_l = ($rm_l; $rm_ll)
+   endwhile
+   sh $rm_l
+endif

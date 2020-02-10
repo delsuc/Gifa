@@ -1,0 +1,22 @@
+; view_res (interactive)
+;
+; create the rasmol script file allowing to 
+; display a selected molecule with a selected residue
+; in CPK. 
+; Molecule and residue are chosen by the user.
+;
+
+dialogbox "Residue Viewer" \
+   "choose PDB file " enum $list_pdb pdbfile % \
+   separator \
+   "Residue number" int nores % \
+   * 
+
+open PDB/l
+fprint PDB/l ("load" ; $pdbfile)
+fprint PDB/l ("center" ; $nores)
+fprint PDB/l ("select" ; $nores)
+fprint PDB/l "spacefill 100"
+fprint PDB/l "zoom 100"
+close PDB/l
+

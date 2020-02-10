@@ -1,0 +1,117 @@
+; check_peak $grep_type $cr_par $i
+;
+; For a given peak number $i, and a given criterion $grep_type and 
+; criterion parameter value $cr_par, look if the peak meets the criterion
+; with the crieterion parameter value.
+; if the peak meets, returned = 1
+; else returned = 0
+;
+; see also: grep_peak, show_att, show_curr, SHOWPEAKS
+;
+ 
+set grep_typ = $_
+set cr_par = $_
+set i = $_
+
+set returned := 0
+
+set l = $att[$i]
+
+if ($grep_typ s= "Off") then
+  set returned := -1
+endif
+
+if ($grep_typ s= "Peak_note") then
+; get the peak note
+   set t = (tail(tail(tail(tail(tail($l))))))
+   if (index($t,$cr_par) != 0) set returned := 1
+endif
+   
+if ($grep_typ s= "Spin_note") then
+; get the spin note
+   set t = (tail(tail(tail($l))))
+   set u = (tolower(head($t))) 
+   set v = (tolower(head(tail($t)))) 
+   if (($u s! "unk" ) & ($v s! "unk" )) then
+     set s1 = ($spin[(head($t))])
+     set s2 = ($spin[(head(tail($t)))])
+     set t1 = (tail(tail(tail($s1))))
+     set t2 = (tail(tail(tail($s2))))
+     if ((index($t1,$cr_par) != 0) | (index($t2,$cr_par) != 0)) set returned := 1
+   endif
+endif
+      
+if ($grep_typ s= "Res Type") then
+; get the residue types involved in the peak
+   set t = (tail(tail(tail($l))))
+   set u = (tolower(head($t))) 
+   set v = (tolower(head(tail($t)))) 
+   if (($u s! "unk" ) & ($v s! "unk" )) then
+      set s1 = ($spin[(head($t))])
+      set s2 = ($spin[(head(tail($t)))])
+      set sys1 = (head(tail(tail($s1))))
+      set sys2 = (head(tail(tail($s2))))
+      if (($sys1 s! "unk") & ($sys2 s! "unk")) then 
+         set r1 = (head(tail($sys[$sys1])))
+         set r2 = (head(tail($sys[$sys2])))
+         if (($r1 s= $cr_par) | ($r2 s= $cr_par)) set returned := 1
+      endif
+   endif
+endif
+        
+if ($grep_typ s= "Res Numb") then
+; get the residue numbers involved in the peak
+  set t = (tail(tail(tail($l))))
+  set u = (tolower(head($t))) 
+  set v = (tolower(head(tail($t)))) 
+  if (($u s! "unk" ) & ($v s! "unk" )) then
+     set s1 = ($spin[(head($t))])
+     set s2 = ($spin[(head(tail($t)))])
+     set sys1 = (head(tail(tail($s1))))
+     set sys2 = (head(tail(tail($s2))))
+     if (($sys1 s! "unk") & ($sys2 s! "unk")) then 
+       set r1 = (head($sys[$sys1]))
+       set r2 = (head($sys[$sys2]))
+       if (($r1 == $cr_par) | ($r2 == $cr_par)) set returned := 1
+     endif
+  endif
+endif
+        
+if ($grep_typ s= "Spin Type") then
+; get the spin names
+   set t = (tail(tail(tail($l))))
+   set u = (tolower(head($t))) 
+   set v = (tolower(head(tail($t)))) 
+   if (($u s! "unk" ) & ($v s! "unk" )) then
+     set s1 = ($spin[(head($t))])
+     set s2 = ($spin[(head(tail($t)))])
+     set t1 = (head(tail($s1)))
+     set t2 = (head(tail($s2)))
+;     print ("t1";$t1;"t2";$t2;"cr_par";$cr_par)
+;     print ( (index($t1,$cr_par)) ; (index($t2,$cr_par)) )
+     if ((index($t1,$cr_par) != 0) | (index($t2,$cr_par) != 0)) set returned := 1
+;     print $returned
+   endif
+endif
+        
+if ($grep_typ s= "Max Int") then
+; get the peak intensity
+  set t = (head(tail(tail($l))))
+  if (abs($t) <= $cr_par) set returned := 1
+endif
+        
+if ($grep_typ s= "Min Int") then
+; get the peak intensity
+  set t = (head(tail(tail($l))))
+  if (abs($t) >= $cr_par) set returned := 1
+endif
+        
+if ($grep_typ s= "Unassigned") then
+  if (index(tolower($att[$i]),'unk') != 0) set returned := 1
+endif
+    
+
+
+
+
+

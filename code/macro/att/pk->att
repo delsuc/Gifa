@@ -1,0 +1,20 @@
+; pk->att
+;
+; copy the current peak table (from the peak picker)
+; to the current assignment data-base
+;
+if (!dbm("att")) error "No data-set selected !"
+alert ("Ok to copy"; $npk2d; "peaks in database ?")
+set n = 0
+set l = $att["largest"]
+for i = 1 to $npk2d
+; copy only the peak with positive width
+    if ($pk2d_f1w[$i] > 0) then
+	set f1 = ( itop($pk2d_f1f[$i],2,1))
+	set f2 = ( itop($pk2d_f2f[$i],2,2))
+	set att[$l+$i] = ($f1; $f2; $PK2D_A[$i]; "unk"; "unk")
+        set n = (%+1)
+    endif
+endfor
+set att["largest"] = ($l + $n)
+alert ("Added"; $n; "peaks, for a total of"; $att["largest"]; "peaks")

@@ -1,0 +1,22 @@
+; ft_sim
+;
+; performs the fourier transform of a data-set acquired on a Bruker in
+; simultaneous mode
+; Processing is performed only along the F2 (F3) axis if in 2D (3D)
+;
+; (Bruker QSIM mode)
+;
+; see also : ft_seq ft_sh ft_tppi ft_sh_tppi ft_phase_modu ft_n+p FT
+
+if ($dim == 1) then
+;  if ($itype_1d != 1) error "data should be complex"
+  itype 1
+  revf ft exit
+elsif ($dim == 2) then
+;  if ($itype_2d == 2 | $itype_2d == 0) error "data should be complex"
+  if ($itype_2d == 2 | $itype_2d == 0) itype (%+1)
+  revf f2 ft f2
+else
+  if (($itype_3d %2)==0) itype (%+1)
+  revf f3 ft f3
+endif

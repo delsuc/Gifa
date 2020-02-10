@@ -1,0 +1,25 @@
+; rem_sys $ss_id
+;
+; check all spins on a system
+; removes all spins using the rem_spin macro
+; unset $sys[$ss_id]
+; 
+
+set ss_id = $_
+gm/al_yesno ("Ok to remove system  #"; $ss_id)
+if ($returned s! "yes") error "'system remove' Aborted"
+
+set ss = $sys[$ss_id]
+set num = (head($ss))
+set aa = (head(tail($ss)))
+set splist = (tail(tail($ss)))
+
+;check all spins
+while ($splist s! " ")
+	set sp = (head($splist))  
+	set splist = (tail($splist))
+	@rem_spin_proc $sp
+endwhile
+
+; unset
+unset ("sys[" // $ss_id // "]")

@@ -1,0 +1,31 @@
+; align_pk_spin $spin_id
+; for a given spin align the peaks pointing to this spin
+; with the chemical shifts of the spin itself.
+
+set id = $_
+
+set sp = $spin[$id]
+set ppm = (head($sp))   set left = (tail($sp))
+
+
+initinprogress $att["LARGEST"]
+
+for pkid = 1 to $att["LARGEST"]
+  if (exist('att[' // $pkid // ']')) then
+	set pk = $att[$pkid]
+	set f1 = (head($pk))   set pk = (tail($pk))
+	set f2 = (head($pk))   set pk = (tail($pk))  set spleft = $pk
+	set pk = (tail($pk))
+	set sp1id = (head($pk)) set pk = (tail($pk))
+	set sp2id = (head($pk))
+
+	if ($sp1id s= $id) then
+	   set att[$pkid] = ($ppm;$f2;$spleft)
+	   print ("peak";$pkid;"has been moved")
+	elsif ($sp2id s= $id) then
+	   set att[$pkid] = ($f1;$ppm;$spleft)
+	   print ("peak";$pkid;"has been moved")
+	endif
+  endif
+inprogress $pkid
+endfor

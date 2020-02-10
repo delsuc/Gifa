@@ -1,0 +1,9 @@
+; basic test, the whole test set won't work if this one fails
+;
+if ( 1 == 0 ) error "Gifa completly screwed up"
+set error := 0
+set i = 1
+if ($i == 0) set error := 1 exit
+set error := 1
+if ($i == 1) set error := 0
+

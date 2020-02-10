@@ -1,0 +1,32 @@
+; pointf axis
+; same as point but draws only along one axis
+
+set axis = $_
+refmacro 1
+if ($dim ==1 & $disp1d == 0) error "Display must be on"
+if ($dim == 2 & ($disp2d == 0 & $cdisp2d == 0 )) error "Display must be on"
+if ($dim == 3) error "Not available in 3D"
+print "Click on spectrum with left and middle button"
+print "Exit by clicking on right button"
+point_clear
+=loop
+  monopoint
+  if ($button == 3) goto exit
+  if ($dim == 1) then
+    print (round($pointx[1]);" : "; val1d(round($pointx[1])))
+    showline $pointx[1] 1 $pointx[1] 100
+  elsif ($dim == 2) then
+    if ($axis s= 'F1') then
+       print ("Row :"; round($pointy[1]))
+       showline 1 $pointy[1] $si2_2d $pointy[1]
+    elsif ($axis s= 'F2') then
+       print ("Col :"; round($pointx[1]))
+       showline $pointx[1] 1 $pointx[1] $si1_2d
+    endif
+  endif
+  point_push
+  goto loop
+=exit
+point_pop
+refmacro 0
+exit

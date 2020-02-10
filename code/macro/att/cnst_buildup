@@ -1,0 +1,119 @@
+; cnst_buildup (interactive)
+;
+; permits the output of a constraint file according to the set of 
+; calibration peaks. The constraint distances are defined from 
+; the calibration peaks, and a distance uncertainty.
+;
+;
+
+Print "Current project :"
+pwd
+
+if ($att['largest'] == 0) error "Database Empty !"
+if ($dim != 2) error "Command available in 2D only !"
+if (!(exist('calib_dst[]'))) error "You need first to define calibration peaks!"
+
+if (!$arg) then
+  formbox 'Build_up constraint output' \
+   'cnst_buildup $cnst_format $cnstfil $varlow $varupp' \
+   'Format' enum 'XPLOR,DIANA' cnst_format 'XPLOR' \
+   'Constraint file basename' file cnstfil cnst \
+   'Lower dist uncertainty' real varlow 0.5 noreturn \
+   'Upper dist uncertainty' real varupp 0.5 \
+   *
+else
+  set cnst_format = $_
+  set cnstfil = $_
+  set varlow = $_
+  set varupp = $_
+
+; computation of the factor between intensity and (1/d**6) by
+; a least-square
+  set sumi2 = 0
+  set sumij = 0
+  set i = (nextlm("calib_dst"," "))
+  while ($i s! " ")
+    if ($calib_dst[$i] == 0) error ("Pb with calibration distance of peak" ; $i)
+; get the peak intensity
+    set l = $att[$i]
+    set t = (head(tail(tail($l))))
+;    print ("t " ; $t ; $calib_dst[$i] ; $i)
+    set sumi2 = (%+($t*$t))
+    set sumij = (%+($t/($calib_dst[$i]^6)))
+    set i = (nextlm("calib_dst",$i))
+  endwhile
+  if ($sumi2 == 0) error "Pb with calibration intensities!" 
+  set factor = ($sumij/$sumi2)
+; determine the intensity threshold for which the corresponding distance is 
+; larger than 5.0, this value is used to reject the constraints corresponding 
+; to too small intensities
+  set thres = ($factor/(5.0^6))
+
+  if ($cnst_format s= "DIANA") then
+    dbopen /usr/local/gifa/macro/att/1let_3let code
+;scan prim seq 
+    open db/primary
+    set l = <db/primary
+    set i = 1
+    while (!eof('db/primary'))
+       set seq[$i] = (head($code[$l]))
+       set i = (%+1)
+       set l = <db/primary
+    endwhile
+    close db/primary
+    dbclose code
+  endif
+
+  if ($cnst_format s= "XPLOR") then
+    set cnstfil = ("constraints/" // % //".tbl")
+  elsif ($cnst_format s= "DIANA") then
+    set cnstfil = ("constraints/" // % //".upl")
+  endif
+  print ("cnstfil "//$cnstfil)
+  open $cnstfil
+
+  initinprogress $att["LARGEST"]
+  set uu = 0
+  foreach i in att
+    if ($i s= "LARGEST")  goto break
+      inprogress $uu
+      set uu = (%+1)
+; get the assigned peak label
+      set l = $att[$i]
+      if (index($l,'unk') != 0) goto break     ; processing of the assigned peaks
+      set t = (tail(tail(tail($l))))
+      set s1 = ($spin[(head($t))])
+      set s2 = ($spin[(head(tail($t)))])
+      if ($s1 == $s2) goto break 
+      set sys1 = (head(tail(tail($s1))))
+      set sys2 = (head(tail(tail($s2))))
+      if (($sys1 s= "unk") | ($sys2 s= "unk")) goto break 
+      set r1 = (head($sys[$sys1]))
+      set r2 = (head($sys[$sys2]))
+      set a1 = (head(tail($s1)))
+      set a2 = (head(tail($s2)))
+; get the peak intensity
+      set u = (head(tail(tail($l))))
+      if ($u < $thres) goto break
+      set p = (1/($u*$factor))
+      set distmoy = ($p^(1/6))
+      set distmoy = (int($distmoy*100)/100)
+      set u = ($distmoy - (max(1.8,$distmoy-$varlow)))
+      set u = (int($u*100)/100)
+      if ($cnst_format s= "XPLOR") then
+         fprint $cnstfil ('assign (resid';$r1;'and  name';$a1;')(resid';$r2;'and  name';$a2;')';$distmoy;$u;$varupp)
+      elsif ($cnst_format s= "DIANA") then
+         fprintf $cnstfil "%3d %3s  %-4s  %3d %3s  %-4s   %5.2f" $r1 $seq[$r1] $a1 $r2 $seq[$r2] $a2 ($distmoy+$varupp) *
+      endif
+=break
+  endfor
+  close $cnstfil
+
+  inprogress $att["LARGEST"]
+  alert "Constraint file written"
+endif
+
+
+
+
+

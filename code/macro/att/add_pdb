@@ -1,0 +1,25 @@
+;add_pdb
+;
+; add a PDB file to the current project.
+; this is done by creating a soft link to the actual file.
+
+if ($arg == 0) then
+	formbox "PDB file" \
+		"add_pdb $ff $act" \
+		"use this dialog to copy/link PDB file to this project" message \
+		"(links take much less disk room than copies)" message \
+		PDBfile file ff 'PDB' \
+		Action enum "Copy,Link" act "Link" \
+		*
+else
+	set ff = $_
+	set act = $_
+	if ($act s= "Copy") then
+		sh ("cp"; $ff; "PDB")
+	elsif ($act s= "Link") then
+		sh ("ln -s"; $ff; "PDB")
+	endif
+	@build_pdb
+endif
+
+

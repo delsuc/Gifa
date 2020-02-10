@@ -1,0 +1,26 @@
+; conv_n+p
+;
+; preprocess a n+p experiment;
+; i.e. PFG enhanced acquisition, with positive and negative gradients alternated
+; and make it States-Haberkorn
+;
+; Can actually be applied before or after Fourier Transform in F2
+;
+; see also : ft_n+p ft_sh conv_n+p_onfile
+
+  ; based on an example by H.Demene.
+
+refmacro 0
+gm/test2d
+for i = 2 to ($si1_2d) STEP 2
+    set k = ($i-1)
+    row $k
+    dim 1   put data       ; keep (i-1) in data
+    dim 2 row $i
+    dim 1    addData
+    dim 2 put row $k       ; (i-1) + (i)   in  (i-1)
+
+    row $i dim 1 mult -1
+    adddata phase 90 0     ; (i-1) - (i)  x 90  in (i)
+    dim 2 put row $i 
+endfor

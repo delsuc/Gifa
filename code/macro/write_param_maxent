@@ -1,0 +1,12 @@
+;write_param_maxent file_name
+; 
+; store MaxEnt parameters in file header
+
+set file = $_
+join $file
+PUTHEADER Iter $iter
+PUTHEADER Chi2 $CHI2
+PUTHEADER Algo $algo
+PUTHEADER Lambsp  $lambsp
+PUTHEADER Lambcont  $lambcont
+disjoin

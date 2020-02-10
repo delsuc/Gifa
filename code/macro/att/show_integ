@@ -1,0 +1,58 @@
+; show_integ (interactive)
+;
+; permits click on the data-set, and check the intensity value 
+; of the corresponding peak in the database
+;
+
+alert "Click on the peak you want to analyze"
+
+dim 2
+set c = $scale
+
+point_clear
+monopoint
+set f1 = (itop($pointy[1],2,1))  set f2 = (itop($pointx[1],2,2))
+
+find att 2 $f1 $f2
+
+if ($pk_fnd_dst < $tol_click & $pk_fnd_dst != -1) then
+  set ss = $scolor
+  if ($scolor <6) then
+    scolor (%+1)
+  else
+    scolor 1
+  endif
+  show_att $pk_fnd
+  scolor $ss
+  set last_click := ("PEAK"; $pk_fnd)
+
+  compute_label $pk_fnd
+  set label = $returned
+
+  set tmp = ('tmp' // int(1000000*$random))
+  open $tmp
+  fprint $tmp "#PPM  f1  f2   Intensity  Label  (Note)"
+
+  set fm =    "%6.3f %5s      %3d       %3s %3d  %4d %s"
+  set sp = ($spin[$i])
+  set ppm = (head($sp))  set sp = (tail($sp))
+  set name = (head($sp)) set sp = (tail($sp))
+  set sys = (head($sp))  set sp = (tail($sp))
+  set res_num = (head($sys[$sys])) set sp1 = (tail($sys[$sys]))
+  set res_name = (head($sp1))
+  fprintf $tmp $fm $ppm $name $sys $res_name $res_num $i $sp *
+  print ("SPIN"; $i)
+  set f1list = ($f1list ; $i)
+  close $tmp
+
+  formbox "Peak information" DO_NOTHING \
+    $tmp text *
+  sh ("/bin/rm -f";$tmp)
+
+else
+
+  alert ("No peak found within"; $tol_click; "ppm")
+
+endif
+
+

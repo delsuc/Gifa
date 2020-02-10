@@ -1,0 +1,2 @@
+;if ($dim != 3) error 'command available on 3D data only'
+if ($dim != 3) alert 'command available on 3D data only, switching to 3D' dim 3

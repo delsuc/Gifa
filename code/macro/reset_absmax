@@ -1,0 +1,28 @@
+; reset_absmax file_name
+;
+; sometimes, the absmax get screwed up on a file obtained by
+; on-file processing (typically 3D's)
+; this macro resets it to the correct value
+join $_
+refmacro 1
+if ($c_dim == 3) then
+  cdisp2d 0 disp2d 1
+  dim 2
+  set cabs = 0
+  for i = 1 to $C_SIZEF1
+    getc f1 $i %% absmax 0   ; let Gifa do the work !
+    set cabs = (max($cabs,$absmax))
+  endfor
+  putheader Absmax $cabs
+elsif ($c_dim == 2) then
+  disp1d 1
+  dim 1
+  set cabs = 0
+  for i = 1 to $C_SIZEF2
+    getc f1 $i %% absmax 0   ; let Gifa do the work !
+    set cabs = (max($cabs,$absmax))
+  endfor
+  putheader Absmax $cabs
+endif
+disjoin
+

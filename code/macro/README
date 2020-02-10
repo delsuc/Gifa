@@ -1,0 +1,12 @@
+You will find here the standard set of macros for the Gifa program.
+Gifa can perfectly work without this set-up, however most of the
+functionnality described in the manual will not work.
+
+They are several subdirectories of interest:
+
+3d/		some additional macros for 3d processing
+att/		home of the assignment module
+gm/		some (small) utilities, mostly used by the GUI
+varian/		some processing macros adapted to Vnmr files
+misc/		constains old stuff
+

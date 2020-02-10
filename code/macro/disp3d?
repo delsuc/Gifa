@@ -1,0 +1,27 @@
+; interactive for choosing the view point in 3D
+;
+; user gets prompted for values
+;
+; see also : disp3d_form disp? DISP3D
+
+axis3d
+print ' scale of display (SCALE) :'
+scale
+print ' number of level (LEVEL) :'
+level
+sign
+print ' Angles of view point (in degrees)'
+print ' Z axis angle (ALPHA) :'
+alpha
+print ' Y axis angle (BETA) :'
+beta
+print ' X axis angle (GAMA) : '
+gama
+print ' scale of drawing (SCALE3D) : '
+scale3d
+print ' size of box in X , Y and Z : '
+cx
+cy
+cz
+print ' offset on X, Y and Z axes (OFFSET3D) : '
+offset3d

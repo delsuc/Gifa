@@ -1,0 +1,12 @@
+; set up for Conjugated Gradient algorithm for MAXENT
+;
+; see also gifa gad ALGO
+
+print 'Set up for Conjugated Gradient MaxEnt algorithm'
+         stepmax  100.0
+         miniter  20
+         step  1.0
+         algo  23
+         lambsp  3.0
+         tolerance  1.0e-3
+

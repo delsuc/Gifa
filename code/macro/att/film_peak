@@ -1,0 +1,28 @@
+; film_peak $peak_no $ls_spec
+;
+; permits the visualisation of a given peak on a series of data-sets 
+;
+; see also: SHOWPEAKS JOIN film_form
+;
+
+set peak_no = $_
+set ls_spec = $_
+
+; determination of the data-set names from the data-set list
+set nbspec = 0
+while ($ls_spec s! " ")
+  set nbspec = (%+1)
+  set name[$nbspec] := (headx($ls_spec,","))
+  set ls_spec = (tailx($ls_spec,","))
+endwhile
+
+refmacro 1
+for i = 1 to $nbspec
+  join ("spectra/"//$name[$i])
+  showc $scale
+  show_att $peak_no
+  alert ("Spectrum "//$name[$i]//": click on Ok to get the next stpectrum")
+endfor
+refmacro 0
+
+

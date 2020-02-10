@@ -1,0 +1,16 @@
+; mskread file_name
+; read the peak table and the amoeba written with mskwrite
+; for integration with mskinteg
+; appends extensions .pek and .amb to file_name
+;
+; see also : mskwrite MSKINTEG PKREAD PKWRITE
+
+message 'Enter file_name'
+set mskfil := $_
+if ($dim!=2) error '*** in 2D only'
+if ($si1_2D*$si2_2d > 2*$MEM_PRO_2D) error '*** size too large'
+put data
+read ($mskfil // '.amb')
+put amoeba
+get data
+pkread ($mskfil // '.pek') yes

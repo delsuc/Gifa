@@ -1,0 +1,5 @@
+;if ($dim != 1) error 'command available on 1D data only'
+if ($dim != 1) then
+   alert 'command available on 1D data only, switching to 1D'
+   dim 1
+endif

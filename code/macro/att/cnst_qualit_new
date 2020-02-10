@@ -1,0 +1,316 @@
+; cnst_qualit (interactive)
+;
+; permits the output of a constraint file according to the set of 
+; calibration peaks. The constraint distances are qualitatively
+; defined from the calibration peaks, and the bounds given by the 
+; user.
+;
+;
+
+Print "Current project :"
+pwd
+
+if ($att['largest'] == 0) error "Database Empty !"
+if ($dim != 2) error "Command available in 2D only !"
+if (!(exist('calib_dst[]'))) error "You need first to define calibration peaks!"
+
+if (!$arg) then
+  formbox 'Qualitative constraint output' \
+   'cnst_qualit $cnst_format $cnstfil $dstbg $dstmed $dbgl $dbgu $dmel $dmeu $dsml $dsmu $pseudo' \
+   'Constraint File Format' enum 'XPLOR,DIANA' cnst_format 'XPLOR' \
+   noreturn 'basename' file cnstfil cnst \
+   'Large intensity bounds: lower' real dbgl 1.8 noreturn \ 
+   'upper' real dbgu 2.8 \
+   noreturn 'Lower limit' real dstbg 2.5 \
+   'Medium intensity bounds: lower' real dmel 1.8 noreturn \ 
+   'upper' real dmeu 3.1 \
+   noreturn 'Lower limit' real dstmed 3.0 \
+   'Small intensity bounds: lower' real dsml 1.8 noreturn \  
+   'upper' real dsmu 3.5 \
+   'use pseudo atom corrections' enum 'yes,no' pseudo 'yes' \
+   *
+
+else
+  set cnst_format = $_
+  set endfil = $_
+  set dstbg = $_ 
+  set dstmed = $_ 
+  set dbgl = $_ 
+  set dbgu = $_ 
+  set dmel = $_ 
+  set dmeu = $_
+  set dsml = $_ 
+  set dsmu = $_
+  set pseudo = $_
+
+; set up of pseudo atom corrections
+set m_corr = 1.0    ; methylene or methyl
+set q_corr = 2.4    ; double methyl or aromatics
+; list of larger pseudo-atom corrections
+set res_q = 'VAL:QG LEU:QD PHE:QD PHE:QE TYR:QD TYR:QE'
+; list of methyls
+set res_m = 'ALA:HB THR:HG ILE:HG ILE:HD VAL:HG LEU:HD'
+;lookup for aromatic spin systems
+set arom['Arom-PHE'] = 'PHE'
+set arom['Arom-TYR'] = 'TYR'
+set arom['Arom-HIS'] = 'HIS'
+set arom['Arom-TRP'] = 'TRP'
+
+; computation of the factor between intensity and (1/d**6) by
+; a least-square
+  set sumi2 = 0
+  set sumij = 0
+  set i = (nextlm("calib_dst"," "))
+  while ($i s! " ")
+    if ($calib_dst[$i] == 0) error ("Pb with calibration distance of peak" ; $i)
+    set l = $att[$i]
+    set t = (head(tail(tail($l))))
+;   print ("t " ; $t ; $calib_dst[$i] ; $i)
+    set sumi2 = (%+($t*$t))
+    set sumij = (%+($t/($calib_dst[$i]^6)))
+    set i = (nextlm("calib_dst",$i))
+  endwhile
+  if ($sumi2 == 0) error "Pb with calibration intensities!" 
+  set factor = ($sumij/$sumi2)
+; determine the intensity threshold for which the corresponding distance is 
+; larger than 5.0, this value is used to reject the constraints corresponding to 
+; too small intensities
+  set thres = ($factor/(5.0^6))
+
+  if ($cnst_format s= "XPLOR") then
+    	set endfil = ("constraints/" // % //".tbl")
+  elsif ($cnst_format s= "DIANA") then
+    	set endfil = ("constraints/" // % //".upl")
+  endif
+  set cnstfil = 'constraints/temporary'
+  open $cnstfil
+
+; test
+; set serqb_serqb = 0
+
+
+
+
+initinprogress $att["LARGEST"]
+dbopen hash hash
+set uu = 0
+set ncp = 0
+set nbhash = 0
+print "Collecting Peaks Informations..."
+foreach i in att
+    if ($i s= "LARGEST")  goto break
+      inprogress $uu
+      set uu = (%+1)
+
+
+      ; get the assigned peak label
+      set l = (toupper($att[$i]))
+      if (index($l,'UNK') != 0) goto break     ; processing of the assigned peaks
+
+
+      set pk_coor_f1 = (head($l))
+      set pk_coor_f2 = (head(tail($l)))
+      set t = (tail(tail(tail($l))))
+      set sp1 = (head($t))
+      set sp2 = (head(tail($t)))
+      if ($sp1 s= $sp2) goto break 
+      set s1 = ($spin[$sp1])
+      set s2 = ($spin[$sp2])
+      if ((index(toupper($s1),'UNK') != 0)  | (index(toupper($s2),'UNK') != 0) ) goto break  ;and of named spins
+
+
+      set sys1 = (head(tail(tail($s1))))
+      set sys2 = (head(tail(tail($s2))))
+      set r1 = (head($sys[$sys1]))		;r1, r2 : system primary index
+      set r2 = (head($sys[$sys2]))
+      if ((toupper($r1) s= "UNK") | (toupper($r2) s= "UNK")) goto break    ; in assigned systems
+
+
+
+      ; clean up the base 
+      set a1 = (head(tail($s1)))		;a1, a2: spin name
+      set a2 = (head(tail($s2)))
+      ;if ($a1 s= $a2 & $r1 == $r2) set serqb_serqb = (%+1) ;test
+      if ($a1 s= $a2 & $r1 == $r2) goto break   ; case of  SER-QB  with SER-QB
+
+
+
+      set nr1 = (head(tail($sys[$sys1])))       ; get syst names
+      set nr2 = (head(tail($sys[$sys2])))
+      if (index($nr1,'-') != 0)  set nr1 = $arom[$nr1]    ; clean aromatic syst names
+      if (index($nr2,'-') != 0)  set nr2 = $arom[$nr2]
+
+
+      ; get the peak intensity
+      set u = (head(tail(tail($l))))
+      if ($u < $thres) goto break
+      set p = (1/($u*$factor))
+      set distmoy = ($p^(1/6))
+      set distmoy = (int($distmoy*100)/100)
+      if ($distmoy < $dstbg) then        ; Big intensity interval
+         	set varlow = $dbgl
+         	set varupp = ($dbgu-$dbgl)
+      elsif ($distmoy < $dstmed) then    ; Medium intensity interval
+         	set varlow = $dmel
+         	set varupp = ($dmeu-$dmel)
+      else                               ; Small intensity interval
+         	set varlow = $dsml
+         	set varupp = ($dsmu-$dsml)
+      endif
+
+
+
+      ;localisation preferee: aliphatiques en dessous de la diagonale, les autres en dessus
+      set loc = "none"
+      if (($pk_coor_f2 < 4.7) & ($pk_coor_f1 < 4.7) & ($pk_coor_f2 <= $pk_coor_f1)) set loc = "ok"
+      if (($pk_coor_f2 > 4.7) & ($pk_coor_f1 <= $pk_coor_f2)) set loc = "ok"
+
+      if ( exist("hash[" // max($sp1,$sp2) // '-' // min($sp1,$sp2) // ']')) then
+      		;localisation / a la diagonale sur le spectre
+      		if ( $loc s= "ok" ) then   
+			set hash[max($sp1,$sp2)//'-'//min($sp1,$sp2)] = ($sp1;$sp2;$varlow;$varupp;$i)
+		endif
+      else
+      		; stockage
+      		set hash[max($sp1,$sp2)//'-'//min($sp1,$sp2)] = ($sp1;$sp2;$varlow;$varupp;$i)
+      		set nbhash = (%+1)
+      endif
+
+
+
+      ; stockage des noes avec H du meme methylene
+      if (index($a1,'Q') == 1) then
+		set flag = 0
+	    	if ( exist("hash[" // $r1 // ':' // $a1 // ':' // $r2 // ':' // $a2 // ']') ) then ; meme noe 
+			set t = $hash[$r1//':'//$a1//':'//$r2//':'//$a2]
+			set pflag = (head($t))
+                        set psp1 = (head(tail($t))) 		; previous entry spin1 
+                        set psp2 = (head(tail(tail($t)))) 	; previous entry spin2
+			if (($psp1 s! $sp1) | ($psp2 s! $sp2) & ($pflag == 0)) then
+				set flag = 1
+                                set hash[$r1//':'//$a1//':'//$r2//':'//$a2] = ($flag;$psp1;$psp2;$sp1;$sp2)
+                        endif
+		else
+			set flag = 0 
+			set hash[$r1//':'//$a1//':'//$r2//':'//$a2] = ($flag;$sp1;$sp2)
+	        endif
+      endif
+
+=break
+endfor
+inprogress $att["LARGEST"]
+
+
+print " Computing Informations ..."
+set cpt = 0
+initinprogress $nbhash
+foreach i in hash 
+
+
+   if (index($i,':') == 0) then
+       ; recup val
+       set sp1 = (head($hash[$i]))
+       set sp2 = (head(tail($hash[$i])))
+       set varlow = (head(tail(tail($hash[$i]))))
+       set varupp = (head(tail(tail(tail($hash[$i])))))
+       set pk = (head(tail(tail(tail(tail($hash[$i]))))))
+       set go_out = 0
+       set s1 = ($spin[$sp1])
+       set s2 = ($spin[$sp2])
+       set sys1 = (head(tail(tail($s1))))
+       set sys2 = (head(tail(tail($s2))))
+       set r1 = (head($sys[$sys1]))              ;r1, r2 : system primary index
+       set r2 = (head($sys[$sys2]))
+       set a1 = (head(tail($s1)))                ;a1, a2: spin name
+       set a2 = (head(tail($s2)))
+
+
+	; test des noes sur double H de methylene
+	if ( exist("hash[" // $r1 // ':' // $a1 // ':' // $r2 // ':' // $a2 // ']')) then
+           set t = hash[$r1//':'//$a1//':'//$r2//':'//$a2]
+	   set double = (head($t))
+	   if ($double s= "1") then 	; double noes
+                set psp1 = (head(tail($t)))
+                set psp2 = (head(tail(tail($t))))
+       		set psp3 = (head(tail(tail(tail($t)))))
+       		set psp4 = (head(tail(tail(tail(tail($t))))))
+		set n1 = $hash[max($psp1,$psp2)//'-'//min($psp1,$psp2)]
+		set varlow1 = (head(tail(tail($n1))))
+       		set varupp1 = (head(tail(tail(tail($n1)))))
+		set n2 = $hash[max($psp3,$psp4)//'-'//min($psp3,$psp4)]
+		set varlow2 = (head(tail(tail($n2))))
+                set varupp2 = (head(tail(tail(tail($n2)))))
+		if (($varlow1 s= $varlow2) & ($varupp1 s= $varupp2)) then ; meme intensite, pas de correction
+			if (($psp1 s= $sp1) & ($psp2 s= $sp2)) then	; changement de noms
+				set name = ("H"//(subst($a1,2,2))//"1")
+				print $a1
+				print $name
+				set a1 = $name
+			elsif (($psp3 s= $sp1) & ($psp4 s= $sp2)) then
+				set name = ("H"//(subst($a2,2,2))//"2")
+				print $a2
+				print $name
+				set a2 = $name
+			endif
+
+		endif
+		set tt1 = ($varlow1+$varupp1)
+		set tt2 = ($varlow2+$varupp2)
+			; noe courant, contrainte la moins forte : brk
+		if( ($psp1 s= $sp1) & ($psp2 s= $sp2) & ($tt1 > $tt2)) goto brk 
+		if( ($psp3 s= $sp1) & ($psp4 s= $sp2) & ($tt1 < $tt2)) goto brk 
+	   endif
+	endif
+
+
+
+      if ($pseudo s= 'yes') then
+        if (index($a1,'Q') == 1) then
+          if (index($res_q,$nr1 // ':' // $a1) != 0)  then   ; if larger correction needed
+            set varupp = ($varupp+$q_corr)
+          else
+            set varupp = ($varupp+$m_corr)
+          endif
+        elsif (index($res_m,$nr1 // ':' // $a1) != 0)  then ; if methyl
+          set varupp = ($varupp+$m_corr)
+        endif
+        if (index($a2,'Q') == 1) then
+          if (index($res_q,$nr2 // ':' // $a2) != 0)  then   ; if larger correction needed
+            set varupp = ($varupp+$q_corr)
+          else
+            set varupp = ($varupp+$m_corr)
+          endif
+        elsif (index($res_m,$nr2 // ':' // $a2) != 0)  then ; if methyl
+          set varupp = ($varupp+$m_corr)
+        endif
+      endif
+
+      ;show_att $pk ; test
+      if ($cnst_format s= "XPLOR") then
+         fprint $cnstfil ('assign (resid';$r1;'and  name';$a1;')(resid';$r2;'and  name';$a2;')';$varlow;'0';$varupp)
+      elsif ($cnst_format s= "DIANA") then
+         fprintf $cnstfil "%-3d %3s  %4s  %-3d %3s  %4s   %5.2f" $r1 $nr1 $a1 $r2 $nr2 $a2 ($varlow+$varupp) *
+      endif
+      set ncp = (%+1)
+
+
+=brk
+  endif
+  set cpt = (%+1)
+  inprogress $cpt
+  endfor
+  close $cnstfil
+  inprogress $nbhash
+
+  dbclose hash
+  sh '/bin/rm hash.dir hash.pag'
+
+  sh ('sort -n'; $cnstfil; '>'; $endfil)
+  sh ('/bin/rm';$cnstfil)
+
+  alert ("Constraint file :"; $endfil; "written;"; $ncp;"constraints")
+
+
+;print $serqb_serqb ;test
+endif
+

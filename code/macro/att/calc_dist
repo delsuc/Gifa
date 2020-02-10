@@ -1,0 +1,19 @@
+; calc_dist 
+;
+; calculate the inter-atomic distances in a PDB file 
+; from the parameters given
+;
+
+set pdbfil = $_
+set name1 = $_
+set nores1 = $_
+set name2 = $_
+set nores2 = $_
+set tmp = ('tmp' // int(1000000*$random))
+set cmd = ("/usr/local/gifa/com/att/calc_dist.pl" ; $pdbfil ; $name1 ; $nores1 ; $name2 ; $nores2 ; " >" ; $tmp)
+;print $cmd
+sh $cmd
+@($tmp)
+
+sh ("/bin/rm"; $tmp)
+

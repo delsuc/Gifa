@@ -1,0 +1,13 @@
+; GUI to Add
+dialogbox "Read and Add" \
+  "Add file content (pre multiplies) to the current buffer" message \
+  separator \
+  "Enter file name" file _f $name \
+   "Enter pre-multiply coefficient" real _m 1.0 \
+   *
+
+if ($_m == 0) error 'pre-multiply coefficient should not be null'
+
+; I said Buff + m*File
+; I do 1/m(m*Buff + File)
+mult (1/$_m)   add $_f   mult $_m

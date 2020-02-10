@@ -1,0 +1,36 @@
+;mdfamb  interactive
+;
+; this macro permits to interactively and graphically
+; modify a peak amoeba by selecting one-by-one pixels.
+; two possibilities are available.  
+; "add": add the selected pixel to the pic amoeba. 
+; "erase": remove the selected pixel from the pic amoeba. 
+; If the pixel is in another peak amoeba, the program ask 
+; information to user.
+;
+; see also : INTEG MSKINTEG saveamb setamb
+
+if ($dim==1) error "Not useful in 1D"
+showpeaks
+;alert ("click on the peak the amoeba of which you want to modify")
+print ("click on the peak the amoeba of which you want to modify")
+monopoint
+set i = 2  set pic = 1
+set d = (abs($pk2d_f2f[1]-round($pointx[1]))+abs($pk2d_f1f[1]-round($pointy[1])))
+for i = 2 to $npk2d
+  set tt = (abs($pk2d_f2f[$i]-round($pointx[1]))+abs($pk2d_f1f[$i]-round($pointy[1])))
+  if ($tt < $d) set pic = $i set d = $tt
+  if ($d == 0) goto fin
+endfor
+=fin
+showpeak $pic
+
+formbox ("'Peak #";$pic;"'") \
+'setamb $pic $typ_act' \ 
+'Peak number' int pic $pic \
+'Type of action' enum 'add,erase' typ_act 'add' \
+  *
+
+exit
+
+

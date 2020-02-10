@@ -1,0 +1,13 @@
+; burg_rev n_of_point
+;
+; reconstruct the missing n_of_point first data points
+; using the burg method
+; changes order to n_of_point*2
+;
+; see also : svd_rev BURG AR->DT
+
+message "Number of missing points" set n = $_
+order ($n*2)
+dt->ar ar->dt ($si1_1d+$n) 2
+
+

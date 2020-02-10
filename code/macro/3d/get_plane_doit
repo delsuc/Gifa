@@ -1,0 +1,26 @@
+; active part of the get_plane macro
+
+   set iax = $_
+   set ax = ('F' // $iax)
+   set ind = $_
+   set unt1 = $_
+   set unt2 = $_
+   set unt3 = $_
+   dim 2
+   if ($unt1 s= 'INDEX') then
+       set ind = $ind
+   elsif ($unt1 s= 'PPM') then
+       set ind = (round(ptoi($ind,0,$iax)))
+   elsif ($unt1 s= 'HZ') then
+       set ind = (round(htoi($ind,0,$iax)))
+   elsif ($unt1 s= 'DAMPING') then
+       set ind = (round(dtoi($ind,0,$iax)))
+   endif
+   print ('Getting plane';$ind;'along axis';$ax)
+   getc $ax $ind %% absmax $c_absmax
+   unit $unt3   unit_y $unt2
+
+
+
+
+

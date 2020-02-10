@@ -1,0 +1,21 @@
+; ft_seq
+;
+; performs the fourier transform of a data-set acquired in sequential mode
+; Processing is performed only along the F2 (F3) axis if in 2D (3D)
+;
+; (this one adapted to Varian Not tested !)
+;
+; see also : ft_sim ft_sh ft_tppi ft_sh_tppi ft_phase_modu ft_n+p FT
+
+if ($dim == 1) then
+;  if ($itype_1d != 0) error "data should be real"
+  itype 0
+  revf rft reverse
+elsif ($dim == 2) then
+; if ($itype_2d == 1 | $itype_2d == 3) error "data should be real"
+  if ($itype_2d == 1 | $itype_2d == 3) itype (%-1)
+  revf f2 rft f2 reverse f2
+else
+  if (($itype_3d % 2) == 1) itype (%-1)
+  revf f3 rft f3 reverse f3
+endif

@@ -1,0 +1,55 @@
+#!/bin/sh
+# fortran for f2c,  fortan { -O } file_name.f
+# -O means : to optimize
+# set -v
+# set -x
+
+case $1 in
+   -O)	opt=Y
+	nom=$2;;
+   *)	opt=N
+	nom=$1;;
+esac
+
+base=`basename $nom .f`
+cflag='-mpentium -fomit-frame-pointer -c'
+f2cflag='-a -A -h -kr -!R'
+
+# cflag='-pg -mpentium -c'
+echo $base
+echo $nom
+case $opt in
+
+   Y) case $base in
+   unix_lib) f2c $f2cflag $nom
+     sed 's/signal_/signal/' $base.c |
+     sed 's/signal(&c__2/signal(2/' > $base.cc
+     mv $base.cc $base.c
+     gcc -O2 $cflag $base.c;;
+   gifa) f2c $f2cflag -Nn802 -NL800  $nom
+     gcc -O2 $cflag $base.c;;
+   variable) f2c $f2cflag -Nn802 -NL800  $nom
+     gcc -O2 $cflag $base.c;;
+   execute) f2c $f2cflag -Nn1604 -NL1600 -Nx800  $nom
+     gcc $cflag $base.c;;
+   *) f2c $f2cflag  $nom
+     gcc -O2 $cflag $base.c;;
+   esac;;
+
+
+   N) case $base in
+   unix_lib) f2c  $nom
+     sed 's/signal_/signal/' $base.c |
+     sed 's/signal(&c__2/signal(2/' > $base.cc
+     mv $base.cc $base.c;;
+   gifa) f2c $f2cflag -Nn802  $nom;;
+   variable) f2c $f2cflag -Nn802  -NL800  $nom;;
+   execute) f2c $f2cflag -Nn1604 -NL1600 -Nx800  $nom;;
+   *) f2c $f2cflag  $nom;;
+esac
+gcc -g $cflag $base.c;;
+
+esac
+rm $base.c
+
+

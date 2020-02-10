@@ -1,0 +1,118 @@
+Hello,
+
+You just got the Gifa v4 package. Congratulations.
+
+You will find here :
+
+bin/*		the binaries :
+	gifa_tiny	4 different version of Gifa, with
+	gifa_small	different memory configurations
+	gifa_med
+	gifa_big
+	ux2cach		the utility which transfers from UXNMR to Gifa
+			associated utilities/source are in util/ux2cache
+
+macro/*		all the macros needed to get the complete Gifa environment
+
+test/*		a set of tests. Just go to this directory
+		and call the macro TEST within Gifa
+
+util/*		a set of utilities - mostly for getting data-sets out-of those
+		strange Bruker machines.
+
+help/*		the files for the on-line help
+
+doc/*		The Gifa manuals, in Postscript and in html (Mosaic) format
+	
+com/*		some shell scripts used for/by Gifa. Some have to be moved
+		into a directory pointed by your $PATH variable.
+		For instance /usr/local/bin
+
+data/*		example data files (Big!, you should delete these once you
+		are familiar with Gifa)
+
+Makefile	An automatic installation program,
+		type make and follow indications
+
+History		all the changes since the prvious versions
+Brief_description	A short description of the program
+README		generic README
+README_2	this file
+MACHINE_REQUIREMENTS	Details on which machine runs which version
+TODO		wishes for the next features to come.
+
+licence_eng.ps	the english version in postscript
+licence_eng.asc	the english version in ascii
+license_fra.ps	the french version in postscript
+license_fra.asc	the french version in ascii
+
+___________________________________________________________________________
+
+Installation of Gifa should be straightforward using the provided Makefile.
+
+make unpack	will unpack the distribution files.
+
+make verify	will verify that the distribution kit is complete.
+
+make test_gifa	will run a comprehensive test of Gifa.
+		it is not completely abnormal that some tests fail, this
+		is still a beta version, and some feature are there but not
+		fully implemented.
+		Type :  exit n    at the end to exit Gifa
+make install	will install Gifa on your machine. Installation consists in :
+		creating  /usr/local and /usr/local/bin directories
+			if not already there
+		creating a /usr/local/gifa link which points to the
+			location where you put the distribution kit
+		putting two versions of Gifa into /usr/local/bin,
+			typically gifa_med as gifa
+			and       gifa_big as gifab
+make Bruker_install
+		installs some utilities for getting UX-NMR files
+___________________________________________________________________________
+
+Some remarks
+
+1/ You should get a licence if this is not done yet, please read the README
+   file, about getting the licence.
+
+2/ The different versions of Gifa are as follow :
+**CHANGED with version 4.3 **
+
+    gifa_tiny  is defined for a maximum of 1 Mega points (1k x 1k  2D)
+                takes about 9 Mega of memory (Physical + swap) on the system
+
+    gifa_small    is defined for a maximum of 4 Mega points (2k x 2k  2D)
+                takes about 23 Mega of memory (Physical + swap) on the system
+
+    gifa_med    is defined for a maximum of 16 Mega points (4k x 4k  2D; 256 x 256 x 256 in 3D)
+                takes about 84 Mega of memory (Physical + swap) on the system
+
+    gifa_big    is defined for a maximum of 64 Mega points (8k x 8k  2D; 256 x 256 x 1k in 3D)
+                takes about 320 Mega of memory (Physical + swap) on the system
+
+  This maximum number of points determines the largest data-set that can
+  be handle in main memory. It is however always possible to work on larger
+  data-sets using the cache memory system.
+
+  The gifa_tiny version is now compiled with a large user variable buffer,
+  You can thus use it (as we do) as an application builder
+
+3/ Whenever possible, Gifa is compiled with shared libraries (it is quite big
+   already). So the libraries have to be on your machine (mostly X11 and Motif)
+   This might be a problem if the version numbers of the libraries do
+   not match between yours and ours.
+   If this is a big problem, I migh consider compiling also a static library
+   version. Ask me.
+
+4/ Do not forget to adapt the 2 shell scripts that are needed to Gifa to 
+   print and plot:   gifaplot  and  gifaprint
+   They are in com/ and are moved to /usr/local/bin by the installation script.
+
+5/ The list of known bugs is in the KNOWN_BUGS file on the ftp server,
+   it has been removed from the distribution because the list tends
+   to be growing...
+
+6/ The FAQ is at the end of the manual.
+
+7/ Some manuels tends to be not exactly up to date with the program ! Sorry 

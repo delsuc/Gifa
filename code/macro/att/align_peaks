@@ -1,0 +1,33 @@
+; align_peaks
+
+initinprogress $att["LARGEST"]
+for pkid = 1 to $att["LARGEST"]
+  if (exist('att[' // $pkid // ']')) then
+	set pk = $att[$pkid]
+	set f1 = (head($pk))   set pk = (tail($pk))
+	set f2 = (head($pk))   set left = (tail($pk)) set pk = (tail($left))
+	set sp1id = (head($pk)) set pk = (tail($pk))
+	set sp2id = (head($pk))
+
+	if (toupper($sp1id) s! "UNK") then
+		set sp1 = $spin[$sp1id]
+		set of1 = (head($sp1))
+		set att[$pkid] = ($of1;$f2;$left)
+		set f1 = $of1
+		if (abs($of1-$f1)>$tol_click) then
+		  print ("peak"; $pkid; "at"; $f1; "has been moved to"; $of1; "(more than"; $tol_click; ")" )
+		endif
+	endif
+
+	if (toupper($sp2id) s! "UNK") then
+		set sp2 = $spin[$sp2id]
+		set of2 = (head($sp2))
+		set att[$pkid] = ($f1;$of2;$left)
+		if (abs($of2-$f2)>$tol_click) then
+		   print ("peak"; $pkid; "at"; $f2; "has been moved to"; $of2; "(more than"; $tol_click; ")" )
+		endif
+	endif
+  endif
+  inprogress $pkid
+endfor
+

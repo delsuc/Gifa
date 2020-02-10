@@ -1,0 +1,140 @@
+#!/usr/local/bin/perl
+
+# fpp : Fortran Preprocessor
+# fpp -plateform [ -D ] [ -Kkeyword ]  file list
+
+$unix = 0;
+$vms = 0;
+$match = 'noflag';
+$m2 = 0;
+#process switches
+while	($ARGV[0]  =~ /^-/) {
+	if ($ARGV[0] eq "-D") {			# in debug mode ?
+		$debug++; 
+	} elsif ($ARGV[0]	eq "-vms") {
+		$vms++;
+		$match = "vms";
+	} elsif ($ARGV[0]	eq "-spec1") {
+		$spec1++;
+		$unix++;
+		$match = "spec1";
+	} elsif ($ARGV[0]	eq "-hp") {
+		$hp++;
+		$unix++;
+		$match = "hp";
+	} elsif ($ARGV[0]	eq "-sgi") {
+		$sgi++;
+		$unix++;
+		$match = "sgi";
+	} elsif ($ARGV[0]       eq "-linux") {
+		$linux++;
+		$unix++;
+		$match = "linux";
+	} elsif ($ARGV[0]       eq "-adec") {
+		$adec++;
+		$unix++;
+		$match = "adec";
+	} elsif ($ARGV[0]       eq "-sun") {
+		$sun++;
+		$unix++;
+		$match = "sun";
+	} elsif ($ARGV[0]       eq "-aix") {
+                $aix++;
+                $unix++;
+                $match = "aix";
+	} elsif ($ARGV[0]  =~ /^-K/) {
+		push(@match2, $');
+	} else {
+		die "unknown flag	: $ARGV[0]\n";
+	}
+	shift;
+}
+unless ($ARGV[0])	{
+	printf "usage is : fpp [-D] [-f2c] -platform list_of_name\n";
+	printf "  will process each file in	the list, according to the platform\n";
+	printf "  process	<name.for> and output to <name.f>\n";
+	exit(-1);
+}
+$match || die "You should define at least one platform\n";
+($unix+$vms == 1) || die "You should define only one platform\n";
+
+# loop on file-names found on	the command	line
+foreach $file (@ARGV) {
+	open (OUT,">".$file.".f");
+	do process($file.".for",'fh00');
+	}
+
+# this one do the	whole	processing
+
+sub process	{
+	local($filename,$input)	= @_;
+	$input++;
+	open($input,$filename) || die	"cannot open file	$filename for reading\n";
+# loop on reading	the file
+LINE:	while	(<$input>) {
+#skip empty or comment
+		next if (/^\s*$/);
+		next if (/^(c|C)/);
+
+# first context (entry points)
+		if ( /subroutine\s+(\w*)\W|function\s+(\w*)\W|program\s+(\w*)\W/i) {
+			$entry = $+;
+		}
+# then conditionnal on plateforms
+MATCH:		while (/^#/) {
+		       if (/^#$match/i) {
+			   $_ = $';
+			   next MATCH;
+		       } elsif (/^#_$match/i) { 
+				next LINE;	
+			    }
+# process match2
+		       foreach $m  (@match2) {
+			   if (/^#$m/i) {
+			       $_ = $';
+			       next MATCH;
+			   } elsif (/^#_$m/i) {
+				    next LINE;
+				}
+		       }
+
+# then debug lines
+		       if (/^#d/i)	{
+			   if ($debug)	{
+#				/\s/;
+			       $_ = $'; 
+			       next MATCH;
+			   } else {
+			       next LINE;
+			   }
+		       }
+		       if (/^#assert /) {
+			   $test=$';
+			   chop($test);
+			   if ($debug)	{
+			       printf OUT "	if (.not.%s)\n",$test;
+			       printf OUT "     * call	assert(\'%s\',\n     * \'%s\',\n     * \'%s\',%d)\n",$filename,$entry,$test,$.;
+			   }
+			   next LINE;
+# keep the 'everything but' left
+		       }
+		       if (/^#_/) {
+			   $_ = $';
+			   /(\s|#)/;
+			     $_ = $&.$';
+			     next MATCH;
+			 }
+# last include
+			   if (/^#include "(.*)"/i) {
+			       do process($1,$input);
+			       next LINE;
+			   }
+# remove the left over
+			   next LINE;
+		       }
+		       
+		       print	OUT $_;
+#		       print $_;
+		   }
+	shift;
+}

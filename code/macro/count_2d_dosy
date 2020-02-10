@@ -1,0 +1,17 @@
+; count_3d_dosy $thres 
+;
+; Count the number of columns to process in the dosy2d macro
+;
+; see also : dosy2d count
+
+if ($noise == 0.0) error 'NOISE should not be 0.0'
+set dd = $dim
+
+message "Enter noise factor used for thresholding"
+set thr = $_
+
+row 1 dim 1
+count ($thr * $noise)
+dim $dd
+
+print ($returned;'columns are to process')

@@ -1,0 +1,2 @@
+;if ($dim != 2) error 'command available on 2D data only'
+if ($dim != 2) alert 'command available on 2D data only, switching to 2D' dim 2

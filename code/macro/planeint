@@ -1,0 +1,22 @@
+; interactive
+; permits to choose a plane interactively on a 3D by clicking on the 1D
+; typically, the 1D should come from a vert command (or equivalent direction)
+; and the currently displayed plane determines the direction
+;
+;see also : rowint vertint ph2dc ROW COL
+
+;
+if ($dim!=3) error 'Works only in 3D'
+refmacro 1
+print "click on the 1D, finish by pressing the third button of the mouse"
+=loop
+  dim 1
+  monopoint
+  if ($button==3) goto end
+  print ('plane :'//round($plane[1])//round($pointx[1]))
+  dim 3 plane $plane[1]  (round($pointx[1])) dim 2
+  dim 3
+  goto loop
+=end
+dim 3
+refmacro 0 exit

@@ -1,0 +1,62 @@
+; this one test linefitting commands
+if ($config_graph) disp1d 1 disp2d 0 cdisp2d 0
+read fit_test
+evaln 33 142 addbase %% max
+zoom 1 636 807
+minimax (10*$noise) %
+if ($config_graph) peak showpeaks
+report ($npk1d == 21) "peak"
+
+zoom 1 643 687 
+if ($config_graph) showpeaks
+iter 10
+linefit lorentz
+set a = (abs($chi2-36.4)<1)
+if ($config_graph) peak showpeaks
+linefit gauss
+report ($a &  (abs($chi2-10.2)<1)) "Linefit"
+
+zoom 0
+
+set n = 10
+set sp1 = 0  set sp2 = 0  set sdp1 = 0  set sdp2 = 0  set schi = 0
+for i = 1 to $n
+   dim 1 chsize 50
+   one tm 50 50  put tab                ; create a dump TAB[]
+   one mult 1.5 specw 1000 em 100       ; create a dump data-set
+   iter 10   miniter 10
+   addnoise .02 123
+
+   set p1 := 1
+   set p2 := 0.1
+
+   FITGENE '$p1*exp(-$x/$p2)' 2
+  set sp1 = (%+$p1)
+  set sdp1 = (%+$dp1)
+  set sp2 = (%+$p2)
+  set sdp2 = (%+$dp2)
+  set schi = (%+$chi2)
+endfor
+set p1 = ($sp1/$n)
+set p2 = ($sp2/$n)
+set dp1 = ($sdp1/$n)
+set dp2 = ($sdp2/$n)
+; if ($config_graph) ../macro/showexp '$p1*exp(-$x/$p2)'
+
+set a = (abs($p1-1.755)<0.05)
+set a = ($a & (($p2-0.1278)<0.05))
+set a = ($a & (($dp1-0.037)<0.005))
+set a = ($a & (($dp2-0.00345)<0.0005))
+set a = ($a & (($chi2/$n) < 55 ))
+report $a "fitgene"
+
+set p1 := -1
+set p2 := 1
+MINIMIZE 'sin($p1)*sin($p2)' 2
+set a = (abs($p1+2*atan(1))<0.05)
+set a = ($a & (abs($p2-2*atan(1))<0.05))
+set a = ($a & (abs($chi2+1) < 1e-3))
+report $a "minimize"
+
+unset p1  unset p2
+

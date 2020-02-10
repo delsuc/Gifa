@@ -1,0 +1,117 @@
+; nice_plot  y option_f1 option_f2 (label y/n)  title
+;
+; do a nice plot in 2D with projections, axes & title
+;
+ see also : easyplot
+
+if ($dim != 2) error "for 2D files only"
+
+; sizplot is the size of the proj plots, change it if you like 
+set sizplot = 3
+set plotfile = '*pl'
+set tcx = $cx  set tcy = $cy  set tsc = $scale   set tzm = $zoom
+set pl1 = $plotoffset[1] set pl2 = $plotoffset[2]
+
+if (!$arg) then
+set ans = 'yes'  
+while ( $ans s! 'no')
+  print "current parameters :"
+  print ("PLOTTER         : "//$config_plot)
+  print ("SCALE           : "//$scale)
+  print ("CX              : "//$cx)
+  print ("CY              : "//$cy)
+  print ("LEVEL           : "//$level)
+  print ("LOGA            : "//$loga)
+  print ("PLOTAXIS, unit  : "//$plotaxis[1])
+  print (".. increm in F1 : "//$plotaxis[2])
+  print (".. increm in F2 : "//$plotaxis[3])
+  print ("PLOTOFFSET in x : "//$pl1)
+  print ("...        in y : "//$pl2)
+
+  message "do you want to change any of these values ? (yes/no)"
+  set ans = 'no' set ans = $_
+  if ($ans s= 'yes') plot?
+endwhile
+endif
+
+if (!exist("f1opt")) set f1opt := none
+if ($config_plot s= 'HPGL') then
+   print 'No F1 option in HPGL'
+else
+  message "choose F1 option (file_name / proj / none)"
+  set f1opt = $_
+endif
+
+if (!exist("f2opt")) set f2opt := none
+message "choose F2 option (file_name / proj / none)"
+set f2opt = none   set f2opt = $_
+
+message "do you want axes labeling (yes/no)"
+   set ans = 'yes'  set ans = $_
+
+if ($f1opt s! 'none') plotoffset (%+$sizplot+1) %
+
+message 'enter title ("string" / none)'
+   set title = $name set title = $_
+
+plot $plotfile                               ; main plot
+if ($ans s= 'yes') plotaxis f12 $plotfile            ; axes
+if ($title s! 'none') then                 ; title
+  if ($f2opt s! 'none') plotoffset % (%+$sizplot)
+  title $title $plotfile
+  if ($f2opt s! 'none') plotoffset % (%-$sizplot)
+endif
+
+if ($f1opt s! 'none') then                  ; f1 proj
+  dim 2 col 1                   ; load zoom window in any case
+  if ($f1opt s= 'proj')  then
+	proj f2 s  dim 1
+  else
+      	dim 1 read $f1opt
+	if ($dim != 1) error ("File";$f1opt;"is not a 1D data-set")
+  endif
+  if ($zoom==1) extract $zoom_1d[1] $zoom_1d[2]   zoom 0
+  reverse      ; sloppy, I know
+  cy $sizplot cx $tcy scale -2 rotate 1 vheight (1-%)
+  plotoffset (20.285-$tcy-$pl2) ($sizplot-1)   ; this is magic for postscript
+  plot $plotfile
+  plotoffset ($pl1+$sizplot+1) $pl2 rotate 0 vheight (1-%)
+  if ($tzm==1)  dim 2 zoom 1 %%
+endif
+
+if ($f2opt s! 'none')  then                  ; f2 proj
+  dim 2 row 1                   ; load zoom window in any case
+  if ($f2opt s= 'proj') then
+     	dim 2 proj f1 s dim 1
+  else
+  	dim 1 read $f2opt
+	if ($dim != 1) error ("File";$f2opt;"is not a 1D data-set")
+  endif
+  cy $sizplot cx $tcx scale 1 plotoffset % (%+$tcy)
+  plot $plotfile
+  plotoffset % (%-$tcy) 
+endif
+
+if (index($config_os,"IRIS") != 0) then
+   if ($plotfile s= "*pl") then
+     sh "xpsview Gifa_Temp.Plot &"
+   else
+     sh ("xpsview" ; $plotfile ; "&")
+   endif
+endif
+set ans = 'yes' message 'Ok to send to plotter' set ans =
+if ($ans s= 'yes') then
+   page $plotfile
+else
+   forget $plotfile
+   if ($plotfile s= "*pl") then
+     sh "rm Gifa_Temp.Plot"
+   else
+     sh ("rm" ; $plotfile)
+   endif
+   alert "Plot not sent"
+endif
+
+cx $tcx  cy $tcy  scale $tsc dim 2   plotoffset $pl1 $pl2
+exit
+

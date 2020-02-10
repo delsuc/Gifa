@@ -1,0 +1,11 @@
+formbox FORMULAIRE \
+dump \
+TEST4 file var_file \ 
+TEST5 file var_fil5 \
+TEST6 file var_fil6 \
+TEST7 file var_fil7 \
+TEST8 file var_fil8 \
+TEST9 file var_fil9 \
+TEST1 file var_fil1 \
+separator \
+*

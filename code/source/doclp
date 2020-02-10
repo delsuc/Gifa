@@ -1,0 +1,145 @@
+c      elseif (command.eq.'WRITEC') then
+c      elseif (command.eq.'READC') then
+      elseif (command.eq.'DT->AR') then
+      calcule les AR par la methode de Burg
+      
+      elseif (command.eq.'BURG') then
+      argument: taille finale
+c Predict the following points of the FID from LP parameters
+c without using any working space      
+
+      elseif (command.eq.'AR->SP') then
+      calcule le spectre a partir des coeff AR Burg
+      
+      elseif (command.eq.'ARLIST') then
+      b = 1 ou 2 (backward ou forward) 
+      no du premier elt
+      no du dernier elt
+      
+      elseif (command.eq.'SVDLIST') then
+      no du premier elt
+      no du dernier elt
+      
+      elseif (command.eq.'RTLIST') then
+      b = 1, 2 ou 3 (forward, backward ou " matched")
+      no du premier elt
+      no du dernier elt
+      
+      elseif (command.eq.'FREQLIST') then
+      freq0 frequence centrale
+      dfreq largeur de l'intervalle
+      b = 1 ou 2 (forward ou backward) 
+c   This subroutine  outputs to user the elements of vector array, complex*16
+C   whose argument is in the interval [freq0-dfreq,freq0+dfreq]
+
+      elseif (command.eq.'AR->DT') then
+      taille finale
+      b = 1 ou 2 (forward ou backward) 
+C predict the data using the forward or backward
+C linear prediction equation.      
+
+      elseif (command.eq.'ORDER') then
+      order prediction value
+      
+      elseif (command.eq.'DT->SVD') then
+      taille des donnees considerees
+      calcule la decomposition en valeurs singulieres
+      pour faire LPSVD (forward et backward)
+      
+      elseif (command.eq.'SVDCLEAN1') then
+      nbre de SVD a garder
+      st (yes ou autre) remove or not the mean power of the removed SVD from
+c               the remaining ones
+c Clean the singular values of matrix x : remove noise
+c from the singular values
+
+      elseif (command.eq.'SVDCLEAN2') then
+      level value
+      st (yes ou autre) remove or not the mean power of the removed SVD from
+c               the remaining ones
+c Keep the singular values greater than
+c level     
+A TESTER
+
+      elseif (command.eq.'SVD->DT') then
+c Recalculate the Toeplitz data matrix x from the svd and u,v
+c complex*16 svd(nsignals),u(nd1,nd1),v(order,order) singular values
+c and transformation matrices
+
+      elseif (command.eq.'SVD->AR') then
+      b = 1, 2 ou 3 (AR forward, backward ou les deux)
+      calcule les coeff AR a partir de la decomposition SVD
+      
+      elseif (command.eq.'RT->AR') then
+      b = 1, 2 ou 3 (AR forward, backward ou les deux)
+      calcule les coeff AR a partir des racines RT 
+      
+      elseif (command.eq.'AR->RT') then
+      b = 1, 2 ou 3 (AR forward, backward ou les deux)
+      calcule les racines RT a partir des coeff AR
+      
+      elseif (command.eq.'AR->RT2') then
+      b = 1, 2 ou 3 (AR forward, backward ou les deux)
+      calcule les racines RT a partir des coeff AR (programme de P. Koehl)
+      A TESTER
+      
+      elseif (command.eq.'RTINV') then
+      b = 1 ou 2 (forward ou backward) 
+      
+      elseif (command.eq.'RTCLEAN') then
+      b = 1 ou 2 (forward ou backward) 
+      
+      elseif (command.eq.'RTREFLECT') then
+      b = 1 ou 2 (forward ou backward) 
+      
+      elseif (command.eq.'RTMATCH') then
+      nbre d'exponentielles a extraire
+      
+      elseif (command.eq.'RT->PK') then
+      taille des donnnes considerees
+      b = 1 ou 2 (forward ou "matched")
+      delai du premier point 
+      
+      elseif (command.eq.'RTSELECT') then
+      b = 1, 2 ou 3 (AR forward, backward ou les deux)
+      les index des racines selectionnees, on termine par 0
+      
+      elseif (command.eq.'ZHU') then
+      delai du premier point
+      methode de Zhu et Bax
+      A TESTER
+      
+      elseif (command.eq.'ZHUOLD') then
+      ancien ZHU
+      
+      elseif (command.eq.'RELAXRATE') then
+      calcul du taux de relaxation a partir du trait
+      des bldp
+      
+      elseif (command.eq.'RCRYST') then
+      taille des donnees considerees
+      calcul du facteur R sur les bldp
+      
+      elseif (command.eq.'SLOPE') then    
+      nb de pts utilises  
+      calcul du taux de relaxation par la pente a l'origine
+      
+      elseif (command.eq.'CALIBDI') then
+      entre les valeurs de calibration
+      distance de calib
+      taux de relax de calib      
+      
+      elseif (command.eq.'METH') then
+      = 0: hydrogene-hydrogen
+      = 1: hyd-methyl
+      = 2: methyl-methyl
+      
+      elseif (command.eq.'DIST') then
+      calcul de la distance entre hyd a partir du taux de relax
+      et des dist et taux de relax de calibration. 
+           
+      elseif (command.eq.'RTPIV') then
+      pivote les racines complexes forward contenues ds un cone
+ pour les rendre reelles
+      angle du cone
+

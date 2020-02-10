@@ -1,0 +1,16 @@
+; rshift n_points
+;
+; makes a right shift of the data
+;
+; see also : lshift EXTRACT CHSIZE
+
+if ($dim != 1) error "Implemented in 1D only"
+
+message "Enter number of points for right shift"
+set n = $_
+set it = $itype_1d  itype 0
+set sz = $si1_1d
+
+extract 1 ($si1_1d - $n)
+reverse  chsize $sz reverse
+itype $it

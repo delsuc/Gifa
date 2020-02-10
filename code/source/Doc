@@ -1,0 +1,36 @@
+#faire la table des matieres"
+#creer les *.ps files dans '/users/MAC/mad/System Folder/PrintMonitor Documents'"
+#les compresser
+#enlever les TdM, faire basic.rtf assignment.rtf dosy.rtf"
+	cd /usr/local/gifa/new
+	cp ~mad/new/tt/*.rtf .
+	~mad/rtf2html/r2hunix/rtftohtml -h1 -c -i -N ../com_devel/nav-panl basic.rtf >& basic.err
+	~mad/rtf2html/r2hunix/rtftohtml -c -i -N ../com_devel/nav-panl assignment.rtf >& ass.err
+	~mad/rtf2html/r2hunix/rtftohtml -c -i -N ../com_devel/nav-panl dosy.rtf >& dosy.err
+#Convertir les *.pict en *.gif"
+#Enlever les menus dans ../new/basic-BASIC.html et ../new/basic-Contents.html
+	../com_devel/clean_html 3 basic-BASIC.html
+	mv basic-BASIC.html basic-BASIC.html.res
+	mv tmp.html basic-BASIC.html
+
+	../com_devel/clean_html 4 basic-Contents.html
+	mv basic-Contents.html basic-Contents.html.res
+	mv tmp.html basic-Contents.html
+
+	../com_devel/clean_html 4 basic.html
+	mv basic.html basic.html.res
+	mv tmp.html basic.html
+
+	rm /usr/local/gifa/new/*.pict /usr/local/gifa/new/%*
+	rm /usr/local/gifa/new/*.rtf 
+	mv /usr/local/gifa/new/basic* /usr/local/gifa/doc
+	mv /usr/local/gifa/new/assign* /usr/local/gifa/doc/assign
+	mv /usr/local/gifa/new/dosy* /usr/local/gifa/doc/dosy
+
+	rm /users/MAC/mad/System\ Folder/PrintMonitor\ Documents/%*
+	cp /users/MAC/mad/System\ Folder/PrintMonitor\ Documents/*.ps.Z ../doc/PSFILES
+	../com/do_list_html
+	compress ../doc/PSFILES/*
+	chmod -R o+r ../doc/*
+	chmod o+r ../help/*
+
