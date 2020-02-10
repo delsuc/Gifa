@@ -34,7 +34,7 @@ print OUT "# computed dependence list\n";
 	}
 	print "$nm\n";
 	print OUT "$key : $nm ";
-	@ll = do incl($nm,"fh00");
+	@ll = &incl($nm,"fh00");
 	%seen = ();   $n=1;
 	foreach $ill (@ll) {
 	    if (!$seen{$ill}++) {               # uniq
@@ -61,7 +61,7 @@ sub incl {
     while (<$input>) {
 	if (/^\#\s*include\s+"(\w+\.\w*)"/) {          # j'en tiens un
 	    push(@list,$1);
-	    push(@list,do incl($1,$input));
+	    push(@list, &incl($1,$input));
 	}
     }
     @list;
