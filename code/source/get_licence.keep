@@ -1,0 +1,191 @@
+/*
+This file is a part of the GIFA program
+This software has been developped by the NMR Group in CBS/Montpellier
+
+     Authors :       M.A.Delsuc
+                     C.B.S. Fac de Pharmacie
+                     34000 Montpellier
+
+This software cannot be used unless the user have been fully
+licensed to do so form the above laboratory.
+This file cannot be copied, duplicated or used in any other program,
+without written permission from the authors.
+
+*/
+
+
+/* give a static licence protection
+ a  file (licence_file) holds the following entries :
+
+---------------------------------------------------------------
+A long line describing the licence (software name, laboratory)
+A_key_in_octal
+several_are_possible
+one_entry_per_line  first blank marks comments
+---------------------------------------------------------------
+
+The key is obtaining by hashing the IP adresse + licence string with an internal key
+
+use mklicence2 to compute the key
+
+if the licence file is incorrect, the string NON-VALID is returned,
+otherwise the content of the licence string is returned.
+
+modified 17 nov 2000 (version 4.313) to adapt timed licences
+modified 10 dec 2000 (version 4.315) to adapt to IP address
+
+*/
+
+
+#include "util.h"
+#include <stdio.h>
+#include <string.h>
+#include <time.h>
+#include <netdb.h>
+#include "sizebasec.h"
+
+#define LICENCE_FILE "/usr/local/gifa/licence"
+
+/***********************************************************************/
+
+void non_valid(lic,ilic)
+char lic[MAX_CHAR];
+int  *ilic;
+{
+  int j;
+    strcpy(lic,"NON-VALID");
+    *ilic = strlen(lic);
+    for (j=strlen(lic);j<MAX_CHAR;j++) { lic[j] = ' '; }  /* clear remaining */
+    return;
+}
+
+/***********************************************************************/
+void GET_LICENCE(lic,ilic)
+char lic[MAX_CHAR];
+int  *ilic;
+
+{
+  char key[64];
+  unsigned long long hash;
+  int ih, j, iday, imonth, iyear;
+  unsigned char ip0,ip1,ip2,ip3;
+  char *sd, *sf;
+  char string[MAX_CHAR], check[MAX_CHAR], hostnm[MAX_CHAR], ipadd[MAX_CHAR];
+  FILE *fin,*PIPE;
+  time_t tt,ttl;
+  struct tm tml;
+  int ecart;
+  short int found;
+  struct hostent  *hip;
+  
+
+/* key is the coding key, keep it secret */
+  strcpy(key,"Gifa transitionnal 4 to 5");
+
+/* open licence_file and read licence */
+
+  if ((fin = fopen(LICENCE_FILE,"r")) == NULL) {
+    perror("Licence-fopen");
+    printf("Could not open licence file, starting in no licence mode\n");
+    non_valid(lic,ilic);
+    return;
+  }
+
+  if (fgets(lic, MAX_CHAR, fin) == NULL) {
+    perror("Licence-fgets");
+    printf("Could not read licence file, starting in no licence mode\n");
+    non_valid(lic,ilic);
+    return;
+  }  
+
+/* get my hostname */
+  if ( (PIPE = popen("hostname","r")) == NULL ) {
+    perror("Licence-popen");
+    printf("Could not open pipe system service, probably because the machine is too loaded\nstarting in no licence mode\n");
+    non_valid(lic,ilic);
+    return;
+  }
+  if (fgets(hostnm, MAX_CHAR, PIPE) == NULL) {
+    perror("Licence-fgets");
+    printf("Could not determine host name, starting in no licence mode\n");
+    non_valid(lic,ilic);
+    return;
+  }
+  pclose(PIPE);
+  if ( (sd = strchr(hostnm,'\n')) != NULL ) { *sd = '\0'; }
+
+/* get my IP address */
+  if ( (hip = gethostbyname(hostnm)) == NULL) {
+    herror("Licence-gethostbyname");
+    printf("Could not determine IP adress, starting in no licence mode\n");
+    non_valid(lic,ilic);
+    return;
+  }
+  ip0=hip->h_addr[0];
+  ip1=hip->h_addr[1];
+  ip2=hip->h_addr[2];
+  ip3=hip->h_addr[3];
+  sprintf(ipadd,"%u.%u.%u.%u",ip0,ip1,ip2,ip3);
+  
+
+/* compute key from IP and licence */
+  hash = 150889;
+  ih = 0;
+  j = 0;
+  while (ipadd[j] != '\0') {
+    hash = hash + (hash%714025) * key[ih] + ipadd[j++];
+    if ( key[ih++] == '\0') { ih = 0; }
+  }
+  j = 0;
+  while (lic[j] != '\n') {
+    hash = hash + (hash%714025) * key[ih] + lic[j++];
+    if ( key[ih++] == '\0') { ih = 0; }
+  }
+  lic[j+1] = '\0';
+
+  sprintf(check,"%llo",hash);
+  
+/* readin keys and search for a good one */
+  found = 0;
+  while (fgets(string, MAX_CHAR, fin) != NULL) {
+    if ( (sd = strchr(string,'\n')) != NULL ) { *sd = '\0'; }
+    if ( (sd = strchr(string,' ')) != NULL )  { *sd = '\0'; }
+    if (strcmp(check,string) == 0) { found = 1;  }
+  }
+  if (found == 0) {
+      non_valid(lic,ilic);
+      return;
+  }
+
+/* if here, licence is valid, check for date in format '% dd-mm-yyyy %' */
+  if ( (sd = strchr(lic,'%')) != NULL ) {
+      if ( (sf = strchr(sd+1,'%')) != NULL ) {
+         *sf = '\0';
+         tt = time(NULL);
+         sscanf(sd,"%% %2d-%2d-%4d",&iday,&imonth,&iyear);
+         tml.tm_isdst = tml.tm_hour = tml.tm_min = tml.tm_sec = 0;
+         tml.tm_mday = iday;
+         tml.tm_mon = imonth-1;
+         tml.tm_year = iyear-1900; 
+         ttl = mktime(&tml);
+         ecart = difftime(ttl,tt) / (24*60*60);
+         if (ecart<0) {
+            printf("Your Gifa licence expired %d days ago\n",-ecart);
+            non_valid(lic,ilic);
+            return;
+         }
+         if (ecart<30) {
+           printf("%s\n","WARNING *****************************");
+           printf("WARNING Your Gifa licence expires in less than %d days\n",ecart+1);
+           printf("%s\n","WARNING *****************************");
+         }
+      } 
+  }
+  
+  *ilic = strlen(lic);
+  return;
+
+}
+
+/***********************************************************************/
+

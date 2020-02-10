@@ -1,0 +1,9 @@
+linefitd \
+ 1 gauss yes no no no no \
+ 2 gauss no yes no no no \
+ 3 gauss no no yes no no \
+ 4 gauss no no no yes no \
+ 5 gauss no no no no yes \
+ 6 gauss yes yes yes no no \
+ 7 gauss yes yes yes yes yes \
+ 0

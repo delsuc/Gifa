@@ -1,0 +1,5 @@
+    for i = 1 to 5     ; normalize
+       dim 2 row $i dim 1
+       evaln 1 $SI1_1D   mult (1/$noise)
+       dim 2 put row $i
+    endfor

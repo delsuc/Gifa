@@ -1,0 +1,38 @@
+; pkadjust line_shape
+; with line_shape lorentzian / gaussian
+;
+; adjust each peak in the table by fitting around it
+
+message "Line shape to use for the fit : (Lorentz/Gauss)"
+set shape = $_
+
+set width = 3   ; radius of the window for the fit
+
+set z1 = $zoom_2d[1]
+set z2 = $zoom_2d[2]
+set z3 = $zoom_2d[3]
+set z4 = $zoom_2d[4]
+
+refmacro 0
+iter 30
+
+if ($dim == 1) then
+   for i = 1 to $npk1d
+     print ("Peak"; $i)
+     zoom 1 ($pk1d_f[$i] - $width) ($pk1d_f[$i] + $width)
+     linefitd $i $shape % % % % 0
+   endfor
+elsif  ($dim == 2) then
+   for i = 1 to $npk2d
+     print ("Peak"; $i)
+     zoom 1 ($pk2d_f1f[$i] - $width) ($pk2d_f2f[$i] - $width) \
+          ($pk2d_f1f[$i] + $width) ($pk2d_f2f[$i] + $width) 
+     linefitd $i $shape % % % % % 0
+;     show linefit
+   endfor
+else
+   error "Not yet in 3D"
+endif
+
+zoom 1 $z1 $z2 $z3 $z4
+
