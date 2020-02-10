@@ -1,4 +1,4 @@
-#!/usr/local/bin/perl
+#!/usr/bin/perl
 
 # fpp : Fortran Preprocessor
 # fpp -plateform [ -D ] [ -Kkeyword ]  file list
@@ -42,6 +42,10 @@ while	($ARGV[0]  =~ /^-/) {
                 $aix++;
                 $unix++;
                 $match = "aix";
+        } elsif ($ARGV[0]       eq "-Darwin") {
+                $darwin++;
+                $unix++;
+                $match = "adrwn";
 	} elsif ($ARGV[0]  =~ /^-K/) {
 		push(@match2, $');
 	} else {

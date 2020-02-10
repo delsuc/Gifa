@@ -27,7 +27,7 @@ c priorities for op.
      *  pgreat=4,psmal=4,pgreateq=4,psmaleq=4,pnot=10)
 
       integer nfunc,lfuncmax
-      parameter (nfunc = 45,lfuncmax = 8)
+      parameter (nfunc = 49,lfuncmax = 8)
       integer codefunc(nfunc), lfunc(nfunc)
 c      character*(lfuncmax) func(nfunc)
       character*8 func(nfunc)

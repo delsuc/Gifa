@@ -70,7 +70,7 @@ c
      *     j,k,nest,location,n,
      *     title_length,maxtemp
       logical bool1  ! ,bool2
-      character*256 lcommand, st,stp,stp2,stp3,stp4,stp5,ii,win_title
+      character*256 lcommand,st,stp,stp2,stp3,stp4,stp5,ii,win_title
       character*256 stlong
       integer lcom
       parameter (lcom=32)
@@ -81,12 +81,14 @@ c variables used to store integers in string variables
       character*28 st28     ! room for 7	- used by FOREACH . WITHIN
       integer ist,ist16(4)
       real fst28(7)
+      real*4 dtime,tarray(2)
       equivalence (ist,st4)
       equivalence (ist16(1),st16)
       equivalence (fst28(1),st28)
 
       integer closest
-      external closest
+      real brukerphase
+      external closest, brukerphase
 
 C clean it and put it in the global string param.
       call cleanst(todocomm,tdlen)
@@ -105,11 +107,12 @@ C do timer stuff if needed
 
 C put the wait_cursor
 
-      do i=1,vd_id_max
-        if( vd_id(i).ne.0) call win_set_pointer_pattern(vd_id(i),2)
-      enddo
-      call wait_cursor_in_all_shell()
-
+      if (on_x_win.eq.1) then
+        do i=1,vd_id_max
+          if( vd_id(i).ne.0) call win_set_pointer_pattern(vd_id(i),2)
+        enddo
+        call wait_cursor_in_all_shell()
+      endif
 
 C loop on each command line
  3    continue
@@ -125,10 +128,10 @@ C do timer stuff if needed...
               call show_timer
             endif
 C refresh dim pop-up and redisplay windows (might be missing)
-	 if (on_x_win.eq.1) then
-	    call update_label_dim(dim)
-	    call win_refresh()
-	 endif
+            if (on_x_win.eq.1) then
+              call update_label_dim(dim)
+              call win_refresh()
+            endif
 
             goto 990
 
@@ -144,6 +147,35 @@ C refresh dim pop-up and redisplay windows (might be missing)
          endif
        endif
       
+C check profiling
+       if (input.ne.20 .and. profiler.eq.1) then
+           z=dtime(tarray)          ! first fix time
+           if (z .gt. 0.0) then          ! z<0 happens !
+             stp=currinp(input-20)      ! determine var-name
+             call leading(stp)
+             call trailing(stp,i)
+             write(stp2,*) currline(input-20)-1
+             call leading(stp2)
+             call trailing(stp2,j)
+             stp3 = '$_P[' //  stp(1:i) // '-' // stp2(1:j)  // ']'
+             stp5 = '$_P["' //  stp(1:i) // '-' // stp2(1:j)  // '"]'
+             call checkvar(stp3,vcontext,xx)      ! set to 0 if unassigned
+             if (xx.eq.1) then
+               stp4 = '0.0'
+               call assign(stp3,20,stp4,error)
+              if (error.ne.0) goto 172
+             endif
+             write(stp,*) 1000*z      ! eval new value
+             call leading(stp)
+             call trailing(stp,k)
+             stp4 = stp(1:k) // '+' // stp5(1:i+j+8)
+             call eval(stp4,stp2,error)
+             if (error.ne.0) goto 172
+             call assign(stp3,20,stp2,error)
+             if (error.ne.0) goto 172
+             z=dtime(tarray)          ! reset counter
+           endif
+       endif
 C then parse the command line
       call getstring2(lcommand,error)
       if (error.ne.0)  goto 115
@@ -481,27 +513,27 @@ c           win2 = min(win2,win4)
             call prpvect(window(zz+1),1.0,win4)
          endif
 
-      elseif (command.eq.'CONFIG') then
-         call gifaout('GIFA Version : '//version)
-         call gifaout('Licensed to : '//license(1:ilenc))
-         call gifaouti('Memory available (in kwords) : ', smxbig/1024)
-         call gifaouti('        protected area in 3D : ', 4*smxmax/1024)
-         call gifaouti('        protected area in 2D : ', smxmax/1024)
-         call gifaouti('        protected area in 1D : ', sizemax/1024)
-         call gifaout(' ')
-         call gifaouti('     max number of variables :',varmax)
-         call gifaout(' ')
-         call os_config(st)
-         call gifaout('Operating system : '//st)
-         call win_config(st)
-         call gifaout('Graphic manager : '//st)
-         call pl_config(st)
-         if (on_x_win.eq.1) then
-            call gifaout('Graphic mode is ACTIVE')
-         else
-            call gifaout('Graphic mode is INACTIVE')
-         endif
-         call gifaout('Plotter driver : '//st)
+c      elseif (command.eq.'CONFIG') then
+c         call gifaout('GIFA Version : '//version)
+c         call gifaout('Licensed to : '//license(1:ilenc))
+c         call gifaouti('Memory available (in kwords) : ', smxbig/1024)
+c         call gifaouti('        protected area in 3D : ', 4*smxmax/1024)
+c         call gifaouti('        protected area in 2D : ', smxmax/1024)
+c         call gifaouti('        protected area in 1D : ', sizemax/1024)
+c         call gifaout(' ')
+c         call gifaouti('     max number of variables :',varmax)
+c         call gifaout(' ')
+c         call os_config(st)
+c         call gifaout('Operating system : '//st)
+c         call win_config(st)
+c         call gifaout('Graphic manager : '//st)
+c         call pl_config(st)
+c         if (on_x_win.eq.1) then
+c            call gifaout('Graphic mode is ACTIVE')
+c         else
+c            call gifaout('Graphic mode is INACTIVE')
+c         endif
+c         call gifaout('Plotter driver : '//st)
 
       else if (command.eq.'SETVAL') then
          call message('Enter coordinates')
@@ -536,7 +568,7 @@ c           win2 = min(win2,win4)
             image((win1-1)*(si3d3*si3d2) + (win2-1)*si3d2 + win3) = z
          endif
          refresh = 1
-         max0 = max(max0,abs(z))
+         max0 = 0.0
 
 
 C****************************************************************
@@ -676,12 +708,12 @@ C extract retained data
            if (error.ne.0) goto 93
            call getcoord(win6,3,error)
            if (error.ne.0) goto 93                            
-         if (win1.le.0 .or. win1.gt.si3d1-2 .or. 
-     *       win3.le.0 .or. win3.gt.si3d2-2 .or. 
-     *       win5.le.0 .or. win5.gt.si3d3-2 .or. 
-     *       win2.le.2 .or. win2.gt.si3d1 .or. 
-     *       win4.le.2 .or. win4.gt.si3d2 .or. 
-     *       win6.le.2 .or. win6.gt.si3d3 .or. 
+         if (win1.lt.1 .or. win1.gt.si3d1-1 .or. 
+     *       win3.lt.1 .or. win3.gt.si3d2-1 .or. 
+     *       win5.lt.1 .or. win5.gt.si3d3-1 .or. 
+     *       win2.lt.2 .or. win2.gt.si3d1 .or. 
+     *       win4.lt.2 .or. win4.gt.si3d2 .or. 
+     *       win6.lt.2 .or. win6.gt.si3d3 .or. 
      *       win1+1.gt.win2 .or. 
      *       win3+1.gt.win4 .or. 
      *       win5+1.gt.win6 ) goto 98 
@@ -877,7 +909,7 @@ c          endif
               goto 91
            endif
          endif
-         max0=1.0
+         max0=0.0
          refresh = 1
         
       elseif (command.eq.'GET') then
@@ -1092,11 +1124,7 @@ C consider the whole data as a multi filter
            else
              goto 110
            endif
-           if (max1d.eq.0.0) then
-               max0 = 0.0
-           else
-               max0 = max(max0,max1d)
-           endif
+           max0 = 0.0
            refresh = 1
          elseif (dim.eq.3) then
            if (st.eq.'PLANE') then
@@ -1131,11 +1159,7 @@ C consider the whole data as a multi filter
              else
               goto 110
              endif
-             if (max2d.eq.0.0) then
-               max0 = 0.0
-             else
-               max0 = max(max0,max1d)
-             endif
+             max0 = 0.0
              refresh = 1
            else if (st.eq.'VERT') then
                if (axis2d.eq.1) then
@@ -1174,11 +1198,7 @@ C consider the whole data as a multi filter
                   call copvect(column,
      *             image((rowv-1)*si3d3*si3d2+(colv-1)*si3d3+1),si3d3)
                endif
-               if (max1d.eq.0.0) then
-                 max0 = 0.0
-               else
-                 max0 = max(max0,max1d)
-               endif
+               max0 = 0.0
                refresh = 1
            endif
          endif
@@ -1318,7 +1338,7 @@ c         if (disp1d.eq.0 .and. disp2d.eq.0) goto 127
              enddo
              call gcolor(vd_id(1),scolor)
              call display1d(vd_id(1),win2-win1+1,work1d(win1),max0,
-     *         scale,1,vheight,clear)
+     *         scale,0,vheight,clear)
              call gcolor(vd_id(1),color)
            else if(dim.eq.2) then
              if (cdisp2d.eq.0) goto 127
@@ -1923,7 +1943,7 @@ c     * have not been changed')
          endif
          do i=1,sizeimo
             imago(imdim(dim)+i-1) = max(imago(imdim(dim)+i-1),0.0)
-            max0 = max(imago(imdim(dim)+i-1),max0)
+            max0 = 0.0
          enddo
          refresh=1
 
@@ -1937,7 +1957,7 @@ c     * have not been changed')
          endif
          do i=1,sizeimo
             imago(imdim(dim)+i-1) = min(imago(imdim(dim)+i-1),0.0)
-            max0 = max(imago(imdim(dim)+i-1),max0)
+            max0 = 0.0
          enddo
          refresh=1
 
@@ -2830,7 +2850,7 @@ C******************************************************************
         call getreal2(z,error)
         if (error.ne.0) goto 93   
         call mltvect(imago(imdim(dim)),imago(imdim(dim)),z,sizeimo) 
-        max0 = abs(z*max0)
+        max0 = 0.0
         refresh=1
 
       elseif (command.eq.'EVALN') then
@@ -2846,8 +2866,8 @@ c           if (itype.ne.0) goto 96
          else 
            goto 124
          endif
-         call gifaoutr( 'Noise value: ',noise)
-         call gifaoutr( 'Overall offset:',shift )
+         if (verbose.ne.0) call gifaoutr( 'Noise value: ',noise)
+         if (verbose.ne.0) call gifaoutr( 'Overall offset:',shift )
 
       else if (command.eq.'ADDBASE') Then
         call message( 'enter vertical offset to substract:')
@@ -2900,6 +2920,41 @@ c           if (itype.ne.0) goto 96
                 goto 98
              endif
          endif
+         max0=0.0
+         refresh = 1
+
+      else if (command.eq.'BRUKER_CORR') then
+C BRUKER_CORR DSPFIRM DSPFVS DECIM
+C
+C compute and apply the first order phase correction to be executed on a spectrum
+C after Fourier trasform, when the digital filter was used on a Bruker spectrometer.
+C
+C the value actually used is put in the $RETURNED context
+         call message('enter DSPFVS')
+         call getint2(win1,error)
+         call message('enter DSPFIRM')
+         call getint2(win2,error)
+         if (error.ne.0) goto 93
+         call message('enter DECIM')   
+         call getint2(win3,error)
+         if (error.ne.0) goto 93
+         if (dim.eq.1) then
+             if (it1d.ne.1) goto 143
+             z = brukerphase(win1,win2,win3, sp1d)
+             if (z.eq.-1.0) goto 98
+             call phase(column,0.0,z,sizeimage1d/2)
+         else if (dim.eq.2) then
+             if ((mod(itype,2)).ne.1) goto 143
+             z = brukerphase(win1,win2,win3, specw2)
+             if (z.eq.-1.0) goto 98
+             call phase2d(plane2d,si1im,si2im,0.0,z,2)
+         else if (dim.eq.3) then
+             if (mod(it3d,2).ne.1) goto 143
+             z = brukerphase(win1,win2,win3, sp3d3)
+             if (z.eq.-1.0) goto 98
+             call phase2d(image,si3d1*si3d2,si3d3,0.0,z,2)
+         endif
+         write(returned,'(G12.8)') z      ! copy value in $returned
          max0=0.0
          refresh = 1
 
@@ -3336,8 +3391,8 @@ C*******************************************************************
 C
       else if (command.eq.'MAX') then 
          call mnxvect(mini,maxi,zz,i,imago(imdim(dim)),sizeimo)
-         call gifaoutr( 'value of maximum point:',maxi )
-         call gifaoutr( 'value of minimum point:',mini )
+         if (verbose.ne.0) call gifaoutr('value of maximum point:',maxi)
+         if (verbose.ne.0) call gifaoutr('value of minimum point:',mini)
       
       else if (command.eq.'DIM') then   
          if (dim.eq.3) then
@@ -3562,8 +3617,38 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       goto 990
                   
 C error codes are here...
+90    continue
+      error = 0
+C first check for control_C
+      if (control.eq.1) goto 901
 C first general processing
-90    if (input.gt.20) then
+      if (input.gt.20) then
+c  check for on_error_goto case, and break if found
+	  stp = '=ONERROR'
+        call checkvar(stp,vcontext,xx)
+        if (xx.eq.0) then
+          call getvar(stp,vcontext,st,error)
+          if (error.ne.0) goto 901
+          stp2 = '=' // st
+	    st = stp2
+          call dealloc(stp,vcontext,error)
+          if (error.ne.0) goto 901
+          goto 997                   ! jumps to GOTO code
+        endif
+        call gifaout('*** Aborting execution of command file : '
+     *                 //currinp(input-20))
+        call gifaouti('*** At line :',currline(input-20))
+        close(input)
+        call contclear(input)
+        input = input - 1
+        vcontext = input
+        if (input.eq.20) vcontext = savecontext
+        goto 90
+      endif
+
+
+c 901 is used to force errors when onerrorgoto is set, or when a controlC was issued
+901   if (input.gt.20) then
          if (control.ne.1) then
             call gifaout('*** Aborting execution of command file : '
      *                 //currinp(input-20))
@@ -3574,8 +3659,9 @@ C first general processing
          input = input - 1
          vcontext = input
          if (input.eq.20) vcontext = savecontext
-         goto 90
+         goto 901
       endif
+
       if (control.eq.1) then
           call setupctrlc
       else
@@ -3760,6 +3846,10 @@ c errors concerning linear prediction commands: 161-168
       call trailing(view_name,i)
       call gifaerr( 'VIEW :' // view_name(1:i) // ' does not exist')
       view_name = 'view_name'
+      goto 90
+171   call gifaerr('TIMER and PROFILER are incompatible')
+      goto 90
+172   call gifaerr('Internal error')
       goto 90
 C Label not found 
 198   i=256

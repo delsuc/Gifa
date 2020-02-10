@@ -36,6 +36,7 @@ c      subroutine ttodata(dim)
 c      subroutine tfromdata(dim)
 c      subroutine checkoverflow
 c      subroutine printit(file_name)
+c      subroutine file_exist(name,err)
 c      function closest(nbre)
 
 
@@ -386,6 +387,34 @@ c
       if (.not.finished) goto 1
       return
       end
+
+c------------------------------------------------------------
+	subroutine file_exist(namep,error)
+c
+c  file_exist - check file.  Returns error=0 if file exists
+c IN    : namep
+c OUT   : error
+      implicit none
+      character*(*) namep     ! this is the file name
+      integer       error,erl
+
+	
+        open(unit=96,file=namep,
+#hp     *        readonly,
+     *        iostat=erl,status='old')
+
+      if (erl.eq.0) then 
+	  error = 0	! found it
+      else
+          error = 1   	! not found
+      endif
+      close(unit=96)
+      return
+      end
+
+
+
+
 c************************************************************
       subroutine opengif(namep,unumb,error)
 c IN	: namep,unumb
@@ -393,7 +422,7 @@ c OUT	: error
 c
 c Opens the file called "namep" and connects it to "unumb"
 c
-C This subroutine is used to open the gif file.
+C This subroutine is used to open the macro file.
 C
 C if the global variable PATH is empty, the old set-up is used :
 C   First search the file in working directory,
@@ -485,7 +514,7 @@ c         write (*,*) nameloc(1:i)
 
       if (erl.eq.0) goto 100  ! found it
 
-      error = 1    ! not fount
+      error = 1    ! not found
       return
 
 100   error = 0
@@ -891,7 +920,8 @@ C first check
           call message('=> Ok to overflow ?')
           st = 'yes'
           call getbool2(st,'memory',err)
-          not_ok = (st.ne.'yes')
+          call uppercase(st,len(st))
+          not_ok = (st.ne.'YES')
       endif
 C then clip
       if (bool1 .and. .not.not_ok) then
@@ -980,7 +1010,8 @@ C first check
           call message('=> Ok to overflow ?')
           st = 'yes'
           call getbool2(st,'memory',err)
-          not_ok = (st.ne.'yes')
+          call uppercase(st,len(st))
+          not_ok = (st.ne.'YES')
       endif
 
       if (booldata) emptydata = .true.

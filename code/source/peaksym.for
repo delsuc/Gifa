@@ -67,6 +67,8 @@ c the symmetric peak should be added
 	   peak2d(nbpic_new,3) = peak2d(i,3)
 	   peak2d(nbpic_new,4) = htoir(hzf2_i,si1im,specw1,offset1)
 	   peak2d(nbpic_new,5) = peak2d(i,2)
+	   call trailing( peak2d_id(i),j)
+	   peak2d_id(nbpic_new) = peak2d_id(i)(1:j) // ' sym'
 	   goto 100
 	endif 
  
@@ -154,8 +156,9 @@ c	do i = 1,itemp
 c	   write(*,*)'tindex',tindex(i),i
 c	enddo       
 	do i=1,pk2d
-            call cicopvect(tindex,peak2d(1,i),peak2d(1,i),nbpic2d,itemp)
-        enddo
+        call cicopvect(tindex,peak2d(1,i),peak2d(1,i),nbpic2d,itemp)
+        call cicopsvect(tindex,peak2d_id(i),peak2d_id(i),nbpic2d,itemp)
+      enddo
         nbpic2d = nbpic_new
  
 	return

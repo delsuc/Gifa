@@ -28,6 +28,8 @@ without written permission from the authors.
 #include <unistd.h>
 #include <string.h>
 #include "util.h"
+#include "sizebasec.h"
+
 
 #ifndef NOREADLINE
     extern void rlg_execute();
@@ -35,7 +37,7 @@ without written permission from the authors.
 #endif
 
 /* global PROMPT variable*/
-char cprompt[256];
+char cprompt[MAX_CHAR];
 /* global GRAPHIC variable*/
 extern int versionx;
 
@@ -123,6 +125,40 @@ int l;
 	i = l-1;
 	while(st[i] == ' ')i--;
 	st[i+1] = '\0';	
+}
+
+/**************************************************************/
+void PIPE_SYS(stout, lout, stin, lin, err)
+/*
+   calls the system command held in stin(1..lin) through a pipe
+   and returns the result in the stout(1..lout)  
+*/
+
+char *stout,*stin;
+int *lout, *lin, *err;
+
+{
+FILE *PIPE;
+char slo[MAX_CHAR], sli[MAX_CHAR], *sd;
+  
+  convert_string(sli,stin,*lin);
+  
+  if ( (PIPE = popen(sli,"r")) == NULL ) {
+    perror("system error in pipe_syst :");
+    *err = 1;
+    return;
+  }
+  if (fgets(slo, MAX_CHAR, PIPE) == NULL) {
+    perror("system error in pipe_syst :");
+    *err = 1;
+    return;
+  }
+  pclose(PIPE);
+  if ( (sd = strchr(slo,'\n')) != NULL ) {  /*pad with blanks */
+     while ( sd < (slo+MAX_CHAR) ) {   *sd++ = ' ';  }
+  }
+
+  cconvert_string(stout,slo,lout);
 }
 
 /**************************************************************/
@@ -259,7 +295,7 @@ void GIFAPRINT(st,l)
 char *st;
 int  *l;
 
-{ char stl[256];
+{ char stl[MAX_CHAR];
 
    convert_string(stl,st,*l);
    printf("%s\n",stl);
@@ -328,7 +364,7 @@ int chdir_(path,lp)
 char *path;
 int  *lp;
 
-{ char stl[256];
+{ char stl[MAX_CHAR];
 
    convert_string(stl,path,*lp);
    return(chdir(stl));
@@ -386,7 +422,7 @@ int *code;
 void RDLINE(int *lp, char *inp)
 
 {
-char lprp[256];
+char lprp[MAX_CHAR];
 char *local;
 int l,i;
 
@@ -404,7 +440,7 @@ int l,i;
     add_history(local);
     free(local);
   } else {
-    for (i=0;i<256;i++) {    inp[i] = ' '; }
+    for (i=0;i<MAX_CHAR;i++) {    inp[i] = ' '; }
   }
 }
 #endif
@@ -415,3 +451,4 @@ void _Xsetlocale()
 {
 }
 #endif
+

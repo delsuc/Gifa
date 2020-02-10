@@ -3,7 +3,7 @@
 SHELL = /bin/sh
 
 #list of architecture
-LIST_DIR = sgi64_obj sgiv5_obj sgiv4_obj sgi3000_obj hpux9_obj hpux10_obj machten_obj aix_obj sun_obj sol2_obj spec_obj linux_obj
+LIST_DIR = sgi64_obj sgiv5_obj sgi3000_obj hpux9_obj hpux10_obj machten_obj aix_obj sun_obj sol2_obj spec_obj linux_obj darwin_obj
 
 # location of distribution files
 # DIST_DIR = /system_cbs/ftp/pub/gifa_v4_new
@@ -21,7 +21,7 @@ RES_LIST = source Makefile README_ppm README.html README README_2 com com_devel 
 RES_DIR = $$HOME
 
 # KIT_DIR is the list of files and directories to put into the kit
-KIT_DIR = $(LICE_LIST) README MACHINE_REQUIREMENTS README_2 TODO History Brief_description List_of_files com macro test util help doc
+KIT_DIR = $(LICE_LIST) README README_2 TODO History Brief_description List_of_files com macro test util help doc
 
 #ARCHI sets-up shell variables for each platforms
 ARCHI = -@archi="`uname`"; \
@@ -41,10 +41,14 @@ ARCHI = -@archi="`uname`"; \
                 fi; \
 	elif [ $$archi = "IRIX" ] ; then \
 		ddt=dbx; \
-		if ( uname -r | grep '5\.' >/dev/null ) ; then \
+		if ( uname -r | grep '6\.' >/dev/null ) ; then \
+			echo "IRIX 6.x"; \
+			objdir=../sgi64_obj ; \
+			kit=gifav4_SGI6.tar.Z; \
+		elif ( uname -r | grep '5\.' >/dev/null ) ; then \
 			echo "IRIX 5.x"; \
 			objdir=../sgiv5_obj ; \
-			kit=gifav4_SGI.tar.Z; \
+			kit=gifav4_SGI5.tar.Z; \
                 elif ( uname -r | grep '4\.' >/dev/null ) ; then \
 			echo "IRIX 4.x"; \
 			objdir=sgi3000_obj ; \
@@ -53,7 +57,7 @@ ARCHI = -@archi="`uname`"; \
 	elif [ $$archi = "IRIX64" ] ; then \
 		objdir=../sgi64_obj ; \
 		ddt=dbx; \
-		kit=gifav4_SGI64.tar.Z; \
+		kit=gifav4_SGI6.tar.Z; \
 	elif [ $$archi = "AIX" ] ; then \
 		objdir=../aix_obj ; \
 		ddt=dbx; \
@@ -82,6 +86,11 @@ ARCHI = -@archi="`uname`"; \
 			kit=gifav4_LINUX.tar.Z; \
                         ddt=gdb; \
 		fi; \
+	elif [ $$archi = "Darwin" ] ; then \
+		echo "`uname -s -r`"; \
+		objdir=../Darwin_obj; \
+		dtt=gdb; \
+		kit=gifav4_DARWIN.tar.Z; \
 	else echo "Platform unknown" ; \
 	fi;
 
@@ -92,7 +101,6 @@ default :
 	@echo "  To make Gifa :"
 	@echo " "
 	@echo "	make gifa       builds Gifa"
-	@echo "	make t1fit      builds t1fit program"
 	@echo "	make debug      builds a debugging version of Gifa"
 	@echo "	make depend	builds the dependence list for the make"
 	@echo "	make all_version	builds all sizes of Gifa"
@@ -124,16 +132,7 @@ run :
 test :
 	$(ARCHI) \
         echo $$objdir ; rm -f $$HOME/gifa.log ; \
-	(cd ../test ; echo 'TEST exit n' | ../source/$$objdir/gifa)
-
-#build gifa in obj sub_directory
-t1fit :
-	$(ARCHI) \
-	if [ ! -d $$objdir ] ; then \
-		mkdir $$objdir; \
-	fi; \
-	here=`pwd`; cd $$objdir; $(MAKE) VPATH=$$here t1fit;
-
+	(cd ../test ; echo 'exit n' | ../source/$$objdir/gifa)
 
 #build gifa in obj sub_directory
 gifa :
@@ -214,10 +213,7 @@ install :
 #to create a binary distribution kit for each platform
 
 kit_util:
-	cp cache_mad.* ../util/ux2cache
-	cp cache_mad.* ../util/cach2xeasy 
-	cp cache_mad.* ../util/dis2cache 
-	cp cache_mad.* ../util/vn2cache
+	cp cache_mad.* ../util/cache
 	-if [ ! -d ../bin ] ; then mkdir ../bin; fi
 	rm -f ../bin/*
 	-if [ "`uname`" = "HP-UX" ] ; then \
@@ -238,16 +234,15 @@ kit_util:
 	elif [ "`uname`" = "Linux" ] ; then \
 		cflags="-DUNDERSCORE -Dis_big_endian"; \
 		cc="gcc"; \
+	elif [ "`uname`" = "Darwin" ] ; then \
+		cflags="-DUNDERSCORE -DDARWIN"; \
+		cc="cc -traditional-cpp"; \
 	elif [ "`uname`" = "MachTen" ]; then \
 		echo "no utilities for MachTen"; \
 		exit ; \
 	else cflag=""; fi; \
 	(cd ../util/ux2cache; $(MAKE) clean; $(MAKE) "CC=$$cc" "LD=$$cc" "CFLAGS=$$cflags" ); \
-	cp ../util/ux2cache/ux2cach ../bin ; \
-	(cd ../util/ux2cache; $(MAKE) clean ); \
-	(cd ../util/dis2cache; $(MAKE) clean; $(MAKE) "CC=$$cc" "CFLAGS=$$cflags"); \
-	cp ../util/dis2cache/dis2cach ../util/dis2cache/disinfo ../bin; \
-	(cd ../util/dis2cache; $(MAKE) clean);
+	cp ../util/ux2cache/ux2cach ../bin
 
 kit_bin: kit_util
 	$(ARCHI) \
@@ -258,10 +253,7 @@ kit_bin: kit_util
 	tar cvf - bin  | compress  > $(COPY_DIR)/$$kit;
 
 kit_base:
-	cp cache_mad.* ../util/ux2cache
-	cp cache_mad.* ../util/cach2xeasy 
-	cp cache_mad.* ../util/dis2cache 
-	cp cache_mad.* ../util/vn2cache
+	cp cache_mad.* ../util/cache
 	-rm ../doc/prog*
 	-rm ../macro/*~ ../macro/#*# ..macro/att ..macro/att#*# /*~ ../test/*~ ../test/#*#
 	-rm ../help/*~ ../help/#*#

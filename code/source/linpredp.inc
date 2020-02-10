@@ -50,8 +50,8 @@ c         max0=0.0
 c         refresh = 1
 
       elseif (command.eq.'DT->AR') then
-         if (it1d.ne.1) goto 104
          if (dim.ne.1) goto 99
+         if (it1d.ne.1) goto 104
          if (sizeimage1d.gt.sizemax) goto 103
          if (order.lt.1) goto 161
          if (order.gt.2*ldmax) goto 166
@@ -75,9 +75,11 @@ c         itdata = it1d
          emptydata = .false.
 
       elseif (command.eq.'BURG') then
-         if (it1d.ne.1) goto 104
+#adrwn      call gifaout('This function is not implemented yet on Darwin')
+#adrwn      goto 121
          if (dim.ne.1) goto 99
-         if(order.lt.1) goto 161
+         if (it1d.ne.1) goto 104
+         if (order.lt.1) goto 161
          if (order.gt.2*ldmax) goto 166
          if (input.eq.20)
      *   call gifaouti('order of the AR evaluation : ',order)
@@ -211,11 +213,11 @@ c              if (bool1) goto 90
          endif
 
       elseif (command.eq.'AR->DT') then
-        if (it1d.ne.1) goto 104
-        if (dim.ne.1) goto 99
+         if (dim.ne.1) goto 99
+         if (it1d.ne.1) goto 104
          if (sizeimage1d.gt.sizemax) goto 103
-         if(szar.lt.1) goto 98
-         if(szar.gt.sizeimage1d/2 .or. szar.gt.2*ldmax) goto 98
+         if (szar.lt.1) goto 98
+         if (szar.gt.sizeimage1d/2 .or. szar.gt.2*ldmax) goto 98
          zz = sizeimage1d
          call message ('Final size?')
          call getint2(zz,error)
@@ -234,6 +236,7 @@ c              if (bool1) goto 90
             goto 93
          endif
          if (error.eq.1) call gifaout('Overflow during prediction!')
+         error = 0
          sizeimage1d = zz
          max0=0.0
          refresh=1
@@ -287,7 +290,7 @@ c        if (order.gt.(2*ldmax) ) goto 166
         call message(' Do you want to reduce noise power ?')
         call getbool2(st,'svdclean',error)
         if (error.ne.0) goto 93
-        if (st.eq.'yes') then 
+        if (st.eq.'YES') then 
           zz = 1
         else
           zz = 0
@@ -307,7 +310,7 @@ c        if (order.gt.(2*ldmax) ) goto 166
         call message(' Do you want to reduce noise power ?')
         call getbool2(st,'svdclean',error)
         if (error.ne.0) goto 93
-        if (st.eq.'yes') then 
+        if (st.eq.'YES') then 
           zz = 1
         else
           zz = 0

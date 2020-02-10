@@ -375,28 +375,94 @@ c
       integer err
       character*10 st
 
-      st = b
-
-10    call getstring2(st,err)
-      if (err.ne.0) goto 20
-      call uppercase(st,10)
-      if (st(1:1).eq.'Y') then
-         b = 'yes'
-      elseif (st(1:1).eq.'N') then
-         b = 'no'
-      elseif (st(1:1).eq.'C') then
-         b = 'cancel'
-         err = 1
-      else
-         write(*,*) 'Please answer with y(es) / n(o) / c(ancel) / ? :'
-         st = 'yes'
-         goto 10
-      endif
-
+c old code  cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+c												     c
+c	    st = b										     c
+c												     c
+c   10    call getstring2(st,err)							     c
+c	    if (err.ne.0)	goto 20							     c
+c	    call uppercase(st,10)							     c
+c	    if (st(1:1).eq.'Y')	then							     c
+c		 b = 'yes'									     c
+c	    elseif (st(1:1).eq.'N') then						     c
+c		 b = 'no'									     c
+c	    elseif (st(1:1).eq.'C') then						     c
+c		 b = 'cancel'								     c
+c		 err = 1									     c
+c	    else										     c
+c		 write(*,*)	'Please answer with y(es) / n(o) / c(ancel) / ?	:'   c
+c		 st =	'yes'									     c
+c		 goto	10									     c
+c	    endif										     c
+c												     c
+c								 c
+c   20    call gifaout('*** error in reading')	 c
+c	    b	= 'error'					 c
+c	    err = 1						 c
+c	    return						 c
+c								 c
+cccccccccccccccccccccccccccccccccccccccccccccccccc
+     
+      call getenum2(b,'yes no cancel ?',err)
       return
 
-20    call gifaout('*** error in reading')
-      b = 'error'
+      end
+
+C **************************************************************
+      subroutine getenum2(st,list,err)
+c IN	: list
+c INOUT	: st
+c OUT	: err
+c SIDE	: param
+c
+c reads a string value, which value is chosen in list (blank separated).
+c based on getstring2
+c
+c test are case insensitive - value is returned in uppercase !
+c
+c limited to 32 values of length 32 !!!
+c
+      implicit none
+      character*(*) st,list
+      integer err
+      integer i,j,nenum
+      character*256 stl,llist
+      character*32 enum(32),  enl
+
+      llist = list
+      call uppercase(llist,len(llist))
+      
+      nenum=0
+      call leading(llist)
+      i = index(llist,' ')
+      do while (i.gt.1 .and. nenum .lt. 32)
+        nenum=nenum+1
+        enum(nenum) = llist(1:min(i,32))
+        llist = llist(i:len(llist))
+        call leading(llist)
+        i = index(llist,' ')
+      enddo
+      
+      stl = enum(1)
+      call getstring2(stl,err)
+      if (err.ne.0) goto 20
+      call uppercase(stl,10)
+      call leading(stl)
+      i = index(stl,' ')
+      do j=1,nenum
+         enl = enum(j)
+         if (stl(1:i-1) .eq. enl(1:i-1)) goto 30
+      enddo
+c not found
+      llist = 'Please choose value in the list : ( ' // list // ' )'
+      call gifaout(llist)
+      goto 20
+
+c found
+30    st = enum(j)
+      return
+
+20    st = 'error'
       err = 1
       return
       end
@@ -483,6 +549,7 @@ c
      +   .and. st.ne.'HZ'      .and. st.ne.'SECOND'
      +   .and. st.ne.'DAMPING' .and. st.ne.'TAB') then
          call gifaout('*** Error in unit type')
+         err = 1
       else
          unit = st
       endif
@@ -933,8 +1000,8 @@ c
 	  character*(*) st
 	  logical bool
 	  character*(256) stl
-	  
 #include "gifaout.inc"
+
       stl = st
       inquire(3,opened=bool)
       if (bool) close(3)
@@ -1055,21 +1122,25 @@ c used for error msg
 c
       implicit none
 #include "gifabcom.inc"
-
+#include "gifshellv.inc"
       character*(*) st		! assume max size
-      character*(10) stl
+c      character*(10) stl
       character*(256) stl2
-      integer err,l
+c      integer err
+      integer l,xx
 
-      stl2 = st
-      call trailing(stl2,l)
-         if (on_graph .eq. 1) then
-            stl = 'Error'
-            call f_msg_ok(stl,5,stl2,l,err)
-         else
+      stl2 = '=ONERROR'
+      call checkvar(stl2,vcontext,xx)
+      if (xx .ne.0 ) then  ! ne.0 means no onerrorgoto assigned => message
+         stl2 = st
+         call trailing(stl2,l)
+c         if (on_graph .eq. 1) then
+c            stl = 'Error'
+c            call f_msg_ok(stl,5,stl2,l,err)
+c         else
            call gifaout('***'//stl2(1:l))
-         endif
-
+c         endif
+      endif
       return
       end
 

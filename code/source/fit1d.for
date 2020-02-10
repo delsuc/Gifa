@@ -163,7 +163,8 @@ c Optimiser ou non l'amplitude du pic
                call message('    Fit Amplitude (yes / no) ')
 	       call getbool2(rep,'toto',err)
 	       if (err.ne.0) return
-               if (rep.eq.'yes') then
+               call uppercase(rep,len(rep))
+               if (rep.eq.'YES') then
                   actif        = actif + 1
                   tdx(actif) = 4*(i-1)+1
                endif
@@ -171,7 +172,8 @@ c Optimiser ou non la frequence du pic
                call message('    Fit Frequency (yes / no) ')
 	       call getbool2(rep,'toto',err)
 	       if (err.ne.0) return
-               if (rep.eq.'yes') then
+               call uppercase(rep,len(rep))
+               if (rep.eq.'YES') then
                   actif        = actif + 1
                   tdx(actif) = 4*(i-1)+2
                endif 
@@ -179,7 +181,8 @@ c Optimiser ou non la largeur du pic
                call message('    Fit Width (yes / no) ')
 	       call getbool2(rep,'toto',err)
 	       if (err.ne.0) return
-               if (rep.eq.'yes') then
+               call uppercase(rep,len(rep))
+               if (rep.eq.'YES') then
                   actif        = actif + 1
                   tdx(actif) = 4*(i-1)+3
                endif 

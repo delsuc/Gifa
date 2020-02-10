@@ -39,15 +39,20 @@ without written permission from the authors.
 #include "util.h"
 #include "xmgifa.xbm"
 
-#ifndef MACHTEN
-#  include <malloc.h>
-#else
+#if defined DARWIN
+#    include <stdlib.h>
+#elif defined MACHTEN
 #  include <sys/malloc.h>
+#else
+#    include <malloc.h>
 #endif
 
 #ifndef NOREADLINE
 #  include <readline/readline.h>
 #endif
+
+#include "sizebasec.h"
+
 
 /*-------------------------------------------------------------
 **	forwarded functions
@@ -92,9 +97,10 @@ XtInputId input_id;
 
 extern  char *pldat;
 extern short *pldat16;
+extern char *pldat24;
 extern int *pldat32;
 /* global PROMPT variable*/
-extern char cprompt[256];
+extern char cprompt[MAX_CHAR];
 
 typedef struct {
     Widget root_w,root_comm,mere_titre,mere_comm;
@@ -183,12 +189,17 @@ int MOTIF_INIT()
 #endif
 	switch (depth) {
 	case (4) :
+          printf("%s\n","WARNING - Colors will probably be wrong in bitmap mode, because of screen depth mode (4bits)");
 	case (8) :
 	  pldat = malloc(simax*simax);
 	  break;
+	case (15) :
+          printf("%s\n","WARNING - Colors will probably be wrong in bitmap mode, because of screen depth mode (15bits)");
 	case (16) :
 	  pldat16 = malloc(2*simax*simax);
 	  break;
+	case (24) :
+          printf("%s\n","WARNING - Colors will probably be wrong in bitmap mode, because of screen depth mode (24bits)");
 	case (32) :
 	  pldat32 = malloc(4*simax*simax);
 	  break;
@@ -403,13 +414,13 @@ char command_f[];
 {
     XContext cont_comm;
     Widget Wbutt_comm;
-    char name[256];	 
+    char name[MAX_CHAR];	 
     char *command;
     Arg args[5];
 
 
 	/* Creation des boutons commandes avec contexte associe contenant 
-		   la commande (256 char) a lancer */
+		   la commande (MAX_CHAR char) a lancer */
 
     convert_string(name,name_f,*lg_name);
 
@@ -613,12 +624,12 @@ XtInputId      *id ;
 {
         int n_octets,err=0,l,i;
         Widget menu_bar_comm;
-        char  tampon[256],tt[256];
+        char  tampon[MAX_CHAR],tt[MAX_CHAR];
 
                                 /* Lecture sur STDIN */
         n_octets = 0;
-        for(i=0;i<256;i++) tampon[i] = 0;
-        n_octets = read(0,tampon,256);
+        for(i=0;i<MAX_CHAR;i++) tampon[i] = 0;
+        n_octets = read(0,tampon,MAX_CHAR);
         if(n_octets != -1){
                 err = 0;
                 JOURCOMMON.haswritten = 1;   /* window has changed */
@@ -654,7 +665,7 @@ char label_titre_f[];
 {
         XContext cont_titre;
         Widget menu_bar_comm,new_but_titre,menu_bar_titre;
-        char label_titre[256];
+        char label_titre[MAX_CHAR];
         Arg args[5];
         int n;
         n = 0;
@@ -843,7 +854,7 @@ String command;
 {
         int err=0;
         int l_comm_f,i;
-        char comm_f[256];
+        char comm_f[MAX_CHAR];
 
 	if(flag_bloquant == 1){
 		XBell(XtDisplay(window_mere), 100);

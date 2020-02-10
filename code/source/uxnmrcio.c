@@ -14,6 +14,8 @@ without written permission from the authors.
 */
 
 #include <stdio.h>
+#include "sizebasec.h"
+
 
 void cux1d(lname, ln, column, sizeimage1d, error)
 
@@ -22,7 +24,7 @@ int *ln, *sizeimage1d, *error;
 float *column;
 
 {
-  char cname[256];
+  char cname[MAX_CHAR];
   FILE *file;
   int i;
 

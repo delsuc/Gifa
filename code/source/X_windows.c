@@ -40,6 +40,8 @@ without written permission from the authors.
 #  include <math.h>
 #  include <Xm/MwmUtil.h>
 #endif
+
+#include "sizebasec.h"
 # include"logo.inc"
 
 
@@ -179,6 +181,7 @@ typedef struct {
         char *pldat; /* Image data,
                                      simax x simax array of pixel values. */
         short *pldat16; /* Image data, for 16 bit deep screens */
+        char *pldat24; /* Image data, for 24 bit deep screens */
         int *pldat32; /* Image data, for 32 bit deep screens */
 
         char *font_name="fixed";    
@@ -620,7 +623,7 @@ XtPointer       call_data ;
 {
         int err=0;
         int vl;
-        char view_name[256], cmd[256]="close_view \0";
+        char view_name[MAX_CHAR], cmd[MAX_CHAR]="close_view \0";
 
         WHICH_VIEW(&vd_id, view_name, &vl);
 
@@ -675,10 +678,10 @@ char *vd_title;    /* Window title. */
       Cardinal i;
       int a,time;
       char st[10];
-      char title[256];
+      char title[MAX_CHAR];
       Widget wid_image_2d,shell_wind_2d;
       Arg args[10];
-      static char         menu_string[256];
+      static char         menu_string[MAX_CHAR];
       Arg arg;
       int n,dim_type;
       char *dpname;
@@ -1184,26 +1187,31 @@ unsigned char *matrix;     /* Natural matrix of dim wd x ht elements. */
 				depth,ZPixmap,0,pldat,
 				mx,my,32,0);
 	   break;
-	case (16) :
+	case (15) :
+        case (16) :
            for (jj=0;jj<mx;jj++)
            { pldat16[k] = colorno[matrix[(int) ( jj*pixelw )
                          +  *wd * ( (int) (ii*pixelh))  ]];
              k = k+1;
            }
-	   image = XCreateImage(dpy,visual,
-				depth,ZPixmap,0,(char *) pldat16,
-				mx,my,32,0);
-	   break;
-	case (32):
+           image = XCreateImage(dpy,visual,
+                                depth,ZPixmap,0,(char *) pldat16,
+                                mx,my,32,0);
+           break;
+	case (24) :
+	case (32) :
            for (jj=0;jj<mx;jj++)
            { pldat32[k] = colorno[matrix[(int) ( jj*pixelw )
                          +  *wd * ( (int) (ii*pixelh))  ]];
+             if (depth == 24) { pldat32[k] = pldat32[k] << 8; }
              k = k+1;
            }
 	   image = XCreateImage(dpy,visual,
 				depth,ZPixmap,0,(char *) pldat32,
 				mx,my,32,0);
 	   break;
+	default :
+	  printf("Gifa do not know how to handle depth of %d\n",depth);
 	}
     }
 
@@ -1262,7 +1270,7 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 void WIN_WRITE(vd_id,x,y,text,len)
 int *vd_id,*len;
 float *x,*y;
-char  text[80];
+char  text[256];
 /*
 
 CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
@@ -1280,7 +1288,7 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       int a1,a2,            /* coord of text in pixel coords. */
           mx,my,            /* Window width and height */
           len1;
-      char ltext[80];
+      char ltext[256];
       convert_string(ltext,text,*len);
       mx = windoww[*vd_id]-1;
       my = windowh[*vd_id]-1;
@@ -1326,14 +1334,15 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 
 	
 	for (p=0;p<pmax;p++)
+/***************/
+         { pt[p].x = min(8*mx,max(-8*mx,(int)(mx*xv[p])));
+           pt[p].y = max(-8*my,min(8*my,(int)(my-my*yv[p]))); }
+/**************/
+/* was unlimited */
 /***************
-*         { pt[p].x = min(mx,max(0,(int)(mx*xv[p])));
-*           pt[p].y = max(0,min(my,(int)(my-my*yv[p]))); }
-**************/
-/* now unlimited */
          { pt[p].x = (int)(mx*xv[p]);
            pt[p].y = (int)(my-my*yv[p]); }
-
+***************/
 
 /*    Send the point array to X Windows.*/
       XDrawLines(dpy,pixmap[*vd_id],gc[*vd_id],
@@ -1495,7 +1504,7 @@ int *vd_id_orig;
 	Widget	shell_wincopy,wincopy;
 	Arg	args[10];
 	int 	n;
-	char title[256];
+	char title[MAX_CHAR];
 	Atom wm_delete_window;
 	XGCValues	valeurs;
 	donnees_pixmap   *donnees;
@@ -2225,7 +2234,7 @@ XmDrawingAreaCallbackStruct      *call_data;      /*  data from widget class  */
         Dimension largeur, hauteur;
         int err=0;
         int *l_comm_f;
-        char comm_f[256];
+        char comm_f[MAX_CHAR];
 
 
 

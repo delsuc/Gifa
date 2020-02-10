@@ -21,7 +21,8 @@ C             +  plus
 C             *  star
 C             s  square
 C             d  diamond
-C             c  circle  (16 facetted)
+C             o  circle  (16 facetted)
+C             b  box ( + and s )
 C             
 
       implicit none
@@ -42,13 +43,11 @@ C
       ypp = min(y+py,1)
       pi8 = atan(1.0)/2
 
-      if (pat .eq. 'x') then       !  x pattern
-       	call win_plot_1d(vd_id, xmp, ymp, xpp, ypp)
-      	call win_plot_1d(vd_id, xmp, ypp, xpp, ymp)
-      else if (pat .eq. '+') then  !  + pattern
+      if (pat .eq. '+' .or. pat .eq. 'b') then       !  + pattern
       	call win_plot_1d(vd_id, xmp, y, xpp, y)
       	call win_plot_1d(vd_id, x, ymp, x, ypp)
-      else if (pat .eq. 's') then  !  square
+      endif
+      if (pat .eq. 's' .or. pat .eq. 'b') then  !  square
       	xar(1) = xmp
       	yar(1) = ymp
       	xar(2) = xmp
@@ -60,6 +59,9 @@ C
       	xar(5) = xmp
       	yar(5) = ymp
       	call win_plot_array(vd_id,5,xar,yar)
+      else if (pat .eq. 'x') then       !  x pattern
+       	call win_plot_1d(vd_id, xmp, ymp, xpp, ypp)
+      	call win_plot_1d(vd_id, xmp, ypp, xpp, ymp)
       else if (pat .eq. 'd') then  !  tilted square
       	xar(1) = x
       	yar(1) = ymp
@@ -72,7 +74,7 @@ C
       	xar(5) = x
       	yar(5) = ymp
       	call win_plot_array(vd_id,5,xar,yar)
-      else if (pat .eq. 'o') then  !  octogone
+      else if (pat .eq. 'o') then  !  16 sides
          do i=0,16
             xar(i+1)=min(1,max(0,x+px*cos(i*pi8)))
             yar(i+1)=min(1,max(0,y+py*sin(i*pi8)))

@@ -396,6 +396,9 @@ C name of the last read 2D data-set
           elseif (vname.eq.'$NAME_3D') then
 C name of the last read 3D data-set
              lst = name3d
+          elseif (vname.eq.'$PKPATTERN') then
+C The the value of PKPATTERN command 
+             lst = peakpat
           elseif (vname.eq.'$PKNAME') then
 C The name used by the last PKREAD / PKWRITE command 
              lst = pkname
@@ -594,6 +597,17 @@ C "left" F3 coordinate of the 3D zoom window (in index)
           elseif (vname.eq.'$ZOOM_3D[6]') then
 C "right" F3 coordinate of the 3D zoom window (in index)
              write(lst,20) zo3df3u
+
+          elseif (vname.eq.'$REFPEAKS') then
+C 1 if the display of peaks is active
+             write(lst,20) refpeaks
+          elseif (vname.eq.'$REFSPECTRA') then
+C 1 if the display is active
+             write(lst,20) refspectra
+          elseif (vname.eq.'$REFMACRO') then
+C 1 if the display is active during macro
+             write(lst,20) refmacro
+
           elseif (vname.eq.'$DISP1D') then
 C 1 if the 1D window is on screen
              write(lst,20) disp1d
@@ -615,10 +629,49 @@ C current value for CCOLOR
           elseif (vname.eq.'$BCOLOR') then
 C current value for BCOLOR
              write(lst,20) bcol
+          elseif (vname.eq.'$CLEAR') then
+C current value for CLEAR
+             write(lst,20) clear
           elseif (vname.eq.'$DISP3D') then
 C 1 if the 3D controur plot window is on screen
              write(lst,20) disp3d
-   ! MaxEnt controls
+          elseif (vname.eq.'$ALPHA') then
+C current value for ALPHA
+             write(lst,30) alpha
+          elseif (vname.eq.'$BETA') then
+C current value for BETA
+             write(lst,30) beta
+          elseif (vname.eq.'$GAMA') then
+C current value for GAMA
+             write(lst,30) gama
+          elseif (vname.eq.'$SCALE3D') then
+C current value for SCALE3D
+             write(lst,30) scale3d
+          elseif (vname.eq.'$ZNOT') then
+C current value for ZNOT
+             write(lst,30) znot
+          elseif (table(vname,'$OFFSET3D',li)) then
+C current value for OFFSET3D
+             if (li.eq.1) then
+               write(lst,30) off3dx
+             else if (li.eq.2) then
+               write(lst,30) off3dy
+             else if (li.eq.3) then
+               write(lst,30) off3dz
+             else
+               goto 100
+             endif
+          elseif (vname.eq.'$AXIS3D') then
+C value of the AXIS3D parameter 
+             if (axis3d.eq.0) lst = 'NONE'
+             if (axis3d.eq.1) lst = 'F1'
+             if (axis3d.eq.2) lst = 'F2'
+             if (axis3d.eq.3) lst = 'F12'
+             if (axis3d.eq.4) lst = 'F3'
+             if (axis3d.eq.5) lst = 'F13'
+             if (axis3d.eq.6) lst = 'F23'
+             if (axis3d.eq.7) lst = 'F123'
+C   ! MaxEnt controls
           elseif (vname.eq.'$CHI2') then
 C value of the chi2 returned by the last command : MAXENT, LINEFIT, RT->PK
              write(lst,30) leastsq
@@ -658,7 +711,7 @@ C context
           elseif (vname.eq.'$SHIFT') then
 C context
              write(lst,30) shift
-  ! click tableprint vname
+C  ! click tableprint vname
           elseif (table(vname,'$POINTX',li)) then
 C X coordinates (in index) of ith point in the point stack
              if (li.gt.nclick .or. li.lt.1) goto 100
@@ -673,7 +726,7 @@ C The number of entries in the point stack
           elseif (vname.eq.'$BUTTON') then
 C 1, 2 or 3 depending on which mouse button was last clicked
              write(lst,20) clickbutton
-  ! LP internals
+C  ! LP internals
           elseif (vname.eq.'$ORDER') then
 C context
              write(lst,20) order
@@ -686,7 +739,7 @@ C context
           elseif (vname.eq.'$NRT') then
 C context
              write(lst,20) szzn
-  ! Build-up curve module
+C  ! Build-up curve module
           elseif (vname.eq.'$RELAX') then
 C context
              write(lst,30) redf
@@ -702,10 +755,16 @@ C the current calibrating relaxation rate, as defined with the CALIBDI command
           elseif (vname.eq.'$DIST') then
 C context
              write(lst,30) dist
-  ! peak table
+C  ! peak table
+          elseif (vname.eq.'$PKRADIUS') then
+C The nvalue of the last radius argument in the PEAK cmde
+             write(lst,20) pkradius
           elseif (vname.eq.'$NPK1D') then
 C The number of entries in the 1D peak table
              write(lst,20) nbpic1d
+          elseif (table(vname,'$PK1D_ID',li)) then
+C The peak id
+             lst = peak1d_id(li)
           elseif (table(vname,'$PK1D_F',li)) then
 C position (in index) of the ith 1D entry
              if (li.gt.nbpic1d .or. li.lt.1) goto 100
@@ -747,6 +806,9 @@ C analytical form of the ith entry in the 1D peak table GAUSS, LORENTZ, or UNKNO
           elseif (vname.eq.'$NPK2D') then
 C The number of entries in the 2D peak table
              write(lst,20) nbpic2d
+          elseif (table(vname,'$PK2D_ID',li)) then
+C The peak id
+             lst = peak2d_id(li)
           elseif (table(vname,'$PK2D_F2F',li)) then
 C F2 position (in index) of the ith entry in the 2D peak table
              if (li.gt.nbpic2d .or. li.lt.1) goto 100
@@ -800,6 +862,9 @@ C analytical form of the ith entry in the 2D peak table GAUSS, LORENTZ, or UNKNO
           elseif (vname.eq.'$NPK3D') then
 C The number of entries in the 3D peak table
              write(lst,20) nbpic3d
+          elseif (table(vname,'$PK3D_ID',li)) then
+C The peak id
+             lst = peak3d_id(li)
           elseif (table(vname,'$PK3D_F3F',li)) then
 C F3 position (in index) of the ith entry in the 3D peak table
              if (li.gt.nbpic3d .or. li.lt.1) goto 100
@@ -834,6 +899,9 @@ C The index of the entry found by the last FIND command
           elseif (vname.eq.'$PK_FND_DST') then
 C The distance between the last entry found with FIND and the actual location given
              write(lst,30) found_dist
+          elseif (vname.eq.'$MAXINBOX') then
+C value returned by the last MAXINBOX command
+             write(lst,30) maxinbox
           elseif (vname.eq.'$SOMREC') then
 C value returned by the last SUMREC command
              write(lst,30) volume
@@ -849,13 +917,23 @@ C error on the previous quantity
           elseif (vname.eq.'$SIGN_PEAK') then
 C context
              write(lst,20) int(signpic)
-   ! static config
+C   ! static config
           elseif (vname.eq.'$GIFAPATH') then
 C current PATH used for macro, set by th SETPATH command
              lst = path
           elseif (vname.eq.'$HOME') then
 C equivalent to the $HOME variable in UNIX
              lst = home
+          elseif (vname.eq.'$RETURNED') then
+C context set by the RETURN command
+             lst = returned
+          elseif (vname.eq.'$MACRONAME') then
+C the name of the current running macro
+             if (input.eq.20) then
+               lst = 'command line'
+             else
+               lst = currinp(input-20)
+             endif 
           elseif (vname.eq.'$MEM_PRO_LP') then
 C The size of the protected 1D area, as returned by the CONFIG command
              write(lst,20) ldmax
@@ -896,6 +974,16 @@ C The current version, as returned by the CONFIG command
           elseif (vname.eq.'$LICENCE') then
 C The licence as returned by the CONFIG command
              lst = license(1:ilenc)
+          elseif (vname.eq.'$PULLDOWNMENU') then
+C The PULLDOWNMENU state
+             write(lst,20) pdmenu
+          elseif (vname.eq.'$VERBOSE') then
+C The VERBOSE state
+             write(lst,20) verbose
+          elseif (vname.eq.'$DEBUG') then
+C The DEBUG state
+             write(lst,20) debug
+
           elseif (vname.eq.'$RANDOMG') then
 C a random variable with normal law, unit variance and zero mean
              write (lst,30) gasdev(seed)
@@ -977,7 +1065,7 @@ C value of DFACTOR of the currently JOINed dataset
           elseif (vname.eq.'$C_ABSMAX') then
 C value of ABSMAX of the currently JOINed dataset
              write(lst,30) c_max0
-  ! Laplace transform
+C  ! Laplace transform
           elseif (vname.eq.'$DMIN') then
 C context
              write(lst,30) dmin*dfactor

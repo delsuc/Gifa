@@ -86,7 +86,7 @@ c #include "fitv.inc"
          write(*,*)
       endif
       call gifaout( 'Version : ' // version)
-      call gifaout( 'Licence : ' // license)
+      call gifaout( 'Licence : ' // license(1:ilenc))
       call gifaouti( 'Memory available in kwords :', smxbig/1024 )
       call gifaout( ' ')
  
@@ -127,7 +127,6 @@ c      enddo
       enddo 
       on_graph = 0
       refresh = 0         
-      refmacro = 0
       tm1 = 1
       tm2 = 8
       col = 1

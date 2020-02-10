@@ -3,15 +3,21 @@ c
 C Peak tables definition for GIFA
 c author M.A.DELSUC        25 may 1993
 C modified M.A.D.          18 sep 1997 to add for uncertainties
+C modified MAD       may 2001 added peak_id and peakpat
 c
 c #include "sizebase.inc"
-      integer peakmax,pk1d,pk2d,pk3d
+      integer peakmax,pk1d,pk2d,pk3d, pkidmax
       parameter (peakmax = 4*ldmax)                 ! length of peak tables
       parameter (pk1d = 8, pk2d = 11, pk3d = 7)     ! with of peak tables
+      parameter (pkidmax = 32)
       real peak1d(peakmax,pk1d),peak2d(peakmax,pk2d),
      *     peak3d(peakmax,pk3d)
       integer nbpic1d, nbpic2d, nbpic3d,
      *        porig1d, porig2d, porig3d
+
+      character*(pkidmax) peak1d_id(peakmax),
+     *        peak2d_id(peakmax),peak3d_id(peakmax)
+      character*1 peakpat
 c
 C Peak holds the peak picker, integrator and line-fitting informations,
 c
@@ -57,10 +63,6 @@ c
 c negative width is a pointer to another peak in table
 C
       common/peak/nbpic1d, nbpic2d, nbpic3d, porig1d, porig2d, porig3d,
-     *       peak1d, peak2d, peak3d
-
-
-
-
-
+     *       peak1d, peak2d, peak3d,
+     *       peak1d_id, peak2d_id, peak3d_id, peakpat
 

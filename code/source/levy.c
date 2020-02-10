@@ -34,6 +34,8 @@ UNIX machines, IBM Risc 6000/AIX being the most notable exception */
 
 
 #include <stdio.h>
+#include "sizebasec.h"
+
 
 #ifdef F2C
 #  define WLEVY wlevy_
@@ -59,7 +61,7 @@ int *lin, *lpar, *si1, *si2, *itype, *dim, *error;
 	float temp[513];  /* room for the parameter buffer */
 	int i,j,f1_size,f2_size,t_otal;
 	FILE *fin,*fh;
-	char namein[256], namepar[256];
+	char namein[MAX_CHAR], namepar[MAX_CHAR];
 
 /* convert from FORTRAN */
 	convert_string(namein,nin,*lin);
@@ -108,7 +110,7 @@ char *nin, *npar;
 float *data,*specw1,*specw2;
 int *lin, *lpar, *si1,*si2,*itype, *error;
 {
-        char nameout[256],namepar[256];
+        char nameout[MAX_CHAR],namepar[MAX_CHAR];
 	int t_otal;
 	float temp[513];
 	FILE *fout,*fhd;

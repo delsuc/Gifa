@@ -8,9 +8,10 @@ C size of prmrxd is based on size of levenberg internal buffers
      *           bid1,bid2
       real       minimize, minimize1d
       real       fitgene, fitgene1d
+C      real       mexp, dmexp
       external   flogau,dflogau,flogau2d,dflogau2d,
      *           minimize, minimize1d,
-     *           fitgene, fitgene1d, fitg2, dfitg2
+     *           fitgene, fitgene1d, fitg2, dfitg2, mexp, dmexp
       
 c bid1 and bid2 are there to insure that prmr2d will not overflow the common
       common    /fitc/prmr1d,bid1,bid2

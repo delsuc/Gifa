@@ -16,7 +16,6 @@ c determines whether the display should be recomputed.
 c uses the global variable refresh to do so, and call accordingly
 c the correct display routines.
 
-
       implicit none
 #include "disptypev.inc"
 #include "gifshellv.inc"
@@ -96,7 +95,10 @@ c
 #include "paramfilev.inc"
 #include "disptypev.inc"
 #include "plotcomv.inc"
+#include "peaksize.inc"
+      integer i
 
+      if (refspectra .ne. 0) then
             if (zoom.eq.0) then
              call display1d(win_id,sizeimage1d,column,
      *                 max0,scale,it1d,vheight,clear)
@@ -104,6 +106,12 @@ c
              call display1d(win_id,zo1du-zo1dl+1,
      *                column(zo1dl),max0,scale,it1d,vheight,clear)  
             endif
+      endif
+      if (refpeaks .ne. 0) then
+           do i=1,nbpic1d
+             call showpeak1d(i,win_id)
+           enddo
+      endif
       return
       end
 
@@ -116,10 +124,19 @@ c
 #include "sizeparam.inc"
 #include "paramfilev.inc"
 #include "disptypev.inc"
+#include "peaksize.inc"
+      integer i
 
+      if (refspectra .ne. 0) then
               call display2d(win_id,si2im,si1im,
      *                 plane2d,max0,scale,itype,sign,
      *                 zoom,zolf1,zolf2,zour1,zour2)
+      endif
+      if (refpeaks .ne. 0) then
+           do i=1,nbpic2d
+             call showpeak2d(i,win_id)
+           enddo
+      endif
       return
       end
 
@@ -133,10 +150,18 @@ c
 #include "plotcomv.inc"
 #include "paramfilev.inc"
 #include "disptypev.inc"
+#include "peaksize.inc"
+      integer i
 
+      if (refspectra .ne. 0) then
               call plot2d(0,win_id,si1im,si2im,plane2d,
      *                   max0,scale,itype,cx,cy,level,sign,loga,
      *                   ccolor,zoom,zolf1,zolf2,zour1,zour2,clear)
-
+      endif
+      if (refpeaks .ne. 0) then
+           do i=1,nbpic2d
+             call showpeak2d(i,win_id)
+           enddo
+      endif
       return
       end

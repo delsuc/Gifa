@@ -19,6 +19,7 @@ void convert_string(char *st2, char *st1, int l);
 #  define  GIFA_EXIT gifa_exit_
 #  define  SET_PROMPT set_prompt_
 #  define  REM_RL_HANDLER rem_rl_handler_
+#  define  PIPE_SYS pipe_sys_
 
 #else
 #ifdef F2C
@@ -36,6 +37,7 @@ void convert_string(char *st2, char *st1, int l);
 #  define  GIFA_EXIT gifa_exit__
 #  define  SET_PROMPT set_prompt__
 #  define  REM_RL_HANDLER rem_rl_handler__
+#  define  PIPE_SYS pipe_sys__
 
 #else
 #  define INPROG inprog
@@ -51,6 +53,7 @@ void convert_string(char *st2, char *st1, int l);
 #  define  GIFA_EXIT gifa_exit
 #  define  SET_PROMPT set_prompt
 #  define  REM_RL_HANDLER rem_rl_handler
+#  define  PIPE_SYS pipe_sys
 
 #endif
 #endif

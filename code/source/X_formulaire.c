@@ -53,10 +53,13 @@ without written permission from the authors.
 # include <Xm/List.h>
 # include <Xm/MwmUtil.h>
 #endif
-#ifndef MACHTEN
-#  include <malloc.h>
-#else
+
+#if defined DARWIN
+#    include <stdlib.h>
+#elif defined MACHTEN
 #  include <sys/malloc.h>
+#else
+#    include <malloc.h>
 #endif
 
 #include "X_windef.h"
@@ -68,6 +71,8 @@ without written permission from the authors.
 #endif
 
 #include <stdlib.h>
+#include "sizebasec.h"
+
 
 /*-------------------------------------------------------------
 **      forwarded functions
@@ -182,7 +187,7 @@ typedef struct{
     int cancel_button;
     int apply_button;
     int help_button;	/* non branche */
-    char command[256];
+    char command[MAX_CHAR];
     XtAppContext ap_cont_form;
     TextFieldStruct *pt_tf_struct[Max_Text];
     PulldownStruct *pt_pd_struct[Max_PullDown];
@@ -196,7 +201,7 @@ typedef struct{
 
 typedef struct{
 	Widget mere_form;
-	char but_act[256];
+	char but_act[MAX_CHAR];
 } STR_ACT_FORM;
 
 /* flag de sortie de boucle_event :
@@ -250,8 +255,8 @@ unsigned *mask;
         int     n;
         Widget  toplevel_form,menu_bar_form,menu_bar_row,scroll;
         Arg     args[5];
-	char label_titre[256];
-	char commande[256];
+	char label_titre[MAX_CHAR];
+	char commande[MAX_CHAR];
    	Atom  wm_delete_window;
 	Atom wm_size_window;
 	int  position_x,position_y;
@@ -536,16 +541,16 @@ int *str_pt;
 *
 */
 {
-        char label[256];
-	char label_tmp[256];
-	char default_val[256];
-	char type[256];
-	char variable[256];
-	char list[256];
-        char maxv[256];
-	char decpt[256];
-	char *list_states[32];
-	char *list_def[32];
+#define NB_FIELD 64
+        char label[MAX_CHAR];
+	char label_tmp[MAX_CHAR];
+	char default_val[MAX_CHAR];
+	char type[MAX_CHAR];
+	char variable[MAX_CHAR];
+	char list[MAX_CHAR];
+        char maxv[MAX_CHAR];
+	char decpt[MAX_CHAR];
+	char *list_states[NB_FIELD];
 	char *pdvar,*tmp_var;
 	char *defvar,*tmp_def;
 	int  pass,nb_def,nb_but,i,j;
@@ -591,13 +596,13 @@ int *str_pt;
 
 			/* recuperation des differentes variables */
 
-		tmp_var  = (char *)XtMalloc(256);
+		tmp_var  = (char *)XtMalloc(MAX_CHAR);
 		strcpy(tmp_var,list);
 
 		pdvar = strtok(tmp_var,ct);
 		list_states[nb_but] = pdvar; nb_but++;
 
-		while(pdvar != NULL){
+		while((pdvar != NULL) && (nb_but < NB_FIELD)){
 			tmp_var = NULL;		
 			pdvar = strtok(tmp_var,ct);
 			list_states[nb_but] = pdvar; nb_but++;
@@ -619,7 +624,7 @@ int *str_pt;
 
                         /* recuperation des differentes variables */
 
-                tmp_var  = (char *)XtMalloc(256);
+                tmp_var  = (char *)XtMalloc(MAX_CHAR);
                 strcpy(tmp_var,list);
 
                 pdvar = strtok(tmp_var,ct);
@@ -694,9 +699,9 @@ int *str_pt;
 
 void creat_file(str_form,label_var,variable,val_def)
 FORM_data *str_form;
-char label_var[256];
+char label_var[MAX_CHAR];
 char variable[32];
-char val_def[256];
+char val_def[MAX_CHAR];
 /*-------------------------------------------------------------
 *       void creat_file(str_form,label_var,variable,val_def)
 *
@@ -718,9 +723,9 @@ char val_def[256];
         int err;
         Widget tf_box,select_file_box,parent_form,frame,frame0,frame1,label_string,
 				row_column,textfield,label,arrow;
-        char valeur_variable[256];
-        char valeur_variable_f[256]; /* int, char, float... a faire*/
-        char var_f[256];
+        char valeur_variable[MAX_CHAR];
+        char valeur_variable_f[MAX_CHAR]; /* int, char, float... a faire*/
+        char var_f[MAX_CHAR];
         int *l_var_f;
         int *l_valeur_var;
 	int *cont_wid;
@@ -877,7 +882,7 @@ n = 0;
 
 void creat_message_text(str_form,message)
 FORM_data *str_form;
-char message[256];
+char message[MAX_CHAR];
 /*-------------------------------------------------------------
 *       void creat_message_text(str_form,message)
 *
@@ -939,7 +944,7 @@ char message[256];
 
 void creat_action(str_form,label,command_f,lg_comm)
 FORM_data *str_form;
-char label[256];
+char label[MAX_CHAR];
 char command_f[];
 int *lg_comm;
 /*-------------------------------------------------------------
@@ -1012,7 +1017,7 @@ int *lg_comm;
 
 int creat_text(str_form,file_name)
 FORM_data *str_form;
-char file_name[256];
+char file_name[MAX_CHAR];
 /*-------------------------------------------------------------
 *       void creat_text(str_form,file_name)
 *
@@ -1090,11 +1095,11 @@ char file_name[256];
 
 void creat_Multi_select(str_form,name,variable,list_states,nb_but,val_def)
 FORM_data *str_form;
-char name[256];
+char name[MAX_CHAR];
 char variable[32];
 int nb_but;
 char *list_states[32];
-char val_def[256];
+char val_def[MAX_CHAR];
 /*-------------------------------------------------------------
 *       void creat_Multi_select(str_form,name,variable,list_states,nb_but,list_def,nb_def)
 *
@@ -1196,7 +1201,7 @@ char val_def[256];
 
         ct = ",";
         nb_def = 0;
-        tmp_def  = (char *)XtMalloc(256);
+        tmp_def  = (char *)XtMalloc(MAX_CHAR);
         strcpy(tmp_def,valeur_variable);
         defvar = strtok(tmp_def,ct);
         list_def[nb_def] = defvar; nb_def++;
@@ -1255,11 +1260,11 @@ char val_def[256];
 
 void creat_PulldownMenu(str_form,name,variable,list_states,nb_but,def_val)
 FORM_data *str_form;
-char name[256];
+char name[MAX_CHAR];
 char variable[32];
 int nb_but;
 char *list_states[32];
-char def_val[256];
+char def_val[MAX_CHAR];
 /*-------------------------------------------------------------
 *       void creat_PulldownMenu(str_form,name,variable,list_states,nb_but,def_val)
 *
@@ -1282,11 +1287,13 @@ char def_val[256];
         int n,i,set_val;
         Widget frame,frame0,menu_pane,button,default_button,row_column,cascade;
 	XmString label_string;
-	char valeur_variable[256];
+	/*char *valeur_variable;*/
+	char valeur_variable[MAX_CHAR];
 	PulldownStruct *PDstruct;
 	int scontext;
 
 	set_val = 0;
+	/*valeur_variable  = (char *)XtMalloc(MAX_CHAR);*/
 	strcpy(valeur_variable,def_val);
 
 
@@ -1393,10 +1400,10 @@ char def_val[256];
 
 void creat_var_champ(str_form,label_var,variable,type,val_def)
 FORM_data *str_form;
-char label_var[256];
+char label_var[MAX_CHAR];
 char variable[32];
-char type[256];
-char val_def[256];
+char type[MAX_CHAR];
+char val_def[MAX_CHAR];
 /*-------------------------------------------------------------
 *       void creat_var_champ(str_form,label_var,variable,type,val_def)
 *
@@ -1421,9 +1428,9 @@ char val_def[256];
         int n,pos_cursor;
 	int err;
         Widget frame,frame0,label_string,row_column,textfield,label;
-	char valeur_variable[256];
-	char valeur_variable_f[256]; /* int, char, float... a faire*/
-	char var_f[256];
+	char valeur_variable[MAX_CHAR];
+	char valeur_variable_f[MAX_CHAR]; /* int, char, float... a faire*/
+	char var_f[MAX_CHAR];
 	int *l_var_f;
 	int *l_valeur_var;
 	TextFieldStruct *TFstruct;
@@ -1534,12 +1541,12 @@ char val_def[256];
 
 void creat_scale(str_form,label_var,variable,min,max,val_def,dec_pt,error)
 FORM_data *str_form;
-char label_var[256];
+char label_var[MAX_CHAR];
 char variable[32];
-char min[256];
-char max[256];
-char val_def[256];
-char dec_pt[256];
+char min[MAX_CHAR];
+char max[MAX_CHAR];
+char val_def[MAX_CHAR];
+char dec_pt[MAX_CHAR];
 int *error;
 /*-------------------------------------------------------------
 *	void creat_scale(str_form,label_var,variable,min,max,val_def)
@@ -1565,8 +1572,8 @@ int *error;
         int n;
         int err;
         Widget arrow_r, arrow_l,frame,frame0,scale,row_column,label,label2;
-        char valeur_variable[256];
-        char var_f[256];
+        char valeur_variable[MAX_CHAR];
+        char var_f[MAX_CHAR];
         int *l_var_f;
         int *l_valeur_var;
         ScaleStruct *SCstruct;
@@ -1948,7 +1955,7 @@ XtPointer call_data;
 */
 {
     int l_comm_f, err, lnam, i;
-    char comm[256], comm_f[256], namloc[32];
+    char comm[MAX_CHAR], comm_f[MAX_CHAR], namloc[32];
 
         strcpy(comm,str_var->name_but) ;
 
@@ -2198,7 +2205,7 @@ int context;
 
     int l_comm_f, err, lnam, i;
     char namloc[32];
-    char comm[256], comm_f[256];
+    char comm[MAX_CHAR], comm_f[MAX_CHAR];
 
  
       strcpy(comm,string) ;
@@ -2207,7 +2214,7 @@ int context;
                 namloc[i] = ' ';
         }
       cconvert_string(comm_f,comm,&l_comm_f);
-      for (i=l_comm_f; i<256; i++) {
+      for (i=l_comm_f; i<MAX_CHAR; i++) {
                 comm_f[i] = ' ';
         }
 
@@ -2234,7 +2241,7 @@ int context;
 *               int context; id widget = context of variable
 */
 {
-  char valloc[256];
+  char valloc[MAX_CHAR];
   char namloc[32];
   int lnam,lval;
   int err,i;
@@ -2251,14 +2258,14 @@ int context;
                 GETVAR(namloc,&context,valloc,&err);
 
                 if (err == 0) {
-                        lval = 256;
+                        lval = MAX_CHAR;
                         convert_string(value,valloc,lval);
 			adjust_cstring(value,lval);
                 }
         }
         else { 		/* on trouve pas, on alloue avec value */
 	  cconvert_string(valloc,value,&lval);
-	  for (i=lval; i<256;i++) {
+	  for (i=lval; i<MAX_CHAR;i++) {
 		valloc[i] = ' ';
 	  }
 	  err = 0;
@@ -2289,7 +2296,7 @@ FORM_data *str_form_data;
         Arg             al[10];         /*  arg list            */
         int             ac;             /*  arg count           */
 	int 		error;
-	char 		commande[256];
+	char 		commande[MAX_CHAR];
 
 
         /*      Create  default buttons of formulaire.
@@ -2425,8 +2432,8 @@ XtPointer       call_data;      /*  data from widget class  */
         char command;
         int err,vcont,i;
         int *l_comm_f;
-        char comm_f[256];
-        char comm[256];
+        char comm_f[MAX_CHAR];
+        char comm[MAX_CHAR];
 
                 /* on ne veut pas detruire le formulaire si on est en
                 mode bloquant, sauf pour le formulaire bloquant lui meme */
@@ -2491,8 +2498,8 @@ XtPointer       call_data;      /*  data from widget class  */
         char command;
         int err,vcont;
         int *l_comm_f,i;
-        char comm_f[256];
-        char comm[256];
+        char comm_f[MAX_CHAR];
+        char comm[MAX_CHAR];
 
         err = 0;
         if(struct_command->bloquant == 0){
@@ -2614,8 +2621,8 @@ XtPointer       call_data;      /*  data from widget class  */
         char command;
         int err,vcont;
         int *l_comm_f,i;
-        char comm_f[256];
-        char comm[256];
+        char comm_f[MAX_CHAR];
+        char comm[MAX_CHAR];
 
         strcpy(comm,struct_command->but_act) ;
         SETVCONTEXT(&(struct_command->mere_form));
@@ -2626,7 +2633,7 @@ XtPointer       call_data;      /*  data from widget class  */
 }
 
 void CLOSE_BOX(str_pt,str_lg,error)
-char str_pt[256];
+char str_pt[MAX_CHAR];
 int *str_lg;
 int *error;
 {
@@ -2635,7 +2642,7 @@ int *error;
     int i,str_int;
     FORM_data *struct_data;
     int n,present;
-    char new_pt[256];
+    char new_pt[MAX_CHAR];
 
 
 		/* recuperation de la variable et conversion en entier */

@@ -14,35 +14,35 @@
 	call powell(minimize,minimize1d,zz,prmr1d,itermax,miniter,
      *                    tolerance,zz1,verbose,error)
 	if (error.ne.0) goto 91
-	call gifaoutr('MINIMIZE Final Value :',zz1)
+	if (verbose.gt.0) call gifaoutr('MINIMIZE Final Value :',zz1)
 	call miniend(prmr1d, zz, verbose, error)
 	leastsq = zz1
         iterdone = itermax
 
-      elseif (command.eq.'FITGENE2') then
-        if (miniter.lt.5) then
-          call gifaout('Warning, MINITER is less than 5')
-          call gifaout('  This algorithm needs larger values')
-        endif
+      elseif (command.eq.'FITEXP') then
         if (szsamp.ne.sizeimage1d) goto 117
-        call message
-     *     ('expression to fit (parameters are $Pi, i:1..n ;
-     * running var is $X):')
-	call getstring2(st,error)
-	call message('Number of independent parameters ($Pi):')
-	call getint2(zz,error)
-        if (error.ne.0) goto 91
-	call fitgeneinit(st,prmr1d,zz,error)
-	if (error.ne.0) goto 91
-	call powell(fitgene,fitgene1d,zz,prmr1d,itermax,miniter,
-     *                    tolerance,zz1,verbose,error)
-	leastsq = zz1
-	if (error.ne.0) goto 91
-	call gifaoutr('FITGENE Final Chi2 :',zz1)
-	call miniend(prmr1d, zz, verbose, error)
-	leastsq = zz1
-        iterdone = itermax
-           
+	  call message('Number of independent exponential to fit:')
+	  zz = 1
+	  call getint2(zz,error)
+      if (error.ne.0) goto 91
+      zz=zz*2                      ! 2 parameters per exp
+      if (zz.gt.(4*tlmxpk1)) goto 91
+	  call fitexpinit(prmr1d,zz,error)
+	  if (error.ne.0) goto 91
+	  do i=1,zz
+	    tindex(i)=i
+	  enddo
+	  call levenberg(sampling,column,window,sizeimage1d,noise,
+     *      prmr1d,zz,
+     *      tindex,zz,leastsq,tolerance,itermax,
+     *      mexp,dmexp,work3,verbose,debug,error)
+      if (error.ne.0) goto 91
+      if (verbose.gt.0) call gifaoutr('FITEXP Final Chi2 :',leastsq)
+      call fitgend(prmr1d, leastsq, work3, zz,
+     *     sizeimage1d,verbose, error)
+      iterdone = itermax
+
+
       elseif (command.eq.'FITGENE') then
         if (szsamp.ne.sizeimage1d) goto 117
         if (noise.eq.0.0) goto 133
@@ -63,7 +63,7 @@
      *      tindex,zz,leastsq,tolerance,itermax,
      *      fitg2,dfitg2,work3,verbose,debug,error)
 	if (error.ne.0) goto 91
-	call gifaoutr('FITGENE Final Chi2 :',leastsq)
+	if (verbose.gt.0) call gifaoutr('FITGENE Final Chi2 :',leastsq)
 	call fitgend(prmr1d, leastsq, work3, zz,
      *     sizeimage1d,verbose, error)
         iterdone = itermax

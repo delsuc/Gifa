@@ -169,39 +169,44 @@ c Optimiser ou non l'amplitude du pic
                call message('    Fit Amplitude (yes / no) ')
 	       call getbool2(rep,'toto',err)
 	       if (err.ne.0) return
-               if (rep.eq.'yes') then
+               call uppercase(rep,len(rep))
+               if (rep.eq.'YES') then
                   actif        = actif + 1
                   tdx(actif) = 6*(i-1)+1
                endif
 c Optimiser ou non la frequence du pic 
-               call message('    Fit F1 Frequency (yes / no) ')
-	       call getbool2(rep,'toto',err)
-	       if (err.ne.0) return
-               if (rep.eq.'yes') then
-                  actif        = actif + 1
-                  tdx(actif) = 6*(i-1)+2
-               endif 
-c Optimiser ou non la largeur du pic
-               call message('    Fit F1 Width (yes / no) ')
-	       call getbool2(rep,'toto',err)
-	       if (err.ne.0) return
-               if (rep.eq.'yes') then
-                  actif        = actif + 1
-                  tdx(actif) = 6*(i-1)+3
-               endif 
-c Optimiser ou non la frequence du pic 
                call message('    Fit F2 Frequency (yes / no) ')
 	       call getbool2(rep,'toto',err)
 	       if (err.ne.0) return
-               if (rep.eq.'yes') then
+               call uppercase(rep,len(rep))
+               if (rep.eq.'YES') then
                   actif        = actif + 1
-                  tdx(actif) = 6*(i-1)+4
+                  tdx(actif) = 6*(i-1)+2
                endif 
 c Optimiser ou non la largeur du pic
                call message('    Fit F2 Width (yes / no) ')
 	       call getbool2(rep,'toto',err)
 	       if (err.ne.0) return
-               if (rep.eq.'yes') then
+               call uppercase(rep,len(rep))
+               if (rep.eq.'YES') then
+                  actif        = actif + 1
+                  tdx(actif) = 6*(i-1)+3
+               endif 
+c Optimiser ou non la frequence du pic 
+               call message('    Fit F1 Frequency (yes / no) ')
+	       call getbool2(rep,'toto',err)
+	       if (err.ne.0) return
+               call uppercase(rep,len(rep))
+               if (rep.eq.'YES') then
+                  actif        = actif + 1
+                  tdx(actif) = 6*(i-1)+4
+               endif 
+c Optimiser ou non la largeur du pic
+               call message('    Fit F1 Width (yes / no) ')
+	       call getbool2(rep,'toto',err)
+	       if (err.ne.0) return
+               call uppercase(rep,len(rep))
+               if (rep.eq.'YES') then
                   actif        = actif + 1
                   tdx(actif) = 6*(i-1)+5
                endif 
@@ -282,7 +287,7 @@ C**********************************************************************
 c IN	: cnt,verbose,chi2,nbpt,...
 c SIDE	: 1d peak table
 C this subroutine copies the working buffer of line fitting
-c back to the 1d peak table
+c back to the 2d peak table
 c called at the end of the line fitting
 c
 c
@@ -306,11 +311,11 @@ c
       endif
 c Copie le tableau-buffer dans le tableau de param.
       do i=1,cnt
-         peak2d(i,3) = prmr2d(6*(i-1)+1)
-         peak2d(i,1) = prmr2d(6*(i-1)+2)
-         peak2d(i,2) = prmr2d(6*(i-1)+3)
-         peak2d(i,4) = prmr2d(6*(i-1)+4)
-         peak2d(i,5) = prmr2d(6*(i-1)+5)
+         peak2d(i,3) = prmr2d(6*(i-1)+1)  ! Amp
+         peak2d(i,1) = prmr2d(6*(i-1)+2)  ! pos F2
+         peak2d(i,2) = prmr2d(6*(i-1)+3)  ! width F2
+         peak2d(i,4) = prmr2d(6*(i-1)+4)  ! pos F1
+         peak2d(i,5) = prmr2d(6*(i-1)+5)  ! width F1
          if (verbose.eq.1) then
                   write(st,*) i,
      *               peak2d(i,1),peak2d(i,2),peak2d(i,3),peak2d(i,4),
@@ -336,7 +341,7 @@ c Copie le tableau-buffer dans le tableau de param.
       endif
       do i=1,ajus
 C search n,p such that tdx(i) = 6*(n-1)+p
-         n = tdx(i)/6 + 1
+         n = (tdx(i)-1)/6 + 1
          p = tdx(i) - 6*(n-1)
          z = scale*2.0*sqrt(cov(i,i))
          if (verbose .ne. 0) then
@@ -344,14 +349,14 @@ C search n,p such that tdx(i) = 6*(n-1)+p
          endif
          if (p .eq. 1) then         ! amp
             peak2d(n,6) = z
-         else if (p .eq. 2) then    ! F1 pos
-            peak2d(n,10) = z
-         else if (p.eq.3) then      ! f1 width
-            peak2d(n,11) = z
-         else if (p .eq. 4) then    ! F2 pos
+         else if (p .eq. 2) then    ! F2 pos
             peak2d(n,8) = z
-         else if (p.eq.5) then      ! f2 width
+         else if (p.eq.3) then      ! f2 width
             peak2d(n,9) = z
+         else if (p .eq. 4) then    ! F1 pos
+            peak2d(n,10) = z
+         else if (p.eq.5) then      ! f1 width
+            peak2d(n,11) = z
          else
             call gifaout('*** Error in LINEFIT / postprm1d')
          endif
@@ -366,11 +371,13 @@ C**********************************************************************
 C function and derivatives for line fitting
 C**********************************************************************
       subroutine flogau2d(size,param,x,y)
-c IN	: size,param,x
+c IN	: size,x
 c OUT	: y
+c INOUT : param
 c computes the value of the 2D lorent/gaussian line in x, the parameters are 
 c found in param
 c
+c param is modified when negative width are found
 c
 c g2d(x) = A g1d(i) g1d(j)
 c
@@ -394,9 +401,11 @@ c
 
       do i=1,size-2,6
          p1(2) = param(i+1)	! F2 loc
+         param(i+2) = abs(param(i+2))     ! check widthes
          p1(3) = param(i+2)	! F2 width
          p1(4) = param(i+5)	! F2 type
          p2(2) = param(i+3)	! idem in F1
+         param(i+4) = abs(param(i+4))
          p2(3) = param(i+4)
          p2(4) = param(i+5)
          call flogau(4,p1,ix,g1)

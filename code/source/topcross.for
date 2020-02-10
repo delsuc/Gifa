@@ -55,22 +55,38 @@ c and writes number "i"
 10    return
       end
 
+            subroutine topcross3(vd_id,x,y,size,st)
+c IN	: vd_id,x,y,size,i
+c
+c display on window "vd_id" a cross at location "x" "y" and of size "size"
+c and writes string st
+      implicit none
+      integer vd_id,j
+      real x,y,size
+      character*(*) st
+
+      if (x.lt.0.0 .or. x.gt.1.0 .or. y.lt.0.0 .or. y.gt.1.0) goto 10
+      if (vd_id.eq.0) goto 10
+      call win_plot_1d(vd_id,x-size,y,x+size,y)
+      call win_plot_1d(vd_id,x,y-size,x,y+size)
+      j = len(st)
+      call win_write(vd_id,x+2*size,y,st,j)
+      call win_update(vd_id)
+10    return
+      end
+
             subroutine topcross3d(vd_id,x,y,z,size,i)
 c IN	: vd_id,x,y,z,size,i
 c
 c display on 3D window "vd_id" a 3D cross at location "x" "y" "z"
 c and of size "size" and writes number "i"
 c
-
       implicit none
-
       integer vd_id,i,j
-
       real x,y,z,size
       character*12 st
 
       write (*,*) x,y,z,size
-
 c      if (x.lt.0.0 .or. x.gt.1.0 .or. y.lt.0.0 .or. y.gt.1.0
 c    *   .or. z.lt.0.0 .or. z.gt.1.0) goto 10
       if (vd_id.eq.0) goto 10
@@ -80,6 +96,33 @@ c    *   .or. z.lt.0.0 .or. z.gt.1.0) goto 10
       write(st,'(i10)')i
       call leading(st)
       call trailing(st,j)
+      call win3d_write(vd_id,x+2*size,y,z,st,j)
+      call win3d_update(vd_id)
+      return
+10    write (*,*) x,y,z,size,'Error in 3D format'
+      return
+      end
+
+
+            subroutine topcross3d3(vd_id,x,y,z,size,st)
+c IN	: vd_id,x,y,z,size,st
+c
+c display on 3D window "vd_id" a 3D cross at location "x" "y" "z"
+c and of size "size" and writes string st
+c
+      implicit none
+      integer vd_id,j
+      real x,y,z,size
+      character*(*) st
+
+      write (*,*) x,y,z,size
+c      if (x.lt.0.0 .or. x.gt.1.0 .or. y.lt.0.0 .or. y.gt.1.0
+c    *   .or. z.lt.0.0 .or. z.gt.1.0) goto 10
+      if (vd_id.eq.0) goto 10
+      call win3d_plot_line(vd_id,x-size,y,z,x+size,y,z)
+      call win3d_plot_line(vd_id,x,y-size,z,x,y+size,z)
+      call win3d_plot_line(vd_id,x,y,z-size,x,y,z+size)
+      j = len(st)
       call win3d_write(vd_id,x+2*size,y,z,st,j)
       call win3d_update(vd_id)
       return

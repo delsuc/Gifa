@@ -44,6 +44,8 @@ K.Gehring 2 dec 1998
 M.A.Delsuc 10 dec 1998
          removed an error, probably introduced in dec 1995
          inhibiting the possibility to change the Absmax header parameter
+M.A.Delsuc 20 jan 2002
+	 corrected error handling in CH_OPEN CH_CREATE
 
 
 It is a complete rewrite of the version 1.0 from A.Rouh
@@ -172,11 +174,15 @@ TAB at 4 char
 */
 
 #include <stdio.h>
-#ifndef MACHTEN
-#   include <malloc.h>
+
+#if defined DARWIN
+#    include <stdlib.h>
+#elif defined MACHTEN
+#  include <sys/malloc.h>
 #else
-#   include <sys/malloc.h>
+#    include <malloc.h>
 #endif
+
 #include <fcntl.h>
 #include "cache_mad.h"
 #include "util.h"
@@ -188,7 +194,8 @@ TAB at 4 char
 #include <math.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <unistd.h>
+/*#include <unistd.h>
+*/
 
 /*************************************************/
 /* STATIC VARIABLES */
@@ -359,6 +366,7 @@ void CH_OPEN(DATASET **ppid,char *path,	int  *plen,int  *mode,int  *perror)
 	loads the header
 	returns error status
 
+jan 2002 MAD - correction to close opened file if error during set-up
 
 */
 {
@@ -403,6 +411,7 @@ void CH_OPEN(DATASET **ppid,char *path,	int  *plen,int  *mode,int  *perror)
 		default:
 			*perror = COULD_NOT_OPEN;
 			}
+		local_id = 0;
 		return;
 		}
 
@@ -412,7 +421,10 @@ void CH_OPEN(DATASET **ppid,char *path,	int  *plen,int  *mode,int  *perror)
 
 /* reads (and allocates) header */
 	c_loadheader(local_id, &pheader, &headsize, perror);
-	if (*perror != 0) return;
+	if (*perror != 0) {
+		close(local_id);
+		return;
+	}
 	localdata.phead = pheader;	/* will be the private area for that dataset */
 	localdata.headsz = headsize;
 	
@@ -566,6 +578,7 @@ void CH_OPEN(DATASET **ppid,char *path,	int  *plen,int  *mode,int  *perror)
 
 free_and_exit:	/* error exit */
 	free(pheader);
+	close(local_id);
 	return;
 
 }		
@@ -583,6 +596,8 @@ void CH_CREATE(DATASET **ppid,char *path, int *plen,int *mode,int *perror)
 	creates a new file and put it into the cache,
 	creates the header
 	returns error status
+
+jan 2002 MAD - correction to close opened file if error during set-up
 
 */
 {
@@ -623,12 +638,15 @@ void CH_CREATE(DATASET **ppid,char *path, int *plen,int *mode,int *perror)
 		default:
 			*perror = COULD_NOT_OPEN;
 			}
+		local_id = 0;
 		return;
 		}
 
 #ifdef OPEN_HAS_2
         if (fchmod(local_id, ch_mod) == -1) {
+		close(local_id);
                 *perror = WRONG_MODE;
+		return;
         }
 #endif
 
@@ -639,6 +657,7 @@ void CH_CREATE(DATASET **ppid,char *path, int *plen,int *mode,int *perror)
 /*set default values */
 	if( (pheader = malloc(BLOCKIO+1)) == NULL) {
 		*perror = COULD_NOT_MALLOC;
+		close(local_id);
 		return;
 		}
 	for (i=0; i<BLOCKIO; pheader[i++] = '0')  ;
@@ -700,6 +719,7 @@ void CH_CREATE(DATASET **ppid,char *path, int *plen,int *mode,int *perror)
 
 free_and_exit:	/* error exit */
 	free(pheader);
+	close(local_id);
 	return;
 
 }		

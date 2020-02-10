@@ -40,11 +40,14 @@ without written permission from the authors.
 #  include <stdio.h>
 #endif
 
-#ifndef MACHTEN
-#  include <malloc.h>
-#else
+#if defined DARWIN
+#    include <stdlib.h>
+#elif defined MACHTEN
 #  include <sys/malloc.h>
+#else
+#    include <malloc.h>
 #endif
+
 #include "X_windef.h"
 
 

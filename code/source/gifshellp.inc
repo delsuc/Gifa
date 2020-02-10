@@ -40,19 +40,20 @@ c        code partially copied from the end of the elseif struct of execute.for
          call getstring2(stp,error)
          if (error.ne.0) goto 93
          st = '=' // stp
-         call checkvar(st,vcontext,xx)
+c 997 is used by onerrorgoto command
+997      call checkvar(st,vcontext,xx)
          if (xx.eq.0) then                 ! label already stored
               call getvar(st,vcontext,stp3,error)
               st4 = stp3
               call goto_line(ist+1,error)
-              if (error.ne.0) goto 198
+              if (error.ne.0)            goto 198
          else                              ! else go there and store
               call goto_label(st,error)
-              if (error.ne.0) goto 198
+              if (error.ne.0)            goto 198
               ist = currline(input-20)
               stp3 = st4
               call assign(st,vcontext,stp3,error)
-              if (error.ne.0) goto 93
+               if (error.ne.0)           goto 93
          endif
          goto 3
 
@@ -98,7 +99,6 @@ c            st(zz:yy) = ')"'
 
       elseif (command.eq.'DEBUG') then
          call getint2(debug,error)
-         if (debug.lt.0 .or. debug.gt.1) debug=0
          if (error.ne.0) goto 93
 
       elseif (command.eq.'VERBOSE') then
@@ -106,7 +106,17 @@ c            st(zz:yy) = ')"'
          if (verbose.lt.0 .or. verbose.gt.1) verbose=0
          if (error.ne.0) goto 93
 
+      elseif (command.eq.'PROFILER') then
+         if (timer.eq.1) goto 171
+         call getint2(profiler,error)
+         if (profiler.eq.1) then
+            call init_timer
+         elseif (profiler.ne.0) then
+            goto 98
+         endif
+
       elseif (command.eq.'TIMER') then
+         if (profiler.eq.1) goto 171
          zz  = timer
          if (zz.eq.1) then
                call show_timer   ! forces show if timer already set
@@ -514,6 +524,35 @@ chp         write (i,'(A)',err=102)stp(1:zz)
          call gifaerr(st)
          goto 90
 
+      elseif (command.eq.'ONERRORGOTO') then
+C ONERRORGOTO label
+C
+C this command changes the standard error behaviour in the macro langage.
+C when this is set, errors do not abort macro execution
+C but rather redirect the control flow to the label given as argument,
+C in a manner equivalent to a GOTO.
+C Active only within the macro where it is issued (errors are still valid in
+C called macros )
+C
+C The ONERRORGOTO condition is clear at once after the error.
+C
+C You can also clear the ONERRORGOTO by giving a blank argument (" ") to the command,
+C thus reactivating errors.
+C
+         if (input.eq.20) goto 114
+         call getstring2(st,error)
+         if (error.ne.0) goto 93
+         call cleanst(st,32)
+         if (st .ne. ' ') then
+	      stp = '=ONERROR'
+            call assign(stp,vcontext,st,error)
+            if (error.ne.0) goto 901
+         else
+            stp = '=ONERROR'
+            call dealloc(stp,vcontext,error)
+            if (error.ne.0) goto 901
+         endif
+         
       elseif (command.eq.'DUMP') then
          call dumpvar
 
@@ -636,6 +675,17 @@ chp         write (i,'(A)',err=102)stp(1:zz)
 	 if (error.ne.0) goto 93
          call assign(st,zz,ii,error)
          if (error.ne.0) goto 115
+
+      elseif (command.eq.'RETURN') then
+C RETURN value
+C 
+C used in macro to return a value to the caller
+C the caller will examine the value in $RETURNED
+        if (input.eq.20) goto 114
+        call message('Enter value to return')
+        returned = ' '
+        call getstring2(returned,error)
+        if (error.ne.0) goto 93
 
       elseif (command.eq.'INITINPROGRESS') then
         call message('how many iteration ?')

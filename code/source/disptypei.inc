@@ -22,3 +22,6 @@ C
 	pdmenu = 0
 	nbrowtitle = 1
 	axes = 3
+	refmacro = 0
+	refspectra = 1
+	refpeaks = 0

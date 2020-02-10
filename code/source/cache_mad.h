@@ -116,7 +116,8 @@
 #define H_DOUBLE 3
 
 /* length of the largest strings */
-#define STMAX 256
+#include "sizebasec.h"
+#define STMAX MAX_CHAR
 
 /*
 length of standard I/O block in byte
@@ -174,7 +175,7 @@ max(x ,y)
 
 */
 
-#define NAMEMAX 80
+#define NAMEMAX 256
 
 
 /* holds the file description */

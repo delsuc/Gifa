@@ -212,10 +212,19 @@ c      if ((1.0+cond) .gt. 1.0) then
          call gifaout( 'Step in parameter:  (not in log file)')
          write(*,*) (gamma(j),j=1,ajus)
       endif
+C Lambda == 0 forces computation of cov matrix for error calculation
       if (lambda.eq.0) then
+         if (cond.ne.0) then
 C Let's compute the inverse
-         job = 01
-         call sgedi(cov,sz,ajus,ipivot,cond,rz,job)
+           job = 01
+           call sgedi(cov,sz,ajus,ipivot,cond,rz,job)
+         else
+            call gifaout(
+     *'curvature matrix is non-inversible, errors will be unavailable')
+           do i=1,ajus
+              cov(i,i)=0.0
+           enddo
+         endif
          return
       endif
       do j=1,ajus

@@ -357,7 +357,7 @@ c
       return
       end
 C***************************************************************
-	subroutine predloc (rdata,order,szdata,szfin,verbose,error)
+	subroutine predloc(rdata,order,szdata,szfin,verbose,error)
 c IN	: order,szdata,szfin,verbose,error
 c OUT	: rdata
 c
@@ -375,7 +375,7 @@ c
 	complex*16 afloc(ldmax),wk1loc(sizemax/2)
 	complex*16 wk2loc(sizemax/2)
  
-	error = 0
+c	error = 0
 	call burgc(rdata,szdata,order,power,afloc,
      *		wk1loc,wk2loc,error)
 	if (error.ne.0) then

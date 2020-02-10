@@ -1,6 +1,16 @@
-#This file is included in the makefile
+#This file is used as a template to generate the makefile.
 
-#all the objects to be compiled here, one per_line :
+# it is first processed by the makedepend.perl script, which computes the dependecies
+# and generates a depend_list file in the same directory.
+# The depend_list file is then included in all the machine specific makefile
+# located in each specific directory with the commande :
+# include $(VPATH)/depend_list
+# which appears as the last line of the specific makefiles.
+
+# OBJECT holds all the objects to be compiled here, one per_line :
+# if you happen to add a new source file, simply add the name in the following list,
+# (do not touch the last line (#END_OF_LIST comment)
+# That's all !
 
 OBJECTS = \
    gifa.o \
@@ -36,6 +46,7 @@ OBJECTS = \
    fftreal.o \
    powell.o \
    minimize.o \
+   fitexp.o \
    conjgrad.o \
    brentmini.o \
    braket.o \
@@ -89,6 +100,7 @@ OBJECTS = \
    X_env3d.o \
    X_util.o \
    topcross.o \
+   showpeak.o \
    showpattern.o \
    unix_lib.o \
    grid.o \
@@ -188,6 +200,7 @@ OBJECTS = \
    amoeba.o \
    ambtools.o \
    searchamb.o \
+   bruker_corr.o \
    get_licence.o 
 #END_OF_LIST
 
@@ -209,10 +222,13 @@ gifa_big : gifa
 library : $(OBJECTS)
 	if test -f libgif.a; then rm -f libgif.a ; fi
 	ar cru libgif.a `lorder $(OBJECTS) plotlibpost.o | tsort  `
-	ranlib libgif.a
+	$(ARCHI) \
+	cd $$objdir ; $$ranlib libgif.a
 
 libgif.a : $(OBJECTS)
 	ar r libgif.a $?
+	$(ARCHI) \
+	cd $$objdir ; $$ranlib libgif.a
 
 #dependence list
 

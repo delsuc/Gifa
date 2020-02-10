@@ -2,7 +2,6 @@ C peakintp.inc
 C
 C this file contains the peak integration commands
 C (PARIS)
-
       elseif (command.eq.'PEAK') then
          if (dim.eq.1) then
            if (it1d.ne.0) go to 96
@@ -15,6 +14,8 @@ C (PARIS)
               peak1d(i,6) = 0.0
               peak1d(i,7) = 0.0
               peak1d(i,8) = 0.0
+              write(peak1d_id(i),'(i12)') i
+              call leading(peak1d_id(i))
            enddo 
            porig1d = 1
          elseif (dim.eq.2) then
@@ -22,12 +23,12 @@ C (PARIS)
 c ?????
 c           if (sizeimage .gt.smxmax) goto 103
            call message( 'Enter packing radius:  ')
-           comp=0
-           call getint2(comp,error)
+           pkradius=0
+           call getint2(pkradius,error)
            if (error.ne.0) goto 93
            call stockpic(plane2d,si1im,si2im,mini,maxi,nbpic2d,
      *                   signpic,zq,zoom,zolf1,zolf2,zour1,zour2)
-           if (comp.gt.0) call picmax(comp,nbpic2d)
+           if (pkradius.gt.0) call picmaxlink(pkradius,nbpic2d,1)
            call gifaouti('Number of peak detected :',nbpic2d)
            do i=1,nbpic2d
               peak2d(i,6) = 0.0
@@ -36,14 +37,16 @@ c           if (sizeimage .gt.smxmax) goto 103
               peak2d(i,9) = 0.0
               peak2d(i,10) = 0.0
               peak2d(i,11) = 0.0
+              write(peak2d_id(i),'(i12)') i
+              call leading(peak2d_id(i))
            enddo 
            porig2d = 1
          elseif (dim.eq.3) then
            if (it3d.ne.0) go to 96
 c           if (sizeimage .gt.smxmax) goto 103
            call message( 'Enter packing radius:  ')
-           comp=0
-           call getint2(comp,error)
+           pkradius=0
+           call getint2(pkradius,error)
            if (error.ne.0) goto 93
            nbpic3d = 0
            if (zoom.eq.0) then
@@ -60,10 +63,85 @@ c           if (sizeimage .gt.smxmax) goto 103
      *                signpic,zq,zoom,zo3df2l,zo3df3l,zo3df2u,zo3df3u)
               call copypic3d(zz,i,signpic,zq)
            enddo
-c           if (comp.gt.0) call picmax3d(comp,nbpic3d)
+           if (pkradius.gt.0) call picmaxlink3d(pkradius,nbpic3d,1)
            call gifaouti('Number of peak detected :',nbpic3d)
            porig3d = 1
            nbpic2d = 0
+           do i=1,nbpic3d
+              write(peak3d_id(i),'(i12)') i
+              call leading(peak3d_id(i))
+           enddo
+         endif
+
+      elseif (command.eq.'PKFILTER') then
+c PKFILTER pkradius action distance
+c
+c search the peak table for peaks less than pkradius apart.
+c then applies action of the found peaks
+c
+c possible actions are :
+c    Remove  : remove the small peak and keep only the larger one
+c    Link    : keep the small peak but mark it as 'linked' to the larger one
+c    Average : remove all peaks and create a new one with coordinates at the barycenter of
+c              the found peaks, and intensity equal to the sum
+c
+c possible distances are :
+c   1 : dist = abs(x) + abs(y)  => square
+c   2 : dist = sqrt(x^2 + y^2)  => circle
+c   0 : dist = x+y              => diamond
+c
+c remarks
+c -  when the pkradius option is used with the PEAK command, it is equivalent
+c    to the  PKFILTER pkradius Link 1
+c -  if peak A is close to B and B is close to C A B and C will be considered together,
+c    even if A is not close to C (and recursively for larger sets of course)
+c   
+c Applies only to 2D and 3D peak tables
+c
+c see also : PEAK, PKSYM, PKSELECT
+c
+c related contexts : $PKRADIUS
+c
+c RESTE A FAIRE : ../test et debug
+         call message( 'Enter packing radius:')
+         call getint2(pkradius,error)
+         if (error.ne.0) goto 93
+         call message( 'Enter action (link - remove - average)')
+         st = 'link'
+         call getenum2(st,'link remove average',error)
+         if (error.ne.0) goto 93
+         call uppercase(st,256)
+         call message(
+     * 'Enter used distance (0 : diamond; 1 : square; 2 : circle)')
+         zz = 1
+         call getint2(zz,error)
+         if (error.ne.0) goto 93
+         if (zz.lt.0 .or. zz.gt.2) goto 98
+
+         if (dim.eq.1) then
+           goto 124
+         elseif (dim.eq.2) then
+           if (st .eq. 'LINK') then
+             call picmaxlink(pkradius,nbpic2d,zz)
+           elseif (st .eq. 'REMOVE') then
+             call picmaxrem(pkradius,nbpic2d,zz)
+             if (verbose.gt.1) then
+               call gifaouti('New number of peaks :',nbpic2d)
+             endif
+           elseif (st .eq. 'AVERAGE') then
+             call picmaxave(pkradius,nbpic2d,zz)
+           endif
+         elseif (dim.eq.3) then
+           if (st .eq. 'LINK') then
+             call picmaxlink3d(pkradius,nbpic3d,zz)
+           elseif (st .eq. 'REMOVE') then
+             call picmaxrem3d(pkradius,nbpic3d,zz)
+             if (verbose.gt.1) then
+               call gifaouti('New number of peaks :',nbpic3d)
+             endif
+           elseif (st .eq. 'AVERAGE') then
+             call picmaxave3d(pkradius,nbpic3d,zz)
+           endif
          endif
 
       elseif (command.eq.'FIND') then
@@ -85,6 +163,46 @@ c           if (comp.gt.0) call picmax3d(comp,nbpic3d)
         call hash_find(stp,vcontext,xx,zz1,zz2,zz3,
      *                 found_pk,found_dist,error)
         if (error.ne.0) goto 90
+
+      elseif (command.eq.'SETPEAKID') then
+c SETPEAKID peakindex 'Id string'
+c
+c this commands sets the PEAK_ID field in the current peak table (1D, 2D or 3D)
+c the peak_id field is a string with pkidmax (32) char max
+
+        if (dim.eq.1) then
+          i = nbpic1d
+        elseif (dim.eq.2) then
+          i = nbpic2d
+        else
+          i = nbpic3d
+        endif
+        if (i.le.0) goto 111
+        write (st,*) 'Enter peak index, in the range 1:',i
+        call message(st)
+        j = 1
+        call getint2(j,error)
+        if (error.ne.0) goto 93
+        if (j.lt.1 .or. j.gt.i) goto 98
+        if (dim.eq.1) then
+           stp = peak1d_id(j)
+        elseif (dim.eq.2) then
+           stp = peak2d_id(j)
+        else
+           stp = peak3d_id(j)
+        endif
+        call message('Enter peak ID')
+        call getstring2(stp,error)
+        call trailing(stp,i)
+        i = min(i,pkidmax)
+        if (error.ne.0) goto 93
+        if (dim.eq.1) then
+           peak1d_id(j) = stp(1:i)
+        elseif (dim.eq.2) then
+           peak2d_id(j) = stp(1:i)
+        else
+           peak3d_id(j) = stp(1:i)
+        endif
 
       elseif (command.eq.'SETPEAK') then
         if (dim.eq.1) then
@@ -298,6 +416,8 @@ c           if (comp.gt.0) call picmax3d(comp,nbpic3d)
             peak1d(nbpic1d,6) = 0.0
             peak1d(nbpic1d,7) = 0.0
             peak1d(nbpic1d,8) = 0.0
+            write(peak1d_id(nbpic1d),'(i12)') nbpic1d
+            call leading(peak1d_id(nbpic1d))
          enddo
         elseif (dim.eq.2) then
           do i=1,nclick
@@ -314,6 +434,8 @@ c           if (comp.gt.0) call picmax3d(comp,nbpic3d)
             peak2d(nbpic2d,9) = 0.0
             peak2d(nbpic2d,10) = 0.0
             peak2d(nbpic2d,11) = 0.0
+            write(peak2d_id(nbpic2d),'(i12)') nbpic2d
+            call leading(peak2d_id(nbpic2d))
           enddo
         else
           do i=1,nclick
@@ -336,9 +458,11 @@ c           if (comp.gt.0) call picmax3d(comp,nbpic3d)
               peak3d(nbpic3d,4) = clickt(i,2)
               peak3d(nbpic3D,1) = n2d
             endif
+            write(peak3d_id(nbpic3d),'(i12)') nbpic3d
+            call leading(peak3d_id(nbpic3d))
           enddo
         endif
-        call gifaouti('Number of added peak : ',nclick)
+        if (debug.ne.0) call gifaouti('Number of added peak : ',nclick)
 
       elseif (command.eq.'PK->DT') then
         if (dim.ne.1) goto 99
@@ -413,14 +537,17 @@ c store peak table in text format, in ppm
             write(ww,*) itopr(peak1d(i,1),sizeimage1d,
      *                          sp1d,of1d,freq1d),
      *            peak1d(i,2),peak1d(i,3),peak1d(i,4),peak1d(i,5)
+
           enddo
         elseif (dim.eq.2) then
           write(ww,*) nbpic2d
           do i=1,nbpic2d
-            write(ww,*) itopr(peak2d(i,1),si2im,specw2,
-     *                          offset2,freq2),
+            write(ww,*)
+     *      itopr(peak2d(i,1),si2im,specw2,offset2,freq2),
      *      peak2d(i,2),peak2d(i,3),
-     *      itopr(peak2d(i,4),si1im,specw1,offset1,freq1),peak2d(i,5)
+     *      itopr(peak2d(i,4),si1im,specw1,offset1,freq1),
+     *      peak2d(i,5)
+C    *       peak2d_id(i)
           enddo
         else
           write(ww,*) nbpic3d
@@ -429,6 +556,7 @@ c store peak table in text format, in ppm
      *      peak3d(i,2),peak3d(i,3),
      *      itopr(peak3d(i,4),si3d1,sp3d1,of3D1,freq3D1),peak3d(i,5),
      *      itopr(peak3d(i,6),si3d2,sp3d2,of3D2,freq3D2),peak3d(i,7)
+c     *            peak3d_id(i)
           enddo
         endif
         close(ww)
@@ -446,7 +574,7 @@ c read from pkwrite
         call getbool2(st,'pkread',error)
         if (error.ne.0) goto 101
         if (dim.eq.1) then
-          if (st.eq.'yes') then
+          if (st.eq.'YES') then
              xx = 1
              nbpic1d = 0
           else
@@ -454,7 +582,7 @@ c read from pkwrite
           endif
           read(ww,*,iostat=error) yy
           do i=1,yy
-            read(ww,*,iostat=error) zz1,zz2,zz3,zz4,zz5
+            read(ww,*,iostat=error) zz1,zz2,zz3,zz4,zz5      ! ,st
             if (error.ne.0) goto 93
             zz1 = ptoir(zz1,sizeimage1d,sp1d,of1d,freq1d)
             if (zz1.ge.1 .and. zz1.le.sizeimage1d) then
@@ -471,6 +599,9 @@ c read from pkwrite
                peak1d(xx,6) = 0.0
                peak1d(xx,7) = 0.0
                peak1d(xx,8) = 0.0
+c               peak1d_id(xx) = st
+               write(peak1d_id(xx),'(i12)') xx 
+               call leading(peak1d_id(xx))
                xx = xx+1
             endif
           enddo
@@ -478,7 +609,7 @@ c read from pkwrite
           call gifaout(st)
           nbpic1d = xx-1
         elseif (dim.eq.2) then
-          if (st.eq.'yes') then
+          if (st.eq.'YES') then
              xx = 1
              nbpic2d = 0
           else
@@ -486,7 +617,7 @@ c read from pkwrite
           endif
           read(ww,*,iostat=error) yy
           do i=1,yy
-            read(ww,*,iostat=error) zz1,zz2,zz3,zz4,zz5
+            read(ww,*,iostat=error) zz1,zz2,zz3,zz4,zz5    ! ,st
             if (error.ne.0) goto 93
             zz1 = ptoir(zz1,si2im,specw2,offset2,freq2)
             zz4 = ptoir(zz4,si1im,specw1,offset1,freq1)
@@ -498,14 +629,17 @@ c read from pkwrite
                 peak2d(xx,3) = zz3
                 peak2d(xx,4) = zz4
                 peak2d(xx,5) = zz5
-                xx = xx+1
-             endif
+C                peak2d_id(xx) = st
+               write(peak2d_id(xx),'(i12)') xx 
+               call leading(peak2d_id(xx))
+               xx = xx+1
+            endif
           enddo
           write(st,*) 'Read in ',xx-nbpic2d-1,' peaks'
           call gifaout(st)
           nbpic2d = xx-1
         else
-          if (st.eq.'yes') then
+          if (st.eq.'YES') then
              xx = 1
              nbpic3d = 0
           else
@@ -513,7 +647,7 @@ c read from pkwrite
           endif
           read(ww,*,iostat=error) yy
           do i=1,yy
-            read(ww,*,iostat=error) zz1,zz2,zz3,zz4,zz5,zz6,zz7
+            read(ww,*,iostat=error) zz1,zz2,zz3,zz4,zz5,zz6,zz7   ! ,st
             if (error.ne.0) goto 93
             zz1 = ptoir(zz1,si3d3,sp3d3,of3d3,freq3d3)
             zz4 = ptoir(zz4,si3d1,sp3d1,of3d1,freq3d1)
@@ -529,8 +663,11 @@ c read from pkwrite
                 peak3d(xx,5) = zz5
                 peak3d(xx,6) = zz6
                 peak3d(xx,7) = zz7
-                xx = xx+1
-             endif
+C                peak2d_id(xx) = st
+               write(peak3d_id(xx),'(i12)') xx 
+               call leading(peak3d_id(xx))
+               xx = xx+1
+            endif
           enddo
           write(st,*) 'Read in ',xx-nbpic3d-1,' peaks'
           call gifaout(st)
@@ -565,16 +702,19 @@ c read from pkwrite
           do i=1,pk1d
             call icopvect(tindex,peak1d(1,i),peak1d(1,i),nbpic1d)
           enddo
+          call icopsvect(tindex,peak1d_id(i),peak1d_id(i),nbpic1d)
         elseif (dim.eq.2) then
           nbpic2d = zz
           do i=1,pk2d
             call icopvect(tindex,peak2d(1,I),peak2d(1,i),nbpic2d)
           enddo
+          call icopsvect(tindex,peak2d_id(i),peak2d_id(i),nbpic2d)
         elseif (dim.eq.3) then
           nbpic3d = zz
           do i=1,pk3d
             call icopvect(tindex,peak3d(1,I),peak3d(1,i),nbpic3d)
           enddo
+          call icopsvect(tindex,peak3d_id(i),peak3d_id(i),nbpic3d)
         endif
         call gifaouti('New number of peaks : ',zz)
 
@@ -595,6 +735,7 @@ c read from pkwrite
           do i=1,pk1d
             call icopvect(tindex,peak1d(1,i),peak1d(1,i),nbpic1d)
           enddo
+          call icopsvect(tindex,peak1d_id(i),peak1d_id(i),nbpic1d)
         elseif (dim.eq.2) then
           do yy = 1,nbpic2d
             if (peak2d(yy,3).gt.z) then
@@ -607,6 +748,7 @@ c read from pkwrite
           do i=1,pk2d
             call icopvect(tindex,peak2d(1,i),peak2d(1,i),nbpic2d)
           enddo
+          call icopsvect(tindex,peak2d_id(i),peak2d_id(i),nbpic2d)
         elseif (dim.eq.3) then
           do yy = 1,nbpic3d
             if (peak3d(yy,3).gt.z) then
@@ -619,6 +761,7 @@ c read from pkwrite
           do i=1,pk3d
             call icopvect(tindex,peak3d(1,i),peak3d(1,i),nbpic3d)
           enddo
+          call icopsvect(tindex,peak3d_id(i),peak3d_id(i),nbpic3d)
         endif
         call gifaouti('New number of peaks : ',zz)
 
@@ -742,7 +885,7 @@ c 	 call superp(plane2d,datab)
             if (nbpic2d.eq.0) goto 111
 c            call message ('Do you want to keep the amoebas ? ')
 c            call getbool2(st,'integ',error)
-c            if (st.eq.'yes' .and. sizeimage.gt.2*smxmax) goto 103
+c            if (st.eq.'YES' .and. sizeimage.gt.2*smxmax) goto 103
             st = 'yes'
             if (sizeimage.gt.2*smxmax) goto 103
          elseif (dim.eq.3) then
@@ -794,7 +937,7 @@ c            if (st.eq.'yes' .and. sizeimage.gt.2*smxmax) goto 103
 c            if (st.eq.'yes') then
              call intpic(plane2d,work2,zz,volume,i,factor,slope,thresh,
      *                si1im,si2im,ligb,ligh,limg,limd,
-     *                comp,signpic,zq)
+     *                pkradius,signpic,zq)
 c            else
 c             call intpic(plane2d,-1.0,zz,volume,i,factor,slope,thresh,
 c     *                si1im,si2im,ligb,ligh,limg,limd,
@@ -868,6 +1011,13 @@ c             endif
          enddo
          porig2d = 2
 
+      elseif (command.eq.'PKPATTERN') then
+         call message
+     * ('Enter pattern for peak display (+ x * s d o b) :')
+         call getenum2(peakpat,'+ x * s d o b',error)
+         if (error.ne.0) goto 93
+         call lowercase(peakpat,1)
+         
       elseif (command.eq.'SHOWPEAK') then
          if (dim.eq.1) xx = nbpic1d
          if (dim.eq.2) xx = nbpic2d
@@ -879,235 +1029,64 @@ c             endif
 c en 1D
          if (dim.eq.1) then
            if (vd_id(1).eq.0) goto 127
-           call gcolor(vd_id(1),scolor)
-           if (peak1d(zz,2).ge.0.0) then
-               zz1 = 0.96 - 0.03*mod(i,3)
-               if (zoom.eq.0) then
-                if (it1d.eq.0) then
-                  zz2 = (peak1d(zz,1)-1) / (sizeimage1d-1)
-                else
-                  zz2 = ((peak1d(zz,1)-1)/2) / (sizeimage1d/2-1)
-                endif
-               else
-                if (it1d.eq.0) then
-                   zz2 = (peak1d(zz,1)-zo1dl) / (zo1du-zo1dl)
-                else
-                   zz2 = ((peak1d(zz,1)-zo1dl)/2) /
-     *                   float(int((zo1du-zo1dl+1)/2)-1)
-                endif
-               endif
-               zz3 = 0.01
-               call topcross2(vd_id(1),zz2,zz1,zz3,zz)
-           endif
-           call gcolor(vd_id(1),color)
+           call showpeak1d(zz,vd_id(1))
 c en 2D
          elseif (dim.eq.2) then
            if (nbpic2d.le.0) goto 111
            if (vd_id(2).eq.0 .and. vd_id(3).eq.0) goto 127
-           do j=2,3
-             i = vd_id(j)
-             if (i.ne.0) then
-               call gcolor(i,scolor)
-               if (peak2d(zz,5).ge.0.0) then
-                 if (zoom.eq.0) then
-                    zz1 = (peak2d(zz,4)-0.5)/si1im
-                    zz2 = (peak2d(zz,1)-0.5)/si2im
-                 else
-                    zz2 = (peak2d(zz,1)-zolf2+0.5) / (zour2-zolf2+1)
-                    zz1 = (peak2d(zz,4)-zolf1+0.5) / (zour1-zolf1+1)
-                 endif
-                 zz3 = 0.01
-                 call topcross2(i,zz2,zz1,zz3,zz)
-               endif
-               call gcolor(i,color)
-             endif
-           enddo
+           if (vd_id(2).ne.0) call showpeak2d(zz,vd_id(2))
+           if (vd_id(3).ne.0) call showpeak2d(zz,vd_id(3))
          else
 C in 3D  
            if (nbpic3d.le.0) goto 111
-C in disp3d mode
            if (disp3d.eq.1) then
-             i = vd_id(10)
-             call gcolor(i,scolor)
-             if (peak3d(zz,5).ge.0.0) then
-               if (zoom.eq.0) then
-                zz1 = (peak3d(zz,4)-0.5)
-                zz2 = (peak3d(zz,6)-0.5)
-                zz3 = (peak3d(zz,1)-0.5)
-               else
-                zz1 = (peak3d(zz,4)-zo3df1l+0.5)
-                zz2 = (peak3d(zz,6)-zo3df2l+0.5)
-                zz3 = (peak3d(zz,1)-zo3df3l+0.5)
-               endif
-               zz4 = 1
-               call topcross3d(i,zz3,zz2,zz1,zz4,zz)
-             endif
-             call gcolor(i,color)
+              call showpeak3d(zz,vd_id(10))
            endif				! (if disp3d .ne. 1)
-C in disp 2D mode     
-           do j=2,3
-             i = vd_id(j)
-             if (i.ne.0) then
-               call gcolor(i,scolor)
-               zz3 = 0.01
-               if (peak3d(zz,5).ge.0.0) then
-                if (axis2d.eq.1 .and.
-     *                 (abs(n2d-peak3d(zz,4)).lt.0.5)) then
-                  if (zoom.eq.0) then
-                    zz1 = (peak3d(zz,6)-0.5)/si1im
-                    zz2 = (peak3d(zz,1)-0.5)/si2im
-                  else
-                    zz2 = (peak3d(zz,1)-zolf2+0.5) / (zour2-zolf2+1)
-                    zz1 = (peak3d(zz,6)-zolf1+0.5) / (zour1-zolf1+1)
-                  endif
-                  call topcross2(i,zz2,zz1,zz3,zz)
-                elseif (axis2d.eq.2 .and.
-     *                  (abs(n2d-peak3d(zz,6)).lt.0.5)) then
-                  if (zoom.eq.0) then
-                    zz1 = (peak3d(zz,4)-0.5)/si1im
-                    zz2 = (peak3d(zz,1)-0.5)/si2im
-                  else
-                    zz2 = (peak3d(zz,1)-zolf2+0.5) / (zour2-zolf2+1)
-                    zz1 = (peak3d(zz,4)-zolf1+0.5) / (zour1-zolf1+1)
-                  endif
-                  call topcross2(i,zz2,zz1,zz3,zz)
-                elseif (axis2d.eq.3 .and. 
-     *                (abs(n2d-peak3d(zz,1)).lt.0.5)) then
-                  if (zoom.eq.0) then
-                    zz1 = (peak3d(zz,4)-0.5)/si1im
-                    zz2 = (peak3d(zz,6)-0.5)/si2im
-                  else
-                    zz2 = (peak3d(zz,6)-zolf2+0.5) / (zour2-zolf2+1)
-                    zz1 = (peak3d(zz,4)-zolf1+0.5) / (zour1-zolf1+1)
-                  endif
-                  call topcross2(i,zz2,zz1,zz3,zz)
-                endif
-               endif
-               call gcolor(i,color)
-             endif
-           enddo	! loop on vd_id
+           if (vd_id(2).ne.0) call showpeak3d2d(zz,vd_id(2))
+           if (vd_id(3).ne.0) call showpeak3d2d(zz,vd_id(3))
          endif		! on dim
+
 
       elseif (command.eq.'SHOWPEAKS') then
 C in 1D
          if (dim.eq.1) then
            if (nbpic1d.le.0) goto 111
            if (vd_id(1).eq.0) goto 127
-           call gcolor(vd_id(1),scolor)
            do i=1,nbpic1d
-             if (peak1d(i,2).ge.0.0) then
-               zz1 = 0.96 - 0.03*mod(i,3)
-               if (zoom.eq.0) then
-                if (it1d.eq.0) then
-                  zz2 = (peak1d(i,1)-1) / (sizeimage1d-1)
-                else
-                  zz2 = ((peak1d(i,1)-1)/2) / (sizeimage1d/2-1)
-                endif
-               else
-                if (it1d.eq.0) then
-                   zz2 = (peak1d(i,1)-zo1dl) / (zo1du-zo1dl)
-                else
-                   zz2 = ((peak1d(i,1)-zo1dl)/2) /
-     *                   float(int((zo1du-zo1dl+1)/2)-1)
-                endif
-               endif
-               zz3 = 0.01
-               call topcross2(vd_id(1),zz2,zz1,zz3,i)
-             endif
+             call showpeak1d(i,vd_id(1))
            enddo
-           call gcolor(vd_id(1),color)
 C in 2D  
          elseif (dim.eq.2) then
            if (nbpic2d.le.0) goto 111
            if (vd_id(2).eq.0 .and. vd_id(3).eq.0) goto 127
-           do j =2,3
-             zz = vd_id(j)
-             if (zz.ne.0) then
-               call gcolor(zz,scolor)
-               do i=1,nbpic2d
-                 if (peak2d(i,5).ge.0.0) then
-                   if (zoom.eq.0) then
-                      zz1 = (peak2d(i,4)-0.5)/si1im
-                      zz2 = (peak2d(i,1)-0.5)/si2im
-                   else
-                      zz2 = (peak2d(i,1)-zolf2+0.5) / (zour2-zolf2+1)
-                      zz1 = (peak2d(i,4)-zolf1+0.5) / (zour1-zolf1+1)
-                   endif
-                   zz3 = 0.01
-                   call topcross2(zz,zz2,zz1,zz3,i)
-                 endif
-               enddo
-               call gcolor(zz,color)
-             endif
-         enddo
+           if (vd_id(2).ne.0) then
+             do i=1,nbpic2d
+               call showpeak2d(i,vd_id(2))
+             enddo
+           endif
+           if (vd_id(3).ne.0) then
+             do i=1,nbpic2d
+               call showpeak2d(i,vd_id(3))
+             enddo
+           endif
 C in 3D  
          else
            if (nbpic3d.le.0) goto 111
-C in disp3d mode
            if (disp3d.eq.1) then
-             zz = vd_id(10)
-             call gcolor(zz,scolor)
              do i=1,nbpic3d
-               if (peak3d(i,5).ge.0.0) then
-                 if (zoom.eq.0) then
-                  zz1 = (peak3d(i,4)-0.5)
-                  zz2 = (peak3d(i,6)-0.5)
-                  zz3 = (peak3d(i,1)-0.5)
-                 else
-                  zz1 = (peak3d(i,4)-zo3df1l+0.5)
-                  zz2 = (peak3d(i,6)-zo3df2l+0.5)
-                  zz3 = (peak3d(i,1)-zo3df3l+0.5)
-                 endif
-                 zz4 = 1.0
-                 call topcross3d(zz,zz3,zz2,zz1,zz4,i)
-               endif
+                  call showpeak3d(i,vd_id(10))
              enddo
-             call gcolor(zz,color)
            endif			! (if disp3d .ne. 1)
-C in disp 2D mode
-           do j=2,3
-             zz = vd_id(j)
-             if (zz.ne.0) then
-               call gcolor(zz,scolor)
-               zz3 = 0.01
+           if (vd_id(2).ne.0) then
                do i=1,nbpic3d
-                if (peak3d(i,5).ge.0.0) then
-                 if (axis2d.eq.1 .and.
-     *              (abs(n2d-peak3d(i,4)).lt.0.5)) then
-                   if (zoom.eq.0) then
-                     zz1 = (peak3d(i,6)-0.5)/si1im
-                     zz2 = (peak3d(i,1)-0.5)/si2im
-                   else
-                     zz2 = (peak3d(i,1)-zolf2+0.5) / (zour2-zolf2+1)
-                     zz1 = (peak3d(i,6)-zolf1+0.5) / (zour1-zolf1+1)
-                   endif
-                   call topcross2(zz,zz2,zz1,zz3,i)
-                 elseif (axis2d.eq.2 .and.
-     *                (abs(n2d-peak3d(i,6)).lt.0.5)) then
-                   if (zoom.eq.0) then
-                     zz1 = (peak3d(i,4)-0.5)/si1im
-                     zz2 = (peak3d(i,1)-0.5)/si2im
-                   else
-                     zz2 = (peak3d(i,1)-zolf2+0.5) / (zour2-zolf2+1)
-                     zz1 = (peak3d(i,4)-zolf1+0.5) / (zour1-zolf1+1)
-                   endif
-                   call topcross2(zz,zz2,zz1,zz3,i)
-                 elseif (axis2d.eq.3 .and. 
-     *                (abs(n2d-peak3d(i,1)).lt.0.5)) then
-                   if (zoom.eq.0) then
-                     zz1 = (peak3d(i,4)-0.5)/si1im
-                     zz2 = (peak3d(i,6)-0.5)/si2im
-                   else
-                     zz2 = (peak3d(i,6)-zolf2+0.5) / (zour2-zolf2+1)
-                     zz1 = (peak3d(i,4)-zolf1+0.5) / (zour1-zolf1+1)
-                   endif
-                   call topcross2(zz,zz2,zz1,zz3,i)
-                 endif
-                endif
+                  call showpeak3d2d(i,vd_id(2))
                enddo
-               call gcolor(zz,color)
-             endif
-           enddo
+            endif
+           if (vd_id(3).ne.0) then
+               do i=1,nbpic3d
+                  call showpeak3d2d(i,vd_id(3))
+               enddo
+            endif
          endif		! on dim
           
       elseif (command.eq.'PLOTPEAKS') then
@@ -1198,9 +1177,28 @@ C       No screen support yet...
         endif
         call plclose(pl_id)
 
+      elseif (command.eq.'MAXINBOX') then
+         if (dim.eq.1) then
+            call maxinbox1d(column,sizeimage1d,maxinbox,error)
+         elseif (dim.eq.2) then
+            call maxinbox2d(plane2d,si1im,si2im,maxinbox,error)
+         else
+            goto 124
+         endif
+         if (error.ne.0) goto 169
+         incert=noise
+         write(st,*) 'maxinbox=',maxinbox,'+/-',incert
+         call gifaout(st)
+
       elseif (command.eq.'SOMREC' .or. command.eq.'SUMREC') then
-         if (dim.ne.2) goto 97
-         call intrec(plane2d,si1im,si2im,volume,i,error)
+         if (dim.eq.1) then
+            call intrec1d(column,sizeimage1d,volume,i,error)
+         elseif (dim.eq.2) then
+            call intrec2d(plane2d,si1im,si2im,volume,i,error)
+         else
+            goto 124
+         endif
+         if (error.ne.0) goto 169
          if (signpic.eq.-1) then
            volume = -volume+i*shift
          else
@@ -1209,7 +1207,6 @@ C       No screen support yet...
          incert=sqrt(float(i))*noise
          write(st,*) 'volume=',volume,'+/-',incert
          call gifaout(st)
-         if (error.ne.0) goto 169
 
       elseif (command.eq.'PKSYM') then
          if (dim.ne.2) goto 97
@@ -1233,18 +1230,18 @@ C       No screen support yet...
          call getdim(zz,error)
          if (error.ne.0) goto 93
          if ((zz.ne.1).and.(zz.ne.2)) goto 98
-         call message( 'Choose Mean or Skyline (M/S)')
-         st='S'
-         call getstring2(st,error)
+         call message( 'Choose Mean or Skyline')
+         st='Skyline'
+         call getenum2(st,'mean skyline',error)
          if (error.ne.0) goto 93
          call uppercase(st,256)
-         if ((st.ne.'M').and.(st.ne.'S')) goto 98
-	 call message('Hertz tolerance ?')
+         if ((st.ne.'MEAN').and.(st.ne.'SKYLINE')) goto 98
+         call message('Hertz tolerance ?')
          z=1.0
          call getreal2(z,error)
          if (error.ne.0) goto 93
          if (z.lt.0) goto 98
-	 call peakproj (error,zz,st,z)
+	 call peakproj (error,zz,st(1:1),z)
 	 if (error.eq.1) goto 103
 c         call t2dto1d (mod(zz,2)+1)
 
@@ -1274,18 +1271,21 @@ c        write(*,*)'zz',zz
           do i=1,pk1d
             call cicopvect(tindex,peak1d(1,i),peak1d(1,i),nbpic1d,zz)
           enddo
+          call cicopsvect(tindex,peak1d_id(i),peak1d_id(i),nbpic1d,zz)
           nbpic1d = nbpic1d - zz
           write(st,*) 'New number of peaks : ',nbpic1d
         elseif (dim.eq.2) then
           do i=1,pk2d
             call cicopvect(tindex,peak2d(1,i),peak2d(1,i),nbpic2d,zz)
           enddo
+          call cicopsvect(tindex,peak2d_id(i),peak2d_id(i),nbpic2d,zz)
           nbpic2d = nbpic2d - zz
           write(st,*) 'New number of peaks : ',nbpic2d
         elseif (dim.eq.3) then
           do i=1,pk3d
             call cicopvect(tindex,peak3d(1,i),peak3d(1,i),nbpic3d,zz)
           enddo
+          call cicopsvect(tindex,peak3d_id(i),peak3d_id(i),nbpic3d,zz)
           nbpic3d = nbpic3d - zz
           write(st,*) 'New number of peaks : ',nbpic3d
         endif

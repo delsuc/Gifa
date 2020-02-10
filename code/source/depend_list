@@ -2,9 +2,19 @@
 # created automagically by makedepend.perl from the file depend_list.in 
 # change depend_list.in if desired
 
-#This file is included in the makefile
+#This file is used as a template to generate the makefile.
 
-#all the objects to be compiled here, one per_line :
+# it is first processed by the makedepend.perl script, which computes the dependecies
+# and generates a depend_list file in the same directory.
+# The depend_list file is then included in all the machine specific makefile
+# located in each specific directory with the commande :
+# include $(VPATH)/depend_list
+# which appears as the last line of the specific makefiles.
+
+# OBJECT holds all the objects to be compiled here, one per_line :
+# if you happen to add a new source file, simply add the name in the following list,
+# (do not touch the last line (#END_OF_LIST comment)
+# That's all !
 
 OBJECTS = \
    gifa.o \
@@ -40,6 +50,7 @@ OBJECTS = \
    fftreal.o \
    powell.o \
    minimize.o \
+   fitexp.o \
    conjgrad.o \
    brentmini.o \
    braket.o \
@@ -93,6 +104,7 @@ OBJECTS = \
    X_env3d.o \
    X_util.o \
    topcross.o \
+   showpeak.o \
    showpattern.o \
    unix_lib.o \
    grid.o \
@@ -192,6 +204,7 @@ OBJECTS = \
    amoeba.o \
    ambtools.o \
    searchamb.o \
+   bruker_corr.o \
    get_licence.o 
 #END_OF_LIST
 
@@ -213,10 +226,13 @@ gifa_big : gifa
 library : $(OBJECTS)
 	if test -f libgif.a; then rm -f libgif.a ; fi
 	ar cru libgif.a `lorder $(OBJECTS) plotlibpost.o | tsort  `
-	ranlib libgif.a
+	$(ARCHI) \
+	cd $$objdir ; $$ranlib libgif.a
 
 libgif.a : $(OBJECTS)
 	ar r libgif.a $?
+	$(ARCHI) \
+	cd $$objdir ; $$ranlib libgif.a
 
 #dependence list
 
@@ -253,7 +269,7 @@ writehare.o : writehare.for
 
 whare2d.o : whare2d.for controlc.inc 
 
-levy.o : levy.c 
+levy.o : levy.c sizebasec.h 
 
 lhare.o : lhare.for sizeparam.inc sizebase.inc 
 
@@ -313,6 +329,8 @@ minimize.o : minimize.for conjgrad.inc minimize.inc variable.inc \
    paramfilev.inc sizeparam.inc sizebase.inc laplacev.inc \
    constant.inc levenberg.inc 
 
+fitexp.o : fitexp.for conjgrad.inc minimize.inc variable.inc 
+
 conjgrad.o : conjgrad.for conjgrad.inc 
 
 brentmini.o : brentmini.for 
@@ -363,7 +381,7 @@ variable.o : variable.for variable.inc paramfilev.inc gifshellv.inc \
 
 dbm.o : dbm.for variable.inc 
 
-dbtools.o : dbtools.c dbmdef.h 
+dbtools.o : dbtools.c sizebasec.h dbmdef.h 
 
 addc.o : addc.for cachev.inc paramfilev.inc sizeparam.inc \
    sizebase.inc 
@@ -415,15 +433,18 @@ showlinetab.o : showlinetab.for sizebase.inc disptypev.inc gcolor.inc \
    laplacev.inc 
 
 X_main.o : X_main.c X_windef.h X_sizes.h util.h \
-   xmgifa.xbm 
+   xmgifa.xbm sizebasec.h 
 
-X_windows.o : X_windows.c X_sizes.h X_basic.h X_windef.h 
+X_windows.o : X_windows.c sizebasec.h X_sizes.h X_basic.h \
+   X_windef.h 
 
 X_color.o : X_color.c hsvrgb.h X_sizes.h 
 
-X_zoom.o : X_zoom.c X_windef.h X_sizes.h X_basic.h 
+X_zoom.o : X_zoom.c X_windef.h X_sizes.h X_basic.h \
+   sizebasec.h 
 
-X_formulaire.o : X_formulaire.c X_windef.h X_sizes.h util.h 
+X_formulaire.o : X_formulaire.c X_windef.h X_sizes.h util.h \
+   sizebasec.h 
 
 X_phase.o : X_phase.c X_windef.h X_sizes.h 
 
@@ -432,6 +453,9 @@ X_env3d.o : X_env3d.c X_windef.h X_sizes.h
 X_util.o : X_util.c X_windef.h X_sizes.h 
 
 topcross.o : topcross.for 
+
+showpeak.o : showpeak.for sizebase.inc disptypev.inc gcolor.inc \
+   paramfilev.inc zoomparamv.inc peaksize.inc 
 
 showpattern.o : showpattern.for 
 
@@ -443,7 +467,7 @@ stplot.o : stplot.for sizeparam.inc sizebase.inc controlc.inc
 
 plot1d.o : plot1d.for 
 
-X_biblidialog.o : X_biblidialog.c X_windef.h X_sizes.h 
+X_biblidialog.o : X_biblidialog.c X_windef.h X_sizes.h sizebasec.h 
 
 plot2d.o : plot2d.for controlc.inc gcolor.inc 
 
@@ -488,7 +512,7 @@ lib3d.o : lib3d.for lib3d.inc constant.inc
 plot3d.o : plot3d.for sizeparam.inc sizebase.inc unitextern.inc \
    controlc.inc gcolor.inc 
 
-util.o : util.c util.h 
+util.o : util.c util.h sizebasec.h 
 
 linecor2.o : linecor2.for sizeparam.inc sizebase.inc linecor2v.inc \
    paramfilev.inc constant.inc transform.inc controlc.inc 
@@ -592,7 +616,7 @@ hash_wrap.o : hash_wrap.for variable.inc
 
 dorefresh.o : dorefresh.for disptypev.inc gcolor.inc gifshellv.inc \
    gifabcom.inc sizeparam.inc sizebase.inc paramfilev.inc \
-   zoomparamv.inc plotcomv.inc 
+   zoomparamv.inc plotcomv.inc peaksize.inc 
 
 execute.o : execute.for constant.inc sizeparam.inc sizebase.inc \
    peaksize.inc paramfilev.inc paramdatav.inc zoomparamv.inc \
@@ -628,7 +652,7 @@ X_interface.o : X_interface.for paramfilev.inc zoomparamv.inc disptypev.inc \
 
 addnoise.o : addnoise.for paramfilev.inc 
 
-cache_mad.o : cache_mad.c cache_mad.h util.h 
+cache_mad.o : cache_mad.c cache_mad.h sizebasec.h util.h 
 
 reversebyte.o : reversebyte.c 
 
@@ -661,5 +685,7 @@ ambtools.o : ambtools.c ambdef.h
 
 searchamb.o : searchamb.for sizebase.inc peaksize.inc 
 
-get_licence.o : get_licence.c util.h 
+bruker_corr.o : bruker_corr.c 
+
+get_licence.o : get_licence.c util.h sizebasec.h 
 

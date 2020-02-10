@@ -62,7 +62,7 @@
          if (si1im .ne.sizeimage1d) goto 117
          do i=1,si1im
             z = sqrt(abs(column(i)))
-            if (debug.eq.1) call gifaoutr('eig : ', z)
+            if (debug.ne.0) call gifaoutr('eig : ', z)
             call mltvect(plane2d((i-1)*si2im+1),plane2d((i-1)*si2im+1),
      *                    z,si2im)
          enddo

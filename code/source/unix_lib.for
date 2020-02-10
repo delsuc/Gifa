@@ -42,6 +42,7 @@ c returns the name of the system
 #sun      st='UNIX / Sun-Sparc '
 #adec      st='UNIX / Digital Ultrix'
 #linux      st='LINUX'
+#adrwn      st = 'DARWIN'
 #spec1      st='UNIX / Spec1'
 #f2c      st = st // ' / Compiled with the f2c fortran to C converter'
       return

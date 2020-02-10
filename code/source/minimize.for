@@ -216,7 +216,7 @@ C get error bar
       enddo
       return
 
- 10   call gifaout('*** Error in copying Parameters')
+ 10   call gifaout('*** Error in copying Parameters after minimisation')
       return
       end
 

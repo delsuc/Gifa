@@ -1418,7 +1418,7 @@ C                if T=0 data are real, if T=1 , data are complex
       integer size,itype
       real array(size)
       integer i
-      real zz
+c      real zz
 
 #assert (size.gt.0)
 
@@ -1538,6 +1538,26 @@ C
       end
 
 C*************************************************************
+      subroutine  icopsvect(index,a,b,size)
+c IN	: index,b,size
+c OUT	: a
+c
+C   This subroutine copy b(index(i)) into a
+c   a and are strings
+C
+      Implicit none
+
+      integer i,size,index(size)
+      character*(*) a(size),b(size)
+
+#assert (size.gt.0)
+
+      do 100,i=1,size
+         a(i) = b(index(i))
+100   continue
+      return
+      end
+C*************************************************************
       subroutine  cicopvect(index,a,b,size,size1)
 
 C CICOPVECT(INDX,A,B,N,N1) copy the complementary part of B(INDX(i)) into A
@@ -1555,7 +1575,34 @@ C
       do 100,i=1,size
 	 if (i.ne.index(k)) then
             a(j) = b(i)
-c            write(*,*)'i,j',i,j
+	    j = j + 1
+	 else
+	    k = k + 1
+	 endif
+100   continue
+      return
+      end
+
+C*************************************************************
+      subroutine  cicopsvect(index,a,b,size,size1)
+
+C CICOPVECT(INDX,A,B,N,N1) copy the complementary part of B(INDX(i)) into A
+c A and B are strings
+c
+C Be careful! the index array INDX should be sorted in ascending order
+C
+      Implicit none
+
+      integer i,j,k,size,size1,index(size1)
+      character*(*) a(size),b(size)
+
+#assert (size.gt.0)
+
+      k = 1
+      j = 1
+      do 100,i=1,size
+	 if (i.ne.index(k)) then
+            a(j) = b(i)
 	    j = j + 1
 	 else
 	    k = k + 1

@@ -43,11 +43,14 @@ without written permission from the authors.
 # include <X11/cursorfont.h>
 #endif
 
-#ifndef MACHTEN
-#  include <malloc.h>
-#else
+#if defined DARWIN
+#    include <stdlib.h>
+#elif defined MACHTEN
 #  include <sys/malloc.h>
+#else
+#    include <malloc.h>
 #endif
+
 #include "X_windef.h"
 #if defined(SOLARIS) || defined(SPEC1)
 #include <string.h>
@@ -57,6 +60,8 @@ without written permission from the authors.
 #ifndef NOREADLINE
 #  include <readline/readline.h>
 #endif
+
+#include "sizebasec.h"
 
 
 /*-------------------------------------------------------------
@@ -619,7 +624,7 @@ void F_MSG_OK(label,llabel,text,ltext,err)
 char *label,*text;
 int  *llabel,*ltext,*err;
 {
-char ll[256],lt[256];
+char ll[MAX_CHAR],lt[MAX_CHAR];
 
   convert_string(ll,label,*llabel);
   convert_string(lt,text,*ltext);
@@ -630,7 +635,7 @@ void F_SAISIE(label,llabel,text,ltext,st,lst,err)
 char *label,*text,*st;
 int  *llabel,*ltext,*lst,*err;
 {
-char ll[256],lt[256],local[256];
+char ll[MAX_CHAR],lt[MAX_CHAR],local[MAX_CHAR];
 
   convert_string(ll,label,*llabel);
   convert_string(lt,text,*ltext);

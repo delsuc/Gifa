@@ -8,3 +8,5 @@ in sizebase.inc used on the Fortran side
 #define SMXMAX 4096*2048
 #define SIZEMAX SMXMAX/16
 #define SMXTOT 8*SMXMAX
+
+#define MAX_CHAR 256

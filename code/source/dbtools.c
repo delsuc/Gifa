@@ -15,10 +15,12 @@ without written permission from the authors.
 
 #include <stdio.h>
 
+#ifdef TOTO
 #ifndef MACHTEN
 #   include <malloc.h>
 #else
 #   include <sys/malloc.h>
+#endif
 #endif
 
 #ifdef SPEC1
@@ -30,9 +32,10 @@ without written permission from the authors.
 
 #include <fcntl.h>
 #include <string.h>
+#include "sizebasec.h"
 #include "dbmdef.h"
 
-#define SIZE_BUFFER 256
+#define SIZE_BUFFER MAX_CHAR
 
 /* static variables for reuse in the code */
 char keyn[SIZE_BUFFER], valuen[SIZE_BUFFER];
@@ -48,7 +51,7 @@ char name[SIZE_BUFFER];
 {
 
 int mode;
-char file[256];
+char file[MAX_CHAR];
 DBM *datab;
 
    convert_string(file,name,*len_db);

@@ -60,14 +60,14 @@ c	write(*,*)'axis',axis
 c	write(*,*)'nbpic2d',nbpic2d
 	if (i.gt.nbpic2d) goto 510
 c	write(*,*)'si',si,'sw',sw,'off',off,'fr',fr
-	if (axis.eq.1) then
+      if (axis.eq.1) then
           hz_i = itohr(peak2d(i,1),si,sw,off)
-	  wdth = peak2d(i,2)
-        endif
+          wdth = peak2d(i,2)
+      endif
 	if (axis.eq.2) then
           hz_i = itohr(peak2d(i,4),si,sw,off)
-	  wdth = peak2d(i,5)
-        endif
+	    wdth = peak2d(i,5)
+      endif
 	do j = 1,nbpic1d_new
 c	   write(*,*)'peak1d(j,1)',peak1d(j,1),j
 c	   write(*,*)'peak2d(i,1)',peak2d(i,1),i
@@ -79,14 +79,14 @@ c	   write(*,*)'diff',diff,'ppm_i',ppm_i,'ppm_j',ppm_j,'i',i,'j',j
 	   if (diff.le.tol) then 
 c loading the amplitude in 1D peak table
 c skyline projection
-	      if ( (proj.eq.'S') .and. (peak1d(j,3).lt.peak2d(i,3)) ) then
-	         peak1d(j,3) = peak2d(i,3)   
-	      endif
+	     if ( (proj.eq.'S') .and. (peak1d(j,3).lt.peak2d(i,3)) ) then
+	       peak1d(j,3) = peak2d(i,3)   
+	     endif
 c mean projection
-	      if (proj.eq.'M') then
-	         peak1d(j,3) = peak1d(j,3) + peak2d(i,3)   
-	      endif
-	      goto 100
+	     if (proj.eq.'M') then
+               peak1d(j,3) = peak1d(j,3) + peak2d(i,3)   
+	     endif
+	     goto 100
 	   endif
 	enddo
 c	write(*,*)'i,j',i,j
@@ -99,6 +99,9 @@ c	write(*,*)'peakmax',peakmax
 	peak1d(nbpic1d_new,2) = wdth
 	peak1d(nbpic1d_new,3) = peak2d(i,3)
 	peak1d(nbpic1d_new,4) = 0.0
+      write(peak1d_id(nbpic1d_new),'(i12)') nbpic1d_new
+      call leading(peak1d_id(nbpic1d_new))
+      peak1d_id(nbpic1d_new) = peak1d_id(nbpic1d_new) // ' proj'
 	goto 100
  
 c Too many peaks

@@ -30,7 +30,6 @@ C   (more realistic on gif data-sets)
       real x(2048),y(2048)
       integer color
 
-#vms      call lib$flt_under(0)
 
       if (scaling.eq.0) then
          write (*,*) 'no display scaling is 0'

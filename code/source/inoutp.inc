@@ -307,9 +307,3 @@ C
          empty = 1
          refresh = 1
 
-
-
-
-
-
-

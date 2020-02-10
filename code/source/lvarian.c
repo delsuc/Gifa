@@ -90,7 +90,7 @@ char  *name;
    float *buffer3;  /* used for int conversion if needed */
    short int *buffer4;
    long int i,j,k,type;
-   char lname[256];
+   char lname[MAX_CHAR];
 
    convert_string(lname,name,*len);
 

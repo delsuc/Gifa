@@ -10,7 +10,7 @@ C (PARIS)
       porig1d=0
       porig2d=0
       porig3d=0
-      comp=0
+      pkradius=0
       factor=10.0
       thresh=0.0
       slope=0.0
@@ -20,4 +20,9 @@ C (PARIS)
       signpic=1
       amdisp=0
       found_pk = ' '
-
+      peakpat = '+'
+      do i=1,peakmax
+        peak1d_id(i) = ' '
+        peak2d_id(i) = ' '
+        peak3d_id(i) = ' '
+      enddo          

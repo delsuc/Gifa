@@ -1,7 +1,7 @@
 C This is the lexical analyser for arithmetic expressions in GIFA
 C
-C Author M.A.Delsuc	spring '92
-C last modification     25 avril 94
+C Author M.A.Delsuc	first version spring '92
+C last modification     spring 2001
 C
 C
 C gram : (exp)
@@ -29,14 +29,11 @@ C prio     10  10  10   0
 C
 C op2 ->   // | ; | | | & | == | != | s= | s! | <= | >= | < | > | ....
 C prio :    1   1   2   2   3     3   3    3    4    4    4   4
-C
+C 
 C        .... | + | - | * | / | % | ^ | E
 C prio :        6   6   7   7   7   8   8
 C
-C func  ->	cos sin atan log exp toupp tolow int eof ( [ ) power2 abs sp
-C		head tail sqrt nextlm val1d val2d val3d valamb
-C		itoh htoi  itop ptoi htop ptoh itos stoi max min
-C		len subst index headx tailx exist
+C func  ->	see list below.
 C
 C
 C the parser implements a stack machine, with 2 stacks :
@@ -69,7 +66,8 @@ C external code for functions
      *    'PTOH(   ','MAX(    ','MIN(    ','LEN(    ','SUBST(  ',
      *    'INDEX(  ','HEADX(  ','TAILX(  ','EXIST(  ','DBM(    ',
      *    'ITOS(   ','STOI(   ','ISNUMB( ','ISALPHA(','ITOD(   ',
-     *    'DTOI(   ','ITOT(   ','TTOI(   ','VALAMB( ','ROUND(  '/
+     *    'DTOI(   ','ITOT(   ','TTOI(   ','VALAMB( ','ROUND(  ',
+     *    'FEXIST( ','SH(     ','HEXIST( ','HEADER( '/
 
 C lfunc holds the length of the function word, speeds - up the parsing
       data (lfunc(i),i=1,nfunc)
@@ -81,7 +79,8 @@ C lfunc holds the length of the function word, speeds - up the parsing
      *    4, 3, 3, 3, 5,
      *    5, 5, 5, 5, 3,
      *    4, 4, 6, 7, 4,
-     *    4, 4, 4, 6, 5 /
+     *    4, 4, 4, 6, 5,
+     *    6, 2, 6, 6/
 
 c
 c internal codes
@@ -94,7 +93,8 @@ c internal codes
      *      76,       77,        78,        79,         80,
      *      81,       82,        83,        84,         85,
      *      86,       87,        88,        89,         90,
-     *      91,       92,        93,        94,         96/
+     *      91,       92,        93,        94,         96,
+     *      97,       98,        99,       100/
 
 
       end
@@ -417,7 +417,7 @@ c         endif
       endif
       if (foundst) then
          do j=1,i-1
-            if (var(j:j).eq.' ') var(j:j) = char(127)	! blanks to DEL
+           if (var(j:j).eq.' ') var(j:j) = char(127)  	! blanks to DEL
          enddo
          he = he+i+1
       else
@@ -583,8 +583,8 @@ c
       
 100   if (ioper.gt.0 .and. istack.gt.0) then           ! if something to do
 
-C uncomment the following line to debug the stack machine
-c         call printstack(current)
+C setting global debug to 2 or higher dumps the content of the stack
+         if (debug.gt.1) call printstack(current)
 
          if (prio(ioper) .ge. cprio + current) then    ! do it
 C first noop
@@ -602,7 +602,7 @@ C second alpha operations
                call popval(stl2,err)
                call trailing(stl1,ll1)
                call trailing(stl2,ll2)
-               call pushval(stl2(1:ll2) // " " // stl1(1:ll1),err )
+               call pushval(stl2(1:ll2) // ' ' // stl1(1:ll1),err )
             elseif (oper(ioper) .eq. codefunc(17)) then		! nextlm
                call popval(stl1,err)
                call popval(stl2,err)
@@ -662,10 +662,12 @@ C second alpha operations
               call pushval(stl1,err)
             elseif (oper(ioper) .eq. codefunc(14)) then      ! head
                call popval(stl1,err)
+               call uncode(stl1,ll1)
                call parsest(stl1,stl2,i,2,err)
                call pushval(stl2,err)
             elseif (oper(ioper) .eq. codefunc(15)) then      ! tail
                call popval(stl1,err)
+               call uncode(stl1,ll1)
                call parsest(stl1,stl2,i,1,err)
                call pushval(stl1(i+1:),err)
             elseif (oper(ioper) .eq. codefunc(29)) then      ! len
@@ -689,28 +691,34 @@ C second alpha operations
                endif
             elseif (oper(ioper) .eq. codefunc(31)) then      ! index
                call popval(stl2,err)
-               call trailing(stl2,j)
+               call uncode(stl2,ll2)
                call popval(stl1,err)
-               i = index(stl1,stl2(1:j))
+               call uncode(stl1,ll1)
+               i = index(stl1,stl2(1:ll2))
                zz1 = i
                goto 120
             elseif (oper(ioper) .eq. codefunc(32)) then      ! headx
                call popval(stl2,err)
+               call uncode(stl2,ll2)
                call popval(stl1,err)
-               call trailing(stl2,j)
-               i = index(stl1,stl2(1:j))
-               if (i.gt.1 .and. i.lt.len(stl1)) then
+               call uncode(stl1,ll1)
+               i = index(stl1,stl2(1:ll2))
+               if (i.gt.0 .and. i.lt.len(stl1)) then
+                  call recode(stl1,i-1)
                   call pushval(stl1(1:i-1),err)
                else
+                  call recode(stl1,ll1)
                   call pushval(stl1,err)
                endif
             elseif (oper(ioper) .eq. codefunc(33)) then      ! tailx
                call popval(stl2,err)
+               call uncode(stl2,ll2)
                call popval(stl1,err)
-               call trailing(stl2,j)
-               i = index(stl1,stl2(1:j))
-               if (i.gt.0 .and. (i+j).lt.len(stl1)) then
-                  call pushval(stl1(i+j:),err)
+               call uncode(stl1,ll1)
+               i = index(stl1,stl2(1:ll2))
+               if (i.gt.0 .and. (i+ll2).lt.len(stl1)) then
+                  call recode(stl1,ll1)
+                  call pushval(stl1(i+ll2:),err)
                else
                   call pushval(' ',err)
                endif
@@ -720,38 +728,75 @@ C second alpha operations
                i = 0
                call existvar(stl2,vcontext,i)
                if (i.eq.0) then
-                  stl2 = "1"
+                  stl2 = '1'
                else
-                  stl2 = "0"
+                  stl2 = '0'
                endif
                call pushval(stl2,err)
+            elseif (oper(ioper) .eq. codefunc(46)) then      ! fexist
+               call popval(stl1,err)
+               i = 0
+               call file_exist(stl1,i)
+               if (i.eq.0) then
+                  stl2 = '1'
+               else
+                  stl2 = '0'
+               endif
+               call pushval(stl2,err)
+            elseif (oper(ioper) .eq. codefunc(48)) then      ! hexist
+               call popval(stl1,err)
+               call uncode(stl1,ll1)
+               j = 0
+               if (id_cache .eq. 0) goto 990
+               call ch_gtparam(id_cache,stl2,i,stl1, ll1, j)
+               if (j.eq.0) then
+                  stl2 = '1'
+               else
+                  stl2 = '0'
+               endif
+               call pushval(stl2,err)
+            elseif (oper(ioper) .eq. codefunc(49)) then      ! header
+               call popval(stl1,err)
+               call uncode(stl1,ll1)
+               j = 0
+               if (id_cache .eq. 0) goto 990
+               call ch_gtparam(id_cache,stl2,ll2,stl1, ll1, j)
+               if (j.ne.0) goto 990
+               call recode(stl2,ll2)
+               call pushval(stl2(1:ll2),err)
             elseif (oper(ioper) .eq. codefunc(35)) then      ! DBM exist 
                call popval(stl1,err)
                stl2 = '%' // stl1
                call checkvar(stl2,20,i)
                if (i.eq.0) then
-                  stl2 = "1"
+                  stl2 = '1'
                else
-                  stl2 = "0"
+                  stl2 = '0'
                endif
                call pushval(stl2,err)
             elseif (oper(ioper) .eq. codefunc(38)) then      ! isnumb()
                call popval(stl1,err)
                call trailing(stl1,i)
                if (isnumeral(stl1,i)) then
-                  stl2 = "1"
+                  stl2 = '1'
                else
-                  stl2 = "0"
+                  stl2 = '0'
                endif
                call pushval(stl2,err)
             elseif (oper(ioper) .eq. codefunc(39)) then      ! isalpha()
                call popval(stl1,err)
-               call trailing(stl1,i)
-               if (isalphanum(stl1,i)) then
-                  stl2 = "1"
+               call uncode(stl1,ll1)
+               if (isalphanum(stl1,ll1)) then
+                  stl2 = '1'
                else
-                  stl2 = "0"
+                  stl2 = '0'
                endif
+               call pushval(stl2,err)
+            elseif (oper(ioper) .eq. codefunc(47)) then      ! sh()
+               call popval(stl1,err)
+               call uncode(stl1,ll1)
+               call pipe_sys(stl2, ll2, stl1, ll1, err)
+               call recode(stl2,ll2)
                call pushval(stl2,err)
             else
               goto 220   ! goto monoadic
@@ -1161,7 +1206,8 @@ C then triadic numeric op.
 110         ioper = ioper - 1		! jump here if nothing to push
             goto 100	
          endif
-      endif
+      endif       ! if something to do
+      
       return
 20    format(G21.15)
 990   call gifaout( '*** expression error or arithmetic error' )
@@ -1177,7 +1223,7 @@ c INOUT	: st
 c
 c removes the trailing zeros of a numeric string.
 c removes also the leading blanks
-c eg : "  1.10000" is returned as "1.1      "
+c eg : "  1.10000" is returned as "1.1      :
 c    
       implicit none
       character*(*) st
@@ -1217,6 +1263,38 @@ C    1   j    i    k
             enddo
          endif
       endif
+      return
+      end
+
+
+CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+      subroutine uncode(st,l)
+C INOUT   st
+C OUT     l
+C
+C reset char(127) to blanks in string, and return length
+      implicit none
+      integer l
+      character*(*) st
+
+      call trailing(st,l)
+      call cleanst(st,l)      ! blanks are coded as char(127)
+      return
+      end
+
+CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+      subroutine recode(st,l)
+C INOUT   st
+C IN      l
+C
+C reset   char(127) to blanks in string
+      implicit none
+      integer l,i
+      character*(*) st
+
+      do i=1,l          ! blanks should be coded as char(127)
+             if (st(i:i) .eq. ' ') st(i:i)=char(127)
+      enddo
       return
       end
 

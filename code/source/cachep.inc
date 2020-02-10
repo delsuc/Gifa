@@ -3,7 +3,14 @@
 
       elseif (command.eq.'DISJOIN') then
          if (id_cache.eq.0) goto 134
+         write(st,*) id_cache
          call ch_close(id_cache,error)
+         if (error.ne.0) goto 102
+         call leading(st)
+         call trailing(st,i)
+         stp = '$CACHE[' // st(1:i) // ']' 
+         call dealloc(stp,20,error)
+         if (error.ne.0) goto 90
 c         if (error.ne.0) call gifaoutc(ch_errlist(error))
          id_cache = 0
          c_name = ' '
@@ -58,10 +65,16 @@ c******************************************************
      *      ,c_freq,c_freq1,c_freq2,c_freq3
      *      ,c_offsf1,c_offsf2,c_offsf3
      *      ,c_dmin,c_dmax,c_dfactor,c_max0)
+         write(st,*) id_cache
+         call leading(st)
+         call trailing(st,i)
+         stp = '$CACHE[' // st(1:i) // ']' 
+         call assign(stp,20,c_name,error)
+         if (error.ne.0) goto 128
 
 c******************************************************
-      elseif (command.eq.'LISTFILEC') then
-         call ch_printfiles
+c      elseif (command.eq.'LISTFILEC') then
+c         call ch_printfiles
 
 c******************************************************
       elseif (command.eq.'FLUSHCACHE') then
@@ -87,8 +100,8 @@ c******************************************************
          name = st
 c         call getstring2(name,error)
 c         if (error.ne.0) goto 93
-         call trailing(name,i)
-         call ch_open(i,name,i,CF_READ,error)
+         call trailing(name,j)
+         call ch_open(i,name,j,CF_READ,error)
          if (error .ne. 0) goto 101
          call ch_gtparbas(i,c_dimmanip,c_sizef1,c_sizef2
      *      ,c_sizef3,c_type,c_specwf1,c_specwf2,c_specwf3
@@ -169,7 +182,7 @@ C Dont forget to reload dataset param if currently joined.
      *      ,c_dmin,c_dmax,c_dfactor,c_max0)
          if (error.ne.0) goto 93
 c         max0 = 0.0
-         call gifaouti('dim ',dim)
+         if (verbose.ne.0) call gifaouti('New data-set, dim ',dim)
          empty = 1
          refresh = 1
          if ((dim.eq.1 .and. zo1du.gt.sizeimage1d)   .or.
@@ -193,8 +206,8 @@ c******************************************************
          name = st
 c         call getstring2(name,error)
 c         if (error.ne.0) goto 93
-         call trailing(name,i)
-         call ch_open(i,name,i,CF_READ,error)
+         call trailing(name,j)
+         call ch_open(i,name,j,CF_READ,error)
          if (i.eq.0 .or. error .ne.0) goto 101
          call ch_gtparbas(i,ww,xx,yy,zz,j,z,z,z,z,z,z,z,z,z,z,z,z,z,z)
          if (ww.eq.1) then
@@ -231,7 +244,7 @@ c******************************************************
          call ch_gtparam(id_cache,stp2, j,  st, i, error)
          if (error.ne.0) goto 98
          c_header = stp2(1:j)
-         call gifaout(c_header)
+         if (verbose .ne.0) call gifaout(c_header)
 
 c******************************************************
       elseif (command.eq.'PUTHEADER') then
@@ -474,6 +487,12 @@ c******************************************************
            c_dmin = dmin
            c_dmax=dmax
            c_dfactor = dfactor
+         write(st,*) id_cache
+         call leading(st)
+         call trailing(st,i)
+         stp = '$CACHE[' // st(1:i) // ']' 
+         call assign(stp,20,c_name,error)
+         if (error.ne.0) goto 128
 
 
 c******************************************************
@@ -493,7 +512,7 @@ c           call getstring2(name,error)
 c           if (error.ne.0) goto 93
            call trailing(name,j)
            call ch_create(i,name,j,CF_WRITE,error)
-           if (error.ne.0) goto 101
+           if (i.eq.0 .or. error.ne.0) goto 101
            if (dim.eq.1) then
 	     name1d = name
              call ch_setup(i, dim, sizeimage1d, 1,1, error)

@@ -1,8 +1,20 @@
 C disptypep.inc
 C display commands
 C
+      elseif (command.eq.'REFPEAKS') then
+         call message('Peak display  (0/1)')
+         i = refpeaks
+         call getint2(refpeaks,error)
+         if (refpeaks.ne.i)  refresh=1
+
+      elseif (command.eq.'REFSPECTRA') then
+         call message('Spectral display (0/1)')
+         i = refpeaks
+         call getint2(refspectra,error)
+         if (refspectra.ne.i) refresh=1
+ 
       elseif (command.eq.'REFMACRO') then
-         call message('No display during macro (0/1)')
+         call message('Display during macro (0/1)')
          call getint2(refmacro,error)
 
       elseif (command.eq.'VHEIGHT') then
@@ -503,10 +515,15 @@ C x - y
              zz4 = zz4/(zour1-zolf1+1)
            endif
          endif
-         call message('Enter pattern: (+ x * o s d c) ')
+         call message('Enter pattern: (+ x * s d o b) ')
          st = '+'
          call getstring2(st,error)
          if (error.ne.0) goto 93
+         if (st.ne.'x' .and. st.ne.'+' .and. st.ne.'*'
+     * .and. st.ne.'s' .and. st.ne.'d' .and. st.ne.'o'
+     * .and. st.ne.'b') then
+            goto 98
+         endif
          call gcolor(zz,scolor)
          call showpattern(zz,zz1,zz2,zz3,zz4,st(1:1))
          call gcolor(zz,color)
@@ -763,7 +780,7 @@ C call
 
       elseif (command.eq.'AXIS') then
          if (on_x_win.eq.0) goto 91
-         call message('Axis: NONE, F1, F2, F12')
+         call message('Axis: NONE, F1, F2, F12, X, Y, XY')
          zz = axes
          call getdim(zz,error)
          if (error.ne.0)    goto 93

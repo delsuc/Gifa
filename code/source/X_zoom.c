@@ -59,14 +59,19 @@ Most of this is through call back assigned to windows
 #  include <Xm/MwmUtil.h>
 #endif
 
-#ifndef MACHTEN
-#  include <malloc.h>
-#else
+#if defined DARWIN
+#    include <stdlib.h>
+#elif defined MACHTEN
 #  include <sys/malloc.h>
+#else
+#    include <malloc.h>
 #endif
+
 #include "X_windef.h"
 #include "X_basic.h"
 #include <X11/StringDefs.h>
+
+#include "sizebasec.h"
 
 
 /*-------------------------------------------------------------
@@ -883,7 +888,7 @@ XtPointer       call_data;      /*  data from widget class  */
 	char command;
         int err,on;
         int *l_comm_f;
-        char comm_f[256];
+        char comm_f[MAX_CHAR];
 
 	orient = 1;
 	SHIFT_IMAGE(&zoom_wind_id,&orient);
@@ -908,7 +913,7 @@ XtPointer       call_data;      /*  data from widget class  */
         char command;
         int err,on;
         int *l_comm_f;
-        char comm_f[256];
+        char comm_f[MAX_CHAR];
 
 
         orient = 2;
@@ -934,7 +939,7 @@ XtPointer       call_data;      /*  data from widget class  */
         char command;
         int err,on;
         int *l_comm_f;
-        char comm_f[256];
+        char comm_f[MAX_CHAR];
 
         orient = 4;
 	SHIFT_IMAGE(&zoom_wind_id,&orient);
@@ -958,7 +963,7 @@ XtPointer       call_data;      /*  data from widget class  */
         char command;
         int err,on;
         int *l_comm_f;
-        char comm_f[256];
+        char comm_f[MAX_CHAR];
 
         orient = 3;
 	SHIFT_IMAGE(&zoom_wind_id,&orient);
@@ -980,7 +985,7 @@ XtPointer       call_data;      /*  data from widget class  */
         char command;
         int err,scale;
         int *l_comm_f;
-        char comm_f[256];
+        char comm_f[MAX_CHAR];
 
 	scale = 2;	/* scale*2 */
 	SET_SCALE(&scale);
@@ -999,7 +1004,7 @@ XtPointer       call_data;      /*  data from widget class  */
         char command;
         int err,scale;
         int *l_comm_f;
-        char comm_f[256];
+        char comm_f[MAX_CHAR];
 
 	scale = 1;      /* scale/2 */
         SET_SCALE(&scale);
@@ -1017,7 +1022,7 @@ XtPointer       call_data;      /*  data from widget class  */
         char command;
         int err,scale;
         int *l_comm_f;
-        char comm_f[256];
+        char comm_f[MAX_CHAR];
 
         scale = 4;      /* scale + 20% */
         SET_SCALE(&scale);
@@ -1035,7 +1040,7 @@ XtPointer       call_data;      /*  data from widget class  */
         char command;
         int err,scale;
         int *l_comm_f;
-        char comm_f[256];
+        char comm_f[MAX_CHAR];
 
         scale = 3;      /* scale -20 % */
         SET_SCALE(&scale);
@@ -1052,7 +1057,7 @@ XtPointer       call_data;      /*  data from widget class  */
         char command;
         int err,off;
         int *l_comm_f;
-        char comm_f[256];
+        char comm_f[MAX_CHAR];
 
 	RESET_ALL();
 	DOREFRESH();
@@ -1100,7 +1105,7 @@ Widget          w;              /*  widget id           */
 	int zoom,on;
         int err,i;
         int *l_comm_f;
-        char comm_f[256];
+        char comm_f[MAX_CHAR];
 
    if(zoom_wind_id != 0 && cadre_zoom[zoom_wind_id].cadre_ON != 0){
 
@@ -1148,7 +1153,7 @@ void set_area_var()
         int zoom,on;
         int err,i;
         int *l_comm_f;
-        char comm_f[256];
+        char comm_f[MAX_CHAR];
 
    if(zoom_wind_id != 0 && cadre_zoom[zoom_wind_id].cadre_ON != 0){
         x1 = (float)(cadre_zoom[zoom_wind_id].x_fin)/windoww[zoom_wind_id];
@@ -1194,7 +1199,7 @@ Widget          w;              /*  widget id           */
 {
         int err,i,on;
         int *l_comm_f;
-        char comm_f[256];
+        char comm_f[MAX_CHAR];
 
 	ZOOM_PARAM_RETURN();
 	DOREFRESH();
@@ -1219,7 +1224,7 @@ XtPointer       call_data;      /*  data from widget class  */
         char command;
         int err,off;
         int *l_comm_f;
-        char comm_f[256];
+        char comm_f[MAX_CHAR];
 
 	SET_ZOOM_ZERO();
 	DOREFRESH();
