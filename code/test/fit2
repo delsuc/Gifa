@@ -1,0 +1,33 @@
+set n = 10
+set sp1 = 0  set sp2 = 0  set sdp1 = 0  set sdp2 = 0  set schi = 0
+print "Testing Chi2 law"
+for i = 1 to $n
+   print ("trial";$i)
+   dim 1 chsize 50
+   one tm 50 50  put tab                ; create a dump TAB[]
+   one mult 1.5 specw 1000 em 100       ; create a dump data-set
+   iter 50   miniter 50
+   addnoise .02 123
+
+   set p1 := 1
+   set p2 := 0.1
+
+   fitexp  1   ; mono exponential fit
+  set sp1 = (%+$p1)
+  set sdp1 = (%+$dp1)
+  set sp2 = (%+$p2)
+  set sdp2 = (%+$dp2)
+  set schi = (%+$chi2)
+endfor
+set p1 = ($sp1/$n)
+set p2 = ($sp2/$n)
+set dp1 = ($sdp1/$n)
+set dp2 = ($sdp2/$n)
+; if ($config_graph) ../macro/showexp '$p1*exp(-$x/$p2)'
+
+set a = (abs($p1-1.755)<0.05)
+set a = ($a & (($p2-0.1278)<0.05))
+set a = ($a & (($dp1-0.037)<0.005))
+set a = ($a & (($dp2-0.00345)<0.0005))
+set a = ($a & (($chi2/$n) < 55 ))
+report $a "fitgene"

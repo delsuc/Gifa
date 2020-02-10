@@ -16,5 +16,10 @@ set l = <($ff // '.res')
 report (eof($ff // '.res')) "Text File I/O"
 
 close ($ff // '.res')
+
+;set a = (fexist($ff // '.res'))
+
 sh ('/bin/rm';($ff // '.res');$ff)
+
+;report ($a & !fexist($ff // '.res')) "fexist()"
 

@@ -2,6 +2,8 @@
 setpath ($GIFAPATH ; '../macro')	; first put macro in path
 setprompt 'Gifa_test>'
 
+if (! $CONFIG_GRAPH) print "No graphic available" exit
+
 closebutton		; closes the environment (if one)
 ../macro/startup.g		; launch standard environment
 report (1==1) 'standard environment'

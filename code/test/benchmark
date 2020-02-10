@@ -10,34 +10,40 @@ verbose 1    ; check what you're doing
 ;   - Real FT and phasing in F1.
 ; The displayed spectrum at the end is 512 by 1k real points
 ; results are (some figures date from version 1.0 !) :
-;  * 3'50" on Dec VS 3100  VMS 5.2   * 1'30"    on SUN Sparc 330
-;  * 2'30" on Macintosh Centris 650 - running MachTen
-;  * 53"   on Silicon-Graphics 4D/20 * 47"      on S.G. 4D/25
-;  * 37"   on SUN SparcStation 2     * 34"      on DEC Station 5000-200
-;  * 36.3" on PC Am486DX4/100 Linux
-;  * 27"   on S.G. 4D/30             * 31" 	on IBM Risc 6000 320
-;  * 20"   on Mac 7100 80MHz running MkLinux
-;  * 20"   on Alliant FX 40 3CE      * 17.5" on SUN Sparc-10/30
-;  * 17"   on HP 725/50              * 16"   on Indigo R4000
-;  * 15.5" on INDY PC                * 15"   on IBM Risc6000 550
-;  * 12.6" on IBM Risc6000 560       * 12.3" on SUN Sparc-20
-;  * 11.7" on INDY R4600 132MHz   
-;  * 10.7" on SUN SparcCenter 2000E SuperSparc 85 Mhz
-;  * 10.5" on INDY R4400 174MHz      * 10"   on HP 715/80
-;  * 9.5"  on PC Pentium 133 Linux   * 7.5"  on HP 735/99
-;  * 7.4"  on HP PA-8000 160MHz      * 7.0"  on Mac 8600 200MHz
-;  * 6.8"  on INDY R5000 180MHz
-;  * 6.5"  on SGI-O2 R5000-PC        * 5.06" on Pentium Pro 200
-;  * 4.6"  on SGI-O2 R12000 270MHZ (compiled in 32 bits)
-;  * 3.8" on iMac 266MHz running linuxPPC
-;  * 3.3"  on SGI Origin 200 R10000 180MHz
-;  * 3.25" on Pentium II 300MHz
-;  * 3.2"  on SUN/Entreprise CPU UltraSparcII 250MHz
-;  * 2.67" on SGI Origin 200 R10000 225MHZ
-;  * 2.3"  on a Mac G3 400MHz LinuxPPC 2000
-;  * 2.13" on Pentium II  450MHz Linux RH 6.0
-;  * 1.31" on Pentium III 800MHz Linux RH 6.2
-  
+;  * 3'50" - Dec VS 3100  VMS 5.2   * 1'30"    - SUN Sparc 330
+;  * 2'30" - Macintosh Centris 650 - running MachTen
+;  * 53"   - Silicon-Graphics 4D/20 * 47"      - S.G. 4D/25
+;  * 37"   - SUN SparcStation 2     * 34"      - DEC Station 5000-200
+;  * 36.3" - PC Am486DX4/100 Linux
+;  * 27"   - S.G. 4D/30             * 31" 	on IBM Risc 6000 320
+;  * 20"   - Mac 7100 80MHz running MkLinux
+;  * 20"   - Alliant FX 40 3CE      * 17.5" - SUN Sparc-10/30
+;  * 17"   - HP 725/50              * 16"   - Indigo R4000
+;  * 15.5" - INDY PC                * 15"   - IBM Risc6000 550
+;  * 12.6" - IBM Risc6000 560       * 12.3" - SUN Sparc-20
+;  * 11.7" - INDY R4600 132MHz   
+;  * 10.7" - SUN SparcCenter 2000E SuperSparc 85 Mhz
+;  * 10.5" - INDY R4400 174MHz      * 10"   - HP 715/80
+;  * 9.5"  - PC Pentium 133 Linux   * 7.5"  - HP 735/99
+;  * 7.4"  - HP PA-8000 160MHz      * 7.0"  - Mac 8600 200MHz
+;  * 6.8"  - INDY R5000 180MHz
+;  * 6.5"  - SGI-O2 R5000-PC        * 5.06" - Pentium Pro 200
+;  * 4.6"  - SGI-O2 R12000 270MHZ (compiled in 32 bits)
+;  * 4.16  - SGI-O2 R5000 300MHz	
+;  * 3.8"  - iMac 266MHz running linuxPPC
+;  * 3.3"  - SGI Origin 200 R10000 180MHz
+;  * 3.25" - Pentium II 300MHz
+;  * 3.2"  - SUN/Entreprise CPU UltraSparcII 250MHz
+;  * 2.67" - SGI Origin 200 R10000 225MHZ
+;  * 2.5"  - PowerBook G3 400MHz running MacOsX
+;  * 2.3"  - a Mac G3 400MHz LinuxPPC 2000
+;  * 2.13" - Pentium II  450MHz Linux RH 6.0
+;  * 2.0"  - Mac G4 400MHz running MacOsX
+;  * 1.60" - Mac G4 800 MHz MacOsX (still to be optimized)
+;  * 1.31" - Pentium III 800MHz Linux RH 6.2
+;  * 1.20" - Pentium III 800MHz Linux Mandrake 8.0
+;  * 0.94" - Pentium IV  1.5GHz Linux RH 7.1
+
 ; first prepare a pseudo-data set for benchmarking GIFA
 ; set-up a 512 x 2k real data set
 
@@ -57,6 +63,7 @@ for i = 1 to 10
   sin 0 f1 chsize (%*2) % rft f1                              ; main F1 proc
   phase 20 20 f1                                          ;done
 endfor
+;sh 'sleep 3'
 verbose 0
 sh date
 print 'Divide timer results by 10'

@@ -91,3 +91,16 @@ set nm = 'control_sub'
 report ($returned == 3) "@(expression) syntax"
 unset returned
 
+onerrorgoto err_label
+dim 5
+report (1 == 0) "catching errors"
+exit
+
+=err_recovery
+report (1 == 1) "catching errors"
+exit
+
+=err_label
+print "caught"
+goto err_recovery
+

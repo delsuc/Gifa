@@ -4,7 +4,7 @@ read fit_test
 evaln 33 142 addbase %% max
 zoom 1 636 807
 minimax (10*$noise) %
-if ($config_graph) peak showpeaks
+peak if ($config_graph) showpeaks
 report ($npk1d == 21) "peak"
 
 zoom 1 643 687 
@@ -18,9 +18,8 @@ report ($a &  (abs($chi2-10.2)<1)) "Linefit"
 
 zoom 0
 
-set n = 10
-set sp1 = 0  set sp2 = 0  set sdp1 = 0  set sdp2 = 0  set schi = 0
-for i = 1 to $n
+; fitgene
+
    dim 1 chsize 50
    one tm 50 50  put tab                ; create a dump TAB[]
    one mult 1.5 specw 1000 em 100       ; create a dump data-set
@@ -31,6 +30,33 @@ for i = 1 to $n
    set p2 := 0.1
 
    FITGENE '$p1*exp(-$x/$p2)' 2
+
+; if ($config_graph) ../macro/showexp '$p1*exp(-$x/$p2)'
+
+set a = (abs($p1-1.755)<0.5)
+set a = ($a & (abs($p2-0.1278)<0.5))
+set a = ($a & (abs($dp1-0.037)<0.05))
+set a = ($a & (abs($dp2-0.00345)<0.005))
+set a = ($a & (abs($chi2) < 100 ))
+report $a "fitgene"
+
+set n = 100
+set sp1 = 0  set sp2 = 0  set sdp1 = 0  set sdp2 = 0  set schi = 0
+print "Testing Chi2 law"
+refmacro 0
+for i = 1 to $n
+;   print ("trial";$i)
+   dim 1 chsize 50
+   one tm 50 50  put tab                ; create a dump TAB[]
+   one mult 1.5 specw 1000 em 100       ; create a dump data-set
+   iter 10   miniter 10
+   addnoise .02 123
+
+   set p1 := 1
+   set p2 := 0.1
+
+  fitexp 1   ; note that previous fit was $x/$p2 ; while fitexp is $x*$p2
+;  print ($p1;$p2;$dp1;$dp2;$chi2)
   set sp1 = (%+$p1)
   set sdp1 = (%+$dp1)
   set sp2 = (%+$p2)
@@ -41,14 +67,19 @@ set p1 = ($sp1/$n)
 set p2 = ($sp2/$n)
 set dp1 = ($sdp1/$n)
 set dp2 = ($sdp2/$n)
-; if ($config_graph) ../macro/showexp '$p1*exp(-$x/$p2)'
+; if ($config_graph) ../macro/showexp '$p1*exp(-$x*$p2)'
 
-set a = (abs($p1-1.755)<0.05)
-set a = ($a & (($p2-0.1278)<0.05))
-set a = ($a & (($dp1-0.037)<0.005))
-set a = ($a & (($dp2-0.00345)<0.0005))
-set a = ($a & (($chi2/$n) < 55 ))
-report $a "fitgene"
+; print ($p1;$p2;$dp1;$dp2;$schi/$n)
+; print ($p1/1.756;$p2/7.824;$dp1/0.03731;$dp2/0.2170;$schi/$n)
+
+set tol = (0.01)
+
+set a = (abs(1-$p1/1.756)<$tol)
+set a = ($a & (abs(1-$p2/7.824)<$tol))
+set a = ($a & (abs(1-$dp1/0.03731)<$tol))
+set a = ($a & (abs(1-$dp2/0.2170)<$tol))
+set a = ($a & (($schi/$n) < (55+1/sqrt($n)) ))
+report $a "fitexp"
 
 set p1 := -1
 set p2 := 1
@@ -58,5 +89,6 @@ set a = ($a & (abs($p2-2*atan(1))<0.05))
 set a = ($a & (abs($chi2+1) < 1e-3))
 report $a "minimize"
 
-unset p1  unset p2
+unset p1  unset p2 unset dp1  unset dp2
+if ($CONFIG_GRAPH) refmacro 1
 

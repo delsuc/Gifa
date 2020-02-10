@@ -20,29 +20,30 @@ addnoise (0.001*val1d(1)) 123
 
 gifa
 algo 11
-iter 200 miniter 4 ndisp 50
+iter 200 miniter 4 ndisp 50  lambsp 4
 invtlap 100
 iter 1000
 invtlapcont
 
-; I get on my ref machine (HP-UX) :
-; noise = 114.7  shift = 80.2
-; #68 = 350.9
-; chi2 = 2.01
+; I get on my ref machine (linux RH 6) :
+; noise = 115 - 118  shift = 80.1 - 80.2
+; #68 = 356 - 376
+; chi2 = 1.2 - 2.4
 
-set a = ($iterdone == 1000 & $chi2 < 2.5)
+; Test has changed with 4.4 !
+; this one should be correct on a wider range of machines
+
+set a = ($iterdone == 1000 & $chi2 < 3)
 evaln 1 100
-set a = ($a & abs($shift-80)<5 & abs($noise-115)<10 & val1d(68)>300)
+set a = ($a & ($shift<80.5) & ($noise<120) & val1d(68)>330)
 
 report $a 'Inverse Laplace Transform'
 
-if ( $chi2 > 2.5) then         ; if chi2 is off
-   if ($chi2 < 4) then         ; but not so badly
-      if (index($CONFIG_OS,'Sun-Sparc')!=0) then  ; and we're running a SUN
-        print ('You are running on'; $CONFIG_OS)
-        print 'and the Inverse Laplace Transform fails because of a convergence slower than normal'
-        print 'You can still use this module, but will have not optimal convergence'
-      endif
-   endif
+if ( !$a & $chi2  < 5) then         ; if chi2 is off but not so badly
+        print 'the Inverse Laplace Transform fails because of a convergence slower than normal'
+        print 'You can still use this module, but will have not optimal convergence speed'
+        if (index($CONFIG_OS,'Sun-Sparc')!=0) then  ; we're running a SUN
+            print ('This is a known problem on'; $CONFIG_OS)
+        endif
 endif
 

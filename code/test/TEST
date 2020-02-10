@@ -9,8 +9,11 @@ if ($error != 0) error "Gifa is in bad state, can't proceed"
 print "----------Ok"
 timer 1
 
+onerrorgoto error
 set failed = " "
 set succeed = " "
+set crashed = " "
+set cmd = open
 open TEST_LIST
 =loop
         set cmd = <TEST_LIST
@@ -22,7 +25,7 @@ open TEST_LIST
         if ($error != 0) print "----------Failed"
         if ($error != 0) set failed = ($failed ; $cmd)
         if ($error == 0) set succeed = ($succeed ; $cmd)
-	timer 1
+	  timer 1
         goto loop
 =fin
 print ' '
@@ -31,17 +34,28 @@ print ' '
 print '********************************************************'
 print '                    Test Results'
 print '********************************************************'
-if ($failed s= " ") then
+if ($failed s= " " & $crashed s= " ") then
         print "All tests successfully finished"
 else
 	print "Tests Succeded :"
 	print $succeed
-        print "Test failed :"
-        print $failed
-;	print "(expect - cache - to fail)"
+	print "Test failed :"
+	print $failed
+	print "Test crashed :"
+	print $crashed
 endif
 print '********************************************************'
 print ' '
 print ' '
 refmacro 0
 timer 0
+print ' '
+print "Please type 'exit y' (without quotes) to finish  the test"
+exit
+
+=error
+print ("Test"; $cmd; "CRASHED !")
+set crashed = ($crashed ; $cmd)
+onerrorgoto error
+goto loop
+

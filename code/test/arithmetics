@@ -51,4 +51,4 @@ report (val1d(10) == 1.5 & val2d(20,10) == 2.5 & val3d(15,10,5) == 3.5) "val1d, 
 set a = (itoh(1,2,1)==1100 & itop(1,2,2)==(1900/100)) 
 report ($a & (htoi(ptoh(itop(333,1,1),1,1),1,1)-333)<10E-3 ) "itoh, and all internal conversion"
 
-;report ((.65-1.65) == -1) "HPUX 9.x specific bug"
+; report ((.65-1.65) == -1) "HPUX 9.x specific bug"

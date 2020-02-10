@@ -1,0 +1,18 @@
+; listefilec
+;
+; list on screen all the currently JOINed data-sets
+;
+; related contexts : $CACHE[]  $C_JOINED $C_NAME
+;
+; see also : JOIN DISJOIN dataset
+
+ ; used to be a command
+
+if (exist('cache[]')) then
+  print 'currently JOINed data-set:'
+  foreach i in cache
+    print $cache[$i]
+  endfor
+else
+  print "No currently JOINed file"
+endif

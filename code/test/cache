@@ -63,7 +63,7 @@ report $ok "Read"
 join $file3
 join $file1
 join $file2
-listfilec
+../macro/listfilec
 dataset
 
 report ($c_sizef1*$c_sizef2 == $t12*$t22) "Join"
