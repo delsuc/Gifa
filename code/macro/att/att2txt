@@ -1,0 +1,17 @@
+;att2txt
+;
+; dump on ascii files all the database (att and cnst (all spectra))
+
+
+;get all db name
+sh "ls -1 constraints/*.dir | awk -F. '{print $1}' > tmp"
+sh "ls -1 db/*.dir | awk -F. '{print $1}' >> tmp"
+open tmp
+while (!eof('tmp'))
+        set a =  <tmp
+	if (($a s! " " ) & (fexist($a//".pag"))) then
+		print ($a//".txt...")
+         	dbexport $a	
+	endif
+endwhile
+close tmp sh "rm -f tmp"

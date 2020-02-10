@@ -26,16 +26,20 @@ else
         dim 1 zero put data dim 2
 endif
 
-refmacro 1
+set n = 0
 =loop
+   refmacro 1
    monopoint
    if ($button==3) then
-	goto end
+      if ($n == 0) alert "Use button 2 to put at least one column in 1D buffer" goto loop
+      print ('Using sum of'; $n; 'columns for phasing')
+      goto end
    elsif ($button==1) then
        set sel = (2*round($pointx[1]/2)+1)     ; closest odd (real) col
        col $sel
    elsif ($button==2) then
         print ('selected col :';$sel)
+	set n = (%+1)
         if $onfile then
                 dim 1 add $file write $file  dim 2 unref
         else

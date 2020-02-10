@@ -1,0 +1,45 @@
+; profile { command }
+;
+; if called without argument, it analyses the profiler sats currently in memory
+; if called with a command name as argument, it sets the profiler to 1, 
+;    launch the command, and analyse the result
+;
+; lines are sorted in increasing duration order, and % to the total time are computed.
+; time spent in all called macros is allso reported
+;
+; see also : PROFILER TIMER
+
+if ($arg) then
+   set macro = $_
+   if (exist('_p[]')) print 'reseting previous stats' tunset _p
+   profiler 1 @($macro) profiler 0
+endif
+
+if (exist('_m[]')) tunset _m
+
+set sum = 0
+foreach i in _p
+   set sum = ($sum+$_p[$i])
+endfor
+
+open gifa_profile
+foreach i in _p
+   set t = (int($_p[$i]))
+   if ($t>0) then
+      fprint gifa_profile ($t; 'msec'; int(100*$_p[$i]/$sum); '% of total'; $i)
+      set mac = (subst($i,1,index($i,'-')-1))
+      if (!exist('_m[' // $mac // ']')) set  _m[$mac] = 0
+      set _m[$mac] = (%+$t)
+   endif
+endfor
+close gifa_profile
+print ('total time :'; $sum; 'msec')
+sh 'sort -n gifa_profile'
+print 'all other lines have close to 0 time'
+
+print ' '
+print 'Value cumulated for each macro'
+foreach i in _m
+   printf "%30s  %8d\n" $i $_m[$i] *
+endfor
+

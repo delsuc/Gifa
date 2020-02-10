@@ -1,0 +1,13 @@
+; rem_cnst_db $sp1 $sp2
+;
+; removes $cnst_id from cnst data base
+;
+
+set sp1 = $_
+set sp2 = $_
+set index = (max($sp1,$sp2)//":"//min($sp1,$sp2))
+gm/al_yesno ("Ok to remove constraint #"; $sp1//";"//$sp2)
+if ($returned s! "yes") error "'Constraint remove' Aborted"
+; unset
+unset ("cnst['" // $index // "']")
+alert ("Constraint #"; $index; "removed")

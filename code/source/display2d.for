@@ -36,6 +36,7 @@ C if zoom.eq.1  zolf1,zolf2,zour1,zour2 are used as window coordinates
       parameter (simax=512)
 #aix      integer*1 bitmap(simax*simax)
 #_aix      byte bitmap(simax*simax)
+#f2c       save bitmap    ! for C array
       integer s1im, s2im
       real max0
       call fill_bitmap(simax,size2,size1,array,max0,

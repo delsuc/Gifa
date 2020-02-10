@@ -1,0 +1,11 @@
+
+sh "ls -C1 constraints/*.dir > tmp"
+open tmp
+set list_cnst := <tmp
+while (!eof('tmp'))
+  set a =  <tmp
+  if ($a s! " ") set list_cnst := ($list_cnst // ',' // $a)
+endwhile
+close tmp sh "rm -f tmp"
+print $list_cnst
+

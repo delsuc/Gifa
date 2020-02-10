@@ -1,0 +1,144 @@
+; convert Gifa data file into NmrView file entry
+;
+;WriteNV $datafile .
+
+if (!$arg) then
+        ;get data file name
+	dialogbox Read 'Enter Gifa data file name' message ' ' file dfile $name * 
+else
+        set dfile = $_
+endif
+
+join $dfile
+
+set file = $dfile
+set path = ' '
+while (tailx($file,'/') s! ' ')
+	set nfile = (headx($file,'/'))
+	set path = ($path // $nfile // "/")
+        set file = (tailx($file,'/'))
+endwhile
+sh ("cd ";$path;"; ln -s ";$file;$file//".mat")
+
+; Get values
+getheader HeaderSize
+set header_val = $c_header
+getheader Dim
+set dim_val = $c_header
+getheader Absmax
+set absmax_val  = $c_header
+
+; 1D
+getheader Dim1
+set dim1_val = $c_header
+getheader Szblk1 
+set szblk1_val = $c_header
+getheader Nbblock1
+set nbblock1_val = $c_header
+getheader Specw1
+set specw1_val = $c_header
+getheader Offset1
+set offset1_val = $c_header
+getheader Freq1
+set freq1_val = $c_header 
+
+; 2D
+if ($dim_val > 1) then 
+	getheader Dim2
+	set dim2_val = $c_header
+	getheader Szblk2 
+	set szblk2_val = $c_header
+	getheader Nbblock2
+	set nbblock2_val = $c_header
+	getheader Specw2
+	set specw2_val = $c_header
+	getheader Offset2
+	set offset2_val = $c_header
+	getheader Freq2
+	set freq2_val = $c_header
+endif
+
+; 3D
+if ($dim_val > 2) then
+	getheader Dim3
+	set dim3_val = $c_header
+        getheader Szblk3
+        set szblk3_val = $c_header
+        getheader Nbblock3
+        set nbblock3_val = $c_header
+        getheader Specw3
+        set specw3_val = $c_header
+        getheader Offset3
+        set offset3_val = $c_header
+        getheader Freq3
+        set freq3_val = $c_header
+endif
+
+
+
+
+; Output 
+
+set nmrview_file = ($dfile//".par")
+open $nmrview_file
+
+fprint $nmrview_file ('header ';$header_val;" 0")
+if ($dim_val == 1) then 
+	fprint $nmrview_file ('dim';$dim_val;)
+	fprint $nmrview_file ('sw 1';$specw1_val)
+	fprint $nmrview_file ('sf 1';$freq1_val)
+	dialogbox Label 'Enter NmrView Label in F1' enum '1H,15N,13C' f1lab "1H" *
+	fprint $nmrview_file ('label 1';$f1lab)
+	set ref1_val = ($offset1_val/$freq1_val)
+	fprint $nmrview_file ('ref 1';$ref1_val;$dim1_val)
+elsif ($dim_val == 2) then
+	fprint $nmrview_file ('dim';$dim_val;$dim2_val;$dim1_val;$szblk2_val;$szblk1_val)
+	fprint $nmrview_file ('sw 1';$specw2_val)
+	fprint $nmrview_file ('sw 2';$specw1_val)
+	fprint $nmrview_file ('sf 1';$freq2_val)
+	fprint $nmrview_file ('sf 2';$freq1_val)
+	dialogbox Label 'Enter NmrView Label' message \ 
+	'F1' enum '1H,15N,13C' f1lab "1H" \
+	'F2' enum '1H,15N,13C' f2lab "1H"*
+	fprint $nmrview_file ('label 1';$f1lab)
+	fprint $nmrview_file ('label 2';$f2lab)
+        set ref1_val = ($offset1_val / $freq1_val)
+        set ref2_val = ($offset2_val/$freq2_val)
+	fprint $nmrview_file ('ref 1';$ref2_val;$dim2_val)
+	fprint $nmrview_file ('ref 2';$ref1_val;$dim1_val)
+	
+elsif ($dim_val == 3) then
+	fprint $nmrview_file ('dim';$dim_val;$dim3_val;$dim2_val;$dim1_val;$szblk3_val;$szblk2_val;$szblk1_val)
+	fprint $nmrview_file ('sw 1';$specw3_val)
+	fprint $nmrview_file ('sw 2';$specw2_val)
+	fprint $nmrview_file ('sw 3';$specw1_val)
+        fprint $nmrview_file ('sf 1';$freq3_val)
+        fprint $nmrview_file ('sf 2';$freq2_val)
+        fprint $nmrview_file ('sf 3';$freq1_val)
+        dialogbox Label 'Enter NmrView Label' message \ 
+        'F1' enum '1H,15N,13C' f1lab "1H" \
+        'F2' enum '1H,15N,13C' f2lab "1H" \
+        'F3' enum '1H,15N,13C' f3lab "1H"*
+	fprint $nmrview_file ('label 1';$f1lab)
+	fprint $nmrview_file ('label 2';$f2lab)
+	fprint $nmrview_file ('label 3';$f3lab)
+        set ref1_val = ($offset1_val/$freq1_val)
+        set ref2_val = ($offset2_val/$freq2_val)
+        set ref3_val = ($offset3_val/$freq3_val)
+        fprint $nmrview_file ('ref 1';$ref3_val;$dim3_val)
+        fprint $nmrview_file ('ref 2';$ref2_val;$dim2_val)
+        fprint $nmrview_file ('ref 3';$ref1_val;$dim1_val)
+
+
+endif
+
+fprint $nmrview_file ('posneg 12')
+;fprint $nmrview_file ('lvl 1e+30')
+fprint $nmrview_file ('scale 1')
+fprint $nmrview_file ('rdims ';$dim_val)
+dialogbox ByteOrder 'ByteOrder ?' enum '1,0' byteo "1" *
+fprint $nmrview_file ('byteorder';$byteo)
+
+close $nmrview_file
+
+

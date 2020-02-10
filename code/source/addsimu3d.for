@@ -45,14 +45,14 @@ c
 	integer error,i
 	integer i1,i2,i3
 	real tdata(*)
-	real ampl,freql1,t2l1, phasel1,ppml1,indl1
-	real freql2,t2l2, phasel2,ppml2,indl2
-	real freql3,t2l3, phasel3,ppml3,indl3
+	real ampl,loc_hz1,t2l1, phasel1,ppml1,indl1
+	real loc_hz2,t2l2, phasel2,ppml2,indl2
+	real loc_hz3,t2l3, phasel3,ppml3,indl3
 	real  z
 	real f1,f2,f3,p1,p2,p3,temp,y1,y2,y3
 	real  w1,w2,w3,cw1,sw1,cw2,sw2,cw3,sw3,e1,e2,e3
 
-	save ampl,freql1,freql2,freql3
+	save ampl,loc_hz1,loc_hz2,loc_hz3
 	save ppml1,ppml2,ppml3,indl1,indl2,indl3
         save t2l1,t2l2,t2l3,phasel1,phasel2,phasel3
 c	
@@ -67,43 +67,43 @@ c getting line position
 c
 	if (unit.eq.'HZ') then	
            call message( ' frequence in dim 1')
-           call getreal2(freql1,error)
+           call getreal2(loc_hz1,error)
            if (error.ne.0) goto 62
            call message( ' frequence in dim 2')
-           call getreal2(freql2,error)
+           call getreal2(loc_hz2,error)
            if (error.ne.0) goto 62 
            call message( ' frequence in dim 3')
-           call getreal2(freql3,error)
+           call getreal2(loc_hz3,error)
            if (error.ne.0) goto 62           
         elseif (unit.eq.'PPM') then
            call message('chemical shift in dim 1')
            call getreal2(ppml1,error)
            if (error.ne.0) goto 62
            temp = ptoir(ppml1,si3d1,sp3d1,of3d1,freq3d1)
-           freql1 = itohr(temp,si3d1,sp3d1,of3d1)
+           loc_hz1 = itohr(temp,si3d1,sp3d1,of3d1)
            call message('chemical shift in dim 2')
            call getreal2(ppml2,error)
            if (error.ne.0) goto 62
            temp = ptoir(ppml2,si3d2,sp3d2,of3d2,freq3d2)
-           freql2 = itohr(temp,si3d2,sp3d2,of3d2)
+           loc_hz2 = itohr(temp,si3d2,sp3d2,of3d2)
            call message('chemical shift in dim 3')
            call getreal2(ppml3,error)
            if (error.ne.0) goto 62
            temp = ptoir(ppml3,si3d3,sp3d3,of3d3,freq3d3)
-           freql3 = itohr(temp,si3d3,sp3d3,of3d3)
+           loc_hz3 = itohr(temp,si3d3,sp3d3,of3d3)
         elseif (unit.eq.'INDEX') then
            call message('position index in dim 1')
            call getreal2(indl1,error)
            if (error.ne.0) goto 62
-           freql1 = itohr(indl1,si3d1,sp3d1,of3d1)
+           loc_hz1 = itohr(indl1,si3d1,sp3d1,of3d1)
            call message('position index in dim 2')
            call getreal2(indl2,error)
            if (error.ne.0) goto 62
-           freql2 = itohr(indl2,si3d2,sp3d2,of3d2)
+           loc_hz2 = itohr(indl2,si3d2,sp3d2,of3d2)
            call message('position index in dim 3')
            call getreal2(indl3,error)
            if (error.ne.0) goto 62
-           freql3 = itohr(indl3,si3d3,sp3d3,of3d3)           
+           loc_hz3 = itohr(indl3,si3d3,sp3d3,of3d3)           
         else
            goto 63
         endif 
@@ -177,11 +177,11 @@ c
 	enddo
 	      
         it3d = 7      
-        f1 = ((freql1-of3d1)*2*pi/sp3d1) - pi
+        f1 = ((loc_hz1-of3d1)*2*pi/sp3d1) - pi
  	p1 = phasel1*pi/180.0
-        f2 = ((freql2-of3d2)*2*pi/sp3d2) - pi
+        f2 = ((loc_hz2-of3d2)*2*pi/sp3d2) - pi
 	p2 = phasel2*pi/180.0
-        f3 = ((freql3-of3d3)*2*pi/sp3d3) - pi
+        f3 = ((loc_hz3-of3d3)*2*pi/sp3d3) - pi
 	p3 = phasel3*pi/180.0
 
         y1 = t2l1/2000.0

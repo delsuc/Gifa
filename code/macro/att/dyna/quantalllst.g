@@ -58,7 +58,7 @@ else
   endfor
 
 ; initialize 'inprogress'
-  initinprogress $u
+  initinprogress $u 
   set uu = 0
 
 ; open output file
@@ -83,23 +83,42 @@ else
   endif
 ;  fprint $out ("# Ratio of the integration box:" ; $homoth)
 
-; main loop
-  set i = 1
+; first determine lookup for scanning along primary seq
+  print "Lookup on the primary sequence"
+  set maxaa = 0
   foreach i in att within 2 $f1min $f2min $f1max $f2max
     set uu = (%+1) inprogress $uu
-;    print $i
-    set bruit = 0
-    if ($errmeth s= "Multiexp") then
-      bruit1pklst.g $i $liste $intmeth $homoth $zonebr
-      set bruit = $returned
+    compute_aa $i
+    if ($returned s! ' ') then
+      set rev[$returned] = (% ; $i)
+      if ($returned > $maxaa) set maxaa = $returned
     endif
-;    print ("quant1pklst.g ";$i ;$liste ; $intmeth ; $errmeth ;$bruit ;$homoth ; $zonebr)
-    quant1pklst.g $i $liste $intmeth $errmeth $bruit $homoth $zonebr
-    listout.g $i $out 
+  endfor
+  inprogress $u
+
+; then go along and compute
+  initinprogress $u
+  print "Doing the integration"
+  set uu = 0
+  for i = 1 to $maxaa
+    set uu = (%+1) inprogress $uu
+    if (exist('rev[' //$i// ']')) then
+      while ($rev[$i] s! ' ')
+         set j = (head($rev[$i]))      set rev[$i] = (tail($rev[$i]))
+         set bruit = 0
+         if ($errmeth s= "Multiexp") then
+           bruit1pklst.g $j $liste $intmeth $homoth $zonebr
+           set bruit = $returned
+         endif
+;         print ("quant1pklst.g ";$j ;$liste ; $intmeth ; $errmeth ;$bruit ;$homoth ; $zonebr)
+         quant1pklst.g $j $liste $intmeth $errmeth $bruit $homoth $zonebr
+         listout.g $j $out 
+      endwhile
+    endif
   endfor
 
   close $out
-  inprogress $att["LARGEST"]
+  inprogress $u
 ;  print ("stoname" ; $stoname)
   read ("spectra/"//$stoname)
   set x1 = (ptoi($f1min,2,1))

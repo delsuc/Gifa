@@ -33,6 +33,9 @@
 if (dbm("sys")) dbclose sys
 if (dbm("spin")) dbclose spin
 if (dbm("att")) dbclose att
+if (dbm("topo")) dbclose topo
+if (dbm("rescode")) dbclose rescode
+
 
 dialogbox "New project" \
   "First, Create a directory which will hold all the information" message \
@@ -48,6 +51,14 @@ sh ("mkdir"; $proj; "; mkdir";$proj // "/db" ;" ; mkdir";$proj // "/spectra")
 sh ("mkdir"; $proj // "/PDB"; "; mkdir";$proj // "/processing"; "; mkdir";$proj // "/constraints")
 
 cd  $proj
+
+print " "
+print "Building standard assignment databases..."
+build_static_db.g
+dbopen db/topology topo      ; for spin-system topology
+dbopen db/3let_1let rescode  ; for residue codes
+print "...Finished"
+
 
 set prim = " "
 =redo
@@ -68,7 +79,7 @@ set prim = " "
   if ($meth s= "Direct") then
     set prim = (toupper($prim))
     open db/primary
-    dbopen /usr/local/gifa/macro/att/1let_3let code
+    dbopen db/1let_3let code
     set failed = (1==0)       ; used to shorten when wrong aa is used
     for i = 1 to (len($prim))
       if (!$failed) then
@@ -89,7 +100,7 @@ set prim = " "
     open $fich
     open db/primary
     set i = 0
-    if ($meth s= "3let") dbopen /usr/local/gifa/macro/att/3let_1let code
+    if ($meth s= "3let") dbopen db/3let_1let code
     set l = <$fich
     while (!eof($fich))
       while ($l s! " " & index($l,'#') != 1)    ; skip empty lines and comments

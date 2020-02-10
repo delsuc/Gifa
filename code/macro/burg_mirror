@@ -1,0 +1,28 @@
+; burg_mirror offset new_size
+;
+; realizes he mirror image Linear Prediction, using the burg algorithm.
+;
+; offset determines the position of the t=0 point 
+;     0  no shift : in-phase data set.
+;    -1  acquisition started exactly half a dwell after t=0 - (will need phase 0 180)
+;    n>0 acquisition started exactly n dwell before t=0
+;        Warning, this is not coherent notation
+;
+; new_size is the size of the FID after the LP extension.
+;
+; See : Zhu and Bax J.Magn.Reson. 90, p405 (1990)
+; see also : burg2d_mirror BURG
+
+message 'time 0 offset'
+set n = $_
+message 'new size'
+set bsz = $_
+if ($n == -1) then
+  set msz = $si1_1d
+else
+  set msz = ($si1_1d - 2*$n -2)
+endif
+mirror $n
+burg ($msz+$bsz)
+reverse chsize $bsz reverse
+

@@ -1,6 +1,6 @@
 ; list the parameters of the currently JOINed data file
 ;
-; see also : LISTFILEC JOIN  param
+; see also : listfilec JOIN  param
 
 if ($c_joined == 0) then
   print "No currently JOINed file"

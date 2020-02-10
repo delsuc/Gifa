@@ -10,5 +10,5 @@ set proton := "HN,HA,HA1,HA2,HA3,HB,HB1,HB2,HG,HG1,HG2,HD1,HD2,HE1,HE2,HZ1,HZ2,1
 set carbon := "CO,CA,CB,CG,CG1,CG2,CD,CD1,..."
 
 ; open static db
-dbopen /usr/local/gifa/macro/att/topology topo      ; for spin-system topology
-dbopen /usr/local/gifa/macro/att/3let_1let rescode  ; for residue codes
+dbopen db/topology topo      ; for spin-system topology
+dbopen db/3let_1let rescode  ; for residue codes

@@ -11,5 +11,7 @@ C This file holds the variables for the gifa shell
         prompt = 'Gifa>'
         call trailing(prompt,i)
         call set_prompt(prompt,i)
+        sttimer = ' '
+        returned = ' '
 
 

@@ -16,8 +16,8 @@ C
         c_specwf1 =  2000*3.1415926
         c_specwf2 =  2000*3.1415926
         c_specwf3 =  2000*3.1415926
- 	c_freq = 400.0
- 	c_freq1 = 400.0
- 	c_freq2 = 400.0
- 	c_freq3 = 400.0
+ 	c_freq = 400.0d0
+ 	c_freq1 = 400.0d0
+ 	c_freq2 = 400.0d0
+ 	c_freq3 = 400.0d0
 	c_name = 'no_name'

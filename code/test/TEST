@@ -3,16 +3,18 @@
 ;
 print "Test : basic"
 ; sets the timer on to know how much it takes
-timer 1
+set time = (1 == 1)   ; set time to true for timing
+if ($time) timer 1
 basic
 if ($error != 0) error "Gifa is in bad state, can't proceed"
 print "----------Ok"
-timer 1
+if ($time) timer 1
 
 onerrorgoto error
 set failed = " "
 set succeed = " "
 set crashed = " "
+set total = 0
 set cmd = open
 open TEST_LIST
 =loop
@@ -24,8 +26,12 @@ open TEST_LIST
         if ($error == 0) print "----------Ok"
         if ($error != 0) print "----------Failed"
         if ($error != 0) set failed = ($failed ; $cmd)
-        if ($error == 0) set succeed = ($succeed ; $cmd)
-	  timer 1
+        if ($time) timer 1
+        if ($error == 0) then
+              set t = ( int(head(tail($timer))*100)/100 )
+              set succeed = ($succeed ; $cmd ; "("; $t; "sec.)" )
+              set total = ($total+$t)
+        endif
         goto loop
 =fin
 print ' '
@@ -36,6 +42,8 @@ print '                    Test Results'
 print '********************************************************'
 if ($failed s= " " & $crashed s= " ") then
         print "All tests successfully finished"
+        print $succeed
+        print ("Total execution time :";$total)
 else
 	print "Tests Succeded :"
 	print $succeed
@@ -48,9 +56,7 @@ print '********************************************************'
 print ' '
 print ' '
 refmacro 0
-timer 0
-print ' '
-print "Please type 'exit y' (without quotes) to finish  the test"
+if ($time) timer 0
 exit
 
 =error

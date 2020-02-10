@@ -1,0 +1,241 @@
+; build_cnst_db
+;
+; create the constraint database from att according to the set of 
+; calibration peaks. The constraint distances are qualitatively
+; defined from the calibration peaks, and the bounds given by the 
+; user.
+;
+;
+;
+
+
+Print "Current project :"
+pwd
+
+if ($att['largest'] == 0) error "Database Empty !"
+if ($dim != 2) error "Command available in 2D only !"
+if (!(exist('calib_dst[]'))) error "You need first to define calibration peaks!"
+
+if (!$arg) then
+  formbox 'Qualitative constraint output' \
+   'build_cnst_db  $mode $cnstfil $dstbg $dstmed $dbgl $dbgu $dmel $dmeu $dsml $dsmu $m_corr $q_corr' \
+   'Data base name' string cnstfil cnst \
+   "Data base build mode" enum "Update,Complete" mode Update \
+   'separator' \
+   'Large intensity bounds: lower' real dbgl 1.8 noreturn \ 
+   'upper' real dbgu 2.8 \
+   'Calibration lower limit' real dstbg 2.5 \
+   'Medium intensity bounds: lower' real dmel 1.8 noreturn \ 
+   'upper' real dmeu 3.6 \
+   'Calibration lower limit' real dstmed 3.4 \
+   'Small intensity bounds: lower' real dsml 1.8 noreturn \  
+   'upper' real dsmu 4.4 \
+   'separator' \
+   'methylene or methyl correction' real m_corr 1.0 \
+   'double methyl or aromatic correction' real q_corr 2.4 \
+   *
+
+else
+  set mode = $_
+  set cnstfil = $_
+  set dstbg = $_ 
+  set dstmed = $_ 
+  set dbgl = $_ 
+  set dbgu = $_ 
+  set dmel = $_ 
+  set dmeu = $_
+  set dsml = $_ 
+  set dsmu = $_
+  set m_corr = $_
+  set q_corr = $_
+
+; list of larger pseudo-atom corrections
+set res_q = 'VAL:QG LEU:QD PHE:QD PHE:QE TYR:QD TYR:QE'
+; list of methyls
+set res_m = 'ALA:HB THR:HG ILE:HG ILE:HD VAL:HG1 VAL:HG2 VAL:HG? LEU:HD1 LEU:HD2 LEU:HD? MET:HE'
+;lookup for aromatic spin systems
+set arom['Arom-PHE'] = 'PHE'
+set arom['Arom-TYR'] = 'TYR'
+set arom['Arom-HIS'] = 'HIS'
+set arom['Arom-TRP'] = 'TRP'
+
+
+
+; computation of the factor between intensity and (1/d**6) by
+; a least-square
+  set sumi2 = 0
+  set sumij = 0
+  foreach i in calib_dst
+    if ($calib_dst[$i] == 0) error ("Pb with calibration distance of peak" ; $i)
+    set l = $att[$i]
+    set t = (head(tail(tail($l))))
+    set sumi2 = (%+($t*$t))
+    set sumij = (%+($t/($calib_dst[$i]^6)))
+  endfor
+  if ($sumi2 == 0) error "Pb with calibration intensities!" 
+  set factor = ($sumij/$sumi2)
+; determine the intensity threshold for which the corresponding distance is 
+; larger than 5.0, this value is used to reject the constraints corresponding to 
+; too small intensities
+  set thres = ($factor/(5.0^6))
+
+
+if ($mode s= "Update") then 
+	if (dbm("cnst")==0) open_cnst_db
+	dbopen hash hash
+	set cpt_ind = 0
+	set new_entry = 0
+	print "-- Update Mode --"
+else 
+	; open a new database
+	new_cnst_db $cnstfil
+endif
+
+initinprogress $att["LARGEST"]
+set step = 1
+print "Collecting Assignment Informations..."
+foreach i in att
+      inprogress $step
+      set step = (%+1)
+      if ($i s= "LARGEST")  goto break
+
+
+      ; ----------- get the assigned peak label
+      set l = (toupper($att[$i]))
+      if (index($l,'UNK') != 0) goto break     ; processing of the assigned peaks
+      set pk_coor_f1 = (head($l))		;coord peak 1
+      set pk_coor_f2 = (head(tail($l)))		;coord peak 2
+      set t = (tail(tail(tail($l))))		;liste sp1.... 
+      set sp1 = (head($t))			;spin 1
+      set sp2 = (head(tail($t)))		;spin 2
+      if ($sp1 s= $sp2) goto break 		;sur la diagonale
+      set s1 = ($spin[$sp1])
+      set s2 = ($spin[$sp2])
+      if ((index(toupper($s1),'UNK') != 0)  | (index(toupper($s2),'UNK') != 0) ) goto break  ;and only named spins
+      set sys1 = (head(tail(tail($s1))))	;
+      set sys2 = (head(tail(tail($s2))))	; 
+      set r1 = (head($sys[$sys1]))		;r1, r2 : system primary index
+      set r2 = (head($sys[$sys2]))		;
+      set nr1 = (head(tail($sys[$sys1])))       ; get syst names
+      set nr2 = (head(tail($sys[$sys2])))
+      if (index($nr1,'-') != 0)  set nr1 = $arom[$nr1]    ; clean aromatic syst names
+      if (index($nr2,'-') != 0)  set nr2 = $arom[$nr2]
+
+
+      if ((toupper($r1) s= "UNK") | (toupper($r2) s= "UNK")) goto break    ; in assigned systems
+
+
+      ; ----------- clean up the base 
+      set a1 = (head(tail($s1)))		; a1, a2: spin name
+      set a2 = (head(tail($s2)))		;
+      if ($a1 s= $a2 & $r1 == $r2) goto break   ; case of SER-QB with SER-QB
+
+      ; ----------- Update Mode
+      if ($mode s= "Update") then
+                set ind = (max($sp1,$sp2)//":"//min($sp1,$sp2))
+                if (exist('cnst[' // $ind // ']'))  then
+                        set hash[$ind] = 1 ; stock for finding old cnst
+                        goto break    ; ALREADY IN DB !!
+                endif
+      endif
+
+      ; ----------- get the peak intensity
+      set u = (head(tail(tail($l))))
+      if ($u < $thres) goto break
+      set p = (1/($u*$factor))
+      set distmoy = ($p^(1/6))
+      set distmoy = (int($distmoy*100)/100)
+      if ($distmoy < $dstbg) then        ; Big intensity interval
+         	set varlow = $dbgl
+         	set varupp = $dbgu
+      elsif ($distmoy < $dstmed) then    ; Medium intensity interval
+         	set varlow = $dmel
+         	set varupp = $dmeu
+      else                               ; Small intensity interval
+         	set varlow = $dsml
+         	set varupp = $dsmu
+      endif
+
+
+      ; ----------- find corrected upper limit
+      set varupp_cor = $varupp ; par defaut
+      ;PSEUDO
+      if (index($a1,'Q') == 1) then
+      		if (index($res_q,$nr1 // ':' // $a1) != 0) then
+                	set varupp_cor = ($varupp_cor+$q_corr) ; Pseudo sur les doubles methyl
+		else
+			set varupp_cor = ($varupp_cor+$m_corr) ; Pseudo sur les methylenes
+		endif
+      endif
+      if (index($a2,'Q') == 1) then
+                if (index($res_q,$nr2 // ':' // $a2) != 0) then
+                        set varupp_cor = ($varupp_cor+$q_corr) ; Pseudo sur les doubles methyl
+                else
+                        set varupp_cor = ($varupp_cor+$m_corr) ; Pseudo sur les methylenes
+                endif
+      endif
+      ;METHYL
+      if (index($res_m,$nr1 // ':' // $a1) != 0) then 
+                set varupp_cor = ($varupp_cor+$m_corr) ; correction sur les methyls 
+      endif
+      if (index($res_m,$nr2 // ':' // $a2) != 0) then
+                set varupp_cor = ($varupp_cor+$m_corr) ; correction sur les methyls
+      endif
+
+
+      ; ----------- localisation preferee: aliphatiques en dessous de la diagonale, les autres en dessus
+      set loc = "none"
+      if (($pk_coor_f2 < 4.7) & ($pk_coor_f1 < 4.7) & ($pk_coor_f2 <= $pk_coor_f1)) set loc = "ok"
+      if (($pk_coor_f2 > 4.7) & ($pk_coor_f1 <= $pk_coor_f2)) set loc = "ok"
+
+      ; ----------- stockage 
+      set cnst_index = (max($sp1,$sp2)//":"//min($sp1,$sp2))
+      if (exist('cnst[' // $cnst_index // ']')) then
+      		;localisation / a la diagonale sur le spectre (on garde le meilleur)
+      		if ( $loc s= "ok" ) then   
+			add_cnst_db $sp1 $sp2 $varlow $varupp $varupp_cor "active" " "
+		endif
+      else
+      		; stockage
+		add_cnst_db $sp1 $sp2 $varlow $varupp $varupp_cor "active" " "
+      endif
+      if ($mode s= "Update") then
+          set hash[$ind] = 1     ; stock for finding old cnst
+          print ("Add entry:";$ind)
+	  set new_entry = (%+1)
+      endif
+=break
+
+endfor
+inprogress $att["LARGEST"]
+
+;Remove old constraints
+dbopen rmcnst rmcnst
+
+if ($mode s= "Update") then
+	print "Remove old constraints ..."
+	initinprogress $cnst["LARGEST"]  set i = 1
+	foreach ind in cnst
+		inprogress $i  set i = (%+1)
+		if ($ind s! "LARGEST") then
+                    if (! exist('hash[' // $ind // ']')) then
+			set rmcnst[$ind] = 1
+			set cpt_ind = (%+1)
+		    endif
+                endif
+	endfor
+	if ($cpt_ind > 0) then
+           foreach ind in rmcnst
+		print ("Remove entry:";$ind)
+		unset ("cnst['" // $ind // "']") ;  old constraint removed
+	   endfor
+	endif
+	inprogress $cnst["LARGEST"]
+	dbclose rmcnst
+	dbclose hash
+	sh '/bin/rm hash.dir hash.pag rmcnst.dir rmcnst.pag'
+	print ($cpt_ind;" old constraints removed.")
+	print ($new_entry;" new entry added.")
+endif
+
+endif

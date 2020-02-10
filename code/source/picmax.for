@@ -142,6 +142,7 @@ c   0 : dist = x+y              => diamond
 
        integer comp,nombrepic,dist,no,i,j,colp,ligp,col,lig,
      *     tindex(peakmax),tn
+#f2c       save tindex      ! for C array
        real    intens,intp,dd
 
        if (dist .lt. 0 .or. dist.gt.2) return
@@ -205,6 +206,7 @@ c   0 : dist = x+y              => diamond
      *     tindex(peakmax),tn
        real    intens,intp,dd
        real tintens(peakmax), ccoord(peakmax), lcoord(peakmax)
+#f2c       save tindex,tintens,ccoord,lcoord      ! for C array
 
        if (dist .lt. 0 .or. dist.gt.2) return
        tn = 1
@@ -276,6 +278,7 @@ c   0 : dist = x+y              => diamond
        integer comp,nombrepic,dist,no,i,j,fa1,fa2,fa3,fb1,fb2,fb3,
      *     tindex(peakmax),tn
        real    intens,intp,dd
+#f2c       save tindex     ! for C array
                          
        if (dist .lt. 0 .or. dist.gt.2) return
        tn = 1
@@ -310,7 +313,7 @@ c   0 : dist = x+y              => diamond
        call bsort(tindex,tn)
        do i=1,pk3d
          call cicopvect(tindex,peak3d(1,i),peak3d(1,i),nombrepic,tn)
-         call cicopvect(tindex,peak3d_id(i),peak3d_id(i),nombrepic,tn)
+         call cicopsvect(tindex,peak3d_id(i),peak3d_id(i),nombrepic,tn)
        enddo
        nombrepic = nombrepic - tn
        return
@@ -340,6 +343,7 @@ c   0 : dist = x+y              => diamond
        real    intens,intp,dd
        real tintens(peakmax), fa1coo(peakmax), fa2coo(peakmax),
      *  fa3coo(peakmax)
+#f2c       save tindex,tintens,fa1coo,fa2coo,fa3coo
                          
        if (dist .lt. 0 .or. dist.gt.2) return
        tn = 1
@@ -385,7 +389,7 @@ c   0 : dist = x+y              => diamond
        call bsort(tindex,tn)
        do i=1,pk3d
          call cicopvect(tindex,peak3d(1,i),peak3d(1,i),nombrepic,tn)
-         call cicopvect(tindex,peak3d_id(i),peak3d_id(i),nombrepic,tn)
+         call cicopsvect(tindex,peak3d_id(i),peak3d_id(i),nombrepic,tn)
        enddo
        nombrepic = nombrepic - tn
        do no=1,nombrepic

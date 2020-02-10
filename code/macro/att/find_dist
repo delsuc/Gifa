@@ -49,7 +49,7 @@ if ($pk_fnd_dst < $tol_click & $pk_fnd_dst != -1) then
 
 else
   alert ("No peak found within"; $tol_click; "ppm")
-  set returned := 0
+  return 0
 endif
 
 

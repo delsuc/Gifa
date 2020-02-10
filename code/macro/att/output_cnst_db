@@ -1,0 +1,440 @@
+; output_cnst_db (interactive)
+;
+; permits the output of a DYANA or XPLOR/CNS constraint file according 
+; to the set of constraint data base.
+;
+;
+;
+
+
+if ($att['largest'] == 0) error "Database Empty !"
+if ($dim != 2) error "Command available in 2D only !"
+if (!(exist('calib_dst[]'))) error "You need first to define calibration peaks!"
+if (dbm("cnst")==0) open_cnst_db
+
+if (!$arg) then
+  formbox 'Qualitative constraint output' \
+   'output_cnst_db $cnst_format $cnstfil $intra $pseudo $m_corr $q_corr $cysname' \
+   'Constraint file format' enum 'CNS,DYANA' cnst_format 'DYANA' \
+   'Output basename' string cnstfil cnst \
+   'separator' \
+   'Select constraints output' enum 'only inter-residus,inter_residus and HN intra,all constraints' intra 'all constraints' \
+   'Use pseudo atom corrections' enum 'yes,no' pseudo 'yes' \
+   'Undiscrimined proton correction (methylene)' real m_corr 1.0 \
+   'Undiscrimined double methyl correction' real q_corr 2.4 \
+   'separator' \
+   'Cysteine name in output file' enum 'CYS,CYSS' cysname 'CYS' \
+   *
+
+else
+  set cnst_format = $_
+  set cnstfil = $_
+  set intra = $_
+  set pseudo = $_
+  set m_corr = $_
+  set q_corr = $_
+  set cysname = $_
+
+; list of larger pseudo-atom corrections
+set res_q = 'VAL:QG LEU:QD PHE:QD PHE:QE TYR:QD TYR:QE'
+; list of methyls
+set res_m = 'ALA:HB THR:HG ILE:HG ILE:HD VAL:HG1 VAL:HG2 VAL:HG? LEU:HD1 LEU:HD2 LEU:HD? MET:HE'
+;lookup for aromatic spin systems
+set arom['Arom-PHE'] = 'PHE'
+set arom['Arom-TYR'] = 'TYR'
+set arom['Arom-HIS'] = 'HIS'
+set arom['Arom-TRP'] = 'TRP'
+
+; correspondance codage entre GIFA et DYANA
+
+set g2d["ALA:HB"] = "ALA:QB"
+set g2d["THR:HG"] = "THR:QG2"
+set g2d["MET:HE"] = "MET:QE"
+set g2d["VAL:QG"] = "VAL:QQG"
+set g2d["VAL:HG1"] = "VAL:QG1"
+set g2d["VAL:HG2"] = "VAL:QG2"
+set g2d["LEU:HD1"] = "LEU:QD1"
+set g2d["LEU:HD2"] = "LEU:QD2"
+set g2d["LEU:QD"] = "LEU:QQD"
+set g2d["ILE:HG"] = "ILE:QG2"
+set g2d["ILE:QG"] = "ILE:QG1"
+set g2d["ILE:HD"] = "ILE:QD1"
+set g2d["GLN:QE"] = "GLN:QE2"
+set g2d["ARG:QH"] = "ARG:QH2"
+set g2d["ASN:QD"] = "ASN:QD2"
+set g2d["GLY:HA2"] = "GLY:HA1"
+set g2d["GLY:HA3"] = "GLY:HA2"
+set g2d["LYS:HZ"] = "LYS:QZ"
+; correspondance dans les cas de renommage (au vol) a partir des pseudo
+; exceptions necessaires apres modifications automatiques
+set g2d["VAL:HG2"] = "VAL:QG1"
+set g2d["VAL:HG3"] = "VAL:QG2"
+set g2d["LEU:HD2"] = "LEU:QD1"
+set g2d["LEU:HD3"] = "LEU:QD2"
+set g2d["GLN:HE2"] = "GLN:HE21"
+set g2d["GLN:HE3"] = "GLN:HE22"
+
+; correspondance codage entre GIFA et CNS
+set g2x["ALA:HB"] = "ALA:HB#"
+
+set g2x["CYS:HB2"] = "CYS:HB1"
+set g2x["CYS:HB3"] = "CYS:HB2"
+set g2x["CYS:QB"] = "CYS:HB#"
+set g2x["CYS:HB?"] = "CYS:HB#"
+
+set g2x["SER:HB2"] = "SER:HB1"
+set g2x["SER:HB3"] = "SER:HB2"
+set g2x["SER:QB"] = "SER:HB#"
+set g2x["SER:HB?"] = "SER:HB#"
+
+set g2x["GLN:HB2"] = "GLN:HB1"
+set g2x["GLN:HB3"] = "GLN:HB2"
+set g2x["GLN:QB"] = "GLN:HB#"
+set g2x["GLN:HB?"] = "GLN:HB#"
+set g2x["GLN:HG2"] = "GLN:HG1"
+set g2x["GLN:HG3"] = "GLN:HG2"
+set g2x["GLN:QG"] = "GLN:HG#"
+set g2x["GLN:HG?"] = "GLN:HG#"
+set g2x["GLN:HE2?"] = "GLN:HE2#"
+set g2x["GLN:QE"] = "GLN:HE2#"
+
+set g2x["LEU:HB2"] = "LEU:HB1"
+set g2x["LEU:HB3"] = "LEU:HB2"
+set g2x["LEU:QB"] = "LEU:HB#"
+set g2x["LEU:HB?"] = "LEU:HB#"
+set g2x["LEU:HD1"] = "LEU:HD1#"
+set g2x["LEU:HD2"] = "LEU:HD2#"
+set g2x["LEU:HD?"] = "LEU:HD#"
+
+set g2x["VAL:HG1"] = "VAL:HG1#"
+set g2x["VAL:HG2"] = "VAL:HG2#"
+set g2x["VAL:QG"] = "VAL:HG#"
+set g2x["VAL:HG?"] = "VAL:HG#"
+
+set g2x["ILE:HG2"] = "ILE:HG2#"
+set g2x["ILE:HG1?"] = "ILE:HG1#"
+set g2x["ILE:HG12"] = "ILE:HG11"
+set g2x["ILE:HG13"] = "ILE:HG12"
+set g2x["ILE:HG"] = "ILE:HG2#"
+set g2x["ILE:QG"] = "ILE:HG2#"
+set g2x["ILE:HD"] = "ILE:HD1#"
+
+set g2x["GLY:HA2"] = "GLY:HA1"
+set g2x["GLY:HA3"] = "GLY:HA2"
+set g2x["GLY:HA?"] = "GLY:HA#"
+
+set g2x["LYS:HB2"] = "LYS:HB1"
+set g2x["LYS:HB3"] = "LYS:HB2"
+set g2x["LYS:QB"] = "LYS:HB#"
+set g2x["LYS:HB?"] = "LYS:HB#"
+set g2x["LYS:HG2"] = "LYS:HG1"
+set g2x["LYS:HG3"] = "LYS:HG2"
+set g2x["LYS:QG"] = "LYS:HG#"
+set g2x["LYS:HG?"] = "LYS:HG#"
+set g2x["LYS:HD2"] = "LYS:HD1"
+set g2x["LYS:HD3"] = "LYS:HD2"
+set g2x["LYS:QD"] = "LYS:HD#"
+set g2x["LYS:HD?"] = "LYS:HD#"
+set g2x["LYS:HE2"] = "LYS:HE1"
+set g2x["LYS:HE3"] = "LYS:HE2"
+set g2x["LYS:QE"] = "LYS:HE#"
+set g2x["LYS:HE?"] = "LYS:HE#"
+set g2x["LYS:HZ"] = "LYS:HZ#"
+set g2x["LYS:QZ"] = "LYS:HZ#"
+
+set g2x["PRO:HB2"] = "PRO:HB1"
+set g2x["PRO:HB3"] = "PRO:HB2"
+set g2x["PRO:QB"] = "PRO:HB#"
+set g2x["PRO:HB?"] = "PRO:HB#"
+set g2x["PRO:HG2"] = "PRO:HG1"
+set g2x["PRO:HG3"] = "PRO:HG2"
+set g2x["PRO:QG"] = "PRO:HG#"
+set g2x["PRO:HG?"] = "PRO:HG#"
+set g2x["PRO:HD2"] = "PRO:HD1"
+set g2x["PRO:HD3"] = "PRO:HD2"
+set g2x["PRO:QD"] = "PRO:HD#"
+set g2x["PRO:HD?"] = "PRO:HD#"
+
+set g2x["GLU:HB2"] = "GLU:HB1"
+set g2x["GLU:HB3"] = "GLU:HB2"
+set g2x["GLU:QB"] = "GLU:HB#"
+set g2x["GLU:HB?"] = "GLU:HB#"
+set g2x["GLU:HG2"] = "GLU:HG1"
+set g2x["GLU:HG3"] = "GLU:HG2"
+set g2x["GLU:QG"] = "GLU:HG#"
+set g2x["GLU:HG?"] = "GLU:HG#"
+
+set g2x["ASN:HB2"] = "ASN:HB1"
+set g2x["ASN:HB3"] = "ASN:HB2"
+set g2x["ASN:QB"] = "ASN:HB#"
+set g2x["ASN:HB?"] = "ASN:HB#"
+set g2x["ASN:QD"] = "ASN:HD2#"
+set g2x["ASN:HD2?"] = "ASN:HD2#"
+
+set g2x["ARG:HB2"] = "ARG:HB1"
+set g2x["ARG:HB3"] = "ARG:HB2"
+set g2x["ARG:QB"] = "ARG:HB#"
+set g2x["ARG:HB?"] = "ARG:HB#"
+set g2x["ARG:HG2"] = "ARG:HG1"
+set g2x["ARG:HG3"] = "ARG:HG2"
+set g2x["ARG:QG"] = "ARG:HG#"
+set g2x["ARG:HG?"] = "ARG:HG#"
+set g2x["ARG:HD2"] = "ARG:HD1"
+set g2x["ARG:HD3"] = "ARG:HD2"
+set g2x["ARG:QD"] = "ARG:HD#"
+set g2x["ARG:HD?"] = "ARG:HD#"
+set g2x["ARG:HH1?"] = "ARG:HH1#"
+set g2x["ARG:QH1"] = "ARG:HH1#"
+set g2x["ARG:HH2?"] = "ARG:HH2#"
+set g2x["ARG:QH2"] = "ARG:HH2#"
+
+set g2x["PHE:HB2"] = "PHE:HB1"
+set g2x["PHE:HB3"] = "PHE:HB2"
+set g2x["PHE:QB"] = "PHE:HB#"
+set g2x["PHE:HB?"] = "PHE:HB#"
+set g2x["PHE:HD?"] = "PHE:HD#"
+set g2x["PHE:QD"] = "PHE:HD#"
+set g2x["PHE:HE?"] = "PHE:HE#"
+set g2x["PHE:QE"] = "PHE:HE#"
+
+set g2x["TYR:HB2"] = "TYR:HB1"
+set g2x["TYR:HB3"] = "TYR:HB2"
+set g2x["TYR:QB"] = "TYR:HB#"
+set g2x["TYR:HB?"] = "TYR:HB#"
+set g2x["TYR:HD?"] = "TYR:HD#"
+set g2x["TYR:QD"] = "TYR:HD#"
+set g2x["TYR:HE?"] = "TYR:HE#"
+set g2x["TYR:QE"] = "TYR:HE#"
+
+set g2x["ASP:HB2"] = "ASP:HB1"
+set g2x["ASP:HB3"] = "ASP:HB2"
+set g2x["ASP:QB"] = "ASP:HB#"
+set g2x["ASP:HB?"] = "ASP:HB#"
+
+set g2x["THR:HG"] = "THR:HG1"
+set g2x["THR:HG2"] = "THR:HG2#"
+
+set g2x["HIS:HB2"] = "HIS:HB1"
+set g2x["HIS:HB3"] = "HIS:HB2"
+set g2x["HIS:QB"] = "HIS:HB#"
+set g2x["HIS:HB?"] = "HIS:HB#"
+set g2x["HIS:HD?"] = "HIS:HD#"
+set g2x["HIS:QD"] = "HIS:HD#"
+set g2x["HIS:HE?"] = "HIS:HE#"
+set g2x["HIS:QE"] = "HIS:HE#"
+
+set g2x["MET:HB2"] = "MET:HB1"
+set g2x["MET:HB3"] = "MET:HB2"
+set g2x["MET:QB"] = "MET:HB#"
+set g2x["MET:HB?"] = "MET:HB#"
+set g2x["MET:HG2"] = "MET:HG1"
+set g2x["MET:HG3"] = "MET:HG2"
+set g2x["MET:QG"] = "MET:HG#"
+set g2x["MET:HG?"] = "MET:HG#"
+set g2x["MET:HE"] = "MET:HE#"
+
+set g2x["TRP:HB2"] = "TRP:HB1"
+set g2x["TRP:HB3"] = "TRP:HB2"
+set g2x["TRP:QB"] = "TRP:HB#"
+set g2x["TRP:HB?"] = "TRP:HB#"
+set g2x["TRP:HE?"] = "TRP:HE#"
+set g2x["TRP:QE"] = "TRP:HE#"
+set g2x["TRP:HZ?"] = "TRP:HZ#"
+set g2x["TRP:QZ"] = "TRP:HZ#"
+
+
+; open output file 
+if ($cnst_format s= "CNS") then
+   	set cnstfil = ("constraints/" // % //".tbl")
+elsif ($cnst_format s= "DYANA") then
+    	set cnstfil = ("constraints/" // % //".upl")
+endif
+
+; temp file and db
+set tmpfile = ('./constraints/tmp' // int(1000000*$random))
+open $tmpfile
+dbopen hash hash
+set nbhash = 0
+
+print "Collecting Informations..."
+initinprogress  $cnst["LARGEST"]  set cpt = 1
+foreach i in cnst
+	inprogress $cpt  set cpt = (%+1)
+	if ($i s! "LARGEST") then
+
+       		; recup val
+                set sp1 = (headx($i,":")) 
+                set sp2 = (tailx($i,":"))
+		set l = $cnst[$i]
+		set varlow = (headx($l,";"))		; Lower Limit of Distance
+		set l = (tailx($l,";"))
+		set upl = (headx($l,";"))
+		set l = (tailx($l,";"))
+		set varupp = (headx($l,";")) 		;Corrected Upper Limit of Distance
+                set l = (tailx($l,";"))
+                set used = (headx($l,";"))
+		if ( $used s= "inactive" ) goto break 	;Don't use this constraint
+       		set s1 = ($spin[$sp1])
+       		set s2 = ($spin[$sp2])
+                if ((index(toupper($s1),'UNK') != 0)  | (index(toupper($s2),'UNK') != 0) ) goto break ;modified assignement
+       		set sys1 = (head(tail(tail($s1))))
+       		set sys2 = (head(tail(tail($s2))))
+                if ((index(toupper($sys1),'UNK') != 0)  | (index(toupper($sys2),'UNK') != 0) ) goto break ;modified assignement
+       		set r1 = (head($sys[$sys1]))             ;r1, r2 : system primary index
+       		set r2 = (head($sys[$sys2]))
+       		set a1 = (head(tail($s1)))               ;a1, a2: spin name
+       		set a2 = (head(tail($s2)))
+       		set nr1 = (head(tail($sys[$sys1])))      ; get syst names
+       		set nr2 = (head(tail($sys[$sys2])))
+       		if (index($nr1,'-') != 0)  set nr1 = $arom[$nr1]    ; clean aromatic syst names
+       		if (index($nr2,'-') != 0)  set nr2 = $arom[$nr2]
+
+
+		; Intra/inter residus filter
+
+		if ($intra s= "only inter-residus") then
+			if ($r1 == $r2) goto break
+                elsif ($intra s= "inter_residus and HN intra") then
+			if (($r1 == $r2) & (index($a1,'N') == 0) & (index($a2,'N') == 0)) goto break
+                endif
+
+
+		; Pseudo correction
+		if (index($a1,'?') != 0) then			
+			;if ($cnst_format s= "CNS") then
+			;	set label = (subst($a1,1,(len($a1)-1))) ; eg HB? => HB#
+			;	set a1 = ($label//"#")
+			;elsif ($cnst_format s= "DYANA") then
+			if ($cnst_format s= "DYANA") then
+				set label = (subst($a1,2,(len($a1)-1))) ; eg: HB? => QB
+				set a1 = ("Q"//$label)
+			  if ($pseudo s= 'yes') then
+			    if (index($res_m,$nr1 // ':' // $a1) != 0) then
+				set varupp = ($varupp+$q_corr)		; if di methyl
+			    else
+				set varupp = ($varupp+$m_corr)		; if methylene
+			    endif
+			  endif
+			endif
+    		endif
+                if (index($a2,'?') != 0) then
+                        if ($cnst_format s= "CNS") then
+                                set label = (subst($a2,1,(len($a2)-1))) ; eg HB? => HB#
+                                set a2 = ($label//"#")
+                        elsif ($cnst_format s= "DYANA") then
+                                set label = (subst($a2,2,(len($a2)-1))) ; eg: HB? => QB
+                                set a2 = ("Q"//$label)
+                          if ($pseudo s= 'yes') then
+                            if (index($res_m,$nr2 // ':' // $a2) != 0) then
+                                set varupp = ($varupp+$q_corr)          ; if di methyl
+                            else
+                                set varupp = ($varupp+$m_corr)          ; if methylene
+                            endif
+                          endif
+                        endif
+
+                endif
+
+		; get the largest distance betwen HB? and HB?
+		set nra1 = ($r1 // ':' // $a1)
+		set nra2 = ($r2 // ':' // $a2)
+      		if ( exist("hash[" // $nra1 // '-' // $nra2 // ']')) then
+			set l = $hash[$nra1//'-'//$nra2]
+			set prev_vupp = (head($l))
+			if ( $prev_vupp > $varupp ) then  ; keep the previous entry
+				goto break 
+			else
+                        	set hash[$nra1//'-'//$nra2] = ($varupp;$varlow;$a1;$a2;$r1;$r2;$nr1;$nr2)
+			endif
+			
+                elsif ( exist("hash[" // $nra2 // '-' // $nra1 // ']')) then
+                        set l = $hash[$nra2//'-'//$nra1]
+                        set prev_vupp = (head($l))
+                        if ( $prev_vupp > $varupp ) then  ; keep the previous entry
+                                goto break 
+                        else
+                                set hash[$nra2//'-'//$nra1] = ($varupp;$varlow;$a2;$a1;$r2;$r1;$nr2;$nr1)
+                        endif
+      		else
+                	; stockage
+                	set hash[$nra1//'-'//$nra2] = ($varupp;$varlow;$a1;$a2;$r1;$r2;$nr1;$nr2)
+                	set nbhash = (%+1)
+      		endif
+
+
+	endif
+	set cpt = (%+1)
+	inprogress $cpt
+=break
+endfor
+inprogress $cnst["LARGEST"]
+
+
+print " Computing Informations ..."
+initinprogress $nbhash
+set cpt = 0
+foreach i in hash
+        set cpt = (%+1)
+        inprogress $cpt
+
+	; get val 
+	set l = $hash[$i]
+	set varupp = (head($l))
+	set l = (tail($l))
+        set varlow = (head($l))
+        set l = (tail($l))
+        set a1 = (head($l))
+        set l = (tail($l))
+        set a2 = (head($l))
+        set l = (tail($l))
+        set r1 = (head($l))
+        set l = (tail($l))
+        set r2 = (head($l))
+        set l = (tail($l))
+        set nr1 = (head($l))
+        set l = (tail($l))
+        set nr2 = (head($l))
+        set l = (tail($l))
+
+	if ($nr1 s= "CYS") then
+		if ($cysname s= "CYSS") set nr1 = "CYSS"
+	endif
+	if ($nr2 s= "CYS") then
+                if ($cysname s= "CYSS") set nr2 = "CYSS"
+        endif
+
+        ;Output on file
+        if ($cnst_format s= "CNS") then
+             ; correspondance Gifa -> CNS
+             set l = ($nr1 // ':' // $a1)
+             if ( exist("g2x["//$l//"]") ) set a1 = (tailx($g2x[$l],":"))
+             set l = ($nr2 // ':' // $a2)
+             if ( exist("g2x["//$l//"]") ) set a2 = (tailx($g2x[$l],":"))
+	     set d = (($varupp + $varlow)/2)
+	     set dminus = ($d - $varlow)  
+	     set dplus =  ($varupp - $d)
+	     set text =  ("! ";$r1;$nr1//":"//$a1//" - "//$r2;$nr2//":"//$a2)
+             ;fprint $tmpfile ('assign (resid';$r1;'and  name';$a1;')(resid';$r2;'and  name';$a2;')';$d;$dminus;$dplus)
+	     fprintf $tmpfile 'assign (resid %-3d and  name %3s)(resid %-3d and  name %3s) %3.1f %3.1f %3.1f %4s' $r1 $a1 $r2 $a2 $d $dminus $dplus $text *
+
+        elsif ($cnst_format s= "DYANA") then
+        	; correspondance Gifa -> Dyana
+        	set l = ($nr1 // ':' // $a1)
+        	if ( exist("g2d["//$l//"]") ) set a1 = (tailx($g2d[$l],":"))
+        	set l = ($nr2 // ':' // $a2)
+        	if ( exist("g2d["//$l//"]") ) set a2 = (tailx($g2d[$l],":"))
+               	fprintf $tmpfile "%-3d %3s  %4s  %-3d %3s  %4s   %5.2f" $r1 $nr1 $a1 $r2 $nr2 $a2 $varupp *
+        endif
+
+endfor
+
+dbclose hash
+sh '/bin/rm hash.dir hash.pag'
+inprogress $nbhash
+close $tmpfile
+
+sh ("sort -n"; $tmpfile; ">"; $cnstfil)
+sh ("/bin/rm -f";$tmpfile)
+endif
+
+

@@ -29,7 +29,9 @@ c writes the
        complex*16 afloc(ldmax),wk1loc(sizemax)
        complex*16 wk2loc(sizemax)
        character*256 fichier,name
-        
+#sgi       save ar,fid,afloc,delta,wk1loc,wk2loc      ! neede for C array
+#f2c       save ar,fid,afloc,delta,wk1loc,wk2loc      ! neede for C array
+         
        if (name.eq.' ') then
           write(*,20)
           call getstring(fichier)

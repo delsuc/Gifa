@@ -1,6 +1,82 @@
 C inoutp.inc
 C input and output commands
 C
+      elseif (command.eq.'OPEN_RAW') then
+C OPEN_RAW dataset
+C
+C opens a file for direct binary access with READ_RAW
+C Note that only one file can be opened at one time with open_raw
+C
+C see also : CLOSE_RAW, READ_RAW, Import macros
+         call message( 'Enter file name:  ')
+         call getstring2(st,error)
+         if (error.ne.0) goto 93
+         call trailing(st,i)
+         call open_raw(st,i,error)
+	   if (error.ne.0) goto 101
+
+      elseif (command.eq.'CLOSE_RAW') then
+C CLOSE_RAW
+C
+C Closes a file opened with OPEN_RAW
+         call close_raw(error)
+	   if (error.ne.0) goto 132
+
+      elseif (command.eq.'READ_RAW') then
+C READ_RAW size offset format swab/noswab
+C
+C Direct acces within a file, opened with OPEN_RAW
+C "size" points of data are loaded from the file, with an offset of "offset"
+C available formats are :
+C   REAL4 real points on 4 bytes (float)
+C   REAL8 real points on 8 bytes (log float)
+C   INT4  integer points on 4 bytes (int)
+C   INT2  integer points on 2 bytes (short int)
+C if swap if given as argument, the data are byte swapped
+C
+C data are loaded into the 1D buffer
+C
+C see also : OPEN_RAW, CLOSE_RAW, Import macros
+         call message( 'Enter buffer size:  ')
+         call getint2(zz,error)
+         if (zz.gt.smxbig+smxmax+sizemax) goto 103
+         call checkunderflow(zz,bool1)
+         if (bool1) goto 90
+         if (zz.lt.1) goto 98
+         call message( 'Enter buffer offset:  ')
+         call getint2(xx,error)
+         if (xx.lt.0) goto 98
+         call message( 'Enter data-type:  ')
+	   st = 'real4'
+	   call getenum2(st,'REAL4 REAL8 INT4 INT2', error)
+         if (error.ne.0) goto 98
+C code result : 1 REAL4   2 REAL8  3 INT4   4 INT2
+	   if (st .eq. 'REAL4') then   ! simpler to code here than in C 
+	     yy = 1
+	   elseif (st .eq. 'REAL8') then
+	     yy = 2
+	   elseif (st .eq. 'INT4') then
+	     yy = 3
+	   elseif (st .eq. 'INT2') then
+	     yy = 4
+	   else
+	     goto 93
+	   endif
+         call message( 'Enter swap-byte flag:  ')
+	   st = 'noswab'
+         call getenum2(st,'SWAB NOSWAB', error)
+         if (error.ne.0) goto 98
+C code result : 0 noswab  1 swab
+	   if (st .eq. 'SWAB') then   ! simpler to code here than in C
+	     i = 1
+	   elseif (st .eq. 'NOSWAB') then
+	     i = 0
+	   else
+	     goto 93
+	   endif
+         call read_raw(column,zz,xx,yy,i,error)
+	   if (error.ne.0) goto 93
+
       elseif (command.eq.'WRITEL') then
 #vms         if (dim.ne.1) goto 99
 #_vms         if (dim.eq.3) goto 124

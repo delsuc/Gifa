@@ -168,7 +168,7 @@ c
       return
       end
 ***********************************************************************
-      subroutine rselect (zn,index,new,order)
+      subroutine rselect (zn,index,new,order,szind)
 c IN	: index,order
 c INOUT	: zn
 c OUT	: new
@@ -179,7 +179,7 @@ c Keep only the roots whose index are given ; new is new order
 c
       implicit none
 
-      integer order,i,new,index(order)
+      integer order,i,new,szind,index(szind)
       complex*16 zn(order)
 	
       do i = 1,new

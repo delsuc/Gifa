@@ -1,0 +1,148 @@
+;This form is a simple interface, which permits to use most of the
+;Gifa features when processing 2D.
+;
+;It is meant for simple / standard processing. Many other possibilities 
+;are available in Gifa, either from the menu entries or from the command line.
+;
+;You will have to fill several fields, and to execute actions.
+;
+;The form can remain on screen as long as you wish, you can even have several
+;forms opened at the same time, which will execute different processing.
+;__________________________________________________________________________
+;The entries to fill-in are :
+;
+;Filename : The file that contains the FID that will be loaded for processing
+;
+; "info. on data" 
+;   Clicking on this button will list on the terminal the content of header
+;   of the file.
+;
+;1st point correction : if 'yes' is selected, will perform the macro correct1st
+;   which correct the first row of the 2D. Should probably always be on
+;
+;Remove water : if 'yes' is selected, the macro rem_h2o (see help rem_h2o) will
+;   be called before Fourier transform. It permits to remove the strong solvent line
+;   if this one is at the zero frequency.
+;
+;F1 apodisation - F2 apodisation  : the apodisation (window) that will be applied
+;   before Fourier transform along each axis, along with parameters
+;   The available apodisation functions are :
+;      sin        - The sine bell       parameter : 0 = pure Cosine,  0.5 = pure Sine
+;      sqsin      - The squared sine bell 
+;      expbroad   - exponential broadening   parameter : width in Hz
+;      gaussbroad - Gaussian broadening   parameter : width in Hz
+;      none
+;
+;LP backward prediction of FID
+;   When the beginning of the FID is to be reconstructed, indicates here the number
+;   points to add. Uses the burg2d_back macro to reconstruct using Linear Prediction
+;
+;F1 transform
+;   FT type    sh (States Haberkorn) - tppi - sh_tppi - phase modu - n+p (echo antiecho)
+;   size after FT
+;      (but will be halved if you throw the imaginaries or do a baseline correction)
+;   use LP : if "yes" Linear Prediction (the burg algorithm) is used for zerofilling in F1,
+;      in which case, use a strong apodisation (sqsin) in F1
+;
+;F2 transform
+;   FT type    sim (complex data);  seq (real/tppi data)
+;   size after FT
+;      (but will be halved if you throw the imaginaries or do a baseline correction)
+;
+; A note on sizes:
+;   If you happen to use very large sizes, the program will switch by itself
+;   in "on file" mode. In this mode, there is NO limitation on the size of
+;   the data-set. Macro written in this mode will also process on file.
+; 
+; Phasing parameters
+;   You can choose phase-sensitive of modulus mode
+;   the phase corrections can be determined independently
+;   Use the ph2dr / ph2dc commands to determine phase corrections.
+;   The "Apply phase correction" button will apply the corrections
+;      to the data-set currently in memory.
+;   Use the "Clear" button to reset phases to zero
+;
+; Baseline correction
+;   You can choose to apply automatic baseline correction on both axes,
+;   "polynomial" corresponds to 'BCORR 3'
+;   "2 stages" corresponds to 2 succesive 'BCORR 3' corrections with
+;        bcorrp1 and bcorrp0 parameters
+;   The "Apply b.corr." button will apply the baseline corrections
+;      to the data-set currently in memory.
+;   Baseline correction requires the imaginary part of the data-set
+;   to be thrown away, so the actual size of the data-set will be halved
+;   along each axis along which baseline correction is applied.
+;   "Just extract real" does not apply any baseline correction, but
+;         throw away the Im part. (usefull for smaller resulting data-sets)
+;
+; "Do it all"
+;   Apply all the processing currently defined in the form,
+;   actually realises the same that the Apply and ok buttons below
+;
+; "Do it but phase"	every thing but the phase corections
+;
+; "Write macro"
+;   writes a executable macro file which, when executed,
+;   realises the same that the current form
+;
+; "Read macro"
+;   load a previously written macro file, and create a pre-loaded form
+;   Note that "on file" processing macro cannot be loaded.
+;
+; see also : easy2d_doit easy3d FT proc2d
+
+        ;------------programmer info --------------------------------------------
+; easy2D args...
+; builds and apply a standard action for 2D processing
+;
+; args permit to set default values for parameters
+; easy2D %% is valid though
+;
+; be carefull when adding fields to modify as well ALL the callers of easy2d and easy2d_doit
+
+; Author M.A.Delsuc
+; last modif : 6 oct 99 - added backward LP
+
+formbox "easy 2d" \
+	"easy2d_doit $ffn $f1st $fw1 $fw1p $fw2 $fw2p $remh $miss1 $miss2 $fz1 $fz2 $fft1 $fft2 $burg $fmod $fph10 $fph11 $fph20 $fph21 $fb1 $fb2 'Do it'" \
+	Filename file ffn $_ noreturn \
+	"   info. on" message noreturn \ 
+	"dataset" action 'join $ffn dataset disjoin' \
+	separator \
+	"F1 apodisation" enum "sin,sqsin,expbroad,gaussbroad,none" fw1 $_ noreturn \
+	' ' real fw1p $_  noreturn \
+	"1st point correction" enum "yes,no" f1st $_ \
+	"F2 apodisation" enum "sin,sqsin,expbroad,gaussbroad,none" fw2 $_ noreturn \
+	' ' real fw2p $_ noreturn \
+	"Remove water" enum "yes,no" remh $_ \
+	"LP backward prediction of FID -    points in F1:" real miss1 $_ noreturn \
+	"   points in F2:" real miss2 $_ \
+	separator \
+	"in F1     FT type" enum "sh,tppi,sh_tppi,phase_modu,n+p,none" fft1 $_ noreturn \
+	"Size after FT" enum "128,256,512,1024,2048,4096,8k,16k" fz1 $_  noreturn \
+	"Use LP" enum "yes,no" burg $_  \
+	"in F2     FT type" enum "sim,seq,none" fft2 $_ noreturn \
+	"Size after FT" enum "128,256,512,1024,2048,4096,8k,16k" fz2 $_ \
+	separator \
+	"Phasing parameters" enum "phase-sensitive,modulus" fmod $_ noreturn \
+      "Apply phase correction" action "dim 2 phase $fph10 $fph11 f1 phase $fph20 $fph21 f2 if ($fmod s= 'modulus') modulus"  \  ; just a bit redundant, so much simpler !
+	"F1 0 order" real fph10 $_ noreturn \
+	"   1 order" real fph11 $_ noreturn \
+	"Interactive phase (ph2c)" action "ph2dc easy2d $ffn $fw1 $fw1p $f1st $fw2 $fw2p $remh $miss1 $miss2 $fft1 $fz1 $burg $fft2 $fz2 $fmod ($ph0+$fph10) ($ph1+$fph11) $fph20 $fph21 $fb1 $fb2 closeform $widget" noreturn \
+        "Clear" action "easy2d $ffn $fw1 $fw1p $f1st $fw2 $fw2p $remh $miss1 $miss2 $fft1 $fz1 $burg $fft2 $fz2 $fmod 0 0 $fph20 $fph21 $fb1 $fb2 closeform $widget" \
+	"F2 0 order" real fph20 $_ noreturn \
+	"   1 order" real fph21 $_ noreturn \
+	"Interactive phase (ph2r)" action "ph2dr easy2d $ffn $fw1 $fw1p $f1st $fw2 $fw2p $remh $miss1 $miss2 $fft1 $fz1 $burg $fft2 $fz2 $fmod $fph10 $fph11 ($ph0+$fph20) ($ph1+$fph21) $fb1 $fb2 closeform $widget" noreturn \
+        "Clear" action "easy2d $ffn $fw1 $fw1p $f1st $fw2 $fw2p $remh $miss1 $miss2 $fft1 $fz1 $burg $fft2 $fz2 $fmod  $fph10 $fph11 0 0 $fb1 $fb2 closeform $widget" \	separator \
+	"Baseline correction (will extract real part)" message noreturn \
+        "Apply b.corr." action "easy2d_doit $ffn $f1st $fw1 $fw1p $fw2 $fw2p $remh $miss1 $miss2 $fz1 $fz2 $fft1 $fft2 $burg $fmod $fph10 $fph11 $fph20 $fph21 $fb1 $fb2 'Do b.corr only'"  \
+	"in F1" enum "none,polynomial,2 stages,just extract real" fb1 $_ noreturn \
+	"in F2" enum "none,polynomial,2 stages,just extract real" fb2 $_ \
+	separator \
+	"Do it all" action "easy2d_doit $ffn $f1st $fw1 $fw1p $fw2 $fw2p $remh $miss1 $miss2 $fz1 $fz2 $fft1 $fft2 $burg $fmod $fph10 $fph11 $fph20 $fph21 $fb1 $fb2 'Do it'" noreturn \
+        "Do it but phase" action "easy2d_doit $ffn $f1st $fw1 $fw1p $fw2 $fw2p $remh $miss1 $miss2 $fz1 $fz2 $fft1 $fft2 $burg $fmod $fph10 $fph11 $fph20 $fph21 $fb1 $fb2 'Do it but phase'" noreturn \
+        "Write macro" action "easy2d_doit $ffn $f1st $fw1 $fw1p $fw2 $fw2p $remh $miss1 $miss2 $fz1 $fz2 $fft1 $fft2 $burg $fmod $fph10 $fph11 $fph20 $fph21 $fb1 $fb2 'Write macro'" noreturn \
+        "Read macro" action "easy2d_doit $ffn $f1st $fw1 $fw1p $fw2 $fw2p $remh $miss1 $miss2 $fz1 $fz2 $fft1 $fft2 $burg $fmod $fph10 $fph11 $fph20 $fph21 $fb1 $fb2 'Load macro' closeform $widget" noreturn \
+	"         " message noreturn \
+	"Help" action "help easy2d" \
+	*

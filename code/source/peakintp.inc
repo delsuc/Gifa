@@ -698,31 +698,38 @@ C                peak2d_id(xx) = st
         zz = i-2
         call bsort(tindex,zz)
         if (dim.eq.1) then
-          nbpic1d = zz
           do i=1,pk1d
-            call icopvect(tindex,peak1d(1,i),peak1d(1,i),nbpic1d)
+            call icopvect(tindex,peak1d(1,i),peak1d(1,i),
+     *            nbpic1d,zz)
           enddo
-          call icopsvect(tindex,peak1d_id(i),peak1d_id(i),nbpic1d)
+          call icopsvect(tindex,peak1d_id(i),peak1d_id(i),
+     *            nbpic1d,zz)
+          nbpic1d = zz
         elseif (dim.eq.2) then
-          nbpic2d = zz
           do i=1,pk2d
-            call icopvect(tindex,peak2d(1,I),peak2d(1,i),nbpic2d)
+            call icopvect(tindex,peak2d(1,I),peak2d(1,i),
+     *            nbpic2d,zz)
           enddo
-          call icopsvect(tindex,peak2d_id(i),peak2d_id(i),nbpic2d)
+          call icopsvect(tindex,peak2d_id(i),peak2d_id(i),
+     *            nbpic2d,zz)
+          nbpic2d = zz
         elseif (dim.eq.3) then
-          nbpic3d = zz
           do i=1,pk3d
-            call icopvect(tindex,peak3d(1,I),peak3d(1,i),nbpic3d)
+            call icopvect(tindex,peak3d(1,I),peak3d(1,i),
+     *            nbpic3d,zz)
           enddo
-          call icopsvect(tindex,peak3d_id(i),peak3d_id(i),nbpic3d)
+          call icopsvect(tindex,peak3d_id(i),peak3d_id(i),
+     *            nbpic3d,zz)
+          nbpic3d = zz
         endif
         call gifaouti('New number of peaks : ',zz)
 
       elseif (command.eq.'PKCLEAN') then
         z = leastsq
-        call message('Remove the peaks who have amplitude less than ?')
+        call message('Remove the peaks with amplitude less than ?')
         call getreal2(z,error)
-        zz = 0
+        if (error.ne.0) goto 93
+	  zz = 0
         if (dim.eq.1) then
           do yy = 1,nbpic1d
             if (peak1d(yy,3).gt.z) then
@@ -731,11 +738,13 @@ C                peak2d_id(xx) = st
             endif
           enddo
           call bsort(tindex,zz)
-          nbpic1d = zz
           do i=1,pk1d
-            call icopvect(tindex,peak1d(1,i),peak1d(1,i),nbpic1d)
+            call icopvect(tindex,peak1d(1,i),peak1d(1,i),
+     *            nbpic1d,zz)
           enddo
-          call icopsvect(tindex,peak1d_id(i),peak1d_id(i),nbpic1d)
+          call icopsvect(tindex,peak1d_id(i),peak1d_id(i),
+     *            nbpic1d, zz)
+          nbpic1d = zz
         elseif (dim.eq.2) then
           do yy = 1,nbpic2d
             if (peak2d(yy,3).gt.z) then
@@ -744,11 +753,13 @@ C                peak2d_id(xx) = st
             endif
           enddo
           call bsort(tindex,zz)
-          nbpic2d = zz
           do i=1,pk2d
-            call icopvect(tindex,peak2d(1,i),peak2d(1,i),nbpic2d)
+            call icopvect(tindex,peak2d(1,i),peak2d(1,i),
+     *            nbpic2d,zz)
           enddo
-          call icopsvect(tindex,peak2d_id(i),peak2d_id(i),nbpic2d)
+          call icopsvect(tindex,peak2d_id(i),peak2d_id(i),
+     *            nbpic2d, zz)
+          nbpic2d = zz
         elseif (dim.eq.3) then
           do yy = 1,nbpic3d
             if (peak3d(yy,3).gt.z) then
@@ -757,11 +768,13 @@ C                peak2d_id(xx) = st
             endif
           enddo
           call bsort(tindex,zz)
-          nbpic3d = zz
           do i=1,pk3d
-            call icopvect(tindex,peak3d(1,i),peak3d(1,i),nbpic3d)
+            call icopvect(tindex,peak3d(1,i),peak3d(1,i),
+     *           nbpic3d,zz)
           enddo
-          call icopsvect(tindex,peak3d_id(i),peak3d_id(i),nbpic3d)
+          call icopsvect(tindex,peak3d_id(i),peak3d_id(i),
+     *            nbpic3d,zz)
+          nbpic3d = zz
         endif
         call gifaouti('New number of peaks : ',zz)
 
@@ -1271,21 +1284,21 @@ c        write(*,*)'zz',zz
           do i=1,pk1d
             call cicopvect(tindex,peak1d(1,i),peak1d(1,i),nbpic1d,zz)
           enddo
-          call cicopsvect(tindex,peak1d_id(i),peak1d_id(i),nbpic1d,zz)
+          call cicopsvect(tindex,peak1d_id,peak1d_id,nbpic1d,zz)
           nbpic1d = nbpic1d - zz
           write(st,*) 'New number of peaks : ',nbpic1d
         elseif (dim.eq.2) then
           do i=1,pk2d
             call cicopvect(tindex,peak2d(1,i),peak2d(1,i),nbpic2d,zz)
           enddo
-          call cicopsvect(tindex,peak2d_id(i),peak2d_id(i),nbpic2d,zz)
+          call cicopsvect(tindex,peak2d_id,peak2d_id,nbpic2d,zz)
           nbpic2d = nbpic2d - zz
           write(st,*) 'New number of peaks : ',nbpic2d
         elseif (dim.eq.3) then
           do i=1,pk3d
             call cicopvect(tindex,peak3d(1,i),peak3d(1,i),nbpic3d,zz)
           enddo
-          call cicopsvect(tindex,peak3d_id(i),peak3d_id(i),nbpic3d,zz)
+          call cicopsvect(tindex,peak3d_id,peak3d_id,nbpic3d,zz)
           nbpic3d = nbpic3d - zz
           write(st,*) 'New number of peaks : ',nbpic3d
         endif

@@ -25,9 +25,9 @@ foreach sp in spin within 1 ($ppm-$tol_align) ($ppm+$tol_align)
 endfor
 
 if (!exist('found')) then
-   set returned := 0
+   return 0
 else
-   set returned := $found
+   return $found
 endif
 
 

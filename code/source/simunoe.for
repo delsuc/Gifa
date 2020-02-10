@@ -29,6 +29,7 @@ C
         integer natomfen,ntachefen,tabindex(y,2)
 
 	real inten(y),borne(4),depchim(z),largeur(z)
+#f2c       save tabindex,depchim,largeur     ! needed for C array
 	real fid(*),sw1,sw2,offset1,offset2 
 	real sw1m,sw2m,offset1m,offset2m
         real si1m,si2m

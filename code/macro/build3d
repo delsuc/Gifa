@@ -4,29 +4,30 @@
 ;
 ; see also : READ build2d
 
+ ;  MAD - 7 dec 2000
+
 ; get name
 if (!$arg) print 'Enter name of the list of file:'
 set file = $_
 
 ; get length using wc and shell  (could be in gifa)
-sh ('wc'//sp(1)//$file//'> /tmp/build3d.tmp')
-open /tmp/build3d.tmp   set si1 = </tmp/build3d.tmp
+set tmp = ('tmp' // int(1000000*$random))
+sh ('wc'; $file; '>'; $tmp)
+open $tmp  set si1 = <$tmp
 set si1 = (head($si1))
-close /tmp/build3d.tmp sh 'rm /tmp/build3d.tmp'
+close $tmp  sh ('/bin/rm'; $tmp)
 
 ; prepare
 open $file
-dim 2 readh <$file                 ; get first one
-dim 3 chsize $si1 $si1_2d $si2_2d  ; set-up sizes
-put plane 1
+dim 2 read <$file                                ; get first one
+dim 3 chsize $si1 $si1_2d $si2_2d  itype $itype_2d       ; set-up sizes and itype
+put plane F1 1
 
-set i = 2                          ; then loop
-=loop
-  dim 2 readh <$file
-  dim 3 put plane $i
-  set i = ($i+1) if ($i<=$si1)  goto loop
+for i = 2 to $si1          ; then loop
+  dim 2 read <$file
+  dim 3 put plane F1 $i
+endfor
 
 ;finished
 dim 3  close $file
 exit
-

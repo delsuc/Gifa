@@ -282,6 +282,43 @@ C      call leading(st)
       end
 
 C **************************************************************
+      subroutine getdouble2(x,err)
+c INOUT	: x
+c OUT	: err
+c SIDE	: param
+c
+c reads a real value, based on getstring2
+c
+c the user is prompted for the initial value of x, a return will let 
+c x unchanged
+c Reads in the input stream (either file or interactive)
+c if the line is finished on file, redirected to the user
+c
+      implicit none
+
+      real*8 x
+      real*8 xx
+      integer i,err
+      character*256 st
+
+      write(st,'(G26.14)') x
+      call trailing(st,i)
+      call leading(st)
+      call getstring2(st,err)
+      if (err.ne.0) goto 10
+
+      call readval(st,xx,err)
+      if (err.ne.0) goto 10
+
+      x = xx
+20    return
+
+10    call gifaout('*** error in reading')
+      x = 0.0d0
+      return
+      end
+
+C **************************************************************
       subroutine getreal2(x,err)
 c INOUT	: x
 c OUT	: err
@@ -596,8 +633,8 @@ c  123 or 123i for index;   123h 123p 123s for hertz ppm and second
 #include "paramfilev.inc"
 #include "unitextern.inc"
       character*(256) st,lunit
-      real val,specw,off,freq
-      real*8 valdp
+      real val,specw,off
+      real*8 valdp,freq
       integer i,size
 
 C set up for this axis

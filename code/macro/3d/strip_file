@@ -94,9 +94,16 @@ endif
 ; on positionne les param. spectraux pour avoir l'index de peak en ppm en F2
 ; ! Bidouille
 
-freq $c_freq $c_freq2 1
-specw $c_SPECWF2 (-($last-$first+1))
-offset $C_OFFSF2 ($last+0.5)
+if ($axis s= 'F2') then
+  freq $c_freq $c_freq2 1
+  specw $c_SPECWF2 (-($last-$first+1))
+  offset $C_OFFSF2 ($last+0.5)
+elsif ($axis s= 'F1') then
+  freq $c_freq $c_freq1 1
+  specw $c_SPECWF1 (-($last-$first+1))
+  offset $C_OFFSF1 ($last+0.5)
+endif
+
 refmacro 0
 
 endif

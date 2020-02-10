@@ -34,11 +34,11 @@ endif
 
 if (!exist('found')) then
    alert ("No spin found within"; $tol_align; "ppm")
-   set returned := 0
+   return 0
 else
    dialogbox 'Choose spin' \
       'Select the Spin you want to define' enum $found sp % *
-   set returned := (head($sp))
+   return (head($sp))
    set last_click = ('SPIN'; (head($sp)))
 endif
 

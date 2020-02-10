@@ -63,6 +63,7 @@ C
 	real z11,z12,z21,z22
         real x(512),y(512),xx,yy,xx2,yy2
 	real z(64,64)
+#f2c        save x,y,z,fbox
 
         logical remain
 

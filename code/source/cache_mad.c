@@ -46,11 +46,13 @@ M.A.Delsuc 10 dec 1998
          inhibiting the possibility to change the Absmax header parameter
 M.A.Delsuc 20 jan 2002
 	 corrected error handling in CH_OPEN CH_CREATE
+M.A.Delsuc 1 mar 2002
+       added the EROFS flag in CH_OPEN, was preventing from joining on a CD-ROM
 
 
 It is a complete rewrite of the version 1.0 from A.Rouh
 This version is compatible in functionalities and file with version 1.0
-but not in function calls.
+but not in API (function calls).
 
 This library implements a cache memory that permits to access NMR files(1D,2D,3D)
 files consists of a header in ASCII, of a fixed size, filled with the 0 character.
@@ -194,8 +196,9 @@ TAB at 4 char
 #include <math.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-/*#include <unistd.h>
-*/
+#ifdef DARWIN
+#  include <unistd.h>
+#endif
 
 /*************************************************/
 /* STATIC VARIABLES */
@@ -354,13 +357,13 @@ void CH_JOIN(	DATASET **ppid,char *path,int  *plen,int  *mode,int  *perror)
 	}
 
 /*************************************************/
-void CH_OPEN(DATASET **ppid,char *path,	int  *plen,int  *mode,int  *perror)
+void CH_OPEN(DATASET **ppid,char *path,	int  *plen,int  *mode,int  *error)
 /*
 				DATASET **ppid,	 returned id 
 				char *path,		 the name of the file to open 
 				int  *plen,		 length of path 
 				int  *mode, 	 CF_READ, CF_WRITE, CF_READ_WRITE
-				int  *perror)	 returned status
+				int  *error)	 returned status
 
 	opens a file into the cache,
 	loads the header
@@ -403,13 +406,15 @@ jan 2002 MAD - correction to close opened file if error during set-up
 		switch (errno) {
 		case EMFILE:
 		case ENFILE:
-			*perror = TOO_MANY_FILES;
+			*error = TOO_MANY_FILES;
 			break;
 		case EACCES:
-			*perror = WRONG_MODE;
+            case EROFS:
+			*error = WRONG_MODE;
 			break;
 		default:
-			*perror = COULD_NOT_OPEN;
+                perror(NULL);
+			*error = COULD_NOT_OPEN;
 			}
 		local_id = 0;
 		return;
@@ -420,8 +425,8 @@ jan 2002 MAD - correction to close opened file if error during set-up
 	localdata.id = local_id;
 
 /* reads (and allocates) header */
-	c_loadheader(local_id, &pheader, &headsize, perror);
-	if (*perror != 0) {
+	c_loadheader(local_id, &pheader, &headsize, error);
+	if (*error != 0) {
 		close(local_id);
 		return;
 	}
@@ -434,7 +439,7 @@ jan 2002 MAD - correction to close opened file if error during set-up
         status = 0;
 	c_gtparam_type(pheader, (void *) &(localdata.dimension), "Dim", loc_type, &status);
 	if (status != 0) {
-		*perror = DIM_MISSING;
+		*error = DIM_MISSING;
 		goto free_and_exit;
 		}
 	c_gtparam_type(pheader, (void *) &(localdata.cacheversion), "Cacheversion", loc_type, &status);
@@ -444,7 +449,7 @@ jan 2002 MAD - correction to close opened file if error during set-up
 	if (status != 0) { status = 0; localdata.cacherelease = 0;}
 
 	if ((localdata.cacheversion*100 + localdata.cacherelease) > CACHEVERSION*100 + CACHERELEASE) {
-		*perror = VERSION_UNK;
+		*error = VERSION_UNK;
 		goto free_and_exit;
 		}
 
@@ -455,34 +460,34 @@ jan 2002 MAD - correction to close opened file if error during set-up
 	case 3:
 	  c_gtparam_type(pheader, (void *) &(localdata.size3), "Dim3", loc_type, &status);
 	  if (status != 0) {
-		*perror = SIZE_MISSING;
+		*error = SIZE_MISSING;
 		goto free_and_exit;
 		}
 	  c_gtparam_type(pheader, (void *) &(localdata.nbblock3), "Nbblock3", loc_type, &status);
 	  if (status != 0) {
-		*perror = BLKDEF_MISSING;
+		*error = BLKDEF_MISSING;
 		goto free_and_exit;
 		}
 	case 2:
 	  c_gtparam_type(pheader, (void *) &(localdata.size2), "Dim2", loc_type, &status);
 	  if (status != 0) {
-		*perror = SIZE_MISSING;
+		*error = SIZE_MISSING;
 		goto free_and_exit;
 		}
 	  c_gtparam_type(pheader, (void *) &(localdata.nbblock2), "Nbblock2", loc_type, &status);
 	  if (status != 0) {
-		*perror = BLKDEF_MISSING;
+		*error = BLKDEF_MISSING;
 		goto free_and_exit;
 		}
 	case 1:
 	  c_gtparam_type(pheader, (void *) &(localdata.size1), "Dim1", loc_type, &status);
 	  if (status != 0) {
-		*perror = SIZE_MISSING;
+		*error = SIZE_MISSING;
 		goto free_and_exit;
 		}
 	  c_gtparam_type(pheader, (void *) &(localdata.nbblock1), "Nbblock1", loc_type, &status);
 	  if (status != 0) {
-		*perror = BLKDEF_MISSING;
+		*error = BLKDEF_MISSING;
 		goto free_and_exit;
 		}
 	}
@@ -529,19 +534,19 @@ jan 2002 MAD - correction to close opened file if error during set-up
 	  case 3:
 		c_gtparam_type(pheader, (void *) &(localdata.szblk3), "Szblk3", loc_type, &status);
 		if (status != 0) {
-			*perror = BLKDEF_MISSING;
+			*error = BLKDEF_MISSING;
 			goto free_and_exit;
 			}
 	  case 2:
 		c_gtparam_type(pheader, (void *) &(localdata.szblk2), "Szblk2", loc_type, &status);
 		if (status != 0) {
-			*perror = BLKDEF_MISSING;
+			*error = BLKDEF_MISSING;
 			goto free_and_exit;
 			}
 	  case 1:
 		c_gtparam_type(pheader, (void *) &(localdata.szblk1), "Szblk1", loc_type, &status);
 		if (status != 0) {
-			*perror = BLKDEF_MISSING;
+			*error = BLKDEF_MISSING;
 			goto free_and_exit;
 		      }
 	      }
@@ -556,7 +561,7 @@ jan 2002 MAD - correction to close opened file if error during set-up
 
 /* make a new entry for the list of opened file */
 	if ( (pdata = malloc( sizeof(DATASET))) == NULL ) {
-		*perror = COULD_NOT_MALLOC;
+		*error = COULD_NOT_MALLOC;
 		goto free_and_exit;
 		}
 
@@ -1282,7 +1287,7 @@ void CH_AC3DAREA(float	*parea, DATASET	**ppdata, int  *plf1, int  *plf2, int  *p
 /*************************************************/
 void CH_GTPARBAS(DATASET **ppdt,int *c_dimmanip,int *c_sizef1,int *c_sizef2,
 	int *c_sizef3,int *c_type,float *c_specwf1,float *c_specwf2,float *c_specwf3,
-	float *c_freq,float *c_freq1,float *c_freq2,float *c_freq3,
+	double *c_freq,double *c_freq1,double *c_freq2,double *c_freq3,
 	float *c_offsf1,float *c_offsf2,float *c_offsf3, 
         float *dmin, float *dmax, float *dfactor, float *c_max0)
 /*
@@ -1311,13 +1316,13 @@ gets from the file the GIFA basic parameters associated to the file
 	c_gtparam_type((*ppdt)->phead, c_offsf3, "Offset3", H_FLOAT, &status);
 	if (status != 0) { *c_offsf3 = 0.0;	status = 0;}
 
-	c_gtparam_type((*ppdt)->phead, c_freq, "Frequency", H_FLOAT, &status);
+	c_gtparam_type((*ppdt)->phead, c_freq, "Frequency", H_DOUBLE, &status);
 	if (status != 0) { *c_freq = 400.0;	status = 0;}
-	c_gtparam_type((*ppdt)->phead, c_freq1, "Freq1", H_FLOAT, &status);
+	c_gtparam_type((*ppdt)->phead, c_freq1, "Freq1", H_DOUBLE, &status);
 	if (status != 0) { *c_freq1 = 400.0;	status = 0;}
-	c_gtparam_type((*ppdt)->phead, c_freq2, "Freq2", H_FLOAT, &status);
+	c_gtparam_type((*ppdt)->phead, c_freq2, "Freq2", H_DOUBLE, &status);
 	if (status != 0) { *c_freq2 = 400.0;	status = 0;}
-	c_gtparam_type((*ppdt)->phead, c_freq3, "Freq3", H_FLOAT, &status);
+	c_gtparam_type((*ppdt)->phead, c_freq3, "Freq3", H_DOUBLE, &status);
 	if (status != 0) { *c_freq3 = 400.0;	status = 0;}
 
 	c_gtparam_type((*ppdt)->phead, dmin, "Dmin", H_FLOAT, &status);

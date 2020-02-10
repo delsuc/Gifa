@@ -15,4 +15,4 @@ else
    set synam = "unk"
    set synum = " "
 endif
-set returned := ($spnam;$synam;$synum)
+return ($spnam;$synam;$synum)

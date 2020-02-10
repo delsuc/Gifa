@@ -1,9 +1,27 @@
 set ans = 'EM'
-message "Choose exponential (EM) or Gaussian (GM)" set ans =
-if ($ans s= 'EM') then
-  lb
-elsif ($ans s= 'GM') then
-  gb
+if ($CONFIG_GRAPH) then
+   if ($dim == 1) then
+      dialogbox 'Choose deconvolution function' \
+         "Choose deconvolution function" enum 'Lorentz lb, Gauss gb' ans "Lorentz lb" \
+         "Choose narrowing to apply" real nf1 1.0 *
+      (tail($ans)) $nf1
+   elsif ($dim == 2) then
+      dialogbox 'Choose deconvolution function' \
+         "Choose deconvolution function" enum 'Lorentz lb, Gauss gb' ans "Lorentz lb" \
+         "Choose narrowing to apply, in F1" real nf1 1.0 \
+         noreturn " in F2" real nf2 1.0 *
+      (tail($ans)) $nf1 $nf2
+   else
+      error "Not available in 3D"
+   endif
 else
-  error "Should be EM or GM"
+  message "Choose exponential (EM) or Gaussian (GM)" set ans =
+  if ($ans s= 'EM') then
+    lb
+  elsif ($ans s= 'GM') then
+    gb
+  else
+    error "Should be EM or GM"
+  endif
 endif
+

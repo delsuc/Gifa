@@ -441,15 +441,15 @@ report ($a & $b & $c & $d &$e) "RTSELECT"
 dim 1
 order 10
 simu 6024 512 1 1.0 3123 1.0 0. 0.0
-if ($config_os s= "DARWIN") then
-  print "SORRY, BURG is not implemented on Darwin yet"
-else
+; if ($config_os s= "DARWIN") then
+;   print "SORRY, BURG is not implemented on Darwin yet"
+; else
   burg 1k
   itype 0 evaln 1 1k itype 1
   set a = (abs($noise - .684670567513)<0.001)
   set b = (abs($shift - .664792780299E-03)<0.001)
   report ($a & $b) "BURG command"
-endif
+; endif
 
 ; Linear prediction coefficients calculated by the Burg method
 ;Number of AR coefficients :         10

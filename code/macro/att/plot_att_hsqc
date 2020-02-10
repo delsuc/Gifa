@@ -1,0 +1,45 @@
+; plot_att $i $f
+;
+; plot a peak.
+;
+set mm = 2
+set mm1 = (($freq_1_2d*$box_f1)*($si1_2d-1)/($specw_1_2d+$si1_2d))
+set mm2 = (($freq_2_2d*$box_f2)*($si2_2d-1)/($specw_2_2d+$si2_2d))
+
+set i = $_
+set f = $_
+if (exist("att[" // $i //"]")) then
+   set l = $att[$i]
+else
+   error "Unknown peak"
+endif
+
+set f1 = (head($l)) set f2 = (head(tail($l)))
+set f1i = (ptoi($f1,2,1))
+set f2i = (ptoi($f2,2,2))
+
+;print ("l "//$l)
+set t = (tail(tail(tail($l))))
+set u = (tolower(head($t))) 
+set v = (tolower(head(tail($t)))) 
+;if (tolower(head($t)) s! "unk" ) then
+if (($u s! "unk" ) & ($v s! "unk" )) then
+;   print ("t "//$t)
+;   print (head(tail($t)))
+   set s1 = ($spin[(head($t))])
+   set sys = (head(tail(tail($s1))))
+   if ($sys s! "unk") then 
+      set t = (head($sys[$sys]))
+   else
+      set t = ("?")
+   endif
+   plotlines ($f2i-$mm2) $f1i ($f2i+$mm2) $f1i $f
+   plotlines $f2i ($f1i-$mm1) $f2i ($f1i+$mm1) $f
+   plottexts $t ($f2i+$mm2) ($f1i+$mm1) $f
+else
+   plotlines ($f2i-$mm2) $f1i ($f2i+$mm2) $f1i $f
+   plotlines $f2i ($f1i-$mm1) $f2i ($f1i+$mm1) $f
+   plottexts "?" ($f2i+$mm2) ($f1i+$mm1) $f
+endif
+
+

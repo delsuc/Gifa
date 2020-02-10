@@ -1,14 +1,24 @@
-dbopen /usr/local/gifa/macro/att/1let_3let code2
+dbopen db/1let_3let code2
 set p =  'db/primary'
 open $p
 set tot = 0
 set l = <$p
+print " "
+print " .........:.........:.........:.........:.........:"
+set i = 1
+;printf "." *
+set sl = ' '
 while (!eof($p))
   if (!exist('c[' // $l // ']')) set c[$l] = 0
   set c[$l] = (%+1)
   set tot = (%+1)
+;  printf "%s" $l *
+  set sl = ($sl // $l)
+  set i = ($i+1)  if ($i == 51) set i = 1 print $sl set sl = ' '  ; printf "\n." *
   set l = <$p
 endwhile
+print $sl
+; print " "
 print 'Statistic on the current Primary sequence'
 print ('Total number of residue:'; $tot)
 

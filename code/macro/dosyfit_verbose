@@ -1,0 +1,11 @@
+; Realizes the least-square fit of a DOSY 1D curve,
+; and displays values and quality of the fit
+;
+; see also : dosyfit dosyfit_2_verbose dosy2d showexp
+
+dosyfit
+set exp = '$p1*exp(-$p2*$x/$dfactor)'
+showexp $exp
+print (' Amplitude :';$p1;'+/-';$dp1)
+if ($dp2 s= 'Inf' | $dp2 s= 'NaN')   set dp2 = '??'
+print ('   damping :';$p2;'+/-';$dp2; 'micron^2/sec')

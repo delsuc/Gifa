@@ -563,7 +563,7 @@ C
          if (.not.bool1) goto 132
          close(i,status='keep')
 
-      elseif (command.eq.'OPEN') then
+      elseif (command.eq.'OPEN' .or. command.eq.'OPEN_READ') then
          call getstring2(st,error)
          if (error.ne.0) goto 93
          inquire(file=st,number=i,opened=bool1)
@@ -583,7 +583,15 @@ C
                endif
             enddo
             if (bool1) goto 131		! means still not found
-            open(zz,file=st,iostat=error)
+            if (command.eq.'OPEN') then
+               open(zz,file=st,iostat=error)
+            else if (command.eq.'OPEN_READ') then
+               open(zz,file=st,
+#hp     *        readonly,
+#ifc     *        readonly,
+#absoft     *        readonly,
+     *           iostat=error)
+            endif
             if (error.ne.0) goto 101
             inpeof(zz-29) = 0
          endif

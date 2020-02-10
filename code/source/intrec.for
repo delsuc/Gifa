@@ -80,6 +80,7 @@ c area is prompted from the user,
 
       integer si, llcol, lllin, urcol, urlin, err, imaxi, imini
       real vect(si), maxi, mini
+      real lmax
       save llcol,lllin,urcol,urlin
 
 c asks for the area on which volume will be computed
@@ -88,7 +89,8 @@ c asks for the area on which volume will be computed
       if (err.ne.0) then
          return
       endif
-      call mnxvect(mini,maxi,imini,imaxi,vect(llcol),urcol-llcol+1)
+      call mxavect(mini,lmax,imini,imaxi,vect(llcol),urcol-llcol+1)
+      maxi = vect(llcol+imaxi-1)
       return
       end
 
@@ -103,8 +105,8 @@ c area is prompted from the user,
       implicit none
 
       integer si1, si2, llcol, lllin, urcol, urlin,
-     *        err, imaxi, imini, line, nbcol
-      real smx(si2*si1), maxi, lmax, mini
+     *        err, imaxi, imini, line, nbcol, limax, ljmax
+      real smx(si2*si1), maxi, lmax, llmax, mini
       save llcol,lllin,urcol,urlin
 
 c asks for the area on which volume will be computed
@@ -115,13 +117,21 @@ c asks for the area on which volume will be computed
       endif
       nbcol=urcol-llcol+1
 
-      maxi = 0.0
+      llmax = 0.0
+      limax = 0
+      ljmax = 0
       do 10 line=lllin,urlin
-        call mnxvect(mini,lmax,imini,imaxi,
+        call mxavect(mini,lmax,imini,imaxi,
      *          smx(llcol+si2*(line-1)),nbcol)  
-        if (maxi.lt.mini) maxi=mini
-        maxi = max(lmax,maxi)
+        if (lmax.gt.llmax) then
+	    llmax = lmax
+	    limax = imaxi
+	    ljmax = line
+	endif
+c        if (maxi.lt.mini) maxi=mini
+c        maxi = max(lmax,maxi)
 10    continue
+      maxi = smx(llcol+limax-1+si2*(ljmax-1))
       return
       end
 

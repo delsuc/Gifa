@@ -1,0 +1,86 @@
+; get_acqus 
+;
+; returned valus of asked parameters found in an Bruker acqus file
+;
+; use : get_acqus					; open dialogbox
+;		get_acqus acqusfile param	; returned the asked parameter
+;
+
+if (!$arg) then    ; if no arg, build a form
+   formbox 'GET BRUKER ACQUS PARAMETER' \
+     	"get_acqus $facq $param print ($param;'=';$returned)" \
+		'Enter Acqus filename' file facq % \
+		'Enter asked parameter' string param % \
+		'Use p(1) or d(10) if p1 or d10 is asked' message \
+		*
+else
+	; get the acqs file
+	message 'Enter acqus filename'
+	set facq := $_
+	
+	;get the asked parameter
+	message 'Enter parameter to find'
+	set param = $_
+	set param = (toupper($param))
+	
+	;check the acqs file
+	if (fexist($facq)) then
+        	open $facq
+		set l = <$facq
+		if ((head($l)) s! '##TITLE=') error ($facq;'wrong filetype')
+		close $facq
+	else
+		error ($facq;'not found')
+	endif	
+	
+	
+	if ((index($param,'(')) >= 1) then
+		set pn = (subst($param,((index($param,'('))+1),((len($param))-1)))
+		set param = (subst($param,1,((index($param,'('))-1)))
+		open $facq
+   		set l = <$facq
+   		return 'not found'   
+   		while (!eof($facq))
+   			if (index($l,('##$'//$param//'=')) >= 1) then
+   				set l = <$facq
+   				set i = 0
+     			while ( $l s! '' )
+        			set p[$i] = (head($l))
+        			set l = (tail($l))
+     				set i = ( $i + 1 )        				 
+	    		endwhile
+        		set l = <$facq
+	    		while ( $l s! '' )
+        			set p[$i] = (head($l))
+        			set l = (tail($l))
+	    			set i = ( $i + 1 )        				 
+    			endwhile		
+     			if (exist('p['//$pn//']')) then
+     				set value = $p[$pn]
+     				if ((index($value,'<')) >= 1) set value = (subst($value,2,((len($value)-1))))
+     				return $value
+     				close $facq
+     				exit
+     			endif	
+   			endif
+   			set l = <$facq
+		endwhile
+		close $facq	
+	else
+		open $facq
+   		set l = <$facq
+   		return 'not found'   
+   		while (!eof($facq))
+   			if ((index($l,('##$'//$param//'=')) >= 1) | (index($l,('##'//$param//'=')) >= 1)) then
+     			set value = (tail($l))
+     			if ((index($value,'<')) >= 1) set value = (subst($value,2,((len($value)-1))))
+     			return $value
+     			close $facq
+				exit
+			endif
+			set l = <$facq
+		endwhile
+		close $facq		
+	endif
+endif
+

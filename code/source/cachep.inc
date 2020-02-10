@@ -34,7 +34,7 @@ c******************************************************
                 call ch_join(id_cache,st,i,CF_WRITE,error)
                 if (error.eq.0) then
                   if (input.eq.20) 
-     *              call gifaout('WARNING, access in Write_Only mode')
+     *              call gifaout('WARNING, access in Write Only mode')
                 else
                   goto 101
                 endif
@@ -181,6 +181,7 @@ C Dont forget to reload dataset param if currently joined.
      *      ,c_offsf1,c_offsf2,c_offsf3
      *      ,c_dmin,c_dmax,c_dfactor,c_max0)
          if (error.ne.0) goto 93
+C I uncomment here, because of the down smapled display mode (HIRES)
 c         max0 = 0.0
          if (verbose.ne.0) call gifaouti('New data-set, dim ',dim)
          empty = 1
@@ -209,7 +210,8 @@ c         if (error.ne.0) goto 93
          call trailing(name,j)
          call ch_open(i,name,j,CF_READ,error)
          if (i.eq.0 .or. error .ne.0) goto 101
-         call ch_gtparbas(i,ww,xx,yy,zz,j,z,z,z,z,z,z,z,z,z,z,z,z,z,z)
+         call ch_gtparbas(i,ww,xx,yy,zz,j,z,z,z,
+     *       dpz1, dpz1, dpz1, dpz1, z,z,z,z,z,z,z)
          if (ww.eq.1) then
             if (dim.ne.1 .or. it1d.ne.j .or.
      *          sizeimage1d.ne.xx ) goto 117
@@ -398,7 +400,7 @@ c******************************************************
            call message('enter spectral widths in F1')
            call getreal2(c_specwf1,error)
            call message('enter frequency in F1')
-           call getreal2(c_freq1,error)
+           call getdouble2(c_freq1,error)
            if (error.ne.0) goto 98
            c_type = it1d
            c_dimmanip = 1
@@ -410,7 +412,7 @@ c******************************************************
              call message('enter spectral widths in F2')
              call getreal2(c_specwf2,error)
              call message('enter frequency in F2')
-             call getreal2(c_freq2,error)
+             call getdouble2(c_freq2,error)
              if (error.ne.0) goto 98
              c_type = itype
              c_dimmanip = 2
@@ -428,7 +430,7 @@ c******************************************************
              call message('enter spectral widths in F3')
              call getreal2(c_specwf3,error)
              call message('enter frequency in F3')
-             call getreal2(c_freq3,error)
+             call getdouble2(c_freq3,error)
              if (error.ne.0) goto 98
              c_type = it3d
              c_dimmanip = 3
@@ -439,7 +441,7 @@ c******************************************************
              c_freq3 = c_freq1
            endif
            call message('enter reference (1H) frequency')
-           call getreal2(c_freq,error)
+           call getdouble2(c_freq,error)
            if ((c_sizef1*c_sizef2*c_sizef3).LE.0) goto 103       
            call message('itype ?')
            call getint2(c_type,error)
@@ -450,13 +452,13 @@ c******************************************************
      *                   c_sizef3, error)
            if (error.ne.0) goto 101
            call ch_putparam_type(id_cache,c_freq, 'Frequency', 9, 
-     *            H_FLOAT, error)
+     *            H_DOUBLE, error)
            call ch_putparam_type(id_cache,c_specwf1, 'Specw1', 6, 
      *            H_FLOAT, error)
            call ch_putparam_type(id_cache,c_offsf1, 'Offset1', 7, 
      *            H_FLOAT, error)
            call ch_putparam_type(id_cache,c_freq1, 'Freq1', 5, 
-     *            H_FLOAT, error)
+     *            H_DOUBLE, error)
            call ch_putparam_type(id_cache,c_type, 'Type', 4,
      *            H_INT, error)
            if (error.ne.0) goto 101
@@ -467,7 +469,7 @@ c******************************************************
              call ch_putparam_type(id_cache,c_offsf2, 'Offset2', 7, 
      *            H_FLOAT, error)
              call ch_putparam_type(id_cache,c_freq2, 'Freq2', 5, 
-     *            H_FLOAT, error)
+     *            H_DOUBLE, error)
              if (error.ne.0) goto 101
            endif
            if (st.eq.'3D') then
@@ -476,7 +478,7 @@ c******************************************************
              call ch_putparam_type(id_cache,c_offsf3, 'Offset3', 7, 
      *            H_FLOAT, error)
              call ch_putparam_type(id_cache,c_freq3, 'Freq3', 5, 
-     *            H_FLOAT, error)
+     *            H_DOUBLE, error)
              if (error.ne.0) goto 101
            endif
            call ch_putparam_type(id_cache,dmin,'Dmin',4,H_FLOAT,error)
@@ -519,11 +521,11 @@ c           if (error.ne.0) goto 93
              if (error.ne.0) goto 102
              call ch_putparam_type(i,it1d, 'Type', 4,H_INT, error)
              call ch_putparam_type(i,frequency, 'Frequency', 9,
-     *            H_FLOAT, error)
+     *            H_DOUBLE, error)
              call ch_putparam_type(i,max0, 'Absmax', 6,H_FLOAT, error)
              call ch_putparam_type(i,sp1d, 'Specw1', 6,H_FLOAT, error)
              call ch_putparam_type(i,of1d, 'Offset1', 7,H_FLOAT, error)
-             call ch_putparam_type(i,freq1d, 'Freq1', 5,H_FLOAT, error)
+             call ch_putparam_type(i,freq1d,'Freq1', 5,H_DOUBLE, error)
              if (error.ne.0) goto 102
              call ch_ac1darea(column, i, 1, sizeimage1d,
      *                CB_WRITE, error)
@@ -534,21 +536,21 @@ c           if (error.ne.0) goto 93
              if (error.ne.0) goto 102
              call ch_putparam_type(i,itype, 'Type', 4,H_INT, error)
              call ch_putparam_type(i,frequency, 'Frequency', 9, 
-     *                H_FLOAT, error)
+     *                H_DOUBLE, error)
              call ch_putparam_type(i,max0, 'Absmax', 6,H_FLOAT, error)
              call ch_putparam_type(i,specw1, 'Specw1', 6, 
      *                H_FLOAT, error)
              call ch_putparam_type(i,offset1, 'Offset1', 7, 
      *                H_FLOAT, error)
              call ch_putparam_type(i,freq1, 'Freq1', 5, 
-     *                H_FLOAT, error)
+     *                H_DOUBLE, error)
              if (error.ne.0) goto 102
              call ch_putparam_type(i,specw2, 'Specw2', 6, 
      *                H_FLOAT, error)
              call ch_putparam_type(i,offset2, 'Offset2', 7, 
      *                H_FLOAT, error)
              call ch_putparam_type(i,freq2, 'Freq2', 5, 
-     *                H_FLOAT, error)
+     *                H_DOUBLE, error)
              if (error.ne.0) goto 102
              call ch_ac2darea(plane2d, i, 1, 1, si1im, si2im,
      *            CB_WRITE, error)
@@ -559,28 +561,28 @@ c           if (error.ne.0) goto 93
              if (error.ne.0) goto 102
              call ch_putparam_type(i,it3d, 'Type', 4,H_INT, error)
              call ch_putparam_type(i,frequency, 'Frequency', 9, 
-     *                H_FLOAT, error)
+     *                H_DOUBLE, error)
              call ch_putparam_type(i,max0, 'Absmax', 6,H_FLOAT, error)
              call ch_putparam_type(i,sp3d1, 'Specw1', 6, 
      *                H_FLOAT, error)
              call ch_putparam_type(i,of3d1, 'Offset1', 7, 
      *                H_FLOAT, error)
              call ch_putparam_type(i,freq3d1, 'Freq1', 5, 
-     *                H_FLOAT, error)
+     *                H_DOUBLE, error)
              if (error.ne.0) goto 102
              call ch_putparam_type(i,sp3d2, 'Specw2', 6, 
      *                H_FLOAT, error)
              call ch_putparam_type(i,of3d2, 'Offset2', 7, 
      *                H_FLOAT, error)
              call ch_putparam_type(i,freq3d2, 'Freq2', 5, 
-     *                H_FLOAT, error)
+     *                H_DOUBLE, error)
              if (error.ne.0) goto 102
              call ch_putparam_type(i,sp3d3, 'Specw3', 6, 
      *                H_FLOAT, error)
              call ch_putparam_type(i,of3d3, 'Offset3', 7, 
      *                H_FLOAT, error)
              call ch_putparam_type(i,freq3d3, 'Freq3', 5, 
-     *                H_FLOAT, error)
+     *                H_DOUBLE, error)
              if (error.ne.0) goto 102
              call ch_ac3darea(image, i, 1, 1, 1,
      *                si3d1, si3d2, si3d3, CB_WRITE, error)

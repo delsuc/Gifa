@@ -78,6 +78,7 @@ c
 #aix	parameter (linemax=500) 	! this is 30 values max
 	real matrix(sizemax)
 	character*(linemax) ll
+#f2c        save ll       ! needed for C array
 
 #aix	write(*,*) 'Limited to 30 entries on IBM/AIX version !'
 	i = 0

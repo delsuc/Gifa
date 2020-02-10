@@ -25,6 +25,8 @@ c
        integer size1,size2,zz
        integer error,i,totsize,sar,itype,delta(sizemax)
        real spec(*),ar(2*ldmax),fid(sizemax)
+#sgi       save delta,fid,ar       ! needed for C array
+#f2c       save delta,fid,ar       ! needed for C array
        real specw1,specw2,off1,off2
        character*256 fichier,name
         

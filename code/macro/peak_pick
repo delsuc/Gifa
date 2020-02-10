@@ -7,6 +7,7 @@
 ;
 ; see also : PEAK MAX MINIMAX pklist
 
+  ; correction MAD 7 dec 2000 - adapted to negative peaks (was buggy)
 
 if ($noise == 0) then
     alert "Noise not yet defined, it's now time to do it"
@@ -32,13 +33,17 @@ if ($dim==1) then
   dialogbox 'Enter parameters' 'First, zoom on the region to peak-pick' message \
      'Then, enter mult. factor for the noise level (typically 10)' real pp_fact % \
      '  detect peak' enum '1 positive,-1 negative' pp_sign % \
-     'Finally, Click ok Ok' message *
+     'Finally, Click ok Ok  (Will overwrite the current peak table)' message *
   sign_peak (head($pp_sign))
-  max minimax ($pp_fact*$noise) (%+1)
+  if ($sign_peak == -1) then
+	max minimax ($max[2]-1) (-$pp_fact*$noise)
+  else
+	max minimax ($pp_fact*$noise) (1+ % )
+  endif
   zoom 1 $zone[2] $zone[4]
   peak
   if ($npk1d > 0 ) then
-    showpeaks
+    refpeaks 1 ref
   else
     alert "No peak detected in selected region"
   endif
@@ -53,7 +58,7 @@ else
   dialogbox 'Enter parameters' 'First, zoom on the region to peak-pick' message \
      'Then, enter mult. factor for the noise level (typically 10)' real pp_fact % \
      '  detect peak' enum '1 positive,-1 negative' pp_sign % \
-     'Finally, Click ok Ok' message *
+     'Finally, Click ok Ok  (Will overwrite the current peak table)' message *
   sign_peak (head($pp_sign))
   if ($sign_peak == -1) then
 	max minimax ($max[2]-1) (-$pp_fact*$noise)
@@ -64,7 +69,7 @@ refmacro 1
 ;  zoom 1 $zone[1] $zone[2] $zone[3] $zone[4]
   peak %
   if ($npk2d > 0 ) then
-    showpeaks
+    refpeaks 1 ref
   else
     alert "No peak detected in selected region"
   endif

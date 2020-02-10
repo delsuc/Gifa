@@ -1,0 +1,13 @@
+; disjoin_all
+;
+; disjoin all the data-set currently JOINed
+;
+; related contexts : $CACHE[]  $C_JOINED $C_NAME
+;
+; see also : DISJOIN JOIN
+
+if (exist('cache[]')) then
+  foreach i in cache
+    join $cache[$i]     disjoin
+  endfor
+endif

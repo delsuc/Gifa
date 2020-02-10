@@ -15,7 +15,7 @@ set fich = $_
     open $fich             ; input file
     open db/primary        ; output file
     set i = 0   set j = 0
-    dbopen /usr/local/gifa/macro/att/3let_1let code   ; used for 1let coding
+    dbopen db/3let_1let code   ; used for 1let coding
     set l = <$fich
     while (!eof($fich))
 	set j = (%+1) inprogress $j

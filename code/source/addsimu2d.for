@@ -44,12 +44,12 @@ c
 	character*(*) unit
 	integer error,i,k,qtype
 	real tdata(*)
-	real ampl,freql1,t2l1, phasel1,ppml1,indl1
-	real freql2,t2l2, phasel2,ppml2,indl2
+	real ampl,loc_hz1,t2l1, phasel1,ppml1,indl1
+	real loc_hz2,t2l2, phasel2,ppml2,indl2
 	real  z, y1, y2, temp
 	real  w1,w2,cw,sw,e1,f1,f2,p1,p2
 
-	save ampl,freql1,freql2,ppml1,ppml2,indl1,indl2
+	save ampl,loc_hz1,loc_hz2,ppml1,ppml2,indl1,indl2
         save t2l1,t2l2,phasel1,phasel2
 	
 	call message( 'phase(0) or amplitude(1) modulation')
@@ -64,31 +64,31 @@ c
 
 	if (unit.eq.'HZ') then	
            call message( ' frequence in dim 1')
-           call getreal2(freql1,error)
+           call getreal2(loc_hz1,error)
            if (error.ne.0) goto 62
            call message( ' frequence in dim 2')
-           call getreal2(freql2,error)
+           call getreal2(loc_hz2,error)
            if (error.ne.0) goto 62           
         elseif (unit.eq.'PPM') then
            call message('chemical shift in dim 1')
            call getreal2(ppml1,error)
            if (error.ne.0) goto 62
            temp = ptoir(ppml1,si1im,specw1,offset1,freq1)
-           freql1 = itohr(temp,si1im,specw1,offset1)           
+           loc_hz1 = itohr(temp,si1im,specw1,offset1)           
            call message('chemical shift in dim 2')
            call getreal2(ppml2,error)
            if (error.ne.0) goto 62
            temp = ptoir(ppml2,si2im,specw2,offset2,freq2)
-           freql2 = itohr(temp,si2im,specw2,offset2)           
+           loc_hz2 = itohr(temp,si2im,specw2,offset2)           
         elseif (unit.eq.'INDEX') then
            call message('position index in dim 1')
            call getreal2(indl1,error)
            if (error.ne.0) goto 62
-           freql1 = itohr(indl1,si1im,specw1,offset1)
+           loc_hz1 = itohr(indl1,si1im,specw1,offset1)
            call message('position index in dim 2')
            call getreal2(indl2,error)
            if (error.ne.0) goto 62
-           freql2 = itohr(indl2,si2im,specw2,offset2)
+           loc_hz2 = itohr(indl2,si2im,specw2,offset2)
         else
            goto 63
         endif 
@@ -148,9 +148,9 @@ c
 	if ( qtype .eq. 1 ) then  ! amplitude modulation
 	
 	   itype = 3
-	   f1 = ((freql1-offset1)*2*pi/specw1) - pi
+	   f1 = ((loc_hz1-offset1)*2*pi/specw1) - pi
 	   p1 = phasel1*pi/180.0
-	   f2 = ((freql2-offset2)*2*pi/specw2) - pi
+	   f2 = ((loc_hz2-offset2)*2*pi/specw2) - pi
 	   p2 = phasel2*pi/180.0
 	   	
 	   y1 = t2l1/2000.0
@@ -191,9 +191,9 @@ c
 	   y2 = t2l2/2000.0
 	
 	   itype = 1
-	   f1 = (freql1-offset1)*2*pi/specw1
+	   f1 = (loc_hz1-offset1)*2*pi/specw1
 	   p1 = phasel1*pi/180.0
-	   f2 = ((freql2-offset2)*2*pi/specw2) - pi
+	   f2 = ((loc_hz2-offset2)*2*pi/specw2) - pi
 	   p2 = phasel2*pi/180.0
 	   do i = 1,si1im,1
 	      w1 = f1*float(i-1)+p1

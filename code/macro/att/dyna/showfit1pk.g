@@ -34,7 +34,7 @@ set fftmp = ('gifa' // int(100000*$random))
 open $fftmp
 fprint $fftmp ';temporary file created by showexp'
 fprint $fftmp 'set x = $_'
-fprint $fftmp ('set returned := (' // $exp // ')' )
+fprint $fftmp ('return (' // $exp // ')' )
 close $fftmp
 
 ; calculate the first point of the curve

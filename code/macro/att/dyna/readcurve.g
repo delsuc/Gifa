@@ -1,4 +1,4 @@
-; readcurve.g $nbexp $inp
+; readcurve.g $nbexp $inp 
 ;
 ; read a curve from the file of integration result
 ;
@@ -15,10 +15,12 @@ for k = 1 to $nbexp
 ;  print ("line" ; $line)
   else
     alert ("Unexpected end_of_file during curve reading !")
-    set returned := 1
     goto fin
   endif
 endfor
+return 0
+exit
 
 =fin
+return 1
 

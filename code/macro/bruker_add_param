@@ -1,0 +1,65 @@
+; bruker_add_param file
+;
+; this macro adds to the header of "file" the parameters needed to process bruker digital filter.
+; parameters are found in the acqu (or acqus) file found in the same dir as  "file" 
+;
+; The parameters are : BRUKER_DECIM BRUKER_DSPFVS BRUKER_DSPFIRM
+;
+; These parameters are then taken into account by the easy_nD processing
+;
+; see also : BRUKER_CORR easy2d get_acqus PUTHEADER
+
+message 'Enter data file (acqu file should be in same dir)'
+set file = $_   ; build parameter files for $file
+
+if ($c_joined) set jj = $c_name    ; will be used to reset as before
+
+; first determines basename
+set dir_s = "/"     ; separator for directories
+
+set pre = " "    set f = $file
+set i = (index($f,$dir_s))
+while ($i > 0)
+    set pre = ($pre // subst($f,1,$i))
+    set f = (subst($f,$i+1,len($f)))
+    set i = (index($f,$dir_s))
+endwhile
+if ($pre s! " ") set pre = (subst($pre,2,len($pre)))   ; remove leading blank (!)
+
+; search for acqu files
+set found = (1==0)
+set acq = ($pre // "acqus")
+if (fexist($acq)) set found = (1==1)  goto ok
+set acq = ($pre // "acqu")
+if (fexist($acq)) set found = (1==1)
+
+=Ok
+; get parameters
+if ($found) then
+    print ("getting acquisition parameters from:";$acq)
+    get_acqus $acq DECIM
+    set dec = $returned   if ($dec s= 'not found') set dec = 1
+    get_acqus $acq DSPFVS
+    set dsp = $returned   if ($dsp s= 'not found') set dsp = 0
+    get_acqus $acq DSPFIRM
+    set firm = $returned   if ($firm s= 'not found') set firm = 0
+else
+    dialogbox "Enter parameters" \
+        "No parameter files (acqu or acqus) were found - please enter the digital filter parameters" message \
+        "DECIM" int dec 32    noreturn  "DSPFVS" int dsp 10 *
+    set firm = 0
+endif
+
+; now put the parameters
+
+join $file
+if (hexist("Spectrometer")) then
+    if (header("Spectrometer") s! "BRUKER") error ("This file is already design as a";header("Spectrometer");"file")
+endif
+putheader Spectrometer BRUKER
+putheader BRUKER_DECIM $dec
+putheader BRUKER_DSPFVS $dsp
+putheader BRUKER_DSPFIRM $firm
+disjoin
+if (exist('jj')) join $jj
+

@@ -11,9 +11,10 @@ dim 2
 if (!$arg) then
 
   formbox ('Integration/processing of entry '//$pk_fnd) \
-   ('quant1pk.g ("processing/"//$listfile) $errmeth $intmeth $dt_tp';$pk_fnd) \
+   ('quant1pk.g ("processing/"//$listfile) $errmeth $intmeth $coef $dt_tp';$pk_fnd) \
    'Data-sets list' string listfile % \
-   'Error evaluation' enum 'Baseline,Multiexp' errmeth 'Baseline' \
+   'Error evaluation' enum 'Baseline,Multiexp' errmeth 'Baseline' noreturn \
+   'error bar weight' cursor 0.5 10 1 coef 1.0 \
    'Integration method' enum 'Sumrec,MaxInBox' intmeth 'MaxInBox' noreturn \
    'Data type' enum 'R1,R2,NOE,T1,T2,J' dt_tp % \
    'Show peak' action ('show_att';$pk_fnd) \
@@ -24,6 +25,7 @@ else
   set liste = $_
   set errmeth = $_
   set intmeth = $_
+  set coef = $_
   set data_typ := $_
   set peak = $_
   set homoth = 1.0
@@ -61,7 +63,7 @@ else
     refmacro 1 zoom 1 1 $nbexp refmacro 0
     
 ; process the obtained curve
-    proc1pk.g $data_typ
+    proc1pk.g $data_typ $coef
 
 if ($data_typ s= "R1") then
   fractil_95.g ($nbexp - 3)

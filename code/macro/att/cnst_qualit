@@ -20,7 +20,7 @@ if (!(exist('calib_dst[]'))) error "You need first to define calibration peaks!"
 if (!$arg) then
   formbox 'Qualitative constraint output' \
    'cnst_qualit $cnst_format $cnstfil $dstbg $dstmed $dbgl $dbgu $dmel $dmeu $dsml $dsmu $pseudo $intra' \
-   'Constraint File Format' enum 'XPLOR,DIANA' cnst_format 'XPLOR' \
+   'Constraint File Format' enum 'XPLOR,DYANA' cnst_format 'DYANA' \
    noreturn 'basename' file cnstfil cnst \
    'Large intensity bounds: lower' real dbgl 1.8 noreturn \ 
    'upper' real dbgu 2.8 \
@@ -54,7 +54,9 @@ set q_corr = 2.4    ; double methyl or aromatics
 ; list of larger pseudo-atom corrections
 set res_q = 'VAL:QG LEU:QD PHE:QD PHE:QE TYR:QD TYR:QE'
 ; list of methyls
-set res_m = 'ALA:HB THR:HG ILE:HG ILE:HD VAL:HG LEU:HD MET:HE'
+;avec methylene set res_m = 'ALA:HB THR:HG ILE:HG ILE:HD VAL:HG LEU:HD MET:HE GLY:QA SER:QB CYS:QB ASP:QB ASN:QB LEU:QB ILE:QG LYS:QB LYS:QG LYS:QD LYS:QE LYS:QZ ARG:QB ARG:QG ARG:QD ARG:QH1 ARG:QH2 ARG:QH GLU:QB GLU:QG GLN:QB GLN:QG GLN:QE MET:QB MET:QG PRO:QB PRO:QG PRO:QD HIS:QB PHE:QB TYR:QB TRP:QB'
+
+set res_m = 'ALA:HB THR:HG ILE:HG ILE:HD VAL:HG1 VAL:HG2 LEU:HD1 LEU:HD2 MET:HE'
 ;lookup for aromatic spin systems
 set arom['Arom-PHE'] = 'PHE'
 set arom['Arom-TYR'] = 'TYR'
@@ -76,19 +78,22 @@ set g2d["ILE:HG"] = "ILE:QG2"
 set g2d["ILE:QG"] = "ILE:QG1"
 set g2d["ILE:HD"] = "ILE:QD1"
 set g2d["GLN:QE"] = "GLN:QE2"
-set g2d["ARG:QH"] = "GLN:QH2"
+set g2d["ARG:QH"] = "ARG:QH2"
 set g2d["ASN:QD"] = "ASN:QD2"
 set g2d["GLY:HA2"] = "GLY:HA1"
 set g2d["GLY:HA3"] = "GLY:HA2"
 set g2d["LYS:HZ"] = "LYS:QZ"
 ; correspondance dans les cas de renommage (au vol) a partir des pseudo
-
+; necessaire apres modifications automatiques
 set g2d["VAL:HG2"] = "VAL:QG1"
 set g2d["VAL:HG3"] = "VAL:QG2"
-set g2d["ILE:HG2"] = "ILE:HG12"
-set g2d["ILE:HG3"] = "ILE:HG13"
-set g2d["LEU:HD3"] = "LEU:QD1"
-set g2d["LEU:HD2"] = "LEU:QD2"
+set g2d["LEU:HD2"] = "LEU:QD1"
+set g2d["LEU:HD3"] = "LEU:QD2"
+set g2d["GLN:HE2"] = "GLN:HE21"
+set g2d["GLN:HE3"] = "GLN:HE22"
+
+
+
 
 
 ; computation of the factor between intensity and (1/d**6) by
@@ -112,7 +117,7 @@ set g2d["LEU:HD2"] = "LEU:QD2"
 
   if ($cnst_format s= "XPLOR") then
     	set endfil = ("constraints/" // % //".tbl")
-  elsif ($cnst_format s= "DIANA") then
+  elsif ($cnst_format s= "DYANA") then
     	set endfil = ("constraints/" // % //".upl")
   endif
   set cnstfil = 'constraints/temporary'
@@ -358,7 +363,7 @@ foreach i in hash
       ;show_att $pk ; test
       if ($cnst_format s= "XPLOR") then
          fprint $cnstfil ('assign (resid';$r1;'and  name';$a1;')(resid';$r2;'and  name';$a2;')';$varlow;'0';$varupp)
-      elsif ($cnst_format s= "DIANA") then
+      elsif ($cnst_format s= "DYANA") then
 
 	 ; correspondance Gifa -> Dyana
 	 set l = ($nr1 // ':' // $a1)

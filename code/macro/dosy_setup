@@ -30,9 +30,11 @@ formbox 'Preparation for DOSY processing' \
   noreturn 'From tabulated' action 'dmax ($dfactor*10/$tab[2]) dmin ($dfactor*0.1/$tab[$si_tab]) closeform $widget dosy_setup' \
   noreturn 'From time' action 'dmax ($dfactor*20*$SPECW_1D) dmin ($dfactor*0.2*$SPECW_1D/$si1_1d) closeform $widget dosy_setup' \
   separator \
+  'For MAXENT processing only :' message \
   Iter int it $iter \
   noreturn 'Ndisp' int nd $ndisp \
-  'Lambsp' int lambsp $lambsp \
+  'Lambsp : (more robust)' cursor 2 8 1 lambsp $lambsp \
+  noreturn '(faster)' message \
   separator \
   'Help' action 'help dosy_setup' \
   *

@@ -77,6 +77,7 @@ c
       integer l
       real tempi,tempj,s1
       real wil_loc(ld) , wjl_loc(ld)
+#f2c      save wil_loc,wjl_loc
 
       
       do l=1,n

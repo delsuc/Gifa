@@ -25,7 +25,7 @@ if ($LICENCE s! "NON-VALID") then
 endif
 
 ; then check version
-set macro_version = 4.3
+set macro_version = 4.5
 if (head(tail($version)) < $macro_version ) then
   alert "WARNING : The version number of this binary is older than the current set of macro, and may be incompatible"
 endif
@@ -35,8 +35,11 @@ cx 15 cy 15
 
 ; load environment
 if $config_graph then
-
-   set viewer := "netscape"    ; Adapt this one to your set-up
+   if ($config_os s= "DARWIN") then
+     set viewer := "open"
+   else
+     set viewer := "mozilla"    ; Adapt this one to your set-up
+   endif
 
    pulldownmenu 1    ; choose menus instead of boxes
    button.g

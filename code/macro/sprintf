@@ -2,7 +2,7 @@
 ;
 ; realises the equivalent of a C  `sprintf'
 ; all the remaining of the line  up to the star is taken as arguments
-; result is returned to the static variable $returned
+; result is returned to the context $returned
 ;
 ; only one line can be put into the string, so \n cannot be used
 ;
@@ -27,6 +27,6 @@ set cmd = ($cmd // '}')
 set ff = ("gf" // int(10000*$random))
 sh ("echo | awk '" ; $cmd; "' >"; $ff) 
 ; has to go to another file !
-open $ff   set returned := <$ff  close $ff
+open $ff   return <$ff  close $ff
 sh ("/bin/rm" ; $ff)
 

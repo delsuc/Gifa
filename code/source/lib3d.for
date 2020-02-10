@@ -292,6 +292,7 @@ c draws a polyline at locations "xv(count)" "yv(count)" "zv(count)"
       integer vd_id,count,i,buf_max
       parameter (buf_max=32*1024)
       real xv(count),yv(count),zv(count),xl(buf_max),yl(buf_max)
+#f2c      save xl,yl
 c
       do i =1,min(buf_max,count)
          call transf3d(xl(i),yl(i),xv(i),yv(i),zv(i))

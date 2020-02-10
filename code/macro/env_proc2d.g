@@ -4,7 +4,7 @@
 
 
 buttonbox 'Proc 2D' \
-   'Easy 2D' 'easy2d $name sin 0 yes sin 0 no 0 0 sh (2*power2($si1_2d-1)) no sim (2*power2($si2_2d-1)) % 0 0 0 0 %%' \
+   'Easy 2D' 'easy2d $name yes no sin 0 sin 0 0 0 sh (2*power2($si1_2d-1)) no sim on (2*power2($si2_2d-1)) % 0 0 0 0 %%' \
    separator \
    'ZeroFill F1'   'gm/test2d chsize (power2(%)*2) %' \
    'ZeroFill F2'   'gm/test2d chsize % (power2(%)*2)' \

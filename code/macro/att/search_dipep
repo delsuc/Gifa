@@ -28,7 +28,7 @@ set gfound = 1
   endwhile
 
 =cut 
-  dbopen /usr/local/gifa/macro/att/1let_3let code     ; then search for dipeptides
+  dbopen db/1let_3let code     ; then search for dipeptides
   open db/primary
   set i = 1
   set aa = <db/primary

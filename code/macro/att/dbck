@@ -240,6 +240,7 @@ for i = 1 to $sys["LARGEST"]
         unset ('sys[' // $i // ']')
         set error = (%+1)
         set deleted = (%+1)
+        set ss = ' '    ; tag for check_topo
 ;detect system with unknown spins
      else
         while ($splist s! " ")
@@ -251,11 +252,12 @@ for i = 1 to $sys["LARGEST"]
                 @rem_spin_sys $i $sp    
                 set error = (%+1)
                 set deleted = (%+1)
+                set ss = ' '    ; tag for check_topo
           endif
         endwhile
      endif
 ;check topology
-     check_topo $i
+     if ($ss s! ' ') check_topo $i
    endif
    set j = (%+1)   inprogress $j
 endfor

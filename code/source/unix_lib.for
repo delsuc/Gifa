@@ -112,39 +112,39 @@ c Init_timer initializes the timer for subsequent use by show_timer.
 c This subroutine is used to display the elapsed time since the call
 c  to Init_timer was made.
        implicit none
-       character*256 st
+#include "gifshellv.inc"
        real x
 #alliant        real*4 dtime,tarray(2)
 #alliant        common/timer/tarray
 #alliant        x  = dtime(tarray)
-#alliant        write(st,*) 'Total ',x,' User ',tarray(1),' System ',tarray(2)
+#alliant        write(sttimer,*) 'Total ',x,' User ',tarray(1),' System ',tarray(2)
 
 #f2c        real*4 dtime,tarray(2)
 #f2c        common/timer/tarray
 #f2c        x  = dtime(tarray)
-#f2c        write(st,*) 'Total ',x,' User ',tarray(1),' System ',tarray(2)
+#f2c        write(sttimer,*) 'Total ',x,' User ',tarray(1),' System ',tarray(2)
 
 #sun        real*4 dtime,tarray(2)
 #sun        common/timer/tarray
 #sun        x  = dtime(tarray)
-#sun        write(st,*) 'Total ',x,' User ',tarray(1),' System ',tarray(2)
+#sun        write(sttimer,*) 'Total ',x,' User ',tarray(1),' System ',tarray(2)
 
 #sgi        real*4 dtime,tarray(2)
 #sgi        common/timer/tarray
 #sgi        x  = dtime(tarray)
-#sgi        write(st,*) 'Total ',x,' User ',tarray(1),' System ',tarray(2)
+#sgi        write(sttimer,*) 'Total ',x,' User ',tarray(1),' System ',tarray(2)
 
 #adec        real*4 dtime,tarray(2)
 #adec        common/timer/tarray
 #adec        x  = dtime(tarray)
-#adec        write(st,*) 'Total ',x,' User ',tarray(1),' System ',tarray(2)
+#adec        write(sttimer,*) 'Total ',x,' User ',tarray(1),' System ',tarray(2)
 
 #aix        integer clock,y,mclock
 #aix        common/timer/clock
 #aix        y = mclock()
 #aix        x = (y - clock )/100.0
 #aix        clock = y
-#aix        write(st,*) 'Total ',x,'sec.'
+#aix        write(sttimer,*) 'Total ',x,'sec.'
 
 #hp$HP9000_800 INTRINSICS
 #hp$NOSTANDARD INTRINSICS
@@ -155,9 +155,9 @@ c  to Init_timer was made.
 #hp        x = (y - clock )/1000000.0
 #hp        clock = y
 #hp        sec = secnds(sec)
-#hp        write(st,*) 'Elapsed :',sec,' sec.','   CPU :',x,' sec.'
+#hp        write(sttimer,*) 'Elapsed :',sec,' sec.','   CPU :',x,' sec.'
 
-       call gifaout(st)
+       call gifaout(sttimer)
        end
 
        subroutine getwdir(st)

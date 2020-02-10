@@ -1,0 +1,96 @@
+;This form is a simple interface, which permits to use most of the
+;Gifa features when processing 1D.
+;
+;It is meant for simple / standard processing. Many other possibilities 
+;are available in Gifa, either from the menu entries or from the command line.
+;
+;You will have to fill several fields, and to execute actions.
+;
+;The form can remain on screen as long as you wish, you can even have several
+;forms opened at the same time, which will execute different processing.
+;__________________________________________________________________________
+;The entries to fill-in are :
+;
+;Filename : The file that contains the FID that will be loaded for processing
+;
+; "info. on data" 
+;   Clicking on this button will list on the terminal the content of header
+;   of the file.
+;
+;apodisation - F2 apodisation  : the apodisation (window) that will be applied
+;   before Fourier transform, along with parameters
+;   The available apodisation functions are :
+;      sin  - The sine bell       parameter : 0 = pure Cosine,  0.5 = pure Sine
+;      sqsin - The squred sine bell 
+;      expbroad - exponential broadening   parameter : width in Hz
+;      gaussbroad - Gaussian broadening   parameter : width in Hz
+;      none
+;
+;Fourier transform
+;   FT type    sim (complex data);  seq (real/tppi data)
+;   size after FT (but will be halved if you throw the imaginaries)
+;
+; Phasing parameters
+;   Enter here the phase corrections which should be determined independently
+;   Use Find phase to determine phase correction.
+;      The phase thus found will be added to the current phase parameters
+;   The "Automatic phase corr." button will try to phase for you
+;      using an automatic phasing algorithm
+;   Use the "Clear" button to reset phase parameters to zero
+;
+; Baseline correction
+;   You can choose to apply automatic baseline correction on both axes,
+;   "polynomial" corresponds to 'BCORR 3'
+;   "2 stages" corresponds to 2 succesive 'BCORR 3' corrections with
+;        bcorrp1 and bcorrp0 parameters
+;   The "Apply b.corr." button will apply the baseline corrections
+;      to the data-set currently in memory.
+;
+; "Do it all"
+;   Apply all the processing currently defined in the form,
+;   actually realises the same that the Apply and ok buttons below
+;
+; "Write macro"
+;   writes a executable macro file which, when executed,
+;   realises the same that the current form
+;
+; "Read macro"
+;   load a previously written macro file, and create a pre-loaded form
+        ;------------programmer info --------------------------------------------
+; easy1D args...
+; builds and apply a standard action for 2D processing
+;
+; args permit to set default values for parameters
+; easy1D %% is valid though
+;
+; see also : easy2d FT
+
+formbox "easy 1d" \
+	"easy1d_doit $ffn $fw2 $fw2p $fz2 $fft2 $fmod $fph20 $fph21 $fb2 'Do it'" \
+	Filename file ffn $_ noreturn \
+	"   info. on" message noreturn \ 
+	"dataset" action 'join $ffn dataset disjoin' \
+	separator \
+	"apodisation" enum "none,sin,sqsin,expbroad,gaussbroad" fw2 $_ noreturn \
+	' ' real fw2p $_ \
+	"FT type" enum "sim,seq" fft2 $_ noreturn \
+	"Size after FT" enum "512,1024,2048,4096,8192,16384,32768,65536" fz2 $_ \
+	separator \
+	"Phasing parameters" enum "phase-sensitive,modulus" fmod $_ noreturn \
+        "Automatic phase corr." action "apsl easy1d $ffn $fw2 $fw2p $fft2 $fz2 $fmod ($fph20+$ph0) ($fph21 +$ph1) % closeform $widget"  \
+	"0 order" real fph20 $_ noreturn \
+	"1 order" real fph21 $_ noreturn \
+	"Find phase (ph)" action "ph easy1d $ffn $fw2 $fw2p $fft2 $fz2 $fmod ($fph20+$ph0) ($fph21+$ph1) % closeform $widget" noreturn \
+        "Clear" action  "easy1d $ffn $fw2 $fw2p $fft2 $fz2 $fmod 0 0 $fb2 closeform $widget"  \
+	separator \
+	"Baseline correction (will extract real part)" message \
+        "Apply b.corr." action "easy1d_doit $ffn $fw2 $fw2p $fz2 $fft2 $fmod $fph20 $fph21 $fb2 'Do b.corr only'"  \
+	noreturn \
+	'Correction mode' enum "none,polynomial,2 stages" fb2 $_ \
+	separator \
+        "Do it all" action "easy1d_doit $ffn $fw2 $fw2p $fz2 $fft2 $fmod $fph20 $fph21 $fb2 'Do it'" noreturn \
+        "Write macro" action "easy1d_doit $ffn $fw2 $fw2p $fz2 $fft2 $fmod $fph20 $fph21 $fb2  'Write macro'" noreturn \
+        "Read macro" action "easy1d_doit $ffn $fw2 $fw2p $fz2 $fft2 $fmod $fph20 $fph21 $fb2  'Load macro' closeform $widget" noreturn \
+	"         " message noreturn \
+	"Help" action "help easy1d" \
+	*

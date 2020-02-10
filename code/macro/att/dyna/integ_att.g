@@ -17,7 +17,7 @@ if ($pk_fnd_dst < $tol_click ) then
   quant1pk.g 
 else
   alert ("No peak found within"; $tol_click; "ppm")
-  set returned := 0
+  return 0
 endif
 
 

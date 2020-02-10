@@ -150,16 +150,18 @@ c Too many peaks to remove
  
 c normal exit
 510	continue 
-	call bsort(tindex,nbpic2d-nbpic_new) 
-	itemp = nbpic2d-nbpic_new
-c	do i = 1,itemp
+        if (nbpic2d.gt.nbpic_new) then   ! if there is something to do
+	  itemp = nbpic2d-nbpic_new
+	  call bsort(tindex,itemp) 
+c	  do i = 1,itemp
 c	   write(*,*)'tindex',tindex(i),i
-c	enddo       
-	do i=1,pk2d
-        call cicopvect(tindex,peak2d(1,i),peak2d(1,i),nbpic2d,itemp)
-        call cicopsvect(tindex,peak2d_id(i),peak2d_id(i),nbpic2d,itemp)
-      enddo
-        nbpic2d = nbpic_new
+c	  enddo       
+	  do i=1,pk2d
+            call cicopvect(tindex,peak2d(1,i),peak2d(1,i),nbpic2d,itemp)
+	  enddo
+          call cicopsvect(tindex,peak2d_id,peak2d_id,nbpic2d,itemp)
+          nbpic2d = nbpic_new
+	endif
  
 	return
 	end

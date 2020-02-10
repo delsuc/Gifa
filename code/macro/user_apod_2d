@@ -28,5 +28,15 @@ if ($direc s= 'F2') then
    put filter
    dim 2
    apply filter f2
+elsif ($direc s= 'F1') then
+   col 1
+   dim 1
+   one
+   apod_user $st
+   put filter
+   dim 2
+   apply filter f1
 else
-   
+   error 'Wrong axis'
+endif
+ 

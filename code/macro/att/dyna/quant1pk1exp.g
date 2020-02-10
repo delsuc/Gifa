@@ -38,7 +38,7 @@ if (($y+$mask1 <= $C_SIZEF1) & ($y-$mask1 >= 1)) then
   set ctry = ($mask1) 
 elsif ($y+$mask1 > $C_SIZEF1) then
   set ctry = ($mask1)
-  print ("toto"; ($y+$mask1 - $C_SIZEF1) ; "ctry"; $ctry)
+;  print ("toto"; ($y+$mask1 - $C_SIZEF1) ; "ctry"; $ctry)
 elsif ($y-$mask1 < 1) then
   set ctry = ($mask1 + ($y-$mask1 - 1))
 endif
@@ -72,19 +72,20 @@ if ($intmeth s= "Sumrec") then
     elsif ($errmeth s= "Multiexp") then
       set err = $bruit
     endif
-    set returned := ($sumrec ; $err)
+    return ($sumrec ; $err)
 elsif ($intmeth s= "MaxInBox") then
 ;    print ("sumrec";($mask1-$diff1) ;($mask2-$diff2) ;($mask1+$diff1+1) ;($mask2+$diff2+1))
 ;    print ("MaxInBox";($ctry-$diff1) ;($ctrx-$diff2) ;($ctry+$diff1+1) ;($ctrx+$diff2+1))
 ;    sumrec ($mask1-$diff1) ($mask2-$diff2) ($mask1+$diff1+1) ($mask2+$diff2+1)
+;    maxinbox.g ($ctry-$diff1) ($ctrx-$diff2) ($ctry+$diff1+1) ($ctrx+$diff2+1)
+;    set maxinbox = $returned   ; -- used to be a macro, now a command
     maxinbox ($ctry-$diff1) ($ctrx-$diff2) ($ctry+$diff1+1) ($ctrx+$diff2+1)
-    set max = $returned
     if ($errmeth s= "Baseline") then
       set err = $noise
     elsif ($errmeth s= "Multiexp") then
       set err = $bruit
     endif
-    set returned := ($max ; $err)
+    return ($maxinbox ; $err)
 endif
 
 ; print ("quant1pk1exp:"; $returned)

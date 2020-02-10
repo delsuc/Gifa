@@ -1,24 +1,42 @@
 ; Realizes the least-square fit of a DOSY 1D curve,
 ; as extracted from a 2D or 3D DOSY experiment
 ; tries to fit 2 exponential damping
+;
+; values are computed directly in physical units thanks to $dfactor
+;
 ; SHOULD BE USED WITH CAUTION
 ;
-; see also : dosyfit FITGENE, INVTLAP, dosy2d, showexp
+; see also : dosyfit dosyfit_2_verbose FITGENE FITEXP INVTLAP dosy2d
+
+ ; added iter 20 nov 2001
 
 gm/test1d
-; First fits one daming, then fits two.
-set exp = '$p2*exp(-$p1*$x/$dfactor)'
-set p1 := ($dfactor/$tab[round($si1_1d/2)]) ; eval initial $p1 and $p2
-set p2 := (val1d(1))
-fitgene $exp 2			; do first fit with 1 damping
+set it = $iter
+iter 20
 
+; First fits one damping, then fits two.
+set exp = '$p1*exp(-$p2*$x/$dfactor)'
+set p2 := ($dfactor/$tab[round($si1_1d/2)]) ; eval initial $p2 and $p1
+set p1 := (val1d(1))
+if (head(tail($version)) < 4.322) then
+  fitgene $exp 2			; do first fit with 1 damping
+else
+  set p2 = ($p2/$dfactor)   ; fitexp does not know of dfactor
+  fitexp 1
+endif
 print 'Ignore previous message !'
 
-set exp = ($exp // '+$p4*exp(-$p3*$x/$dfactor)')
-set p2 = ($p2/2)   set p4 = $p2
-set p3 = ($p1/3)   set p1 = (3*$p1)
-fitgene $exp 4			; then final fit
+set exp = ($exp // '+$p3*exp(-$p4*$x/$dfactor)')
+set p1 = ($p1/2)   set p3 = $p1
+set p4 = ($p2/3)   set p2 = (3*$p2)
+if (head(tail($version)) < 4.322) then
+  fitgene $exp 4			; then final fit
+else
+  fitexp 2
+  set p2 = ($p2*$dfactor)   ; fitexp does not know of dfactor
+  if ($dp2 s! 'Inf' & $dp2 s! 'NaN')    set dp2 = ($dp2*$dfactor)
+  set p4 = ($p4*$dfactor)
+  if ($dp4 s! 'Inf' & $dp4 s! 'NaN')    set dp4 = ($dp4*$dfactor)
+endif
 
-showexp $exp
-print (' Amplitudes :';$p2;'+/-';$dp2;'   ';$p4;'+/-';$dp4)
-print ('   dampings :';$p1;'+/-';$dp1;'   ';$p3;'+/-';$dp3; 'micron^2/sec')
+iter  $it

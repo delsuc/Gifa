@@ -24,11 +24,16 @@ foreach pid in att
 ;        set t = (tail(tail(tail(tail(tail($pk))))))
 	if (tolower($sp1) s! "unk") then
 	  set sp1 = (tail($spin[$sp1]))
-	  set sp1 = (head($sp1) // "-" // head(tail($sp1)))
+; modif MAD - oct 2002  / now index in seq of spin-system
+          set ss = (head(tail($sp1)))
+          set ss = (head($sys[$ss]))
+	  set sp1 = (head($sp1) // "-" // $ss)
 	endif
 	if ( tolower($sp2) s! "unk") then
 	  set sp2 = (tail($spin[$sp2]))
-	  set sp2 = (head($sp2) // "-" // head(tail($sp2)))
+          set ss = (head(tail($sp1)))
+          set ss = (head($sys[$ss]))
+	  set sp2 = (head($sp2) // "-" // $ss)
 	endif
 ;	fprintf $tmp "%6.3f %6.3f %5s %5s %10.0f %4d %s" $f1 $f2 $sp1 $sp2 $amp $pid $pk *
 	set f1 = (int(1000*$f1)/1000)

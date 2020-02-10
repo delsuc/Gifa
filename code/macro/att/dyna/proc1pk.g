@@ -1,10 +1,12 @@
-; proc1pk.g $data_typ
+; proc1pk.g $data_typ $coef
 ;
 ; Fit the integration curve of one peak using fitgene for R1 and R2 
 ; or division for NOE
+; or list of of division for dispersion
 ;
 
 set data_typ = $_
+set coef = $_
 
 if (($data_typ s= "R1") | ($data_typ s= "R2") | ($data_typ s= "T1") | ($data_typ s= "T2") | ($data_typ s= "J")) then
   dim 1
@@ -21,7 +23,8 @@ if (($data_typ s= "R1") | ($data_typ s= "R2") | ($data_typ s= "T1") | ($data_typ
     set n = (%+$error[$i])
   endfor
   
-  noise $n
+  noise ($coef*$n)
+
   for i = 1 to $nbexp
     setval $i ($n/$error[$i])
   endfor
@@ -67,16 +70,20 @@ elsif ($data_typ s= "R2") then
 ; determined by nonlinear least-square fitting
 ; to the equation : I(t) = I0 * exp(-R2 * t)
 ;
-  set exp := '$p2 * exp(-$p1*$x)'
-  set p2 := (val1d(1))
-  set p1 := (12/$tab[$si_tab])
+  set p1 := (val1d(1))
+  set p2 := (12/$tab[$si_tab])
   iter 100
-  fitgene $exp 2
-  set I0 := $p2
-  set dI0 := ($dp2/2)
-; gives the result in secondes !!
-  set R2 := $p1
-  set dR2 := ($dp1/2)
+  set exp := '$p1 * exp(-$p2*$x)'
+  if (head(tail($version)) < 4.322) then
+    fitgene $exp 2
+  else
+    fitexp 1
+  endif    
+  set I0 := $p1
+  set dI0 := ($dp1/2)
+; gives the result in seconds !!
+  set R2 := $p2
+  set dR2 := ($dp2/2)
   
   print ("R2";$R2;"+/-";$dR2;"I0";$I0;"+/-";$dI0)
 
@@ -84,16 +91,42 @@ elsif ($data_typ s= "R2") then
 
 elsif ($data_typ s= "NOE") then
 
-  if (($nbexp != 2) | ($paramx[1] s! "with") | ($paramx[2] s! "without")) then
+ if (($nbexp != 2) | ($paramx[1] s! "with") | ($paramx[2] s! "without")) then
     alert ("Wrong data type for this peak")
   else
     set NOE := ($integ[1]/$integ[2])
-    set tmp1 = $error[1]
-    set tmp2 = $error[2]
+    set tmp1 = ($coef*$error[1])
+    set tmp2 = ($coef*$error[2])
     set dNOE := ( sqrt( ($tmp1/$integ[2])^2 + ($tmp2*$integ[1]/($integ[2]^2))^2 ) )
   endif
 
   print ("NOE";$NOE;"+/-";$dNOE)
+
+elsif ($data_typ s= "disp") then
+
+   for i = 1 to $nbexp
+        if ($paramx[$i] == 0) set ix0 = $i   goto nu_zero
+   endfor
+   error "No reference value (nu=0) for dispersion data"
+=nu_zero
+
+set r2cpmg_list := " "
+   for i = 1 to $nbexp    
+        if ($i != $ix0) then
+                set ratio = ($integ[$ix0]/$integ[$i])
+                if ($ratio <= 0) then
+                        print ("problem with nu="; $paramx[$i]; "log of negative value." )
+                        set r2cpmg = "NaN"
+                        set dr2cpmg = "NaN"
+                else
+                        set r2cpmg = ((1/$Tconstant)*log($ratio))
+                        set dr2cpmg = ((1/$Tconstant)*($coef*$error[$ix0]/$integ[$ix0] + $coef*$error[$i]/$integ[$i]))
+                endif
+		sprintf "%s\t%.3f\t%.3f" $r2cpmg_list $r2cpmg $dr2cpmg *
+                set r2cpmg_list := $returned
+        endif
+   endfor
+   print ("disp";$r2cpmg_list)
 
 
   

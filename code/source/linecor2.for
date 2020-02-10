@@ -36,6 +36,7 @@ c yy : 1 or 2 in 2D   / 1, 2, or 3 in 3D
      *        portion(2*maxportion),nbpt(3),nbrep,err
       real y00,y01,y02,y10,y11,y12,y20,y21,y22,
      *     rsize,min,max,rep(2,3)
+#f2c      save indice        ! needed for C array
 
       rsize = sizeimage1D
 

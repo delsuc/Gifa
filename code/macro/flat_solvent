@@ -1,0 +1,90 @@
+; flat_solvent param
+;
+; this macro will remove most of water signal (large zero-frequency
+; signal) by fitting and removing the water FID in the time domain
+; based from an idea of Marion, D., Ikura, M. and Bax,
+; A. J.Magn.Reson. 84 p425 (1989).
+;
+; used in 1D, will overflow the 2D area !!
+;
+; argument:
+;	no argument => open a form box
+;	polynomial => apply polynomial correction
+;	moving_average => apply a moving average correction
+;	polynomial+moving_average => apply both in this order
+;	moving_average+polynomial  => apply both in this order
+;
+; to be used before any processing, on the FID.
+ ;
+if (!$arg) then
+  formbox "FLATTEN SOLVENT" \
+     "flat_solvent $flatt" \
+     "Flatten mode" enum "polynomial,moving_average,polynomial+moving_average,moving_average+polynomial" flatt % \
+     *
+else
+  set param = $_
+  refmacro 0
+  ;check size (uses bcorr 3)
+  if ($dim == 1) then
+	set i = $si1_1d
+  elsif ($dim == 2) then
+	set i = $si2_2d
+  else
+    error "Not implemented in 3D"
+  endif
+
+  ; $MEM_PRO_2D/22 is the magic size for bcorr 3
+  if ($i > ($MEM_PRO_2D/22)) error "Size too big for operation"
+
+  if ($dim == 1) then
+  ;  alert "2D region will be overflowed !"
+    set svspecw = $specw_1d
+    set svfreq = $freq_1d
+    set svoff = $offset_1d
+    dim 2
+    itype $itype_1d chsize 1 $si1_1d
+    set _rem_1d = 1
+    put row 1
+  elsif ($dim == 2) then
+    set _rem_1d = 0
+  endif
+
+  row 1
+  if ($itype_1d != 0) then     ; if complex, has to uswap first
+    set _rem_uswa = 1
+    if (power2($si1_1d) != $si1_1d) chsize % (2*power2($si1_1d))
+    uswa f2
+    modifysize (2*$si1_2d) %
+  else
+    set _rem_uswa = 0
+  endif
+
+  if ($param s= 'polynomial') then
+    bcorrp0 segm1 0 bcorr 3 f2 bcorrp0	; polynomial
+  elsif ($param s= 'moving_average') then
+    bcorrp1 segm1 0 bcorr 3 f2 bcorrp0     ; moving average do correction
+  elsif ($param s= 'polynomial+moving_average') then
+    bcorrp0 segm1 0 bcorr 3 f2 bcorrp0	; polynomial
+    bcorrp1 segm1 0 bcorr 3 f2 bcorrp0     ; moving average do correction
+  elsif ($param s= 'moving_average+polynomial') then
+    bcorrp1 segm1 0 bcorr 3 f2 bcorrp0     ; moving average do correction
+    bcorrp0 segm1 0 bcorr 3 f2 bcorrp0	; polynomial
+  endif 
+
+ 
+  if ($_rem_uswa != 0) then    ; reswap if needed
+    modifysize ($si1_2d/2) %
+    swa f2
+    if ($si1_1d != $si2_2d) chsize % $si1_1d
+  endif
+
+  if ($_rem_1d == 1)  then     ; was a 1D
+    row 1
+    dim 1
+    specw $svspecw
+    freq % $svfrq
+    offset $svoff
+  endif
+endif
+exit
+

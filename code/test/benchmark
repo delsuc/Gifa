@@ -36,7 +36,8 @@ verbose 1    ; check what you're doing
 ;  * 3.2"  - SUN/Entreprise CPU UltraSparcII 250MHz
 ;  * 2.67" - SGI Origin 200 R10000 225MHZ
 ;  * 2.5"  - PowerBook G3 400MHz running MacOsX
-;  * 2.3"  - a Mac G3 400MHz LinuxPPC 2000
+;  * 2.49" - SGI Octane R10000 250MHz
+;  * 2.3"  - Mac G3 400MHz LinuxPPC 2000
 ;  * 2.13" - Pentium II  450MHz Linux RH 6.0
 ;  * 2.0"  - Mac G4 400MHz running MacOsX
 ;  * 1.60" - Mac G4 800 MHz MacOsX (still to be optimized)

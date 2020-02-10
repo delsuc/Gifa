@@ -96,8 +96,8 @@ C ar(szar) the autoregressive polynome.
 C data(szdata) experimental data
       implicit none
       integer szrec,szar,szdata
-      complex rec(szrec),data(szdata),temp
-      complex*16 ar(szar)
+      complex rec(szrec),data(szdata)
+      complex*16 ar(szar),temp
       integer i,k
 c
       do i = szdata-szar,1,-1
@@ -315,8 +315,8 @@ C
  
 #include "constant.inc"
       integer i,size,k,indx(size)
-      real dfreq,freq0,temp,temp1,specw,tpi
-      real*8 zr,zi,freq,amp
+      real dfreq,freq0,temp,specw,tpi
+      real*8 zr,zi,freq,amp,temp1
       complex*16 array(size)
 
  
@@ -332,7 +332,7 @@ c If zr.ne.0, no problem, else there is special values for frequences.
 c
 	freq=atan2(zi,zr)
 	if (zr.ne.0.d0) then
-	  temp1 = real(datan(zi/zr))*specw/tpi
+	  temp1 = dreal(datan(zi/zr))*specw/tpi
 	   if (zr.lt.0.d0)  freq = temp1 + specw/2
 	   if ((zi.gt.0.d0).and.(zr.gt.0.d0)) 
      &	 		 freq = temp1 
@@ -374,7 +374,9 @@ c
 	real*8 power
 	complex*16 afloc(ldmax),wk1loc(sizemax/2)
 	complex*16 wk2loc(sizemax/2)
- 
+#sgi      save afloc, wk1loc, wk2loc            ! this is needed because of a limited size for local C variables
+#f2c      save afloc, wk1loc, wk2loc            ! this is needed because of a limited size for local C variables
+       
 c	error = 0
 	call burgc(rdata,szdata,order,power,afloc,
      *		wk1loc,wk2loc,error)

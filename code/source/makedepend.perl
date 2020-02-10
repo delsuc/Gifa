@@ -1,4 +1,4 @@
-#!/usr/local/bin/perl
+#!/usr/bin/perl
 open(IN,"<depend_list.in");
 open(OUT,">depend_list");
 
@@ -25,6 +25,8 @@ print OUT "# computed dependence list\n";
 	$ff=$1;
 	if (-e $ff.".for") { 
 	    $nm = $ff.".for";
+        } elsif (-e $ff.".f72") {
+            $nm = $ff.".f72";
 	} elsif (-e $ff.".c") { 
 	    $nm = $ff.".c";
 	} else {

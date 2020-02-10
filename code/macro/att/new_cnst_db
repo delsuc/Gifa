@@ -1,0 +1,25 @@
+;new_cnst_db filename
+;
+; creates/open a cnst database.
+
+if (!$arg) then
+dialogbox 'Enter data base name' 'Enter constraint data base file name' string cnstname cnst *
+else
+set cnstname = $_
+endif 
+
+if (fexist("constraints/"//$cnstname//".pag")) then
+	gm/al_yesno ($cnstname;" already exist ! Ok to remove file?")
+	if ($returned s= "yes")  then
+		if (dbm("cnst")) dbclose cnst
+		sh ("/bin/rm constraints/"//$cnstname//".pag")
+		sh ("/bin/rm constraints/"//$cnstname//".dir")
+		dbopen ("constraints/"//$cnstname) cnst
+		set cnst["LARGEST"] = 0
+	endif
+else
+	if (dbm("cnst")) dbclose cnst
+	dbopen ("constraints/"//$cnstname) cnst
+	set cnst["LARGEST"] = 0
+endif
+

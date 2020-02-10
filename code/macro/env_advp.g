@@ -19,5 +19,5 @@ buttonbox 'Advanced proc' \
    separator \
    'DMX phase' dmxphase \
    'DMX clean' dmxclean \
-   'Remove H2O' 'rem_h2o' \
+   'Flatten solvent' 'flat_solvent' \
    *

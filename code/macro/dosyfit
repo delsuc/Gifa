@@ -1,15 +1,26 @@
 ; Realizes the least-square fit of a DOSY 1D curve,
+; as extracted from a 2D or 3D DOSY experiment.
 ;
-; as extracted from a 2D or 3D DOSY experiment
+; values are computed directly in physical units thanks to $dfactor
 ;
-; see also : dosyfit_2 FITGENE, INVTLAP, dosy2d, showexp
+; see also : dosyfit_2 dosyfit_verbose FITGENE FITEXP INVTLAP dosy2d
+
+ ; added iter 20 nov 2001
 
 gm/test1d
-set exp = '$p2*exp(-$p1*$x/$dfactor)'
-set p1 := ($dfactor/$tab[round($si1_1d/2)]) ; eval initial $p1 and $p2
-set p2 := (val1d(1))
-fitgene $exp 2			; do fit
+set it = $iter
+iter 20
 
-showexp $exp
-print (' Amplitude :';$p2;'+/-';$dp2)
-print ('   damping :';$p1;'+/-';$dp1; 'micron^2/sec')
+set exp = '$p1*exp(-$p2*$x/$dfactor)'
+set p2 := ($dfactor/$tab[round($si1_1d/2)]) ; eval initial $p1 and $p2
+set p1 := (val1d(1))
+if (head(tail($version)) < 4.322) then
+  fitgene $exp 2			; do fit
+else    ; fitexp is much faster, but new
+  set p2 = ($p2/$dfactor)   ; fitexp does not know of dfactor
+  fitexp 1
+  set p2 = ($p2*$dfactor)   ; fitexp does not know of dfactor
+  if ($dp2 s! 'Inf' & $dp2 s! 'NaN')    set dp2 = ($dp2*$dfactor)
+endif
+
+iter  $it

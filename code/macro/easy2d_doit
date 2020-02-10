@@ -6,9 +6,9 @@
 refmacro 0
 
 ; Author M.A.Delsuc
-; last modif : 6 oct 99 - added backward LP
+; last modif : 10 oct 2001 added bruker filter
 ;
-; easy2d_doit is not easy macro proramming !
+; easy2d_doit is not easy macro programming !
 ; several modes are mixed here, in a not optimal fashion
 ;  read/write macro        in-memory/on-file processing
 ;
@@ -21,7 +21,7 @@ set fw1 = $_
 set fw1p = $_
 set fw2 = $_
 set fw2p = $_
-set remh = $_
+set flatt = $_
 set miss1 = $_
 if ($miss1 < 0) error "Number of points for backward prediction should be positive"
 set miss2 = $_
@@ -30,6 +30,7 @@ set fz1 = $_
 set fz2 = $_
 set fft1 = $_
 set fft2 = $_
+set fdig = $_
 set burg = $_
 set fmod = $_
 set fph10 = $_
@@ -52,7 +53,6 @@ if ($fft1 s! 'none') set fft1 = ("ft_" // $fft1)
 if ($fft2 s! 'none') set fft2 = ("ft_" // $fft2)
 if ($fft1 s= 'none')  then
     set f1st = 'no'
-    set remh = 'no'
     set fph10 = 0
     set fph11 = 0
     set fb1 = none
@@ -61,6 +61,16 @@ if ($fft2 s= 'none')  then
     set fph20 = 0
     set fph21 = 0
     set fb2 = none
+endif
+
+; check for bruker parameters
+if ($fdig s= 'on') then
+    join $ffn
+    if (!hexist("BRUKER_DECIM")) bruker_add_param $ffn
+    set dspfvs = (header("BRUKER_DSPFVS"))
+    set dspfirm = (header("BRUKER_DSPFIRM"))
+    set decim = (header("BRUKER_DECIM"))
+    disjoin
 endif
 
 ;switch on action  and on on_file flag
@@ -80,11 +90,13 @@ if $on_file then
   if ($fact s= "Do it" |  $fact s= "Do it but phase" | $fact s= "Write macro" ) then
         if ($fft2 s! "none") then     ; build f2 proc
             if ($fz2 < $C_SIZEF2) set proc2 = ($proc2; "chsize"; $fz2)
-            if ($remh s= 'yes') set proc2 = ($proc2; 'rem_h2o')
+            if ($flatt s! 'no') set proc2 = ($proc2; 'flat_solvent';$flatt)
             if ($miss2 > 0) set proc2 = ($proc2; 'burg_back ($si2_2d+' // $miss2 // ')' )
             if ($fw2 s! "none") set proc2 = ($proc2; $fw2; $fw2p)
             if ($fz2 > $C_SIZEF2) set proc2 = ($proc2; "chsize"; $fz2)
             set proc2 = ($proc2; $fft2)
+            if ($fdig s= 'on') \
+                set proc2 = ($proc2; "bruker_corr";$dspfvs;$dspfirm;$decim)
         endif
         if ($fft1 s! "none") then     ; build f1 proc
           if ($f1st s= 'yes') then
@@ -131,17 +143,40 @@ if $on_file then
   if ($fact s= "Do b.corr only" | $fact s= "Do it" | $fact s= "Write macro") then
             if ($fb2 s! "none") then
                set proc2 = ($proc2; "real")
-               if ($fb2 s= "polynomial") set postp2 = ($postp2; "bcorr 3")
-                 if ($fb2 s= "2 stages") set postp2 = ($postp2; "bcorrp1 bcorr 3 bcorrp0 bcorr 3")
+               if ($fb2 s= "polynomial") then
+                 set postp2 = ($postp2; "bcorrp0 bcorr 3")
+                 set szint = (%/2)
+                 set szfin = (%/2)                  
+               elsif ($fb2 s= 'moving_average') then
+                 set postp2 = ($postp2; "bcorrp1 bcorr 3 bcorrp0")
                  set szint = (%/2)
                  set szfin = (%/2)
-              endif
+               elsif ($fb2 s= 'polynomial+moving_average') then
+                 set postp2 = ($postp2; "bcorrp0 bcorr 3 bcorrp1 bcorr 3 bcorrp0")
+                 set szint = (%/2)
+                 set szfin = (%/2)
+               elsif ($fb2 s= "moving_average+polynomial") then
+                 set postp2 = ($postp2; "bcorrp1 bcorr 3 bcorrp0 bcorr 3")
+                 set szint = (%/2)
+                 set szfin = (%/2)
+               endif
+            endif   
             if ($fb1 s! "none") then
                set proc1 = ($proc1; "real")
-               if ($fb1 s= "polynomial") set proc1 = ($proc1; "bcorr 3")
-                 if ($fb1 s= "2 stages") set proc1 = ($proc1; "bcorrp1 bcorr 3 bcorrp0 bcorr 3")
+               if ($fb1 s= "polynomial") then
+                 set proc1 = ($proc1; "bcorrp0 bcorr 3")
                  set szfin = (%/2)
-              endif
+               elsif ($fb1 s= "moving_average") then
+                 set proc1 = ($proc1; "bcorrp1 bcorr 3 bcorrp0")
+                 set szfin = (%/2)
+               elsif ($fb1 s= "polynomial+moving_average") then
+                 set proc1 = ($proc1; "bcorrp0 bcorr 3 bcorrp1 bcorr 3 bcorrp0")
+                 set szfin = (%/2)
+               elsif ($fb1 s= "moving_average+polynomial") then
+                 set proc1 = ($proc1; "bcorrp1 bcorr 3 bcorrp0 bcorr 3")
+                 set szfin = (%/2)      
+               endif
+             endif  
   endif
   set fout = ($ffn // '~')
   set ftemp = ($ffn // ".temp")
@@ -156,7 +191,7 @@ if $on_file then
          noreturn ("(Size"; $szint; "Mo)") message \
          "(temporary file will be deleted at the end of the processing)" message \
          separator \
-         "Hint : reduce finale file size by keeping only the real part (baseline correction) " message *
+         "Hint : reduce final file size by keeping only the real part (baseline correction) " message *
   endif
 
                 ;Now do the processing
@@ -185,14 +220,14 @@ if $on_file then
     elsif ($proc2 s! " ") then
       proc2d $ffn $fout F2 ($proc2;$postp2)
     endif
-  endif
 
-  if ($szfin < $mem_max) then    ; this actually happens quite often (when throw away Im)
-     read $fout
-  else
-     print ("Processing is finished, out file is :"; $fout)
-     print "you may want to access your data with the GETC command,"
-     print "available as the 'get ...' entries in the '..2D on file optionnal menu"
+    if ($szfin < $mem_max) then    ; this actually happens quite often (when throw away Im)
+       read $fout
+    else
+       print ("Processing is finished, out file is :"; $fout)
+       print "you may want to access your data with the GETC command,"
+       print "available as the 'get ...' entries in the '..2D on file optionnal menu"
+    endif
   endif
 
 else          ; if ! on_file
@@ -200,7 +235,7 @@ else          ; if ! on_file
             read $ffn
             if ($miss2 > 0)  print 'Doing Backward LP...' burg2d_back f2 ($si2_2d+$miss2)
             if ($f1st s= 'yes') correct1st
-            if ($remh s= 'yes') rem_h2o
+            if ($flatt s! 'no') flat_solvent $flatt ;flatten solvent
             if ($fft2 s! 'none') if ($fz2 < $si2_2d) chsize % $fz2  ; truncate BEFORE apod.
             if ($fft1 s! 'none') if ($fz1 < $si1_2d) chsize $fz1 %
       
@@ -209,10 +244,11 @@ else          ; if ! on_file
       
               chsize % $fz2                      ; zero-fill AFTER apod.
               $fft2                              ; and FT in F2
+              if ($fdig s= 'on')   bruker_corr $dspfvs $dspfirm $decim
           endif
       
           if ($fft1 s! 'none') then
-            if (($burg s= 'yes') | ($miss1 >0)) then  ; Burg BEFORE apod
+            if (($burg s! 'no') | ($miss1 >0)) then  ; Burg BEFORE apod
               if ($fact s= "Do it") then             ; but AFTER phase
                 if ($fph20 != 0 | $fph21 != 0) then
                    phase $fph20 $fph21 f2
@@ -226,9 +262,15 @@ else          ; if ! on_file
               burg2d_back f1 ($si1_2d+$miss1)
             endif
 
-            if ($burg s= 'yes' & $fz1 > $si1_2d) then
+            if ($burg s! 'no' & $fz1 > $si1_2d) then
               print 'Doing Forward LP...'
-              burg2d F1 $fz1
+		  if ($burg s= 'burg') then
+                  burg2d F1 $fz1
+		  elsif ($burg s= 'mirror on-phase') then
+                  burg2d_mirror F1 0 $fz1
+		  elsif ($burg s= 'mirror off-phase') then
+                  burg2d_mirror F1 -1 $fz1
+              endif
               if ($fw1 s! "none") $fw1 $fw1p f1
             else
               if ($fw1 s! "none") $fw1 $fw1p f1
@@ -259,17 +301,27 @@ else          ; if ! on_file
                if ($itype_2d == 3 | $itype_2d == 1) real f2
             endif
             if ($fb1 s= "polynomial") then
-               bcorr 3 f1
-            elsif ($fb1 s= "2 stages") then
-               bcorrp1 bcorr 3 f1
-               bcorrp0 bcorr 3 f1
-            endif
+	       bcorrp0 bcorr 3 f1
+	    elsif ($fb1 s= 'moving_average') then
+	       bcorrp1 bcorr 3 f1 bcorrp0
+	    elsif ($fb1 s= 'polynomial+moving_average') then
+	       bcorrp0 bcorr 3 f1
+	       bcorrp1 bcorr 3 f1 bcorrp0      
+	    elsif ($fb1 s= "moving_average+polynomial") then
+	       bcorrp1 bcorr 3 f1
+	       bcorrp0 bcorr 3 f1
+	    endif
             if ($fb2 s= "polynomial") then
-               bcorr 3 f2
-            elsif ($fb2 s= "2 stages") then
-               bcorrp1 bcorr 3 f2
-               bcorrp0 bcorr 3 f2
-            endif
+	       bcorrp0 bcorr 3 f2
+	    elsif ($fb2 s= 'moving_average') then
+	       bcorrp1 bcorr 3 f2 bcorrp0
+	    elsif ($fb2 s= 'polynomial+moving_average') then
+	       bcorrp0 bcorr 3 f2
+	       bcorrp1 bcorr 3 f2 bcorrp0      
+	    elsif ($fb2 s= "moving_average+polynomial") then
+	       bcorrp1 bcorr 3 f2
+	       bcorrp0 bcorr 3 f2
+	    endif
       endif
 endif     ; if on_file
 
@@ -280,30 +332,30 @@ if ($fact s= "Write macro") then
     if $on_file then
        fprint $mname "; on_file processing"
          if ($proc2 s! " " & $proc1 s! " ") then
-            fprint $mname ("proc2d"; $ffn; "\")
-            fprint $mname ( $ftemp; "F2 \")
+            fprint $mname ("proc2d"; $ffn; "\ ")
+            fprint $mname ( $ftemp; "F2 \ ")
             fprint $mname ("'"; $proc2; "'")
             if ($prep1 s! " ") then
             fprint $mname ($prep1; $ftemp; $ftemp)
           endif
-            fprint $mname ("proc2d"; $ftemp; "\")
-            fprint $mname ( $fout; "F1 \")
+            fprint $mname ("proc2d"; $ftemp; "\ ")
+            fprint $mname ( $fout; "F1 \ ")
             fprint $mname ("'"; $proc1; "'")
             fprint $mname ("sh '/bin/rm"; $ftemp;"'")
             if ($postp2 s! " ") then         ; this is bcorr in F2
-               fprint $mname ("proc2d"; $fout; "\")
-               fprint $mname ( $fout; "F2 \")
+               fprint $mname ("proc2d"; $fout; "\ ")
+               fprint $mname ( $fout; "F2 \ ")
                fprint $mname ("'"; $postp2; "'")
             endif
             
          elsif ($proc1 s! " ") then
-             fprint $mname ("proc2d" $ffn; "\")
-             fprint $mname ( $fout; "F1 \")
+             fprint $mname ("proc2d" $ffn; "\ ")
+             fprint $mname ( $fout; "F1 \ ")
              fprint $mname ("'"; $proc1; "'")
             
          elsif ($proc2 s! " ") then
-            fprint $mname ("proc2d"; $ffn; "\")
-            fprint $mname ( $fout; "F2 \")
+            fprint $mname ("proc2d"; $ffn; "\ ")
+            fprint $mname ( $fout; "F2 \ ")
             fprint $mname ("'"; $proc2; $postp2; "'")
          endif
        
@@ -312,7 +364,7 @@ if ($fact s= "Write macro") then
             join $ffn               ; to check sizes of input file
             if ($fft2 s! 'none') if ($miss2 > 0)  fprint $mname (' burg2d_back F2 ($si2_2d+ ' // $miss2 // ' )')
             if ($fft1 s! 'none') if ($f1st s= 'yes') fprint $mname "correct1st"
-            if ($fft1 s! 'none') if ($remh s= 'yes') fprint $mname "rem_h2o"
+            if ($fft1 s! 'none') if ($flatt s! 'no') fprint $mname ('flat_solvent';$flatt)
             if ($fft2 s! 'none') if ($fz2 < $c_sizef2) fprint $mname ("chsize %";$fz2)
             if ($fft1 s! 'none') if ($fz1 < $c_sizef1) fprint $mname ("chsize";$fz1;"%")
       
@@ -320,10 +372,12 @@ if ($fact s= "Write macro") then
                 if ($fw2 s! "none")       fprint $mname  ($fw2 ; $fw2p ; "F2")
                 fprint $mname  ("chsize %" ;$fz2)
                 fprint $mname  $fft2
+                if ($fdig s= 'on') \
+                    fprint $mname ("bruker_corr";$dspfvs;$dspfirm;$decim)
             endif
       
             if ($fft1 s! 'none') then
-              if (($burg s= 'yes') | ($miss1 >0)) then  ; Burg BEFORE apod
+              if (($burg s! 'no') | ($miss1 >0)) then  ; Burg BEFORE apod
                 if ($fph20 != 0 | $fph21 != 0) then
                   fprint $mname  ("phase"; $fph20; $fph21; "F2")
                   set phasedf2 = (1==1)   ; flag for later use
@@ -334,8 +388,14 @@ if ($fact s= "Write macro") then
                   fprint $mname ("burg2d_back F1 ($si1_2d+ " // $miss1 // " )" )
               endif
 
-              if ($burg s= 'yes') then
+              if ($burg s! 'no') then
+		    if ($burg s= 'burg') then
                     fprint $mname ("burg2d F1"; $fz1)
+		    elsif ($burg s= 'mirror on-phase') then
+                    fprint $mname ("burg2d_mirror F1 0"; $fz1)
+		    elsif ($burg s= 'mirror off-phase') then
+                    fprint $mname ("burg2d_mirror F1 -1"; $fz1)
+		    endif
                     if ($fw1 s! "none")   fprint $mname  ($fw1 ; $fw1p ; "F1")
               else
                     if ($fw1 s! "none")   fprint $mname  ($fw1 ; $fw1p ; "F1")
@@ -359,30 +419,40 @@ if ($fact s= "Write macro") then
             endif
 
             if ($fb1 s= "polynomial") then
-               fprint $mname "bcorr 3 F1"
-            elsif ($fb1 s= "2 stages") then
-               fprint $mname "bcorrp1 bcorr 3 F1 bcorrp0 bcorr 3 F1  ; 2 stages "
-            endif
+	       fprint $mname "bcorrp0 bcorr 3 f1 ; polynomial"
+	    elsif ($fb1 s= 'moving_average') then
+	       fprint $mname "bcorrp1 bcorr 3 f1 bcorrp0 ; moving_average"
+	    elsif ($fb1 s= 'polynomial+moving_average') then
+	       fprint $mname "bcorrp0 bcorr 3 f1 bcorrp1 bcorr 3 f1 bcorrp0 ; polynomial+moving_average"      
+	    elsif ($fb1 s= "moving_average+polynomial") then
+	       fprint $mname "bcorrp1 bcorr 3 f1 bcorrp0 bcorr 3 f1 ; moving_average+polynomial"   
+	    endif
+	    
             if ($fb2 s= "polynomial") then
-               fprint $mname "bcorr 3 F2"
-            elsif ($fb2 s= "2 stages") then
-               fprint $mname "bcorrp1 bcorr 3 F2 bcorrp0 bcorr 3 F2  ; 2 stages "
-            endif
+	       fprint $mname "bcorrp0 bcorr 3 f2 ; polynomial"
+	    elsif ($fb2 s= 'moving_average') then
+	       fprint $mname "bcorrp1 bcorr 3 f2 bcorrp0 ; moving_average"
+	    elsif ($fb2 s= 'polynomial+moving_average') then
+	       fprint $mname "bcorrp0 bcorr 3 f2 bcorrp1 bcorr 3 f2 bcorrp0 ; polynomial+moving_average"      
+	    elsif ($fb2 s= "moving_average+polynomial") then
+	       fprint $mname "bcorrp1 bcorr 3 f2 bcorrp0 bcorr 3 f2 ; moving_average+polynomial"   
+	    endif
     endif
       close $mname
-      alert ("Macro '"//$mname//"' written, just type its name for applying it")
+      print ("Macro '"//$mname//"' written, just type its name for applying it")
 
 elsif ($fact s= "Load macro") then
       dialogbox macro "Macro name" file mname ($name//'.g') *
       open $mname
     set fft1 = 'none'
     set fft2 = 'none'
+    set fdig = 'off'
       set fw1 = 'none'
       set fw1p = 0
       set fw2 = 'none'
       set fw2p = 0
       set f1st = 'no'
-      set remh = 'no'
+      set flatt = 'no'
       set miss1 = 0
       set miss2 = 0
       set fmod = 'phase-sensitive'
@@ -405,8 +475,8 @@ elsif ($fact s= "Load macro") then
                   set ffn = $param
             elsif ($cmd s= "correct1st") then
                   set f1st = "yes"
-            elsif ($cmd s= "rem_h2o") then
-                  set remh = "yes"
+            elsif ($cmd s= "flat_solvent") then
+                  set flatt = $param
             elsif ($cmd s= "sin" | $cmd s= "sqsin" | $cmd s= "expbroad" | $cmd s= "gaussbroad") then
                   set dd = (toupper(tail($param)))
                   if ($dd s= "F1") then
@@ -418,13 +488,22 @@ elsif ($fact s= "Load macro") then
                   endif
             elsif ($cmd s= "chsize") then
                   if (head($param) s= "%") then
-                        set fz2 = (tail($param))
+                        set fz2 = (head(tail($param)))
                   else
                         set fz1 = (head($param))
                   endif
             elsif ($cmd s= "burg2d") then
-                  set fz1 = (tail($param))
-                  set burg = "yes"
+                  set fz1 = (head(tail($param)))
+                  set burg = "burg"
+            elsif ($cmd s= "burg2d_mirror") then
+                  set param = (tail($param))
+			set offset = (head($param))		      
+                  set fz1 = (head(tail($param)))
+                  if ($offset == 0) then
+			    set burg = "mirror on-phase"
+                  elsif ($offset == -1) then
+			    set burg = "mirror off-phase"
+		      endif
             elsif ($cmd s= "burg2d_back") then
                   set axe = (head($param))     ; "burg2d_back Fx ($six_2d+ missx )"
                   set i = (index($param,'+'))
@@ -443,6 +522,8 @@ elsif ($fact s= "Load macro") then
                   set fft2 = (subst($cmd,4,len($cmd)))
             elsif ($cmd s= "ft_sh" | $cmd s= "ft_tppi" | $cmd s= "ft_sh_tppi" | $cmd s= "ft_phase_modu" | $cmd s= "ft_n+p") then
                   set fft1 = (subst($cmd,4,len($cmd)))
+            elsif ($cmd s= "bruker_corr") then
+                  set fdig = "on"
             elsif ($cmd s= "modulus") then
                   set fmod = "modulus"
             elsif ($cmd s= "phase") then
@@ -464,23 +545,20 @@ elsif ($fact s= "Load macro") then
                         set fb1 = "just extract real"
                         set fb2 = "just extract real"
                   endif
-            elsif ($cmd s= "bcorr") then
-                  set dd = (toupper(tail($param)))
-                  if ($dd s= "F1") then
-                        set fb1 = "polynomial"
-                  elsif ($dd s= "F2") then
-                        set fb2 = "polynomial"
-                  endif
-            elsif ($cmd s= "bcorrp1") then
-                  set dd = (toupper(head(tail(tail($param)))))
-                  if ($dd s= "F1") then
-                        set fb1 = "2 stages"
-                  elsif ($dd s= "F2") then
-                        set fb2 = "2 stages"
-                  endif
+            elsif (($cmd s= "bcorrp0") | ($cmd s= "bcorrp1")) then
+		while (tail($param) s! ' ')
+			set param = (tail($param))
+			set index = (index($param,"f1"))
+			if ($index > 0) set isf = 1
+			set index = (index($param,"f2"))
+			if ($index > 0) set isf = 2
+		endwhile
+		if ($isf == 1) set fb1 = $param
+		if ($isf == 2) set fb2 = $param
+				
             endif
             set in = <$mname
       endwhile
       close $mname
-      easy2d $ffn $fw1 $fw1p $f1st $fw2 $fw2p $remh $miss1 $miss2 $fft1 $fz1 $burg $fft2 $fz2 $fmod $fph10 $fph11 $fph20 $fph21 $fb1 $fb2
+      easy2d $ffn $f1st $flatt $fw1 $fw1p $fw2 $fw2p $miss1 $miss2 $fft1 $fz1 $burg $fft2 $fdig $fz2 $fmod $fph10 $fph11 $fph20 $fph21 $fb1 $fb2
 endif

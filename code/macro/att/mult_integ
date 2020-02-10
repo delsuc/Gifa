@@ -20,13 +20,15 @@ if ($zoom == 0) error "Command not available in full ZOOM mode"
 
 if (!$arg) then
   formbox 'Peak integration tool' \
-   'mult_integ $ambfil $ls_spec $format' \
+   'mult_integ.new $ambfil $lookfil $ls_spec $format' \
    'Select the pk/amoeba basename' file ambfil amoeba \
+   'Select the lookup basename' file lookfil hash \
    'Data-sets list' multienum $list_spectra ls_spec $list_spectra \
    'Format' enum 'free,Tela' format 'free' \
    *
 else
   set ambfil = $_
+  set lookfil = $_
   set ls_spec = $_
   set format = $_
 
@@ -37,6 +39,7 @@ else
       set u = (%+1)
     endif
   endfor
+  print ("u "//$u)
 
 ; read the peak file and check that the number of peaks in this 
 ; file is the same that the number of peaks in the assignment data-base
@@ -46,7 +49,7 @@ else
   endif
 
 ; open the hash data-base
-  dbopen ($ambfil//".hash") hash
+  dbopen ($lookfil//".hash") hash
 
 ; determination of the data-set names from the data-set list
   set nbspec := 0
@@ -94,12 +97,14 @@ foreach i in att  within 2 $f1min $f2min $f1max $f2max
       if ($format s= "Tela") then
         fprint $pkname ("// data-sets list:" ; $ls_spec)
         fprint $pkname ('name_pk = "'//$label//'" ;')
+        fprint $pkname ('pk_id = '//$i//' ;')
         fprint $pkname ('name_out = "integ_'//$i//'.res" ;')
         fprint $pkname ("intens = zeros("//$nbspec//") ;")
         fprint $pkname ("err = zeros("//$nbspec//") ;")
       elsif ($format s= "free") then
         fprint $pkname ("#data-sets list:" ; $ls_spec)
-        fprint $pkname ('#name_pk "'//$label//'" ;')
+        fprint $pkname ('#name_pk "'//$label//'"')
+        fprint $pkname ('#pk_id '//$i)
       endif
       set l = $att[$i]
       set tmp = (tail(tail(tail(tail(tail($l))))))
@@ -136,11 +141,11 @@ foreach i in att  within 2 $f1min $f2min $f1max $f2max
         mskinteg
         if ($format s= "Tela") then
           fprint $pkname ("intens["//$k//"] = "//$pk2d_a[$ipk]//" ;") 
-          fprint $pkname ("err["//$k//"] = "//(abs($pk2d_err[$ipk]*$pk2d_a[$ipk]/100))//";")
-;          fprint $pkname ("err["//$k//"] = "//(abs($pk2d_a_err[$ipk]*$pk2d_a[$ipk]/100))//";")
+          fprint $pkname ("err["//$k//"] = "//(abs($pk2d_a_err[$ipk]*$pk2d_a[$ipk]/100))//";")
+;          fprint $pkname ("err["//$k//"] = "//(abs($pk2d_err[$ipk]*$pk2d_a[$ipk]/100))//";")
         elsif ($format s= "free") then
-          fprint $pkname ($pk2d_a[$ipk] ; (abs($pk2d_err[$ipk]*$pk2d_a[$ipk]/100)))
-;          fprint $pkname ($pk2d_a[$ipk] ; (abs($pk2d_a_err[$ipk]*$pk2d_a[$ipk]/100)))
+          fprint $pkname ($pk2d_a[$ipk] ; (abs($pk2d_a_err[$ipk]*$pk2d_a[$ipk]/100)))
+;          fprint $pkname ($pk2d_a[$ipk] ; (abs($pk2d_err[$ipk]*$pk2d_a[$ipk]/100)))
         endif
       endfor
       close $pkname
@@ -155,6 +160,8 @@ set x2 = (ptoi($f2min,2,2))
 set x3 = (ptoi($f1max,2,1))
 set x4 = (ptoi($f2max,2,2))
 zoom 1 $x3 $x4 $x1 $x2
+
+dbclose hash 
 
 endif
 

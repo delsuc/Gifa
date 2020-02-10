@@ -105,4 +105,3 @@ get data
 print ('0th :';($ph0 + $ph02);'  1st :';($slope + $slope2))
 zoom 0
 phase ($ph0 + $ph02) ($slope + $slope2)
-unset returned

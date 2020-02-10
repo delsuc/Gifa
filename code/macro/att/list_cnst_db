@@ -1,0 +1,60 @@
+; list_cnst_db
+;
+; list all contraint entries to a file
+if (dbm("cnst")) then
+	set tmp = ('tmp' // int(1000000*$random))
+	sh ('pwd >'; $tmp)
+	open $tmp
+	set pwd = <$tmp
+	close $tmp open $tmp
+	open constraint_list
+	fprint constraint_list ("# Project :"; $pwd)
+	fprint constraint_list ("")
+	fprint constraint_list "SPIN1    SPIN2    Lower    Upper    Correction    Active    Note  #cnst"
+	fprint constraint_list ("")
+	close constraint_list
+	initinprogress  $cnst["LARGEST"]  set i = 1
+	foreach pid in cnst
+	  inprogress $i  set i = (%+1)
+	  if ($pid s! "LARGEST") then
+		set sp1 = (headx($pid,":")) 
+		set sp2 = (tailx($pid,":"))
+		set l = $cnst[$pid]
+		set lowl = (headx($l,";"))
+		set l = (tailx($l,";"))
+		set upl = (headx($l,";"))
+		set l = (tailx($l,";"))
+		set ucorr = (headx($l,";"))
+		set l = (tailx($l,";"))
+		set used = (headx($l,";"))
+		set l = (tailx($l,";"))
+		set note = (headx($l,";"))
+		set ls1 = $spin[$sp1]
+		set ls2 = $spin[$sp2]
+		if ((index(toupper($ls1),'UNK') != 0)  | (index(toupper($ls2),'UNK') != 0) ) goto break ;not modified assignement
+		set ss1 = (head(tail(tail($ls1))))
+		set ss2 = (head(tail(tail($ls2))))
+		set lss1 = $sys[$ss1]
+		set lss2 = $sys[$ss2]
+		if ((index(toupper($lss1),'UNK') != 0)  | (index(toupper($lss2),'UNK') != 0) ) goto break ;not modified assignement
+		set sp1name = ( (head(tail($lss1)))//(head($lss1))//":"//(head(tail($ls1))) )
+		set sp2name = ( (head(tail($lss2)))//(head($lss2))//":"//(head(tail($ls2))) )
+		fprint $tmp ((head($lss1)); $sp1name; $sp2name; $lowl; $upl; $ucorr; $used; $note; $pid) 
+	  endif
+=break
+	endfor
+	close $tmp
+	inprogress $cnst["LARGEST"]
+	sh ("sort -n"; $tmp; "> constraint_list")
+	formbox "List of Constraint" DO_NOTHING \
+	   'File is constraint_list' message \
+	    constraint_list text \
+	   'Print file' action 'sh "gifaprint constraint_list"' *
+	sh ("/bin/rm -f";$tmp)
+else
+	error ' Constraint data base not found !'
+endif
+
+
+
+

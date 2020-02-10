@@ -14,11 +14,12 @@ buttonbox 'Apod.' \
    'User defined...' user_apod \
    separator \
    'Correct 1st point' correct1st \
+   'Flatten solvent' flat_solvent \
    separator \
    'ChSize...' 'chsize' \
    *
 buttonbox 'Proc 1D' \
-   'Easy 1D' 'dim 1 easy1d $name expbroad 1 sim (2*power2($si1_1d-1)) % 0 0  %' \
+   'Easy 1D' 'dim 1 easy1d $name no expbroad 1 sim on (2*power2($si1_1d-1)) % 0 0  %' \
    separator \
    'ZeroFill'   'gm/test1d chsize (power2(%)*2)' \
    'Ft_Seq' 'ft_seq' \

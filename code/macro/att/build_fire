@@ -1,0 +1,70 @@
+; this macro builds a strip file from the following information
+; - a fully assign HSQC 2D spectrum in the current assignement db
+; - a 3D spectrum
+; - the list of amino-acid to extract
+;
+; for each assigned peak in the HSQC, a column, at the same ppm
+; coordinates will be extracted and put in a composite 2D.
+;
+; The list of amino-acid to extract is given with the following notation:
+;   blank separated index: 2 4 6 7 8 9 10 12 15 
+;   or ranges :            6:10
+;   the two can be mixed : 2 4 6:10 12 15
+; Be carefull with :
+;    calibrating correctly your 3D
+
+
+if (!$arg) then
+
+; first build the list of 3D in the list of spectra
+ set l = $list_spectra
+ while ($l s! ' ')
+   set h = (headx($l,','))  set l = (tailx($l,','))
+   join ('spectra/' // $h)
+   if ($c_dim == 3) then
+       if (exist('l3d')) then
+          set l3d = ($l3d // ',' // $h)
+       else
+          set l3d = $h
+       endif
+   endif
+   disjoin
+ endwhile
+ if (!exist('l3d')) then
+    dialogbox '3D needed' \
+       'Please, first add a 3D data set in the list of spectra' message \
+       ' use the "add spectra" commande in the "project" menu ' message *
+    exit
+ endif
+
+; build formbox
+ formbox 'build_fire' \
+   'build_fire $ff $line $ax ' \
+   Help action 'help build_fire' \
+   'Select a 3D file' enum $l3D ff $c_name \
+   noreturn dataset action 'join ("spectra/"  // $ff) dataset disjoin' \
+   'Choose axis to follow (1H axis)' enum 'F1,F2' ax % \
+   separator \
+   'Residus numbers (e.g. 2 4 6:15)' string line '1' \
+   *
+
+else
+; Do processing
+
+;  gm/al_yesno "Warning, this operation will kill the 3D buffer, Ok to continue ?"
+;  if ($returned s! 'yes') error 'Aborted'
+  set f = $_
+  set line = $_
+  set ax = $_
+
+  build_strip  $f 1 $line $ax 
+; build_strip actually builds at least 2 pixels per strip,
+; the good one is in even pixels, the following line keep only the even point
+
+  itype 1 phase -90 0 f2 real f2
+
+endif
+
+
+
+

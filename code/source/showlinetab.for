@@ -35,6 +35,7 @@ C buffy is interpreted as usual, with max0,scale,etc.. (from common)
 #include "laplacev.inc"
 
       real x(sizemax),y(sizemax)
+#f2c      save x,y
       real zero,screen,zz1
       integer i
 

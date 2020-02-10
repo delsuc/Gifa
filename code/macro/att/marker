@@ -44,7 +44,7 @@ if ($npoint >= 1) then
   fprint $tmp ("'Extend' action 'do_marker $sym ext "; $list_coord; "' noreturn \")
   fprint $tmp ("'Show peaks' action 'do_marker $sym sho "; $list_coord; "' noreturn \")
   fprint $tmp ("'Create peaks' action 'do_marker $sym cre "; $list_coord; "' noreturn \")
-  fprint $tmp ("'Add peaks to list' action 'do_marker $sym add "; $list_coord; "' *")
+  fprint $tmp ("'Create spin system' action 'do_marker $sym add "; $list_coord; "' *")
   close $tmp
   @($tmp)
   sh ("rm -f"; $tmp)

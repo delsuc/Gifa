@@ -4,9 +4,10 @@ C This file holds the common for the cache parameters
 
       integer*4  c_dimmanip
       integer*4  c_type,c_sizef1,c_sizef2,c_sizef3
-       real*4    c_offsf1,c_offsf2,c_offsf3,c_specwf1,c_specwf2,
-     *           c_specwf3,c_freq,c_freq1,c_freq2,c_freq3,
-     *           c_dmin,c_dmax,c_dfactor,c_max0
+      real*4     c_offsf1,c_offsf2,c_offsf3,c_specwf1,c_specwf2,
+     *           c_specwf3
+      real*8     c_freq,c_freq1,c_freq2,c_freq3
+      real*4     c_dmin,c_dmax,c_dfactor,c_max0
 
 
       character*256 c_name,c_header

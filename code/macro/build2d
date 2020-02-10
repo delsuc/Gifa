@@ -4,29 +4,36 @@
 ;
 ; see also : READ build3d
 
+ ;  MAD - 22 nov 2000
+ ;  MAD - 7 dec 2000   added itype control
+ ;  MAD added spectral param
+
 ; get name
 if (!$arg) print 'Enter name of the list of file:'
 set file = $_
 
 ; get length using wc and shell  (could be in gifa)
-sh ('wc'//sp(1)//$file//'> /tmp/build2d.tmp')
-open /tmp/build2d.tmp   set si1 = </tmp/build2d.tmp
+set tmp = ('tmp' // int(1000000*$random))
+sh ('wc'; $file; '>'; $tmp)
+open $tmp  set si1 = <$tmp
 set si1 = (head($si1))
-close /tmp/build2d.tmp sh 'rm /tmp/build2d.tmp'
+close $tmp  sh ('/bin/rm'; $tmp)
 
 ; prepare
 open $file
-dim 1 readh <$file                 ; get first one
-dim 2 chsize $si1 $si1_1d          ; set-up sizes
+dim 1 read <$file                                ; get first one
+set f = $freq
+dim 2 chsize $si1 $si1_1d  itype $itype_1d       ; set-up sizes and itype
 put row 1
 
-set i = 2                          ; then loop
-=loop
-  dim 1 readh <$file
+for i = 2 to $si1          ; then loop
+  dim 1 read <$file
   dim 2 put row $i
-  set i = ($i+1) if ($i<=$si1)  goto loop
+endfor
 
 ;finished
 dim 2  close $file
-exit
+specw 1000 $SPECW_1D
+freq $f 1 $FREQ_1D
 
+exit

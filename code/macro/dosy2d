@@ -81,10 +81,9 @@ inprogress $peakcount
 unit i
 dim 2 zoom 0 scale 1 col 1
 open $result
-; initial value of P1 is set once, only
-set p1 := ($dfactor/$tab[round($si_tab/2)]) ; eval initial $p1 and $p2
+set tnoi = ($thresh * $noise)
 for i = 1 to $si2_2d
-        if (val2d(1,$i) > $thresh * $noise) then
+        if (val2d(1,$i) > $tnoi) then
            set peakcount = (%+1)
            inprogress $peakcount
            col $i dim 1
@@ -98,40 +97,34 @@ for i = 1 to $si2_2d
                  invlap $sz
               endif
            else
-              set exp = '$p2*exp(-$p1*$x/$dfactor)'
-              set p1 := ($dfactor/$tab[round($si1_1d/2)])
-              set p2 := (val1d(1))              ; eval initial $p1 and $p2
-              fitgene $exp 2			; do first fit with 1 damping
+              dosyfit
               fprint $result ("col";$i;"chi2_1_comp";$chi2)
-              set p1_1 = $p1
               set p2_1 = $p2
-              set dp1_1 = $dp1
+              set p1_1 = $p1
               set dp2_1 = $dp2
+              set dp1_1 = $dp1
               set chi2_1 = $chi2 
               if ($proc s= 'FIT_2_COMP' & $chi2 > ($si1_1d)) then
-                 set exp = ($exp // '+$p4*exp(-$p3*$x/$dfactor)')
-                 set p2 = ($p2_1/2)   set p4 = $p2
-                 set p3 = ($p1_1/3)   set p1 = (3*$p1_1)
-                 fitgene $exp 4			; then final fit
+                 dosyfit_2
               else
                  set p3 = 0.0
               endif
-              if ( $chi2 < (0.8*$chi2_1) & $p1>0 & $p3>0 ) then
+              if ( $chi2 < (0.8*$chi2_1) & $p2>0 & $p3>0 ) then
                  chsize $szaf
                  fprint $result ("         chi2_2_comp";$chi2)
-                 fprint $result ('         damping 1';$p1;'+/-';$dp1;'amplitude 1';$p2;'+/-';$dp2)
+                 fprint $result ('         damping 1';$p2;'+/-';$dp2;'amplitude 1';$p1;'+/-';$dp1)
                  fprint $result ('         damping 2';$p3;'+/-';$dp3;'amplitude 2';$p4;'+/-';$dp4)
-                 set left1 = (dtoi(max(0,$p1-$dp1),1,1))
-                 set right1 = (dtoi($p1+$dp1,1,1))
+                 set left1 = (dtoi(max(0,$p2-$dp2),1,1))
+                 set right1 = (dtoi($p2+$dp2,1,1))
                  set left2 = (dtoi(max(0,$p3-$dp3),1,1))
                  set right2 = (dtoi($p3+$dp3,1,1))
                  chsize (%*2)
                  zero 
-                 if ($p1 < $dmin | $p1 > $dmax) \
+                 if ($p2 < $dmin | $p2 > $dmax) \
                       print "Warning, outside damping limits"
                  if ($p3 < $dmin | $p3 > $dmax) \
                       print "Warning, outside damping limits"
-                 simun $p2 (dtoi($p1,1,1)) 0 0
+                 simun $p1 (dtoi($p2,1,1)) 0 0
                  gm (2*($right1-$left1)*$SPECW_1D/$SI1_1D)  
                  put data 
                  zero 
@@ -144,18 +137,18 @@ for i = 1 to $si2_2d
                  real
                  refmacro 0
               else
-                 fprint $result ('         damping';$p1_1;'+/-';$dp1_1;'amplitu';$p2_1;'+/-';$dp2_1)
-                 if ($p1_1 <0) then
+                 fprint $result ('         damping';$p2_1;'+/-';$dp2_1;'amplitu';$p1_1;'+/-';$dp1_1)
+                 if ($p2_1 <0) then
                     fprint $result 'negative damping, setting to zero'
                     dim 1 chsize $szaf zero
                  else
-                    if ($p1_1 < $dmin | $p1_1 > $dmax) \
+                    if ($p2_1 < $dmin | $p2_1 > $dmax) \
                       print "Warning, outside damping limits"
                     chsize $szaf
-                    set left = (dtoi(max(0,$p1_1-$dp1_1),1,1))
-                    set right = (dtoi($p1_1+$dp1_1,1,1))
+                    set left = (dtoi(max(0,$p2_1-$dp2_1),1,1))
+                    set right = (dtoi($p2_1+$dp2_1,1,1))
                     chsize (%*2)
-                    zero simun $p2_1 (dtoi($p1_1,1,1)) 0 0
+                    zero simun $p1_1 (dtoi($p2_1,1,1)) 0 0
                     gm (2*($right-$left)*$SPECW_1D/$SI1_1D)  sin 0
                     ft
                     refmacro 1

@@ -1,0 +1,26 @@
+;open_cnst_db #dbname
+;
+; open a cnst database.
+
+
+if (!$arg) then
+	;get actual name
+	sh "ls -1 constraints/*.dir | awk -F. '{print $1}' > tmp"
+	open tmp
+	set list_cnst := <tmp
+	while (!eof('tmp'))
+  		set a =  <tmp
+  		if ($a s! " ") set list_cnst := ($list_cnst // ',' // $a)
+	endwhile
+	close tmp sh "rm -f tmp"
+	if ($list_cnst s= " ") then 
+		new_cnst_db
+	else
+        dialogbox 'Data base name' 'Choice constraint data base file name' enum $list_cnst cnstname % *
+	endif
+else
+  	set cnstname = $_
+endif
+
+if (dbm("cnst")) dbclose cnst
+dbopen ($cnstname) cnst

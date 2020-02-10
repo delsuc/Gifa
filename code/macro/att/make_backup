@@ -1,0 +1,16 @@
+;make backup for the assignment project directory
+;
+
+set rand = (int(1000000*$random))
+set tmp = ("../gifa_backup" // $rand)
+set oldtmp = ("../gifa_backup_old" // $rand)
+sh ("rm -f ./backup.tar.Z.old; mv backup.tar.Z ";$oldtmp;"; tar cvf ";$tmp;" *")  
+;print (" ")
+;print ("copy  ./backup.tar from /usr/tmp .......")
+sh (" mv ";$tmp;" ./backup.tar; mv ";$oldtmp;" ./backup.tar.Z.old")
+print (" ")
+print ("compress ./backup.tar.....")
+sh ("compress ./backup.tar; rm -f ";$tmp;" ";$oldtmp)
+print ("The backup file name in project is: backup.tar.Z.")
+
+

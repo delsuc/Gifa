@@ -16,61 +16,54 @@ if ($returned s! " ") then
 else
   set label = "unk"
 endif
-fprint $out ("Peak" ; $dbno ; $label ; (head($l))//","//(head(tail($l)))//" ppm" ; $tmp1)
 
-if ($data_typ s= "R1") then
-  fractil_95.g ($nbexp - 3)
-  fprint $out ("Chi2" ; $chi2 ; "Number_of_iterations" ; $iterdone)
-  if ($chi2 > $returned) then
-    fprint $out ("R1     ";$R1;"  +/-  ";$dR1; "WARNING")
-  else
-    fprint $out ("R1     ";$R1;"  +/-  ";$dR1)
-  endif
-  fprint $out ("Iinf   ";$Iinf;"  +/-  ";$dIinf)
-  fprint $out ("I0     ";$I0;"  +/-  ";$dI0)
-elsif ($data_typ s= "R2") then
-  fractil_95.g ($nbexp - 2)
-  fprint $out ("Chi2" ; $chi2 ; "Number_of_iterations" ; $iterdone)
-  if ($chi2 > $returned) then
-    fprint $out ("R2     ";$R2;"  +/-  ";$dR2; "WARNING")
-  else
-    fprint $out ("R2     ";$R2;"  +/-  ";$dR2)
-  endif
-  fprint $out ("I0     ";$I0;"  +/-  ";$dI0) 
-elsif ($data_typ s= "NOE") then
-  fprint $out ("NOE    ";$NOE;"  +/-  ";$dNOE)
-elsif ($data_typ s= "T1") then
-  fractil_95.g ($nbexp - 3)
-  fprint $out ("Chi2" ; $chi2 ; "Number_of_iterations" ; $iterdone)
-  if ($chi2 > $returned) then
-    fprint $out ("T1     ";$T1;"  +/-  ";$dT1; "WARNING")
-  else
-    fprint $out ("T1     ";$T1;"  +/-  ";$dT1)
-  endif
-  fprint $out ("Iinf   ";$Iinf;"  +/-  ";$dIinf)
-  fprint $out ("I0     ";$I0;"  +/-  ";$dI0)
-elsif ($data_typ s= "T2") then
-  fractil_95.g ($nbexp - 2)
-  fprint $out ("Chi2" ; $chi2 ; "Number_of_iterations" ; $iterdone)
-  if ($chi2 > $returned) then
-    fprint $out ("T2     ";$T2;"  +/-  ";$dT2; "WARNING")
-  else
-    fprint $out ("T2     ";$T2;"  +/-  ";$dT2)
-  endif
-  fprint $out ("I0     ";$I0;"  +/-  ";$dI0)
-elsif ($data_typ s= "J") then
-  fractil_95.g ($nbexp - 3)
-  fprint $out ("Chi2" ; $chi2 ; "Number_of_iterations" ; $iterdone)
-  if ($chi2 > $returned) then
-    fprint $out ("J      ";$J;"  +/-  ";$dJ; "WARNING")
-  else
-    fprint $out ("J      ";$J;"   +/-  ";$dJ)
-  endif
-  fprint $out ("T2     ";$T2;"  +/-  ";$dT2)
-  fprint $out ("I0     ";$I0;"  +/-  ";$dI0)
+compute_aa $dbno
+if ($returned s! " ") then
+  set resnum = $returned
+else
+  set resnum = "unk"
 endif
-if ($data_typ s! "NOE") then
- if ($chi2 > $returned) then
-    fprintf $out "WARNING, the chi2 is over the 95%% confidence limit at %.2f" $returned *
- endif
+
+if ($data_typ s! "disp") then
+     if ($data_typ s= "R1") then
+        fractil_95.g ($nbexp - 3)
+        if ($chi2 > $returned) then
+          set li = ($R1;$dR1;$chi2;'Warning_chi2')
+        else
+          set li = ($R1;$dR1;$chi2)
+        endif
+     elsif ($data_typ s= "R2") then
+        fractil_95.g ($nbexp - 2)
+        if ($chi2 > $returned) then
+          set li = ($R2;$dR2;$chi2;'Warning_chi2')
+        else
+          set li = ($R2;$dR2;$chi2)
+        endif
+     elsif ($data_typ s= "NOE") then
+        set li = ($NOE;$dNOE;'none')
+     elsif ($data_typ s= "T1") then
+        fractil_95.g ($nbexp - 3)
+        if ($chi2 > $returned) then
+          set li = ($T1;$dT1;$chi2;'Warning_chi2')
+        else
+          set li = ($T1;$dT1;$chi2)
+        endif
+     elsif ($data_typ s= "T2") then
+        fractil_95.g ($nbexp - 2)
+        if ($chi2 > $returned) then
+          set li = ($T2;$dT2;$chi2;'Warning_chi2')
+        else
+          set li = ($T2;$dT2;$chi2)
+        endif
+     elsif ($data_typ s= "J") then
+        fractil_95.g ($nbexp - 3)
+        if ($chi2 > $returned) then
+          set li = ($J;$dJ;$chi2;'Warning_chi2')
+        else
+          set li = ($J;$dJ;$chi2)
+        endif
+     endif
+     fprintf $out "%d\t%s\t%f\t%f\t%f\t%s" $resnum $label (head($li)) (head(tail($li))) (head(tail(tail($li)))) (tail(tail(tail($li))))  *
+else
+     fprint $out  ($resnum ; $r2cpmg_list)
 endif

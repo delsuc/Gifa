@@ -44,10 +44,10 @@ c
 	character*(*) unit
 	integer error,i
 	complex tdata(*)
-	real ampl,freql,t2l, phasel,ppml,indl
+	real ampl,loc_hz,t2l, phasel,ppml,indl
 	real f, p, w, y, z, temp
 
-	save  ampl,freql,ppml,indl,t2l,phasel
+	save  ampl,loc_hz,ppml,indl,t2l,phasel
 	
 	call message(' amplitude')
 	call getreal2(ampl,error)
@@ -55,19 +55,19 @@ c
 
 	if (unit.eq.'HZ') then	
            call message( ' frequence')
-           call getreal2(freql,error)
+           call getreal2(loc_hz,error)
            if (error.ne.0) goto 62
         elseif (unit.eq.'PPM') then
            call message('chemical shift')
            call getreal2(ppml,error)
            if (error.ne.0) goto 62
            temp = ptoir(ppml,sizeimage1d,sp1d,of1d,freq1d)
-           freql = itohr(temp,sizeimage1d,sp1d,of1d)
+           loc_hz = itohr(temp,sizeimage1d,sp1d,of1d)
         elseif (unit.eq.'INDEX') then
            call message('position index')
            call getreal2(indl,error)
            if (error.ne.0) goto 62
-           freql = itohr(indl,sizeimage1d,sp1d,of1d)
+           loc_hz = itohr(indl,sizeimage1d,sp1d,of1d)
         else
            goto 63
         endif 
@@ -90,7 +90,7 @@ c before adding a new signal
 c	        
 	call bruvect(tdata,tdata,sizeimage1d)	
 
- 	f = ((freql-of1d)*2*pi/sp1d) -pi
+ 	f = ((loc_hz-of1d)*2*pi/sp1d) -pi
 	p = phasel*pi/180.0
 c
 c calculate the fid

@@ -27,3 +27,4 @@ set att["largest"] = $pic
 ; then show it
 show_att $pic
 mod_att $pic
+return $pic

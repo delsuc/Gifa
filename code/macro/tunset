@@ -8,7 +8,7 @@ message 'Enter name of array to remove'
 set tu_tab = $_
 set tu_i = (nextlm($tu_tab,' '))
 while ($tu_i s! ' ') 
-  set t_temp =  ($tu_tab//'['//$tu_i//']') 
+  set t_temp =  ($tu_tab//'["'//$tu_i//'"]') 
   set tu_i = (nextlm($tu_tab,$tu_i))
   unset $t_temp
 endwhile

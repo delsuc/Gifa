@@ -23,9 +23,9 @@ if ($pk_fnd_dst < $tol_click & $pk_fnd_dst != -1) then
   scolor $ss
   set last_click := ("PEAK"; $pk_fnd)
   print $last_click
-  set returned := $pk_fnd
+  return $pk_fnd
 else
   alert ("No peak found within"; $tol_click; "ppm")
-  set returned := 0
+  return 0
 endif
 

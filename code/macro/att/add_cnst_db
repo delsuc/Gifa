@@ -1,0 +1,23 @@
+; add_cnst_db #spin1 #spin2 lowl upl upcorr active note 
+;
+; permits to add a constraint in the current data_base
+;
+
+if (!$arg) then
+	error ' Syntax : add_cnst_db #spin1 #spin2 lowl upl upcorr active note '
+else	
+	set sp1 = $_
+	set sp2 = $_
+	set ldist = $_
+	set udist = $_
+	set ucorr = $_
+        set used = $_
+	set note = $_
+
+	; builds it
+	set index = (max($sp1,$sp2)//":"//min($sp1,$sp2))
+	set suiv = $cnst["LARGEST"]
+	set suiv = (%+1)
+	set cnst["LARGEST"] = $suiv
+	set cnst[$index] = ($ldist//";"//$udist//";"//$ucorr//";"//$used//";"//$note)
+endif

@@ -476,25 +476,25 @@ C spectral offset in 3D in F3 (in Hz)
              write(lst,30) of3d3
           elseif (vname.eq.'$FREQ') then
 C main frequency (1H) of the spectrometer
-             write(lst,30) frequency
+             write(lst,40) frequency
           elseif (vname.eq.'$FREQ_1D') then
 C spectrometer frequency in 1D (in MHz)
-             write(lst,30) freq1d
+             write(lst,40) freq1d
           elseif (vname.eq.'$FREQ_1_2D') then
 C spectrometer frequency in 2D along F1 (in MHz)
-             write(lst,30) freq1
+             write(lst,40) freq1
           elseif (vname.eq.'$FREQ_2_2D') then
 C spectrometer frequency in 2D along F2 (in MHz)
-             write(lst,30) freq2
+             write(lst,40) freq2
           elseif (vname.eq.'$FREQ_1_3D') then
 C spectrometer frequency in 3D along F1 (in MHz)
-             write(lst,30) freq3d1
+             write(lst,40) freq3d1
           elseif (vname.eq.'$FREQ_2_3D') then
 C spectrometer frequency in 3D along F2 (in MHz)
-             write(lst,30) freq3d2
+             write(lst,40) freq3d2
           elseif (vname.eq.'$FREQ_3_3D') then
 C spectrometer frequency in 3D along F3 (in MHz)
-             write(lst,30) freq3d3
+             write(lst,40) freq3d3
           elseif (vname.eq.'$UNIT') then
 C current value for UNIT
              lst = unitx
@@ -672,6 +672,13 @@ C value of the AXIS3D parameter
              if (axis3d.eq.6) lst = 'F23'
              if (axis3d.eq.7) lst = 'F123'
 C   ! MaxEnt controls
+          elseif (vname.eq.'$ENTROPY') then
+C value of the entropy computed by the last command : MAXENT, INVLAP, INVTLAP, ...
+             if (dim.eq.1) then
+                write(lst,30) (ent/log(float(sizeimage1d)))
+             else
+                write(lst,30) (ent/log(float(sizeimage)))
+             endif
           elseif (vname.eq.'$CHI2') then
 C value of the chi2 returned by the last command : MAXENT, LINEFIT, RT->PK
              write(lst,30) leastsq
@@ -924,6 +931,9 @@ C current PATH used for macro, set by th SETPATH command
           elseif (vname.eq.'$HOME') then
 C equivalent to the $HOME variable in UNIX
              lst = home
+          elseif (vname.eq.'$TIMER') then
+C value of the last TIMER timing
+             lst = sttimer
           elseif (vname.eq.'$RETURNED') then
 C context set by the RETURN command
              lst = returned
@@ -1043,16 +1053,16 @@ C value of SPECW_3 of the currently JOINed dataset
              write(lst,30) c_specwf3
           elseif (vname.eq.'$C_FREQ') then
 C value of FREQ of the currently JOINed dataset
-             write(lst,30) c_freq
+             write(lst,40) c_freq
           elseif (vname.eq.'$C_FREQ1') then
 C value of FREQ_1 of the currently JOINed dataset
-             write(lst,30) c_freq1
+             write(lst,40) c_freq1
           elseif (vname.eq.'$C_FREQ2') then
 C value of FREQ_2 of the currently JOINed dataset
-             write(lst,30) c_freq2
+             write(lst,40) c_freq2
           elseif (vname.eq.'$C_FREQ3') then
 C value of FREQ_3 of the currently JOINed dataset
-             write(lst,30) c_freq3
+             write(lst,40) c_freq3
            elseif (vname.eq.'$C_DMIN') then
 C value of DMIN of the currently JOINed dataset
              write(lst,30) c_dmin*c_dfactor
@@ -1132,6 +1142,7 @@ ccunix             endif
           return
 20     format(i12)
 30     format(G24.12)
+40     format(G26.14)
        end
 C*********************************************************************
        subroutine setvar(name,context,value,err)

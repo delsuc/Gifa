@@ -92,6 +92,7 @@ report ($returned == 3) "@(expression) syntax"
 unset returned
 
 onerrorgoto err_label
+print 'following error is normal'
 dim 5
 report (1 == 0) "catching errors"
 exit

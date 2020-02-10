@@ -20,6 +20,7 @@ OBJECTS = \
    tools2d.o \
    vect.o \
    math2d.o \
+   raw_access.o \
    writehare.o \
    whare2d.o \
    levy.o \
@@ -123,8 +124,6 @@ OBJECTS = \
    lhare3d.o \
    writeparam3d.o \
    readparam3d.o \
-   writenew.o \
-   readnew.o \
    lib3d.o \
    plot3d.o \
    util.o \
@@ -222,13 +221,11 @@ gifa_big : gifa
 library : $(OBJECTS)
 	if test -f libgif.a; then rm -f libgif.a ; fi
 	ar cru libgif.a `lorder $(OBJECTS) plotlibpost.o | tsort  `
-	$(ARCHI) \
-	cd $$objdir ; $$ranlib libgif.a
+	$(LIBRARIAN) libgif.a
 
 libgif.a : $(OBJECTS)
 	ar r libgif.a $?
-	$(ARCHI) \
-	cd $$objdir ; $$ranlib libgif.a
+	$(LIBRARIAN) libgif.a
 
 #dependence list
 

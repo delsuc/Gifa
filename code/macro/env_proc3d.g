@@ -42,9 +42,9 @@ buttonbox 'Display 3D' \
   vertint vertint \
   planeint planeint \
   separator \
-  'Proj F1 ...' 'proj f1 $_' \
-  'Proj F2 ...' 'proj f2 $_' \
-  'Proj F3 ...' 'proj f3 $_' \
+  'Proj F1 ...' 'dim 3 proj f1 $_ dim 2' \
+  'Proj F2 ...' 'dim 3 proj f2 $_ dim 2' \
+  'Proj F3 ...' 'dim 3 proj f3 $_ dim 2' \
   *
   
 buttonbox '3D on file' \

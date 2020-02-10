@@ -28,7 +28,7 @@ if ($last_click s! " ") then
   scolor $ss
   set last_click := ("SYS"; $ssid)
   print $last_click
-  set returned := $ssid
+  return $ssid
 endif
 
 

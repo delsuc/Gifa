@@ -12,7 +12,7 @@ set grep_typ = $_
 set cr_par = $_
 set line = $_
 
-set returned := 0
+return 0
 
 set res_name = (head($line))
 set res_no = (head($line))
@@ -20,39 +20,39 @@ set spin_typ = (head($line))
 set chem_shift = (head($line))
 
 if ($grep_typ s= "Off") then
-  set returned := -1
+  return -1
 endif
 
 if ($grep_typ s= "Res Name") then
 ; get the residue name
    set t = (toupper(head($line)))
-   if (index((toupper($cr_par)),$t) != 0) set returned := 1
+   if (index((toupper($cr_par)),$t) != 0) return 1
 endif
 
 if ($grep_typ s= "Res Numb") then
 ; get the residue number
    set t = (head(tail($line)))
-   if ($t == $cr_par) set returned := 1
+   if ($t == $cr_par) return 1
 endif
    
 if ($grep_typ s= "Spin Name") then
 ; get the spin name
    set t = (toupper(head(tail(tail($line)))))
 ;   print ("t";$t;"cr_par";(toupper($cr_par)))
-   if (index((toupper($cr_par)),$t) != 0) set returned := 1
+   if (index((toupper($cr_par)),$t) != 0) return 1
 endif
    
 if ($grep_typ s= "Upper Chem Shift") then
 ; get the chemical shift
    set t = (tail(tail(tail($line))))
 ;   print ("t" ; $t ; "cr_par" ; $cr_par)
-   if ($cr_par >= $t) set returned := 1
+   if ($cr_par >= $t) return 1
 endif
 
 if ($grep_typ s= "Lower Chem Shift") then
 ; get the chemical shift
    set t = (tail(tail(tail($line))))
 ;   print ("t" ; $t ; "cr_par" ; $cr_par)
-   if ($cr_par <= $t) set returned := 1
+   if ($cr_par <= $t) return 1
 endif
    

@@ -61,6 +61,7 @@ C ****************************************************************
 
 	logical l1,l2,l3,l4,lo(z,2)
 	save borneppm,dataint,datadec,datacoor
+#f2c        save atomnres,lo
 
 	nerr=0
 

@@ -35,7 +35,7 @@ fprint $tmp "formbox \"
 fprint $tmp ("'Modif Spin #";$id;"' \")
 fprint $tmp ('"set spin[' // $id // '] = ($delta;$name;$sysid;$note)" \')
 fprint $tmp ("  'chem. shift' real delta"; $delta; " \")
-fprint $tmp ("  'spin name' enum"; $prot; "name"; $name; " \")
+fprint $tmp ("  'spin name' enum '"//$prot//"' name"; $name; " \")
 fprint $tmp (" noreturn  '( System :" ; $sysname; ")' message \")
 fprint $tmp ("'spin system #' int sysid"; $sysid; "noreturn \")
 fprint $tmp  ('Show action "show_sys $sysid" noreturn \')

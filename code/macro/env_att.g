@@ -3,9 +3,10 @@
 ; bound to the 'Assignment' button in the Mode menu
 ;
 
-set att_version := 1.3
+set att_version := 1.4
 ; first check if sh is available
-set tmp = ('/tmp/gifa' // 100000*int($random))
+set tmp = ('gifa' // int(100000*$random))
+onerrorgoto notwritable
 open $tmp       ; create the file
 fprint $tmp 'coucou'
 close $tmp
@@ -14,6 +15,7 @@ sh ('pwd >'; $tmp)     ; change its content
 open $tmp
 set l = <$tmp
 close $tmp
+onerrorgoto " "
 
 if ($l s= 'coucou') then    ; if it did not change -> sh does not workf
    dialogbox 'Error' \
@@ -35,10 +37,6 @@ disp2d 0
 cdisp2d 1
 disp1d 0
 unit p
-; open static db
-dbopen /usr/local/gifa/macro/att/topology topo      ; for spin-system topology
-dbopen /usr/local/gifa/macro/att/3let_1let rescode  ; for residue codes
-
 
 closebutton
 env_base.g
@@ -51,7 +49,7 @@ buttonbox project \
    "Select project" select_proj \
    "Change param." ch_param \
    "Save data-bases" save_db \
-   "Make backup" 'sh "mv backup.tar backup.tar.old; cd db; tar cvf ../backup.tar *"' \
+   "Make backup" make_backup \
    separator \
    "File selector" file_selector \
    "Add spectra" add_spec \
@@ -94,7 +92,7 @@ buttonbox data-bases \
    'Search spins' search_spin \
    separator \
    'Draw noesy walk' draw_noesy_walk \
-   'Show Primary seq' show_prim_seq \
+   'List Primary seq' show_prim_seq \
    *
 buttonbox 'graph-tools' \
 	'Choose base color' choose_scolor \
@@ -107,8 +105,6 @@ buttonbox 'graph-tools' \
 	separator \
 	"Add peak to list" "find_att if ($returned != 0) set build_list := ($returned; $build_list)" \
 	"Edit build list" edit_build_list \
-	separator \
-	"Promote to spin syst" "promote $build_list set build_list := ' '" \
 	*
 
 buttonbox utilities \
@@ -122,9 +118,10 @@ buttonbox utilities \
    'System Listing' list_sys \
    'Assignment Listing' list_assign \
    'Noesy Stat. and CSI (Real Slow)' stat_att_noe \
+   'Write to NMRStar File' write_nmrstar \
    separator \
-   'Plot database' plot_curr \
-   'Plot one label' plot_label \
+   'Plot database' 'dialogbox "plot database" "Plot file name" file f Gifa_Temp.Plot * plot_curr $f' \
+   'Plot one label' 'dialogbox "plot one label" "Plot file name" file f Gifa_Temp.Plot * plot_label $f' \
    separator \
    'Recalibrate current Experiment' recalibrate \
    'Build strip file from 3D HSQC' build_strip \
@@ -147,4 +144,11 @@ if ($act s= 'Select project') then
 else
   new_proj
 endif
+
+exit
+
+=notwritable
+print "It seems that you cannot write in this directory"
+print "Assignment cannot start"
+error "Assignment cannot start"
 

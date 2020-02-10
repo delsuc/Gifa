@@ -1852,7 +1852,7 @@ void refresh_icon()
 {
 
 	int size,on;
-        char             matrix[SizeIcon*SizeIcon];
+        static char             matrix[SizeIcon*SizeIcon];
         int             s1,s2;
 	XGCValues       valeurs;
 	GC  		tempgc;

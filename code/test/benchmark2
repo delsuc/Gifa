@@ -1,0 +1,73 @@
+; benchmark for gifa
+verbose 1    ; check what you're doing
+; benchmark for gifa
+;   run on a 512 x 2k real data set.
+;   Processing performed is :
+;   - Exponen. Broading in F2
+;   - Real FT, phasing, in F2
+;   - 5 points Spline base-line correction in F2
+;   - cosine apodization in F1, zero-filling in F1
+;   - Real FT and phasing in F1.
+; The displayed spectrum at the end is 512 by 1k real points
+; results are (some figures date from version 1.0 !) :
+;  * 3'50" - Dec VS 3100  VMS 5.2   * 1'30"    - SUN Sparc 330
+;  * 2'30" - Macintosh Centris 650 - running MachTen
+;  * 53"   - Silicon-Graphics 4D/20 * 47"      - S.G. 4D/25
+;  * 37"   - SUN SparcStation 2     * 34"      - DEC Station 5000-200
+;  * 36.3" - PC Am486DX4/100 Linux
+;  * 27"   - S.G. 4D/30             * 31" 	on IBM Risc 6000 320
+;  * 20"   - Mac 7100 80MHz running MkLinux
+;  * 20"   - Alliant FX 40 3CE      * 17.5" - SUN Sparc-10/30
+;  * 17"   - HP 725/50              * 16"   - Indigo R4000
+;  * 15.5" - INDY PC                * 15"   - IBM Risc6000 550
+;  * 12.6" - IBM Risc6000 560       * 12.3" - SUN Sparc-20
+;  * 11.7" - INDY R4600 132MHz   
+;  * 10.7" - SUN SparcCenter 2000E SuperSparc 85 Mhz
+;  * 10.5" - INDY R4400 174MHz      * 10"   - HP 715/80
+;  * 9.5"  - PC Pentium 133 Linux   * 7.5"  - HP 735/99
+;  * 7.4"  - HP PA-8000 160MHz      * 7.0"  - Mac 8600 200MHz
+;  * 6.8"  - INDY R5000 180MHz
+;  * 6.5"  - SGI-O2 R5000-PC        * 5.06" - Pentium Pro 200
+;  * 4.6"  - SGI-O2 R12000 270MHZ (compiled in 32 bits)
+;  * 4.16  - SGI-O2 R5000 300MHz	
+;  * 3.8"  - iMac 266MHz running linuxPPC
+;  * 3.3"  - SGI Origin 200 R10000 180MHz
+;  * 3.25" - Pentium II 300MHz
+;  * 3.2"  - SUN/Entreprise CPU UltraSparcII 250MHz
+;  * 2.67" - SGI Origin 200 R10000 225MHZ
+;  * 2.5"  - PowerBook G3 400MHz running MacOsX
+;  * 2.49" - SGI Octane R10000 250MHz
+;  * 2.3"  - Mac G3 400MHz LinuxPPC 2000
+;  * 2.13" - Pentium II  450MHz Linux RH 6.0
+;  * 2.0"  - Mac G4 400MHz running MacOsX
+;  * 1.60" - Mac G4 800 MHz MacOsX (still to be optimized)
+;  * 1.31" - Pentium III 800MHz Linux RH 6.2
+;  * 1.20" - Pentium III 800MHz Linux Mandrake 8.0
+;  * 0.94" - Pentium IV  1.5GHz Linux RH 7.1
+
+; first prepare a pseudo-data set for benchmarking GIFA
+; set-up a 512 x 2k real data set
+
+dim 2
+chsize 128 128 one sin 0 f12 revf f1 revf f2  ; put something in it
+chsize 512 2k itype 0                         ; and zero-fill
+put data
+
+sh date
+timer 0
+timer 1
+for i = 1 to 10
+  get data
+  em 0 1 revf f2 rft f2                                    ; main F2 processing
+  phase 20 20 f2 real f2               ;throwing Imaginary parts is needed here
+  bcorr 2 2 f2 10 100 300 600 900 0                       ; for baseline corr.
+  chsize % (%+2)
+  sin 0 f1 chsize (%*2) % rft f1                              ; main F1 proc
+  phase 20 20 f1                                          ;done
+endfor
+;sh 'sleep 3'
+verbose 0
+sh date
+print 'Divide timer results by 10'
+exit
+

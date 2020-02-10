@@ -70,7 +70,7 @@ c
      *     j,k,nest,location,n,
      *     title_length,maxtemp
       logical bool1  ! ,bool2
-      character*256 lcommand,st,stp,stp2,stp3,stp4,stp5,ii,win_title
+      character*256 lcommand, st,stp,stp2,stp3,stp4,stp5,ii,win_title
       character*256 stlong
       integer lcom
       parameter (lcom=32)
@@ -565,11 +565,11 @@ c         call gifaout('Plotter driver : '//st)
             call message('Enter Value')
             call getreal2(z,error)
             if (error.ne.0) goto 93
-            image((win1-1)*(si3d3*si3d2) + (win2-1)*si3d2 + win3) = z
+            image((win1-1)*(si3d3*si3d2) + (win2-1)*si3d3 + win3) = z
          endif
          refresh = 1
-         max0 = 0.0
-
+         max0 = max(max0,abs(z))
+c         max0 = 0            if hires
 
 C****************************************************************
 C      How to create or modify a file
@@ -909,7 +909,8 @@ c          endif
               goto 91
            endif
          endif
-         max0=0.0
+         max0=1.0
+c	   max0 = 0   if hires
          refresh = 1
         
       elseif (command.eq.'GET') then
@@ -1124,7 +1125,12 @@ C consider the whole data as a multi filter
            else
              goto 110
            endif
-           max0 = 0.0
+           if (max1d.eq.0.0) then
+               max0 = 0.0
+           else
+               max0 = max(max0,max1d)
+           endif
+c	     max0 = 0  if hires
            refresh = 1
          elseif (dim.eq.3) then
            if (st.eq.'PLANE') then
@@ -1159,8 +1165,13 @@ C consider the whole data as a multi filter
              else
               goto 110
              endif
-             max0 = 0.0
+             if (max2d.eq.0.0) then
+               max0 = 0.0
+             else
+               max0 = max(max0,max1d)
+             endif
              refresh = 1
+c	     max0 = 0  if hires
            else if (st.eq.'VERT') then
                if (axis2d.eq.1) then
                  if (si3d1.ne.sizeimage1d) goto 117
@@ -1198,8 +1209,13 @@ C consider the whole data as a multi filter
                   call copvect(column,
      *             image((rowv-1)*si3d3*si3d2+(colv-1)*si3d3+1),si3d3)
                endif
-               max0 = 0.0
+               if (max1d.eq.0.0) then
+                 max0 = 0.0
+               else
+                 max0 = max(max0,max1d)
+               endif
                refresh = 1
+c	     max0 = 0  if hires
            endif
          endif
 
@@ -1718,9 +1734,9 @@ c         if (disp1d.eq.0 .and. disp2d.eq.0) goto 127
           z = offset1
           offset1 = offset2
           offset2 = z
-          z = freq1
+          dpz1 = freq1
           freq1 = freq2
-          freq2 = z
+          freq2 = dpz1
           if (itype.eq.1) then
              itype = 2
           elseif (itype.eq.2) then
@@ -1769,9 +1785,9 @@ c         if (disp1d.eq.0 .and. disp2d.eq.0) goto 127
             z = of3d1
             of3d2 = of3d1
             of3d2 = z
-            z = freq3d1
+            dpz1 = freq3d1
             freq3d1 = freq3d2
-            freq3d2 = z
+            freq3d2 = dpz1
           elseif (zz.eq.5) then
             zz = si3d1
             si3d1 = si3d3
@@ -1787,9 +1803,9 @@ c         if (disp1d.eq.0 .and. disp2d.eq.0) goto 127
             z = of3d1
             of3d3 = of3d1
             of3d3 = z
-            z = freq3d1
+            dpz1 = freq3d1
             freq3d1 = freq3d3
-            freq3d3 = z
+            freq3d3 = dpz1
           elseif (zz.eq.6) then
             zz = si3d3
             si3d3 = si3d2
@@ -1805,9 +1821,9 @@ c         if (disp1d.eq.0 .and. disp2d.eq.0) goto 127
             z = of3d3
             of3d3 = of3d2
             of3d2 = z
-            z = freq3d3
+            dpz1 = freq3d3
             freq3d3 = freq3d2
-            freq3d2 = z
+            freq3d2 = dpz1
           endif
         else
            goto 124
@@ -1943,7 +1959,7 @@ c     * have not been changed')
          endif
          do i=1,sizeimo
             imago(imdim(dim)+i-1) = max(imago(imdim(dim)+i-1),0.0)
-            max0 = 0.0
+            max0 = max(imago(imdim(dim)+i-1),max0)
          enddo
          refresh=1
 
@@ -1957,8 +1973,9 @@ c     * have not been changed')
          endif
          do i=1,sizeimo
             imago(imdim(dim)+i-1) = min(imago(imdim(dim)+i-1),0.0)
-            max0 = 0.0
+            max0 = max(imago(imdim(dim)+i-1),max0)
          enddo
+c	     max0 = 0  if hires
          refresh=1
 
       else if (command.eq.'ZEROING') then
@@ -2850,7 +2867,8 @@ C******************************************************************
         call getreal2(z,error)
         if (error.ne.0) goto 93   
         call mltvect(imago(imdim(dim)),imago(imdim(dim)),z,sizeimo) 
-        max0 = 0.0
+        max0 = abs(z*max0)
+c	     max0 = 0  if hires
         refresh=1
 
       elseif (command.eq.'EVALN') then
@@ -2954,7 +2972,7 @@ C the value actually used is put in the $RETURNED context
              if (z.eq.-1.0) goto 98
              call phase2d(image,si3d1*si3d2,si3d3,0.0,z,2)
          endif
-         write(returned,'(G12.8)') z      ! copy value in $returned
+         write(returned,'(G12.6)') z      ! copy value in $returned
          max0=0.0
          refresh = 1
 
@@ -3492,28 +3510,28 @@ C*************************************************************
       elseif (command.eq.'FREQ') then
         call message('(All values are in MegaHertz)')
         call message('Enter 1H frequency ')
-        call getreal2(frequency,error)
+        call getdouble2(frequency,error)
         if (error.ne.0) goto 93
         if (dim.eq.1) then
          call message('Enter nucleus frequency ')
-         call getreal2(freq1d,error)
+         call getdouble2(freq1d,error)
          if (error.ne.0) goto 93
         elseif (dim.eq.2) then
          call message('Enter F1 nucleus frequency')
-         call getreal2(freq1,error)
+         call getdouble2(freq1,error)
          if (error.ne.0) goto 93
          call message('Enter F2 nucleus frequency')
-         call getreal2(freq2,error)
+         call getdouble2(freq2,error)
          if (error.ne.0) goto 93
         elseif (dim.eq.3) then
          call message('Enter F1 nucleus frequency')
-         call getreal2(freq3d1,error)
+         call getdouble2(freq3d1,error)
          if (error.ne.0) goto 93
          call message('Enter F2 nucleus frequency')
-         call getreal2(freq3d2,error)
+         call getdouble2(freq3d2,error)
          if (error.ne.0) goto 93
          call message('Enter F3 nucleus frequency')
-         call getreal2(freq3d3,error)
+         call getdouble2(freq3d3,error)
          if (error.ne.0) goto 93
         endif
 
@@ -3618,7 +3636,7 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
                   
 C error codes are here...
 90    continue
-      error = 0
+      error = 0             ! time to clear the error, as we're handling it
 C first check for control_C
       if (control.eq.1) goto 901
 C first general processing
@@ -3649,6 +3667,7 @@ c  check for on_error_goto case, and break if found
 
 c 901 is used to force errors when onerrorgoto is set, or when a controlC was issued
 901   if (input.gt.20) then
+         error = 0             ! time to clear the error, as we're handling it
          if (control.ne.1) then
             call gifaout('*** Aborting execution of command file : '
      *                 //currinp(input-20))

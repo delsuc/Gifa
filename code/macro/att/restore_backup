@@ -1,0 +1,20 @@
+;restore backup from the assignment project backup file "backup.tar.Z"
+;
+
+if (fexist("./backup.tar.Z")) then
+	set rand = (int(1000000*$random))
+	set tmp = ("gifa_backup" // $rand)
+	set oldtmp = ("../gifa_backup_old" // $rand)
+
+	print (" uncompress backup.tar.Z.....")
+	sh ("uncompress ./backup.tar.Z")
+	sh ("mv ./backup.tar.Z.old ";$oldtmp;"; mv ./backup.tar ../"//$tmp;"; tar xvf ../"//$tmp)  
+	sh ("mv ";$oldtmp;" ./backup.tar.Z.old; mv ../"//$tmp;" ./backup.tar")  
+	print (" ")
+	print ("compress ./backup.tar.....")
+	sh ("compress ./backup.tar")
+	print ("Restore complete")
+else
+	print (" ./backup.tar.Z not found !!");
+endif
+

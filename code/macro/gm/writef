@@ -3,7 +3,7 @@ dialogbox "Formatted Write" \
   " " file _f $name \
    "Select Format" message \
    "Format :" enum  \
-"Write (standard),Writeh (FtNmr),WriteL (NMRi),WriteM (Matlab),WriteT (text),WriteS (portable)" \
+"Write (standard),Writeh (FtNmr),WriteL (NMRi),WriteM (Matlab),WriteT (text),WriteS (portable), WriteNV (NMRView)" \
    _ff % \
    *
 (head($_ff)) $_f

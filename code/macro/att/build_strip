@@ -89,11 +89,20 @@ else
   endif
 
   dim 3 chsize $long $nbpic (2*$w)
+  dim 2 chsize $long (2*$w)
+
   for i = 1 to $nbpic
     dim 2
-    find sys 1 $pic[$i]
-    set ss = $sys[$pk_fnd]
-
+;    find sys 1 $pic[$i]
+;    set ss = $sys[$pk_fnd]
+     foreach p in sys 
+	if (index($sys[$p],'Arom') == 0) then  
+           set nr = (head($sys[$p]))
+  	   if ($nr s= $pic[$i]) then 
+		set ss = $sys[$p]
+   	   endif
+	endif
+     endfor
     if (head($ss) != $pic[$i]) then
       print ($pic[$i];'Not found !')
       zero
@@ -116,7 +125,7 @@ else
 print $pic[$i]
 	      set  nf = (round(ptoi($nfreq,0,$ptoidim)))
 	      set  hf = (round(ptoi($hfreq,0,3)))
-	;print ($nf;$hf)
+;	print ($nf;$hf)
 	      if (($nf < 0) | ($hf < 0)) \
 	         error "Error in arithmetics, your 3D is probably not correctly calibrated"
 	      getc $axtotake $nf 1 ($hf-$w+1) $long  ($hf+$w)

@@ -24,6 +24,7 @@ OBJECTS = \
    tools2d.o \
    vect.o \
    math2d.o \
+   raw_access.o \
    writehare.o \
    whare2d.o \
    levy.o \
@@ -127,8 +128,6 @@ OBJECTS = \
    lhare3d.o \
    writeparam3d.o \
    readparam3d.o \
-   writenew.o \
-   readnew.o \
    lib3d.o \
    plot3d.o \
    util.o \
@@ -226,13 +225,11 @@ gifa_big : gifa
 library : $(OBJECTS)
 	if test -f libgif.a; then rm -f libgif.a ; fi
 	ar cru libgif.a `lorder $(OBJECTS) plotlibpost.o | tsort  `
-	$(ARCHI) \
-	cd $$objdir ; $$ranlib libgif.a
+	$(LIBRARIAN) libgif.a
 
 libgif.a : $(OBJECTS)
 	ar r libgif.a $?
-	$(ARCHI) \
-	cd $$objdir ; $$ranlib libgif.a
+	$(LIBRARIAN) libgif.a
 
 #dependence list
 
@@ -264,6 +261,8 @@ tools2d.o : tools2d.for
 vect.o : vect.for constant.inc 
 
 math2d.o : math2d.for sizeparam.inc sizebase.inc controlc.inc 
+
+raw_access.o : raw_access.c sizebasec.h 
 
 writehare.o : writehare.for 
 
@@ -459,7 +458,7 @@ showpeak.o : showpeak.for sizebase.inc disptypev.inc gcolor.inc \
 
 showpattern.o : showpattern.for 
 
-unix_lib.o : unix_lib.for controlc.inc 
+unix_lib.o : unix_lib.for gifshellv.inc controlc.inc 
 
 grid.o : grid.for 
 
@@ -501,11 +500,6 @@ lhare3d.o : lhare3d.for sizeparam.inc sizebase.inc controlc.inc \
 writeparam3d.o : writeparam3d.for paramfilev.inc 
 
 readparam3d.o : readparam3d.for paramfilev.inc 
-
-writenew.o : writenew.for controlc.inc paramfilev.inc 
-
-readnew.o : readnew.for sizeparam.inc sizebase.inc paramfilev.inc \
-   controlc.inc 
 
 lib3d.o : lib3d.for lib3d.inc constant.inc 
 
@@ -687,5 +681,5 @@ searchamb.o : searchamb.for sizebase.inc peaksize.inc
 
 bruker_corr.o : bruker_corr.c 
 
-get_licence.o : get_licence.c util.h sizebasec.h 
+get_licence.o : get_licence.c util.h 
 

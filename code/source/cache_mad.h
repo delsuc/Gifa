@@ -270,7 +270,7 @@ void CH_AC2DAREA(float *parea, DATASET **ppdata, int *plf1, int *plf2, int *pur1
 void CH_AC3DAREA(float *parea, DATASET **ppdata, int *plf1, int *plf2, int *plf3, int *pur1, int *pur2, int *pur3, int *mode, int *perror);
 void CH_GTPARBAS(DATASET **pdt,int *c_dimmanip,int *c_sizef1,int *c_sizef2,
 	int *c_sizef3,int *c_type,float *c_specwf1,float *c_specwf2,float *c_specwf3,
-	float *c_freq,float *c_freq1,float *c_freq2,float *c_freq3,
+	double *c_freq,double *c_freq1,double *c_freq2,double *c_freq3,
 	float *c_offsf1,float *c_offsf2,float *c_offsf3, 
         float *dmin, float *dmax, float *dfactor, float *absmax);
 void CH_GTPARAM_TYPE(DATASET **pdt,void *val, char *param, int *len, int *h_type, int *status);

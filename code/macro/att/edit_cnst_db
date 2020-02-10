@@ -1,0 +1,64 @@
+; edit_cnst_db $sp1 $sp2
+;
+; builds a dialog box permitting to modify a constraint in the data base.
+;
+
+
+set sp1 = $_
+set sp2 = $_
+set index = (max($sp1,$sp2)//":"//min($sp1,$sp2))
+
+if (dbm("cnst")==0) error ' no constraint data base found !'
+
+if (exist("cnst[" // $index // "]")) then
+   set l = $cnst[$index]
+else
+   error "Unknown constraint"
+endif
+
+set lowl = (headx($l,";"))
+set l = (tailx($l,";"))
+set upl = (headx($l,";"))
+set l = (tailx($l,";"))
+set ucorr = (headx($l,";"))
+set l = (tailx($l,";"))
+set used = (headx($l,";"))
+set l = (tailx($l,";"))
+set note = (headx($l,";"))
+set l = (tailx($l,";"))
+
+
+set ls1 = $spin[$sp1]
+set ls2 = $spin[$sp2]
+set ss1 = (head(tail(tail($ls1))))
+set ss2 = (head(tail(tail($ls2))))
+set lss1 = $sys[$ss1]
+set lss2 = $sys[$ss2]
+set sp1name = ( (head(tail($lss1)))//(head($lss1))//":"//(head(tail($ls1))) )
+set sp2name = ( (head(tail($lss2)))//(head($lss2))//":"//(head(tail($ls2))) )
+
+
+set tmp = ('tmp' // int(1000000*$random))
+open $tmp
+
+fprint $tmp ('formbox " Constraint :'; $sp1name; $sp2name; '" \')
+fprint $tmp ('"';"set cnst['" // $index // "'] = ($lowl//';'//$upl//';'//$ucorr//';'//$used//';'//$note)";'"\')
+fprint $tmp  ('"F1 : ';$sp1name; '" message noreturn \')
+fprint $tmp  ('Show action "show_spin';$sp1;'" noreturn \')
+fprint $tmp  ('Edit action "mod_spin';$sp1;'" \')
+fprint $tmp  ('"F2 : ';$sp2name; '" message noreturn \')
+fprint $tmp  ('Show action "show_spin';$sp2;'" noreturn \')
+fprint $tmp  ('Edit action "mod_spin';$sp2;'" \')
+fprint $tmp  ('Limit: message noreturn \')
+fprint $tmp  ('"Lower:" real lowl'; $lowl; 'noreturn \')
+fprint $tmp  ('"Upper:" real upl'; $upl; ' \')
+fprint $tmp  ('"Upper limit corrected (pseudo):" real ucorr'; $ucorr; ' \')
+fprint $tmp  ('" " enum "active,inactive" used ';$used;'noreturn \')
+fprint $tmp  ('"Remove Const." action "rem_cnst_db'; $sp1; $sp2; ' closeform $widget" \')
+fprint $tmp  ('"note" string note "'; $note; '" *')
+close $tmp
+@($tmp)
+sh ("/bin/rm"; $tmp)
+
+
+

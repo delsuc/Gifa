@@ -1,0 +1,18 @@
+; dbimport basname
+; import a db file from an ascii dump, produced by dbexport
+;
+; see also : dbexport DBOPEN
+
+        message 'which basename file ?'
+	set base = $_
+	dbopen $base db
+	set fin = ($base // '.txt')
+	open $fin
+	set l = <$fin
+	while (!eof($fin))
+		set i = (head($l))
+		set db[$i] = (tail($l))
+		set l = <$fin
+	endwhile
+	close $fin
+	dbclose db

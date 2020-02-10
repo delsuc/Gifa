@@ -44,6 +44,7 @@ C
       external func
 
       real direc(taillemax,taillemax),pt(taillemax),ptt(taillemax)
+#f2c      save direc
       real dirit(taillemax)
       real fp,del,fcur,t
       integer i,j,liter,big

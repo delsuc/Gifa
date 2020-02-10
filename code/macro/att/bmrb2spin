@@ -88,8 +88,8 @@ if (head($act) s= 'erase') then
   set sys["largest"] = 0
 endif
 
-dbopen /usr/local/gifa/macro/att/1let_3let code
-dbopen /usr/local/gifa/macro/att/3let_1let code3
+dbopen db/1let_3let code
+dbopen db/3let_1let code3
 
 set n_spin = 0
 set n_sys = 0

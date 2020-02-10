@@ -48,7 +48,9 @@ fprint $tmp  ('Show action "show_att'; $pic; '" noreturn \')
 fprint $tmp  ('Move action "mov_att'; $pic; ' closeform $widget mod_att'; $pic; '" noreturn \')
 fprint $tmp  ('Remove action "rem_att'; $pic; ' closeform $widget" \')
 fprint $tmp  ('"Move to top" action "mov_att_top'; $pic;  ' closeform $widget mod_att'; $pic; '" noreturn \')
-fprint $tmp  ('"Align spins to peak" action "align_spin_pk'; $pic; '" *')
+fprint $tmp  ('"Align spins to peak" action "align_spin_pk'; $pic; '" \')
+fprint $tmp  ('"Edit Constraint" action "edit_cnst_db $sp1 $sp2" *')
+
 close $tmp
 @($tmp)
 sh ("/bin/rm"; $tmp)

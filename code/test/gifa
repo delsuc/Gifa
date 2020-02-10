@@ -1,0 +1,12 @@
+; set up for GIFA MAXENT algorithm
+;
+; see also : conjg gad MAXENT
+
+print 'Set up for G.I.F.A. MaxEnt algorithm'
+         stepmax  1.2
+         miniter  4
+         lambsp  5.0
+         tolerance  1.0e-2
+         step  1.0
+         algo  111
+

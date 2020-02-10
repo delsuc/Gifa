@@ -1,0 +1,602 @@
+; write_nmrstar
+;
+; output the assignment in NMR-STAR format (partial !)
+ ;
+
+; first full version of write_nmrstar
+; Author : M.A.Delsuc
+; first written : christmas 2000
+; modif and corrections 03-2001
+;
+
+; copyright to author
+
+; output file name
+set file = "nmrstar_file"
+
+;primary sequence file
+set prim = "db/primary"    
+
+
+if (head(tail($version)) < 4.317) then   ; sh() requires 4.317 at least
+   alert "This macro requires version 4.317 or higher - it will now run in reduced mode -"
+   set size = 100
+else
+   set size = (head(sh("wc"; $prim)))
+endif
+
+initinprogress ($size+10)
+
+; sets-up pseudo atom lookup - pseudo name - names - ambiguity code
+set ambig["T"] = " "
+set ambig["A"] = " "
+set ambig["S"] = "QB HB2,HB3 2"
+set ambig["C"] = "QB HB2,HB3 2"
+set ambig["H"] = "QB HB2,HB3 2"
+set ambig["D"] = "QB HB2,HB3 2"
+ set ambig["N"] = "QB HB2,HB3 2 QD HD21,HD22 2"
+
+set ambig["W"] = "QB HB2,HB3 2 QR HE3,HZ2,HZ3,HH2 4"
+set ambig["Y"] = "QB HB2,HB3 2 QD HD1,HD2 3 QE HE1,HE2 3 QR HD1,HD2,HE1,HE2 4"
+set ambig["F"] = "QB HB2,HB3 2 QD HD1,HD2 3 QE HE1,HE2 3 QR HD1,HD2,HE1,HE2,HZ 4"
+
+set ambig["G"] = "QA HA2,HA3 2"
+set ambig["V"] = "QG HG1,HG2 2"
+set ambig["I"] = "QG HG12,HG13 2 QG1 HG12,HG13 2"
+set ambig["L"] = "QB HB2,HB3 2 QD HD1,HD2 2"
+
+set ambig["M"] = "QB HB2,HB3 2 QG HG2,HG3 2" 
+set ambig["E"] = "QB HB2,HB3 2 QG HG2,HG3 2"
+set ambig["Q"] = "QB HB2,HB3 2 QG HG2,HG3 2 QE HE21,HE22 4 QE2 HE21,HE22 2"
+
+set ambig["K"] = "QB HB2,HB3 2 QG HG2,HG3 2 QD HD2,HD3 2 QE HE2,HE3 2 QZ HZ 1"
+set ambig["R"] = "QB HB2,HB3 2 QG HG2,HG3 2 QD HD2,HD3 2 QH QH11,QH12,QH21,QH22 4"
+set ambig["P"] = "QB HB2,HB3 2 QG HG2,HG3 2 QD HD2,HD3 2"
+
+
+; create file
+open $file
+
+; - put some comment in it
+fprint $file "#       This file is in NMR-STAR format"
+fprint $file " "
+fprint $file "# WARNING"
+fprint $file "# this file has been created automatically from a Gifa assignment project"
+fprint $file "# and should not be used as an 'official' NMR-STAR file, but rather as a starting point"
+fprint $file "# some entries have been set to arbitrary values, (tagged with a ## field)"
+fprint $file "# please check against your actual data"
+fprint $file " "
+
+fprint $file "data_000"
+fprint $file "## this 000 should be replaced by your actual BMRB accession number"
+fprint $file " "
+
+inprogress 1
+
+fprint $file "##########################"
+fprint $file "#  1. Entry information  #"
+fprint $file "##########################"
+fprint $file " "
+fprint $file "save_entry_information"
+fprint $file "   _Saveframe_category  entry_information"
+fprint $file " "
+fprint $file "   _Entry title"
+fprint $file ";"
+if (head(tail($version)) < 4.317) then
+   fprint $file "    assignment project - macro running in reduced mode"
+else
+   fprint $file ("   assignment project" ; sh("pwd"))
+   fprint $file ("   date :"; sh("date"))
+endif
+fprint $file ";"
+fprint $file " "
+fprint $file "   _Entry_type            new"
+fprint $file ("   _Submission_date      "; sh("date '+%Y-%m-%d'"))
+fprint $file "   _Entry_origination     author"
+fprint $file "   _NMR_STAR_version      2.1"
+fprint $file "   _Experimental_method   NMR"
+fprint $file " "
+
+fprint $file "save_"
+fprint $file " "
+
+inprogress 2
+
+fprint $file "#####################################"
+fprint $file "#  4. Molecular system description  #"
+fprint $file "#####################################"
+fprint $file " "
+fprint $file "save_system_molecule"
+fprint $file "   _Saveframe_category    molecular_system"
+fprint $file " "
+fprint $file "   _Mol_system_name       'System under study'"
+fprint $file "## put here the actual name of the molecule "
+fprint $file " "
+fprint $file "   _Abbreviation_common   system"
+fprint $file "## put here the common abbreviation"
+fprint $file " "
+fprint $file "   loop_"
+fprint $file "      _Mol_system_component_name"
+fprint $file "      _Mol_label"
+fprint $file " "
+fprint $file "      chain_A   $molecule"
+fprint $file " "
+fprint $file "   stop_"
+fprint $file " "
+fprint $file "   _System_paramagnetic   unknown"
+fprint $file "## set yes or no depending to paramagnetic state "
+fprint $file " "
+fprint $file "save_"
+fprint $file " "
+
+inprogress 3
+
+fprint $file "###########################"
+fprint $file "#  4.1 monomeric polymer  #"
+fprint $file "###########################"
+fprint $file " "
+fprint $file "save_molecule"
+fprint $file "   _Saveframe_category   monomeric_polymer"
+fprint $file " "
+fprint $file "   _Mol_type             polymer"
+fprint $file "   _Mol_polymer_class    protein"
+fprint $file "   _Name_common          'protein under study'"
+fprint $file "## put here the common name of the protein"
+fprint $file " "
+fprint $file "   _Abbreviation_common   protein"
+fprint $file "## put here the common short name of the protein"
+fprint $file " "
+
+fprint $file "####################################"
+fprint $file "#  4.1.1 Polymer residue sequence  #"
+fprint $file "####################################"
+fprint $file " "
+fprint $file ("   _Residue_count   "; $size)
+if (head(tail($version)) < 4.317) then
+   fprint $file "## PLEASE  change the above value to the correct one"
+endif
+fprint $file " "
+
+
+fprint $file "   _Mol_residue_sequence"
+fprint $file ";"
+
+open $prim
+set laa = <$prim
+set st = " "
+while (!eof($prim))
+   set st = ($st // $laa)
+   if ( len($st) >= 20) then
+      fprint $file $st
+      set st = " "
+   endif
+   set laa = <$prim
+endwhile
+if ( $st s! " ")   fprint $file $st
+fprint $file ";"
+fprint $file " "
+
+
+fprint $file "   loop_"
+fprint $file "      _Residue_seq_code"
+fprint $file "      _Residue_label"
+fprint $file " "
+
+open $prim
+set aa = 0
+set laa = <$prim   set aa = ($aa+1)
+set st = " "
+while (!eof($prim))
+   if ($aa<10) then
+     set st = ($st; sp(4); $aa; $laa)
+   else
+     set st = ($st; sp(3); $aa; $laa)
+   endif
+   if ( ($aa % 5) == 0)  then
+      fprint $file $st
+      set st = " "
+   endif
+   set laa = <$prim   set aa = ($aa+1)
+endwhile
+if ( $st s! " ")   fprint $file $st
+fprint $file " "
+fprint $file "   stop_"
+fprint $file " "
+fprint $file "save_"
+fprint $file " "
+
+inprogress 4
+
+fprint $file "############################"
+fprint $file "#  5.1  Sample description #"
+fprint $file "############################"
+fprint $file " "
+fprint $file "save_sample_one"
+fprint $file "   _Saveframe_category   sample"
+fprint $file " "
+fprint $file "   _Sample_type          solution"
+fprint $file " "
+fprint $file "   loop_"
+fprint $file "      _Mol_label"
+fprint $file "      _Concentration_value"
+fprint $file "      _Concentration_value_unit"
+fprint $file "      _Isotopic_labelling"
+fprint $file " "
+fprint $file "      $molecule  .  mM  ."
+fprint $file "## replace the first point with the actual concentration"
+fprint $file " "
+fprint $file "   stop_"
+fprint $file "save_"
+fprint $file " "
+
+
+fprint $file "###############################"
+fprint $file "#  6. Computer software used  #"
+fprint $file "###############################"
+fprint $file "save_Gifa"
+fprint $file "   _Saveframe_category   software"
+fprint $file " "
+fprint $file "   _Name                 Gifa"
+fprint $file ("   _Version             '" // tail($version) // "'")
+fprint $file " "
+fprint $file "   loop_"
+fprint $file "      _Vendor"
+fprint $file "      _Address"
+fprint $file "      _Electronic_address"
+fprint $file " "
+fprint $file "      'M-A. Delsuc'"
+fprint $file "      'Faculte de Pharmacie, 15 avenue Ch. Flahaut, 34000 Montpellier, France'"
+fprint $file "      http://www.cbs.univ-montp1.fr/GIFA"
+fprint $file " "
+fprint $file "   stop_"
+fprint $file " "
+fprint $file "   loop_"
+fprint $file "      _Task"
+fprint $file " "
+fprint $file "      'raw spectral data (FID) transformations'"
+fprint $file " "
+fprint $file "   stop_"
+fprint $file " "
+fprint $file "   loop_"
+fprint $file "      _Plateform_vendor"
+fprint $file "      _Operating_system"
+fprint $file " "
+if (head(tail($version)) < 4.317) then
+   fprint $file ("     '"; $config_os; "'")
+   fprint $file ("     '"; $config_os; "'")
+else
+   fprint $file (sp(5); sh("uname"))
+   fprint $file (sp(5);  head(tail(tail(sh("uname -a")))))
+endif
+fprint $file " "
+fprint $file "   stop_"
+fprint $file " "
+fprint $file "   _Citation_label      $citation_one"
+fprint $file " "
+fprint $file "save_"
+fprint $file " "
+
+fprint $file "save_Gifa_assign"
+fprint $file "   _Saveframe_category   software"
+fprint $file " "
+fprint $file "   _Name                 'Gifa assignment module'"
+fprint $file ("   _Version             "; $att_version )
+fprint $file " "
+fprint $file "   loop_"
+fprint $file "      _Vendor"
+fprint $file "      _Address"
+fprint $file "      _Electronic_address"
+fprint $file " "
+fprint $file "      'M-A. Delsuc'"
+fprint $file "      'Faculte de Pharmacie, 15 avenue Ch. Flahaut, 34000 Montpellier, France'"
+fprint $file "      http://www.cbs.univ-montp1.fr/GIFA"
+fprint $file " "
+fprint $file "   stop_"
+fprint $file " "
+fprint $file "   loop_"
+fprint $file "      _Task"
+fprint $file " "
+fprint $file "      assignments"
+fprint $file "      integration"
+fprint $file " "
+fprint $file "   stop_"
+fprint $file " "
+fprint $file "   loop_"
+fprint $file "      _Plateform_vendor"
+fprint $file "      _Operating_system"
+fprint $file " "
+if (head(tail($version)) < 4.317) then
+   fprint $file ("     '"; $config_os; "'")
+   fprint $file ("     '"; $config_os; "'")
+else
+   fprint $file (sp(5); sh("uname"))
+   fprint $file (sp(5);  head(tail(tail(sh("uname -a")))))
+endif
+fprint $file " "
+fprint $file "   stop_"
+fprint $file " "
+fprint $file "   _Citation_label      $citation_two"
+fprint $file " "
+fprint $file "save_"
+fprint $file " "
+
+inprogress 5
+
+fprint $file "#########################"
+fprint $file "#  8. Sample condition  #"
+fprint $file "#########################"
+fprint $file "save_sample_conditions_one"
+fprint $file "   _Saveframe_category   sample_conditions"
+fprint $file " "
+fprint $file "   _loop"
+fprint $file "      _Variable_type"
+fprint $file "      _Variable_value"
+fprint $file "      _Variable_value_unit"
+fprint $file "      _Variable_value_error"
+fprint $file " "
+fprint $file "   pH                 4.5    .  n/a"
+fprint $file "   temperature        300    .  K"
+fprint $file "   pressure           1      .  bar"
+fprint $file "   'ionic strength'   150    .  mM"
+fprint $file "## replace values with actual ones"
+fprint $file " "
+fprint $file "   stop_"
+fprint $file " "
+fprint $file "save_"
+fprint $file " "
+
+fprint $file "#######################"
+fprint $file "#  9. NMR parameters  #"
+fprint $file "#######################"
+fprint $file " "
+fprint $file "save_chemical_shift_reference_one"
+fprint $file "   _Saveframe_category   chemical_shift_reference"
+fprint $file " "
+fprint $file "   _Details"
+fprint $file ";"
+fprint $file "  DSS in water as described in Wishart D.S., Bigam C.G., Yao J., Abildgaard F.,"
+fprint $file "  Dyson H.J., Oldfield E., Markley J.L., Sykes B.D. 1H, 13C and 15N chemical"
+fprint $file "  shift referencing in biomolecular NMR. J. Biomol. NMR 6, 135-140 (1995)."
+fprint $file ";"
+fprint $file " "
+fprint $file "   loop_"
+fprint $file "      _Mol_common_name"
+fprint $file "      _Atom_type"
+fprint $file "      _Atom_isotope_number"
+fprint $file "      -Atom_group"
+fprint $file "      _Chem_shift_units"
+fprint $file "      _Chem_shift_value"
+fprint $file "      _Reference_method"
+fprint $file "      _Reference_type"
+fprint $file "      _Indirect_shift_ratio"
+fprint $file " "
+fprint $file "DSS   H   1   'methyl protons'   ppm   0.0   internal   direct      ."
+fprint $file "DSS   C   13  .                  ppm   0.0   internal   indirect    0.251449530"
+fprint $file "DSS   N   15  .                  ppm   0.0   internal   indirect    0.101329118"
+fprint $file "## check here your actual referencing method - the values here are used by the autocalib macro"
+fprint $file " "
+fprint $file "   stop_"
+fprint $file "save_"
+fprint $file " "
+fprint $file " "
+
+inprogress 6
+
+fprint $file "#########################################"
+fprint $file "#  9.1.2 Assigned chemical shift lists  #"
+fprint $file "#########################################"
+fprint $file " "
+fprint $file "#################################################################"
+fprint $file "#                                                               #"
+fprint $file "#   Ambiguity definitions - reminder -                          #"
+fprint $file "#    1 : unique                                                 #"
+fprint $file "#    2 : geminal atoms or geminal methyl proton groups          #"
+fprint $file "#    3 : Aromatic atoms on opposite sides of the ring           #"
+fprint $file "#    4 : Intraresidue ambiguities (e.g. Lys HG vs HD protons)   #"
+fprint $file "#    5 : Interresidue ambiguities (e.g. Lys 12 vs Lys 27)       #"
+fprint $file "#    9 : Ambiguous, specific ambiguity not defined              #"
+fprint $file "#                                                               #"
+fprint $file "#################################################################"
+fprint $file " "
+fprint $file "save_chemical_shift_assignment"
+fprint $file "   _Saveframe_category   assigned_chemical shifts"
+fprint $file " "
+fprint $file "   loop_"
+fprint $file "      _Software_label"
+fprint $file " "
+fprint $file "      $Gifa"
+fprint $file " "
+fprint $file "   stop_"
+fprint $file " "
+fprint $file "   loop_"
+fprint $file "      _Sample_label"
+fprint $file " "
+fprint $file "      $sample_one"
+fprint $file " "
+fprint $file "   stop_"
+fprint $file " "
+fprint $file "   _Sample_conditions_label          $sample_conditions_one"
+fprint $file "   _Chem_shift_reference_set_label   $chemical_shift_reference_one"
+fprint $file "   _Mol_system_component_name        $chain_A"
+fprint $file " "
+
+fprint $file "   loop_"
+fprint $file "      _Atom_shift_assign_ID"
+fprint $file "      _Residue_seq_code"
+fprint $file "      _Residue_label"
+fprint $file "      _Atom_name"
+fprint $file "      _Atom_type"
+fprint $file "      _Chem_shift_value"
+fprint $file "      _Chem_shift_value_error"
+fprint $file "      _Chem_shift_ambiguity_code"
+fprint $file " "
+; fprint $file "# At_ID  Res_ID  Res_typ At_nme  At_typ  Chem_sh  error  ambiguity"
+
+inprogress 10
+
+open $prim    ; rewind primary seq file
+set Res_id = 0
+set Res_type = <$prim   set Res_id = ($Res_id+1)
+set Atom_id = 1
+
+while (!eof($prim))                                     ; loop on primary seq
+  foreach p in sys within 1 ($Res_id - 0.1) ($Res_id + 0.1)
+      set an_res = " "     ; used by non-stereo assignment - holds the list of running non stereo
+      set ss = $sys[$p]
+;	fprint $file ($Res_id; $Res_type; "assigned to :"; $ss)
+	set ss = (tail(tail($ss)))    ; keep only the spin part
+	
+	while ($ss s! ' ')                                ; loop on spins
+	   set sp = $spin[head($ss)]      set ss = (tail($ss))
+         set Atom_name = (toupper(head(tail($sp))))
+         set Atom_type = (subst($Atom_name,1,1))
+         set ambig = 1
+         set ii = (index($Atom_name,'?'))    ; tag for non stereo assignment
+
+; pseudo atom : several atoms under the same chem shift  QB
+         if ($Atom_type s= 'Q') then       
+            set Atom_type = 'H'
+            set hlist = $ambig[$Res_type]   ; list of all possible ambiguity
+            while ($hlist s! " ")
+                set at = (head($hlist))   set hlist = (tail($hlist))
+                set an = (head($hlist))   set hlist = (tail($hlist))
+                set ab = (head($hlist))   set hlist = (tail($hlist))
+                if ($at s= $Atom_name) set found = (1==1)   goto found         ; found the match
+            endwhile
+            set found = (1==0)     ; not found
+            print ("WARNING, unknown ambiguity for spin"; $Atom_name; "of residue"; $Res_type; $Res_id)
+            print "atom name tagged with a *, Please check output file manually"
+            print " "
+=found
+            if $found then
+               set Atom_name = $an     ; foward an atom name as a list, will be dealed during output
+               set ambig = $ab
+            else
+               set Atom_name = ('H' // subst($Atom_name,2,len($Atom_name)) // '*')
+               set ambig = 9
+            endif
+            
+; or non stereo assignment - several spins under the same name HB? HB?
+         elsif ( $ii > 0 ) then
+            set radix = (subst($Atom_name,1,$ii-1))                   ; radix name HB? => HB
+            set ian_res = (index($an_res,$radix))
+            if ($ian_res == 0) then                        ; the first Hx? of the series - goes here
+               set Atom_name = ("Q" // subst($Atom_name,2,$ii-1))     ; used to search for atom name
+               set hlist = $ambig[$Res_type]                           ; list of all possible ambiguity
+               while ($hlist s! " ")
+                  set at = (head($hlist))   set hlist = (tail($hlist))
+                  set an = (head($hlist))   set hlist = (tail($hlist))
+                  set ab = (head($hlist))   set hlist = (tail($hlist))
+                  if ($at s= $Atom_name) set found = (1==1)   goto found2         ; found the match
+               endwhile
+               set found = (1==0)     ; not found
+               print ("WARNING, unknown stereo for spin"; $Atom_name; "of residue"; $Res_type; $Res_id)
+               print "atom name tagged with a *, Please check output file manually"
+               print " "
+=found2
+               if $found then
+                 set Atom_name = (headx($an,','))
+                 set an_res = ($an_res; tailx($an,','))         ; - holds the list of running non stereo
+                 set ambig = $ab
+                 set ambig[$radix] = $ab
+               else
+                 set Atom_name = ('H' // subst($Atom_name,2,len($Atom_name)) // '*')
+                 set ambig = 9
+               endif
+               set first = 1
+            else             ; not first - if here, we have seen a Hx? of the same series, the name is in an_res
+               set ambig = $ambig[$radix]
+               set nl = " "
+               while ($an_res s! ' ')     ; let's loop over all values in $an_res to find the correct one and process it
+                   set curr = (head($an_res))   set an_res = (tail($an_Res))
+                   if (index($curr,$radix) > 0) then     ; this is the good one
+                      set Atom_name = (headx($curr,','))
+                      set curr = (tailx($curr,','))
+                      set nl = ($nl;$curr;$an_res)
+                      goto brk_an_res
+                   endif
+                   set nl = ($nl; $curr)
+               endwhile
+               print ("WARNING, unmatched stereo for spin"; $Atom_name; "of residue"; $Res_type; $Res_id)
+               print "internal error, Please check output file manually"
+               print " "
+=brk_an_res                   
+            endif
+
+; ATOM NAME is UNK
+         elsif ($Atom_type s= 'U') then            ; this is the case if atome name is 'unk' <=> unassigned
+            print ("WARNING, unassigned spin :"; $Atom_name; "of residue"; $Res_type; $Res_id)
+            print "atom name tagged with a *, Please check output file manually"
+            print " "
+            set Atom_type = 'H'
+            set Atom_name = 'H*'
+            set ambig = 9
+         endif
+         set Chem_shift = (head($sp))
+;         fprint $file ($Atom_id;"   ";$Res_id;" ";$Res_type;"  ";$Atom_name;"  ";$Atom_type; $Chem_shift; "  .  "; $ambig)
+; loop over Atom_name, if pseudo-atom code Atom_name is a ',' separated list
+         while ($Atom_name s! ' ')
+           set an = (headx($Atom_name,','))   set Atom_name = (tailx($Atom_name,','))
+           fprintf $file "%-4d    %-4d    %-3s    %-5s    %1s     %6.2f   .    %1d" \
+                 $Atom_id $Res_id $Res_type $an $Atom_type $Chem_shift $ambig *
+           set Atom_id = (%+1)
+         endwhile
+	endwhile
+  endfor
+  set Res_type = <$prim   set Res_id = ($Res_id+1)
+  inprogress ($Res_id+10)
+endwhile
+close $prim
+
+fprint $file " "
+fprint $file "   stop_"
+fprint $file " "
+fprint $file "save_"
+fprint $file " "
+
+
+; the following stil to be done (FAIRE in french)
+
+; FAIRE 12.1 CSI
+
+; FAIRE 13.7  : raw data files
+
+fprint $file "##########################################"
+fprint $file "#  16 Cited references within the entry  #"
+fprint $file "##########################################"
+fprint $file " "
+fprint $file "save_citation_one"
+fprint $file "   _Saveframe_category   citation"
+fprint $file " "
+fprint $file "   _MEDLINE_UI_code ."
+fprint $file "   _Citation_full"
+fprint $file ";"
+fprint $file "    J.L.Pons, T.E.Malliavin and M.A.Delsuc,"
+fprint $file "    J. Biomol. NMR 8, 445-452 (1996)"
+fprint $file ";"
+fprint $file " "
+fprint $file "save_"
+fprint $file " "
+fprint $file "save_citation_two"
+fprint $file "   _Saveframe_category   citation"
+fprint $file " "
+fprint $file "   _MEDLINE_UI_code 98401075"
+fprint $file "   _Citation_full"
+fprint $file ";"
+fprint $file "    T.E.Malliavin, J.L.Pons and M.A.Delsuc,"
+fprint $file "    Bioinformatics 14-7 p624-631 (1998)"
+fprint $file ";"
+fprint $file " "
+fprint $file "save_"
+fprint $file " "
+
+
+close $file
+
+inprogress ($size+10)
+
+formbox "List of Spin-Systems in NMR-STAR format" DO_NOTHING  \
+   ('File is'; $file) message \
+   $file text \
+   'Print file' action ('sh "gifaprint'; $file; '"' ) *
+

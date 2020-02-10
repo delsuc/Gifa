@@ -12,13 +12,19 @@
 
 ; count and find min and max
   set p = ($spin[head($l)])
+  if ( ((head(tail($p))) s= 'N') | ((head(tail($p))) s= 'C')) then ; not for 15N & 13C
+	set l = (tail($l))	
+	set p = ($spin[head($l)])
+  endif 
   set min = (head($p))   set max = $min
   set p = (head(tail($l)))   set lp = (tail(tail($l)))
   while ($p s! " ")
-     set p = (head($spin[$p]))
-     if ($min > $p) set min = $p
-     if ($max < $p) set max = $p
-     set p = (head($lp))   set lp = (tail($lp))
+     if ( ((head(tail($spin[$p]))) s! 'N') & ((head(tail($spin[$p]))) s! 'C')) then  ; not for 15N & 13C  
+          set p = (head($spin[$p]))
+          if ($min > $p) set min = $p
+          if ($max < $p) set max = $p
+     endif 
+          set p = (head($lp))   set lp = (tail($lp))
   endwhile
 
 ; draw boxes

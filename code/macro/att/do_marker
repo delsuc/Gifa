@@ -1,4 +1,5 @@
 ; called by marker
+;
 
 set sym = $_
 set act = $_
@@ -70,6 +71,7 @@ elsif ($act s= "sho") then		; show related peaks
    refmacro 0
 elsif ($act s= "cre") then		; create missing peaks
    refmacro 1
+   zoom 0
      if ($sym s= "Symm") then
       for i = 1 to $np
       for j = 1 to $np
@@ -78,11 +80,13 @@ elsif ($act s= "cre") then		; create missing peaks
         set f2 = $ff2[$j]
         find att 2 $f1 $f2
         if ($pk_fnd_dst > $tol_align | $pk_fnd_dst == -1) then
-          center (ptoi($f1,2,1)) (ptoi($f2,2,2))
-          Showline 1 (ptoi($f1,2,1)) $si2_2d (ptoi($f1,2,1))
-          Showline (ptoi($f2,2,2)) 1 (ptoi($f2,2,2)) $si1_2d
-          gm/al_yesno ('Do you want to create a new peak at : F1'; $f1; "F2"; $f2)
-          if ($returned s= 'yes') @add_att $f1 $f2
+          ;center (ptoi($f1,2,1)) (ptoi($f2,2,2))
+          ;Showline 1 (ptoi($f1,2,1)) $si2_2d (ptoi($f1,2,1))
+          ;Showline (ptoi($f2,2,2)) 1 (ptoi($f2,2,2)) $si1_2d
+          ;gm/al_yesno ('Do you want to create a new peak at : F1'; $f1; "F2"; $f2)
+          ;if ($returned s= 'yes') @add_att $f1 $f2
+          @add_att $f1 $f2
+	  show_att $returned
         endif
        endif
       endfor
@@ -137,6 +141,8 @@ elsif ($act s= "add") then		; add to build_list related peaks
      endif
    endfor
    endfor
+   @promote $build_list			; Promote to spin syst 
+   set build_list := ' '
 elsif ($act s= "ext") then		; new point in the marker
 	point							
 	while ($arg)                    ; get corr on call line

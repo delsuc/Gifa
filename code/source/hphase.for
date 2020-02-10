@@ -34,6 +34,7 @@ C
 
 #include "sizebase.inc"
       real workloc(sizemax)
+#f2c      save workloc    ! needed for C array
 
       if (2*n .gt. sizemax) then
          call gifaout("*** Size too big for operation")

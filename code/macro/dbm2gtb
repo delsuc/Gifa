@@ -1,0 +1,40 @@
+; dbm2gtb input file output file
+;
+; WARNING
+; even though it is distributed with Gifa 5, this macro will run only
+; in Gifa version 4
+;
+; this macro, will convert dbm files (the *.pag *.dir files)
+; and will create a gtb file (the format used by the dbopen command in Gifa 5)
+;
+; see also : dbopen dbclose
+ ;
+; MAD aug 2002
+
+if (head(tail($version)) > 4.9) then
+    error "This macro requires Gifa version 4.x, it will not work under Gifa 5;x"
+endif
+
+message "enter input file name (without the .pag .dir extension)"
+set in = $_
+message "enter output file name (without the .gtb extension)"
+set out = $_
+set out = ($out // '.gtb')
+
+dbopen $in in
+open $out
+fprint $out ('# gtb file created on';sh('date');'from file :';$in // '.dir')
+
+set cmd = "| sed -e 's/\\/\\\\/g ; s/=/\\=/g' "	; use sh and sed to protect = and \ (version 4 was on unix only =-)
+foreach i in in
+;    print ($i // '=' // $in[$i])
+    set key = (sh('echo "' // $i //'"' ; $cmd))		; warning trailing blanks are lost here ! (there should not be any)
+;    print $key
+    set val = (sh('echo "' // $in[$i] //'"' ; $cmd))
+;    print $val
+    fprint $out ($key // '=' // $val)
+endfor
+dbclose in
+close $out
+
+

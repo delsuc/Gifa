@@ -17,7 +17,7 @@ set tmp = ('/tmp/gifa' // int(100000*$random))
 open $tmp
 fprint $tmp ';temporary file created by showexp'
 fprint $tmp 'set x = $_'
-fprint $tmp ('set returned := (' // $exp // ')' )
+fprint $tmp ('return (' // $exp // ')' )
 close $tmp
 
 set sc = ($scale*65/$absmax)

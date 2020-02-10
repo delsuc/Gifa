@@ -1,7 +1,8 @@
 ; this one test basic reading and processing of 2Ds
 if ($CONFIG_GRAPH) cdisp2d 0 disp2d 1 scale 2 zoom 0 refmacro 1  ; show what is happening
 
-set f = '../data/hsqc_grad'
+; set f = '../data/hsqc_grad'
+set f = 'hsqc_grad'
 if (fexist($f)) then
    read $f      ; on sorbine
 else

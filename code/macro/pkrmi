@@ -34,8 +34,13 @@ else
         scolor 2
 endif
 showpeak $pic
+if ($dim == 1) then
+  set spic = $pk1d_id[$pic]
+else
+  set spic = $pk2d_id[$pic]
+endif
 scolor $ss
-gm/al_yesno ("Ok to remove peak #"//$pic;"?") 
+gm/al_yesno ("Ok to remove peak "//$spic;"?") 
 if ($returned s= "yes") pkrm $pic 0
 refmacro 1
 ref

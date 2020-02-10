@@ -431,6 +431,7 @@ C
       common /fitg/zz
 C see fitg2 for comment
       real pl(sizelev)
+#f2c      save pl    ! needed for C array
 
       delta = 10*epsilon
       do i = 1, size

@@ -8,7 +8,12 @@ buttonbox "Integration" \
    'Single data-set integration tool' integ_att \
    'Choose the calibration intensities' calib_integ \
    'Write build_up constraints file' cnst_buildup \
-   'Write qualitative constraints file' cnst_qualit \
+   separator \
+   'Open new constraints db' new_cnst_db \
+   'Open existant constraints db' open_cnst_db \
+   'Create/Update constraints db' build_cnst_db \
+   'List constraints db' list_cnst_db \
+   'Write CNS/Dyana input file from constraints db' output_cnst_db \
    separator \
    'Copy db to a peak file (slow!)' att->fil \
    "Read peak file" "dialogbox Read 'Enter file name' message ' '  file _f $name * pkread $_f unset _f" \

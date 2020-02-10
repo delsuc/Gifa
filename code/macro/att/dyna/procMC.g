@@ -15,19 +15,21 @@ if ($dim != 2) error "Command available in 2D only !"
 if (!$arg) then
 
   formbox 'Monte-Carlo tool for Dynamics Analysis' \
-   'procMC.g ("processing/"//$listfile) $data_typ $MC $meth $stt' \
+   'procMC.g ("processing/"//$listfile) $data_typ $coef $MC $meth $stt' \
    'Data-sets list' string listfile % \
-   'Type of data' enum 'R1,R2' data_typ 'R1' \
+   'Type of data' enum 'R1,R2' data_typ 'R1' noreturn \
+   'error bar weight' cursor 0.5 10 1 coef 1.0 \
    'Number of MC iteration' int MC 100 noreturn \
    'MC method' enum 'data,synthetic' meth synthetic \
    'Create detailed file (big)' enum 'yes,no' stt % noreturn \
-   'Write batch file' action 'procMC.g ("processing/"//$listfile) $data_typ $MC $meth $stt write' \
+   'Write batch file' action 'procMC.g ("processing/"//$listfile) $data_typ $coef $MC $meth $stt write' \
    *
 
 else
 
   set liste = $_
   set data_typ := $_
+  set coef = $_
   set MC = $_
   set sc = 1
   set meth = $_
@@ -46,7 +48,7 @@ else
     fprint $file (";gifa <"; $file; "> log_file &")
     fprint $file " "
     fprint $file "setpath ('/usr/local/gifa/macro/att/dyna /usr/local/gifa/macro/att';$gifapath)"
-    fprint $file ("procMC.g"; $liste; $data_typ; $MC; $meth; $stt)
+    fprint $file ("procMC.g"; $liste; $data_typ; $coef; $MC; $meth; $stt)
     fprint $file "exit y"
 
     close $file
@@ -58,7 +60,7 @@ else
   print "===================================   MC run   ==================================="   
   print "note: you can start this MC run in batch with the following Gifa commands:"
   print "     setpath ('/usr/local/gifa/macro/att/dyna /usr/local/gifa/macro/att';$gifapath)"
-  print ("     procMC.g"; $liste; $data_typ; $MC; $meth; $stt)
+  print ("     procMC.g"; $liste; $data_typ; $coef; $MC; $meth; $stt)
   print "     in the project directory"
   print "no need to have the assignment module loaded (nor even graphic)"
   print "=================================================================================="
@@ -111,15 +113,16 @@ else
          if (eof($integ)) goto break    ; break on eof
       endwhile
         set dbno = (head(tail($line)))
-print $dbno
+        set sp = (head(tail(tail(tail($att[$dbno])))))
+        set aa = (head(tail(tail($spin[$sp]))))
+        print ("processing :"; $sys[$aa])
         set descrip = $line
-        set returned := 0
         readcurve.g $nbexp $integ
         if ($returned == 1) then
           goto fin
         endif
 
-        proc1pk.g $data_typ     ; initial values
+        proc1pk.g $data_typ  $coef   ; initial values
         set chi2exp = $chi2
 
 ; compute 95% confidence level
@@ -137,7 +140,7 @@ print $dbno
           open $tmp
           fprint $tmp ';temporary file created by showexp'
           fprint $tmp 'set x = $_'
-          fprint $tmp ('set returned := (' // $exp // ')' )
+          fprint $tmp ('return (' // $exp // ')' )
           close $tmp
           set first = ( 1 == 0)
         endif
@@ -181,7 +184,7 @@ print $dbno
              set error[$k] = ($error_base[$k]*$sc)
             endfor
           endif
-          proc1pk.g $data_typ
+          proc1pk.g $data_typ  $coef
           if ($stt s= 'yes') fprint $stat ($chi2; $p1; $dp1; $p2; $dp2)
           if ($meth s= 'synthetic') then    ; keep every thing
             if ($data_typ s= "R1") then

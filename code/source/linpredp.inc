@@ -75,8 +75,8 @@ c         itdata = it1d
          emptydata = .false.
 
       elseif (command.eq.'BURG') then
-#adrwn      call gifaout('This function is not implemented yet on Darwin')
-#adrwn      goto 121
+c#adrwn      call gifaout('This function is not implemented yet on Darwin')
+c#adrwn      goto 121
          if (dim.ne.1) goto 99
          if (it1d.ne.1) goto 104
          if (order.lt.1) goto 161
@@ -538,16 +538,61 @@ c        szd = sizeimage1d
         zz = i - 2 
         call bsort(tindex,zz)
         if (yy.eq.1) then
-           call rselect (znf,tindex,i,szzn)
+           call rselect (znf,tindex,zz,szzn,zz)
         elseif (yy.eq.2) then
-           call rselect(znb,tindex,i,szzn)
+           call rselect(znb,tindex,zz,szzn,zz)
         elseif (yy.eq.3) then
-           call rselect(zn,tindex,i,szzn)
+           call rselect(zn,tindex,zz,szzn,zz)
         else
            goto 98
         endif
         szzn = zz
         call gifaouti('New number of Roots',szzn)
+
+      elseif (command.eq.'MIRROR') then
+C mirror X
+C
+C implements mirror image reflection, as proposed by Zhu and Bax J.Magn.Reson. 90, p405 (1990)
+C
+C X determines the position of the t=0 point
+C X =  0  no shift : in-phase data set
+C     -1  acquisition started exactly half a dwell after t=0 (will need phase 0 180)
+C     n>0 acquisition started exactly n dwell before t=0
+C         Warning, this is not coherent notation
+C
+C see also : burg_mirror BURG
+C
+         if (dim.ne.1) goto 99
+         if (it1d.ne.1) goto 104
+	   if (2*(sizeimage1d/2) .ne. sizeimage1d) goto 92
+         call message('where is the origin of time t=0?') 
+         call message('-1: acquisition delayed by 1/2 dwell time')
+         call message(' 0: first complex point')
+         call message(' n: nth complex point')
+	   xx = 0
+         call getint2(xx,error)
+	   if (error.ne.0) goto 93
+         if (xx.ge.0) then
+            zz = 2*xx + 2
+	   elseif (xx.eq.-1) then
+	      zz = 0
+	   else
+	     goto 98
+	   endif
+         call copvect(work1d,column(zz+1),sizeimage1d-zz)
+         call crevvect(work1d,(sizeimage1d-zz)/2)                    ! complex reverse
+         call bru2vect(work1d, work1d, sizeimage1d-zz)               ! inverse imaginary
+	   if (xx.ge.0) then
+            call copvect(work1d(sizeimage1d-zz+1),
+     *             column(zz-1),sizeimage1d-zz)   ! add initial FID (with time 0) to reversed one
+            sizeimage1d = 2*sizeimage1d-zz
+         else
+            call copvect(work1d(sizeimage1d+1),
+     *             column,sizeimage1d)   ! add initial FID to reversed one
+            sizeimage1d = 2*sizeimage1d
+         endif	   
+         call copvect(column,work1d,sizeimage1d)          ! and back
+         refresh = 1
 
       elseif (command.eq.'ZHU') then
          if (dim.ne.1) goto 99
@@ -669,7 +714,7 @@ c         enddo
         call message('Cone extent?')
         z = 6.0
         call getreal2(z,error)
-        call rtfreq (znf,szzn,tindex,z)
+        call rtfreq (znf,szzn,tindex,z,szindex)
 
 270    format (' packing is : ',f6.2,' %.')
 273    format (' value of the relaxation rate : positive relaxation 

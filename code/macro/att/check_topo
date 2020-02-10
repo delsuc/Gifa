@@ -30,7 +30,7 @@ set i = $_
           print ("  Index in primary sequence:"; $prim; " is outside range")
        endif
        close db/primary
-       dbopen /usr/local/gifa/macro/att/1let_3let code
+       dbopen db/1let_3let code
        if (index($code[$l],$res) == 0) then
           print ("Warning: residue #"; $i ; "type :"; $res)
           print ("  Index in primary sequence:"; $prim; "Residue types do not match")
@@ -45,7 +45,7 @@ set i = $_
          set splist = (tail($splist))
          if (tolower($spname) s= 'unk') goto breakout      ; donot check 'unk' spins
 ; check for duplicate name
-         if (index($spname,'Q') != 1) then    ; nor Qx for duplicate
+         if (index($spname,'?') == 0) then    ; nor Qx for duplicate
            set spp = $splist
            while ($spp s! ' ')       ; for all remaining spins
               if (head(tail($spin[head($spp)])) s= $spname) then

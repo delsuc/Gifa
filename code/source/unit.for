@@ -37,7 +37,8 @@ c
 C returns ppm from index value
 
       implicit none
-      real specw,off,freq,itohr,index,itopr
+      real specw,off,itohr,index,itopr
+      real*8 freq
       external itohr
       integer size
 
@@ -52,11 +53,13 @@ c
 C returns index from ppm value
 
       implicit none
-      real specw,off,freq,ppm,ptoir,htoir
+      real specw,off,ppm,ptoir,htoir
+      real*8 freq
+
       integer size
       external htoir
 
-      ptoir = htoir(ppm*freq,size,specw,off)
+      ptoir = htoir(real(ppm*freq),size,specw,off)
       return
       end
 c************************************************************
@@ -450,7 +453,8 @@ c dd is the axis when in nD (1, 2, (3) )
 #include "laplacev.inc"
 
       integer size
-      real specw,off,freq
+      real specw,off
+      real*8 freq
 
       if (dim.eq.1) then
         freq = freq1d
@@ -537,7 +541,8 @@ c dd is the axis when in nD (1, 2, (3) )
 #include "laplacev.inc"
 
       integer size
-      real specw,off,freq
+      real specw,off
+      real*8 freq
 
       if (dim.eq.1) then
         freq = freq1d
@@ -766,7 +771,8 @@ c ------------------------
       function itop(index,size,specw,off,freq)
 c integer version of itopr (i.e. index is integer)
       implicit none
-      real specw,off,itop,freq,itohr
+      real specw,off,itop,itohr
+      real*8 freq
       external itohr
       integer size,index
       itop = itohr(float(index),size,specw,off)/freq
@@ -776,10 +782,11 @@ c ------------------------
       function ptoi(ppm,size,specw,off,freq)
 c integer version of ptoir (i.e. index is integer)
       implicit none
-      real specw,off,freq,ppm,htoir
+      real specw,off,ppm,htoir
+      real*8 freq
       integer size,ptoi
       external htoir
-      ptoi = htoir(ppm*freq,size,specw,off)
+      ptoi = htoir(real(ppm*freq),size,specw,off)
       return
       end
 c ------------------------

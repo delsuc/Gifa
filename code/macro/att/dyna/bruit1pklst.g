@@ -36,14 +36,13 @@ while (!eof($liste))
     endwhile
     set intemp = (%/$nbtemp)
     set tmp = (sqrt($nbtemp/($nbtemp-1)*(($intemp2/$nbtemp) - ($intemp*$intemp))))
-;    print ("tmp" ; $tmp)
     set err = (% + $tmp)
     set nberr = (% + 1)
   endif
   set line = <$liste
 endwhile
 
-set returned := ($err/$nberr)
+return ($err/$nberr)
 close $liste
 
 

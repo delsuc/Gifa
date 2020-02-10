@@ -8,8 +8,8 @@ buttonbox DOSY \
 	'Calibdosy' calibdosy \
         'Dosy_setup' dosy_setup \
         separator \
-        "Dosyfit (1 comp.)" dosyfit \
-        "Dosyfit_2 (2 comp.)" dosyfit_2 \
+        "Dosyfit (1 comp.)" dosyfit_verbose \
+        "Dosyfit_2 (2 comp.)" dosyfit_2_verbose \
         "Inv Laplace" invlap \
         "Continue" "iter $_ invlapcont" \
         "Inv tab Laplace" invtlap \

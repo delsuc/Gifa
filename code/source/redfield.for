@@ -137,7 +137,7 @@ c
         return
         end
 ***********************************************************************
-      subroutine rtfreq (zn,order,index,alpha)
+      subroutine rtfreq (zn,order,index,alpha,szind)
 c IN	: alpha
 c INOUT	: zn,order
 c WORK	: index
@@ -158,8 +158,8 @@ c
       implicit none
 #include "constant.inc"
 
-      integer order,i,j,k,piv,throw
-      integer index(order)
+      integer order,i,j,k,piv,szind,throw
+      integer index(szind)
       real*8 zr,zi,a,b,small,dalpha
       real alpha
       complex*16 zn(order)
@@ -230,7 +230,7 @@ c	    write(*,*)'index',index(k),'k',k
 	 endif
       enddo
       throw = order - k + 1
-      call rselect(zn,index,k-1,order)
+      call rselect(zn,index,k-1,order,szind)
       write(*,*)throw,' roots removed, ',piv,' roots pivoted.'
       order = order - throw
 

@@ -56,6 +56,8 @@ C covar(i,i) is the square of the error on prm(i)
       character*256 st
       real     lambda,deltachi2,prevchi2,
      * alpha(sizelev,sizelev),covar(npc,npc),beta(sizelev,1)
+#sgi      save alpha       ! needed for C array
+#f2c      save alpha       ! needed for C array
       external func,dfunc
 
 

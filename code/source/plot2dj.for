@@ -82,8 +82,11 @@ c
         integer flag(4)
 
         real z11,z12,z21,z22
-        real x(512),y(512)
+        integer buff_siz
+        parameter (buff_siz=4096)
+        real x(buff_siz+12),y(buff_siz+12)   ! see plot2d.for
         real z(64,64),zz(128*128)
+#f2c        save x,y, z, zz, fbox   ! this is needed because of a limited size for local C variables
         integer error
 	 
 

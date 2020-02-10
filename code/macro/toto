@@ -1,0 +1,10 @@
+; listefilec
+;
+; list on screen all the currently JOINed data-sets
+
+ ; used to be a command
+
+print 'currently joined data-set'
+foreach i in cache
+  print $cache[$i]
+endfor

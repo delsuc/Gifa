@@ -35,15 +35,17 @@ endif
 row 1
 if ($itype_1d != 0) then     ; if complex, has to uswap first
   set _rem_uswa = 1
+  if (power2($si1_1d) != $si1_1d) chsize % (2*power2($si1_1d))
   uswa f2
   modifysize (2*$si1_2d) %
 else
   set _rem_uswa = 0
 endif
-bcorrp1 bcorr 3 f2           ; do correction
+bcorrp1 segm1 0 bcorr 3 f2 bcorrp0          ; do correction
 if ($_rem_uswa != 0) then    ; reswap if needed
   modifysize ($si1_2d/2) %
   swa f2
+  if ($si1_1d != $si2_2d) chsize % $si1_1d
 endif
 
 if ($_rem_1d == 1)  then     ; was a 1D

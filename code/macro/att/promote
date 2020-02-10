@@ -10,14 +10,15 @@ set ll_res = $_
 
 ; find spin ppms
 @list2spin $ll_res
+set liste = $returned
 
 
 set sysid = ($sys['largest']+1)
 
 ; create new spins
 set nsp = 0
-while ($returned s! " ")
-   set sp = (head($returned))   set returned = (tail($returned))  set nsp = (%+1)
+while ($liste s! " ")
+   set sp = (head($liste))   set liste = (tail($liste))  set nsp = (%+1)
    print ("Creating a new spin at :"; $sp; "ppm")
    set spid = ($spin["LARGEST"]+1)
    set nm = "unk"
@@ -25,6 +26,8 @@ while ($returned s! " ")
       set nm = "HN"
    elsif ($sp > 3.5 & $sp < 5.5) then
       set nm = "HA"
+   elsif ($sp > 100 & $sp < 130) then
+      set nm = "N"
    endif
    set spin[$spid] = ($sp; $nm; $sysid)
    set spin["LARGEST"] = $spid

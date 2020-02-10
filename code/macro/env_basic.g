@@ -11,7 +11,7 @@ if ($LICENCE s= "NON-VALID") then
 endif
 
 buttonbox About \
-   'About GIFA' gm/config \
+   'About GIFA' config \
    separator \
    'Help' 'help' \
    'Full on-line Documentation...' 'print ("starting";$viewer//"...") sh ($viewer;"/usr/local/gifa/doc/gifa.html &") ' \
@@ -28,9 +28,11 @@ buttonbox File \
    separator \
    'Read all format' gm/readf \
    'Write all format' gm/writef \
-   'Bring from UXNMR' getuxnmr \
+   'Import from XWinNMR/TopSpin' import_bruker.g \
    'Read from VNMR' varian_read \
-   separator \
+    separator \
+    'Bring from Bruker Spectrometer' getuxnmr \
+    separator \
    'File name' 'print ("current file is : "//$name)' \
    'Acq param' param \
    *
@@ -57,10 +59,10 @@ buttonbox 'Move' \
    *
    
 buttonbox 'Process' \
-   'Easy 1D' 'dim 1 easy1d $name expbroad 1 sim ($si1_1d+0) % 0 0  %' \
+   'Easy 1D' 'dim 1 easy1d $name no expbroad 1 sim on ($si1_1d+0) % 0 0  %' \
    'Integrate' integrate \
    separator \
-   'Easy 2D' 'dim 2 easy2d $name sin 0 yes sin 0 no 0 0 sh ($si1_2d+0) no sim ($si2_2d+0) % 0 0 0 0 %%' \
+   'Easy 2D' 'dim 2 easy2d $name yes no sin 0 sin 0 0 0 sh ($si1_2d+0) no sim on ($si2_2d+0) % 0 0 0 0 %%' \
    'Proj F1' 'proj f1 $_' \
    'Proj F2' 'proj f2 $_' \
    *

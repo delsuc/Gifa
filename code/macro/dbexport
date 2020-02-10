@@ -1,0 +1,22 @@
+; dbexport basname
+; export a db file to an ascii dump.
+;
+; see also : dbimport DBOPEN
+
+	message 'which basename file ?'
+	set base = $_
+	dbopen $base db
+	set fout = ($base // '.txt')
+	open $fout
+	foreach i in db
+		if (index($i,'"') == 0) then
+			fprint $fout ('"' // $i // '"' ; $db[$i])
+		elsif (index($i,"'") == 0) then
+			fprint $fout ("'" // $i "'" // ; $db[$i])
+		else
+			print ('We have a problem Doc, with line';$i)
+		endif
+	endfor
+	close $fout
+	dbclose db
+

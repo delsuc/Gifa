@@ -1,0 +1,16 @@
+;txt2att
+;
+; create .dir and .pag dbm files from  ascii files (.txt)
+
+
+sh "ls -1 constraints/*.txt | awk -F. '{print $1}' > tmp"
+sh "ls -1 db/*.txt | awk -F. '{print $1}' >> tmp"
+open tmp
+while (!eof('tmp'))
+        set a =  <tmp
+	if ($a s! " " ) then
+		print ($a//".dir and .pag ...")
+         	dbimport $a	
+	endif
+endwhile
+close tmp sh "rm -f tmp"

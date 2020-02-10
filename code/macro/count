@@ -32,13 +32,13 @@ ADDBASE -1
 ; Count the number of ones (data-point which are above value)
 if ($dim == 1) then
    evaln 1 $si1_1d
-   set returned := (round($si1_1d*$shift))
+   return (round($si1_1d*$shift))
 elsif ($dim == 2) then
    evaln 1 1 $si1_2d $si2_2d
-   set returned := (round($si1_2d*$si2_2d*$shift))
+   return (round($si1_2d*$si2_2d*$shift))
 elsif ($dim == 3) then
    evaln 1 1 1 $si1_3d $si2_3d $si3_3d
-   set returned := (round($si1_3d*$si2_3d*$si3_3d*$shift))
+   return (round($si1_3d*$si2_3d*$si3_3d*$shift))
 endif
 get data
 noise $noise2

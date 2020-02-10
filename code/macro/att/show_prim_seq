@@ -4,23 +4,27 @@
 ; attention, ne pas toucher a ce commentaire
 
 ;scan prim seq
-open db/primary
-set l = <db/primary
-set i = 1
-while (!eof('db/primary'))
-   set seq[$i] = $l
-   set i = (%+1)
-   set l = <db/primary
-endwhile
-close db/primary
-   
+  open db/primary
+  set l = <db/primary
+  set i = 1
+  while (!eof('db/primary'))
+    set seq[$i] = $l
+    set i = (%+1)
+    set l = <db/primary
+  endwhile
+  close db/primary
+  set i = (%-1)
+
+initinprogress $i
+
 ; open temp file
 set tmp = ('tmp' // int(1000000*$random))
 open $tmp
 fprint $tmp 'formbox primary DO_NOTHING \'
 
 ; for all residues
-for j = 1 to ($i-1)
+for j = 1 to $i
+  inprogress $j
   fprint $tmp ("'" // $j; $seq[$j] //"'" ; 'message \')
   foreach p in sys within 1 ($j-0.1) ($j+0.1)
       set ss = (head(tail($sys[$p])))

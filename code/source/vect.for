@@ -129,6 +129,8 @@ C                  metric matrix whose diagonal is in B, and put the result into
 C 
 C MLTVECT(A,B,L,N) multiply vector B by scalar l, and put it into A
 C 
+C CMLTVECT(A,B,L,N) multiply complex vector B by complex l, and put it into A
+C 
 C PRPVECT(A,L,N) propagates scalar L into vector A
 C 
 C PRDVECT(A,L,N) propagates scalar L (real*8) into vector A (real*8)
@@ -667,7 +669,6 @@ C
 
 #assert (size.gt.0)
 
-#vms      Call Lib$flt_under(0)
       do 100,i=1,size
          a(i) = b(i)*c(i)
 100   continue
@@ -691,7 +692,6 @@ C
 
 #assert (size1.gt.0 .and. size2.gt.0)
 
-#vms      Call Lib$flt_under(0)
       do 100,i=1,size1,2
          do 100,j=1,size2,2
             a(j,i) = b(j,i)*c(j,i) 
@@ -731,7 +731,6 @@ C
 
 #assert (size.gt.0)
 
-#vms      Call Lib$flt_under(0)
       do 100,i=1,size
          a(i) = b(i)*c(i)
 100   continue
@@ -754,7 +753,6 @@ C
 
 #assert (size.gt.0)
 
-#vms      call lib$flt_under(0)
       dd = 0.0D0
       do 100,i=1,size
          dd = a(i)*b(i) + dd
@@ -778,7 +776,6 @@ C
 
 #assert (size.gt.0)
 
-#vms      call lib$flt_under(0)
       dd = (0.0D0,0.0D0)
       do 100,i=1,size
 	 bb = b(i)
@@ -803,7 +800,6 @@ C
 
 #assert (size.gt.0)
 
-#vms      call lib$flt_under(0)
       d = 0.0D0
       do 100,i=1,size
          d = a(i)*b(i) + d
@@ -826,7 +822,6 @@ C
 
 #assert (size.gt.0)
 
-#vms      call lib$flt_under(0)
       d = (0.0,0.0)
       do 100,i=1,size
          d = a(i)*b(i) + d
@@ -851,7 +846,6 @@ c
 
 #assert (size.gt.0)
 
-#vms      call lib$flt_under(0)
       d = (0.d0,0.d0)
       do 100,i=1,size
          d = a(i)*dconjg(b(i)) + d
@@ -876,7 +870,6 @@ c
 
 #assert (size.gt.0 .and. scale.GT.0.0)
 
-#vms      Call Lib$flt_under(0)
 
       ee = 0.0D0
       if (scale.eq.0.0) then
@@ -951,6 +944,27 @@ C
 
       integer i,size
       real a(size),b(size),l
+
+#assert (size.gt.0)
+
+      do 100,i=1,size
+         a(i) = l*b(i)
+100   continue
+      return
+      end
+
+C*************************************************************
+      subroutine  cmltvect(a,b,l,size)
+c IN	: b,l,size
+c OUT	: a
+c
+C CMLTVECT(A,B,L,N) multiply complex vector B by complex l, and put it into A
+C 
+C
+      Implicit none
+
+      integer i,size
+      complex a(size),b(size),l
 
 #assert (size.gt.0)
 
@@ -1150,7 +1164,6 @@ C
 
 #assert (size.gt.0)
 
-#vms      Call Lib$flt_under(0)
       l2 = 1-l
 c      if (l .le. 1.0) then
       if (1 .eq. 1) then
@@ -1518,7 +1531,7 @@ C
       end
 
 C*************************************************************
-      subroutine  icopvect(index,a,b,size)
+      subroutine  icopvect(index,a,b,size,sizei)
 c IN	: index,b,size
 c OUT	: a
 c
@@ -1526,34 +1539,54 @@ C   This subroutine copy b(index(i)) into a
 C
       Implicit none
 
-      integer i,size,index(size)
+      integer i,sizei,size,index(sizei)
       real a(size),b(size)
 
 #assert (size.gt.0)
 
-      do 100,i=1,size
+      do 100,i=1,sizei
          a(i) = b(index(i))
 100   continue
       return
       end
 
 C*************************************************************
-      subroutine  icopsvect(index,a,b,size)
+      subroutine  icopsvect(index,a,b,size,sizei)
 c IN	: index,b,size
 c OUT	: a
 c
 C   This subroutine copy b(index(i)) into a
-c   a and are strings
+c   a and b are strings
 C
       Implicit none
 
-      integer i,size,index(size)
+      integer i,sizei,size,index(sizei)
       character*(*) a(size),b(size)
 
-#assert (size.gt.0)
+#assert (sizei.gt.0)
 
-      do 100,i=1,size
+      do 100,i=1,sizei
          a(i) = b(index(i))
+100   continue
+      return
+      end
+C*************************************************************
+      subroutine  icopusvect(index,a,size,sizei)
+c IN	: index,size
+c INOUT	: a
+c
+C   This subroutine copy a(index(i)) into a
+c   a is a string
+C
+      Implicit none
+
+      integer i,sizei,size,index(sizei)
+      character*(*) a(size)
+	
+#assert (sizei.gt.0)
+
+      do 100,i=1,sizei
+         a(i) = a(index(i))
 100   continue
       return
       end
@@ -1565,10 +1598,10 @@ C Be careful! the index array INDX should be sorted in ascending order
 C
       Implicit none
 
-      integer i,j,k,size,size1,index(size1)
+      integer i,j,k,ii,size,size1,index(size1)
       real a(size),b(size)
 
-#assert (size.gt.0)
+#assert (size.gt.0 .and. size1.gt.0)
 
       k = 1
       j = 1
@@ -1578,8 +1611,17 @@ C
 	    j = j + 1
 	 else
 	    k = k + 1
+	    if (k.gt.size1) goto 200
 	 endif
 100   continue
+
+c jump here if index() is exhausted
+200   continue 
+      do 300,ii=i+1,size
+	   a(j) = b(ii)
+	   j = j+1
+300   continue
+
       return
       end
 
@@ -1593,7 +1635,7 @@ C Be careful! the index array INDX should be sorted in ascending order
 C
       Implicit none
 
-      integer i,j,k,size,size1,index(size1)
+      integer i,j,k,ii,size,size1,index(size1)
       character*(*) a(size),b(size)
 
 #assert (size.gt.0)
@@ -1606,8 +1648,16 @@ C
 	    j = j + 1
 	 else
 	    k = k + 1
+	    if (k.gt.size1) goto 200
 	 endif
 100   continue
+
+c jump here if index() is exhausted
+200   continue 
+      do 300,ii=i+1,size
+	   a(j) = b(ii)
+	   j = j+1
+300   continue
       return
       end
 
@@ -1627,7 +1677,6 @@ C
 
 #assert (size.gt.0)
 
-#vms      call lib$flt_under(0)
       dd = 0.0D0
       do 100,i=1,size
          dd = a(index(i))*b(i) + dd
@@ -1652,7 +1701,6 @@ C
 
 #assert (size.gt.0)
 
-#vms      call lib$flt_under(0)
       dd = 0.0D0
       do 100,i=1,size
          dd = a(index(i))*b(index(i)) + dd
@@ -1677,7 +1725,6 @@ C
 
 #assert (size.gt.0)
 
-#vms      Call Lib$flt_under(0)
       do 100,i=1,size
          a(i) = b(index(i))*c(index(i))
 100   continue
@@ -1761,7 +1808,7 @@ C*************************************************************
 c IN	: B,C,size
 c OUT	: arrayout
 c 
-C MAXVECT(A,B,C,N) put into the vector A, the smallest value of vector B and C
+C MINVECT(A,B,C,N) put into the vector A, the smallest value of vector B and C
 
       Implicit none
 

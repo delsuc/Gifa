@@ -13,18 +13,18 @@ set grep_typ = $_
 set cr_par = $_
 set i = $_
 
-set returned := 0
+return 0
 
 set l = $att[$i]
 
 if ($grep_typ s= "Off") then
-  set returned := -1
+  return -1
 endif
 
 if ($grep_typ s= "Peak_note") then
 ; get the peak note
    set t = (tail(tail(tail(tail(tail($l))))))
-   if (index($t,$cr_par) != 0) set returned := 1
+   if (index($t,$cr_par) != 0) return 1
 endif
    
 if ($grep_typ s= "Spin_note") then
@@ -37,7 +37,7 @@ if ($grep_typ s= "Spin_note") then
      set s2 = ($spin[(head(tail($t)))])
      set t1 = (tail(tail(tail($s1))))
      set t2 = (tail(tail(tail($s2))))
-     if ((index($t1,$cr_par) != 0) | (index($t2,$cr_par) != 0)) set returned := 1
+     if ((index($t1,$cr_par) != 0) | (index($t2,$cr_par) != 0)) return 1
    endif
 endif
       
@@ -54,7 +54,7 @@ if ($grep_typ s= "Res Type") then
       if (($sys1 s! "unk") & ($sys2 s! "unk")) then 
          set r1 = (head(tail($sys[$sys1])))
          set r2 = (head(tail($sys[$sys2])))
-         if (($r1 s= $cr_par) | ($r2 s= $cr_par)) set returned := 1
+         if (($r1 s= $cr_par) | ($r2 s= $cr_par)) return 1
       endif
    endif
 endif
@@ -72,7 +72,7 @@ if ($grep_typ s= "Res Numb") then
      if (($sys1 s! "unk") & ($sys2 s! "unk")) then 
        set r1 = (head($sys[$sys1]))
        set r2 = (head($sys[$sys2]))
-       if (($r1 == $cr_par) | ($r2 == $cr_par)) set returned := 1
+       if (($r1 == $cr_par) | ($r2 == $cr_par)) return 1
      endif
   endif
 endif
@@ -89,7 +89,7 @@ if ($grep_typ s= "Spin Type") then
      set t2 = (head(tail($s2)))
 ;     print ("t1";$t1;"t2";$t2;"cr_par";$cr_par)
 ;     print ( (index($t1,$cr_par)) ; (index($t2,$cr_par)) )
-     if ((index($t1,$cr_par) != 0) | (index($t2,$cr_par) != 0)) set returned := 1
+     if ((index($t1,$cr_par) != 0) | (index($t2,$cr_par) != 0)) return 1
 ;     print $returned
    endif
 endif
@@ -97,17 +97,17 @@ endif
 if ($grep_typ s= "Max Int") then
 ; get the peak intensity
   set t = (head(tail(tail($l))))
-  if (abs($t) <= $cr_par) set returned := 1
+  if (abs($t) <= $cr_par) return 1
 endif
         
 if ($grep_typ s= "Min Int") then
 ; get the peak intensity
   set t = (head(tail(tail($l))))
-  if (abs($t) >= $cr_par) set returned := 1
+  if (abs($t) >= $cr_par) return 1
 endif
         
 if ($grep_typ s= "Unassigned") then
-  if (index(tolower($att[$i]),'unk') != 0) set returned := 1
+  if (index(tolower($att[$i]),'unk') != 0) return 1
 endif
     
 

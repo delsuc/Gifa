@@ -114,6 +114,7 @@ c        real plane2d(smxmax)
 	real z11,z12,z21,z22,zero,fsi1,fsi2,fsi3
         real x(512),y(512),xyz(512)
 	real*4 z(64,64)
+#f2c        save z,x,y,xyz     ! needed for C array
         real scx,scy,scz,box1,box2,box3
 
         logical remain

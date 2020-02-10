@@ -8,7 +8,7 @@ C    Include file holding some constant value
       parameter(  pi = 3.1415926535898E0,
      *           dpi = 3.1415926535898D0,
      *           epsilon = 1.0e-7,
-     *           depsilon = 1.0e-14,
+     *           depsilon = 1.0d-14,
      *           maxexp = 1.0e+38, 
      *           maxreal = 1.0/epsilon)
 

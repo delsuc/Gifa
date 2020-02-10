@@ -14,13 +14,34 @@ dialogbox "Select project" \
 
 if (dbm("sys")) dbclose sys
 if (dbm("att")) dbclose att
+if (dbm("topo")) dbclose topo
+if (dbm("rescode")) dbclose rescode
 
 cd $proj
 
+; open static db
+if ($config_os s= 'DARWIN') then
+   set topfile = "db/topology.db"
+else
+   set topfile = "db/topology.pag"
+endif
+if (fexist($topfile)) then
+      dbopen db/topology topo      ; for spin-system topology
+      dbopen db/3let_1let rescode  ; for residue codes
+else
+      print " Updating standard assignment databases from the old version....."
+      build_static_db.g
+      dbopen db/topology topo      ; for spin-system topology
+      dbopen db/3let_1let rescode  ; for residue codes
+      print "...Finished"
+      
+endif
+
+
 if ($bck s= "create backup") then
-    sh "mv backup.tar backup.tar.old; cd db; tar cvf ../backup.tar *"
+    make_backup
 elsif ($bck s= "recover from previous bck") then
-    sh "cd db; tar xvf ../backup.tar"
+    restore_backup
 endif
 
 @build_spec

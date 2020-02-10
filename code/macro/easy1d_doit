@@ -7,7 +7,9 @@ set ffn = $_
 set fw2 = $_
 set fw2p = $_
 set fz2 = $_
+set flatt = $_
 set fft2 = $_
+set fdig = $_
 set fmod = $_
 set fph20 = $_
 set fph21 = $_
@@ -22,11 +24,18 @@ if ($fact s= "Do it" |  $fact s= "Do it but phase") then
 	if ($dim != 1) error 'This is not a 1D file'
 	if ($fz2 < $si2_2d) chsize $fz2  ; truncate BEFORE apod.
 
+	if ($flatt s! 'no') flat_solvent $flatt ;flatten solvent
+
 	if ($fw2 s! "none") $fw2 $fw2p   ; apod
 
 	chsize $fz2                      ; zero-fill AFTER apod.
 	$fft2                            ; and FT in F2
-
+	if ($fdig s= 'on') then
+            join $ffn
+            if (!hexist("BRUKER_DECIM")) bruker_add_param $ffn
+            bruker_corr  (header("BRUKER_DSPFVS")) (header("BRUKER_DSPFIRM")) (header("BRUKER_DECIM"))
+            disjoin
+        endif
 endif
 
 if ($fact s= "Do phase only" | $fact s= "Do it") then
@@ -40,8 +49,13 @@ endif
 if ($fact s= "Do b.corr only" | $fact s= "Do it") then
 	if ($fb2 s! "none" & $itype_1d != 0) 	   real 
 	if ($fb2 s= "polynomial") then
-	   bcorr 3
-	elsif ($fb2 s= "2 stages") then
+	   bcorrp0 bcorr 3
+	elsif ($fb2 s= 'moving_average') then
+	   bcorrp1 bcorr 3 bcorrp0
+	elsif ($fb2 s= 'polynomial+moving_average') then
+	   bcorrp0 bcorr 3
+	   bcorrp1 bcorr 3 bcorrp0      
+	elsif ($fb2 s= "moving_average+polynomial") then
 	   bcorrp1 bcorr 3
 	   bcorrp0 bcorr 3
 	endif
@@ -55,9 +69,15 @@ if ($fact s= "Write macro") then
 	join $ffn			; to check sizes of input file
 	if ($fz2 < $c_sizef1) fprint $mname ("chsize";$fz2)
 
+	if ($flatt s! 'no') fprint $mname ('flat_solvent';$flatt)
 	if ($fw2 s! "none") 	fprint $mname  ($fw2 ; $fw2p )
 	fprint $mname  ("chsize" ;$fz2)
 	fprint $mname  $fft2
+        if ($fdig s= 'on') then
+            if (!header("BRUKER_DECIM")) bruker_add_param $ffn
+            fprint $mname ("bruker_corr";(header("BRUKER_DSPFVS"));(header("BRUKER_DSPFIRM"));(header("BRUKER_DECIM")))
+        endif
+
 
 	disjoin
 
@@ -68,9 +88,13 @@ if ($fact s= "Write macro") then
 	endif
 	if ($fb2 s! "none" & $fmod s! 'modulus') fprint $mname "real"
 	if ($fb2 s= "polynomial") then
-	   fprint $mname "bcorr 3"
-	elsif ($fb2 s= "2 stages") then
-	   fprint $mname "bcorrp1 bcorr 3 bcorrp0 bcorr 3  ; 2 stages "
+	   fprint $mname "bcorrp0 bcorr 3 ; polynomial"
+	elsif ($fb2 s= 'moving_average') then
+	   fprint $mname "bcorrp1 bcorr 3 bcorrp0 ; moving_average"
+	elsif ($fb2 s= 'polynomial+moving_average') then
+	   fprint $mname "bcorrp0 bcorr 3 bcorrp1 bcorr 3 bcorrp0 ; polynomial+moving_average"      
+	elsif ($fb2 s= "moving_average+polynomial") then
+	   fprint $mname "bcorrp1 bcorr 3 bcorrp0 bcorr 3 ; moving_average+polynomial"   
 	endif
 	close $mname
 	alert ("Macro '"//$mname//"' written, just type its name for applying it")
@@ -79,7 +103,9 @@ elsif ($fact s= "Load macro") then
 	open $mname
 	set fw2 = 'none'
 	set fw2p = 0
+	set flatt = 'no'
 	set fmod = 'phase-sensitive'
+        set fdig = 'off'
 	set fph20 = 0
 	set fph21 = 0
 	set fb2 = "none"
@@ -94,8 +120,12 @@ elsif ($fact s= "Load macro") then
 		elsif ($cmd s= "sin" | $cmd s= "sqsin" | $cmd s= "expbroad" | $cmd s= "gaussbroad") then
 				set fw2 = $cmd
 				set fw2p = $param
+		elsif ($cmd s= 'flat_solvent') then
+				set flatt = $param
 		elsif ($cmd s= "chsize") then
 				set fz2 = $param
+		elsif ($cmd s= "bruker_corr") then
+				set fdig = 'on'
 		elsif ($cmd s= "ft_sim" | $cmd s= "ft_seq") then
 			set fft2 = (subst($cmd,4,len($cmd)))
 		elsif ($cmd s= "modulus") then
@@ -103,15 +133,16 @@ elsif ($fact s= "Load macro") then
 		elsif ($cmd s= "phase") then
 				set fph20 = (head($param))
 				set fph21 = (head(tail($param)))
-		elsif ($cmd s= "bcorr") then
-				set fb2 = "polynomial"
-		elsif ($cmd s= "bcorrp1") then
-				set fb2 = "2 stages"
+		elsif (($cmd s= "bcorrp0") | ($cmd s= "bcorrp1")) then
+				while (tail($param) s! ' ')
+					set param = (tail($param))
+				endwhile
+				set fb2 = $param
 		endif
 		set in = <$mname
 	endwhile
 	close $mname
-	easy1d $ffn $fw2 $fw2p $fft2 $fz2 $fmod $fph20 $fph21 $fb2
+	easy1d $ffn $flatt $fw2 $fw2p $fft2 $fdig $fz2 $fmod $fph20 $fph21 $fb2
 endif
 
 

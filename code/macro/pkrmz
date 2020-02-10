@@ -27,8 +27,9 @@ elsif ($dim == 2) then
     if ($PK2D_F1F[$pic] >= $zone[1] & $PK2D_F1F[$pic] <= $zone[3] & $PK2D_F2F[$pic] >= $zone[2] & $PK2D_F2F[$pic] <= $zone[4] ) pkrm $pic 0
   endfor
 endif
+refmacro 1
 ref
 scolor $sc
 showpeaks
-refmacro 0
+unref refmacro 0
 

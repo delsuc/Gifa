@@ -19,4 +19,4 @@ C without written permission from the authors.
 C
 
       character*256 version
-      parameter (version = 'version 4.41 4-jan-2002')
+      parameter (version = 'version 4.5  - 1 mar 2004')

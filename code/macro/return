@@ -1,0 +1,9 @@
+; return value
+;
+; set a global variable to $returned
+;
+; used to simulate a RETURN command
+
+print 'The macro return is now obsolete, please upgrade to version 4.322 minimum'
+
+set returned := $_

@@ -1,10 +1,8 @@
-; build the static data_bases in the /usr/local/gifa/macro/att directory
+; build the static data_bases in the local db directory
 ;
 ; This macro is not used in normal work,
 ; the topology 3let_1let and 1let_3let  db    being permanently there.
 ; If you modify it, you will have to rerun it.
-; (Note that normal user do not have write access to the static db,
-;  You will have to rerun it as the user to which belongs the Gifa package)
 ;
 ; You is also possible that you cannot read the dbm files in the distribution
 ; because your dbm set-up is not compatible (this is the case with Linux)
@@ -16,56 +14,57 @@
   ;
 
 ;first make sure no old file are left
-sh 'cd /usr/local/gifa/macro/att; /bin/rm topology.* 3let_1let.* 1let_3let.*'
+sh '/bin/rm -f db/topology.* db/3let_1let.* db/1let_3let.*'
 
-dbopen /usr/local/gifa/macro/att/topology topo
+dbopen db/topology topo
 ; This db defines the spin-systems that are known
 ; each spin-syst has a name and a list of known spins.
 
-set topo["AMX"] = "HN,HA,HB2,HB3,QB,N"
-set topo["AMPTX"] = "HN,HA,HB2,HB3,QB,HG2,HG3,QG,N"
-set topo["LONG"] = "HN,HA,HB2,HB3,QB,HG2,HG3,QG,HD2,HD3,QD,N"
-set topo["DiMet"] = HN,HA,HB,HB2,HB3,QB,HG,HG2,HG3,HG3,QG,HD2,HD3,QD,N"
-set topo["Arom-PHE"] = "HD1,HD2,QD,HE1,HE2,QE,HZ,QR"
-set topo["Arom-TYR"] = "HD1,HD2,QD,HE1,HE2,QE,QR"
-set topo["Arom-HIS"] = "HD1,HD2,QD,HE1,HE2,QE"
-set topo["Arom-TRP"] = "HD1,HE1,HE3,QE,HZ2,HZ3,QZ,HH2,QR"
+set topo["AMX"] = "HN,HA,HB2,HB3,HB?,QB,N,C,CA,CB"
+set topo["AMPTX"] = "HN,HA,HB2,HB3,HB?,QB,HG2,HG3,HG?,QG,N,C,CA,CB,CG"
+set topo["LONG"] = "HN,HA,HB2,HB3,HB?,QB,HG2,HG3,HG?,QG,HD2,HD3,HD?,QD,N,C,CA,CB,CG,CD,CE,CZ"
+set topo["DiMet"] = "HN,HA,HB,HB2,HB3,HB?,QB,HG,HG2,HG3,HG?,QG,HD2,HD3,HD?,QD,N,C,CA"
+set topo["Arom-PHE"] = "HD1,HD2,HD?,QD,HE1,HE2,HE?,QE,HZ,QR,CG,CD,CD1,CD2,CE,CE1,CE2,CZ"
+set topo["Arom-TYR"] = "HD1,HD2,HD?,QD,HE1,HE2,HE?,QE,QR,CG,CD,CD1,CD2,CE,CE1,CE2,CZ"
+set topo["Arom-HIS"] = "HD1,HD2,HD?,QD,HE1,HE2,HE?,QE,ND1,NE2,CG,CD2,CE1"
+set topo["Arom-TRP"] = "HD1,HE1,HE3,HE?,QE,HZ2,HZ3,HZ?,QZ,HH2,QR,NE1,CG,CD1,CD2,CE2,CE3,CZ2,CZ3,CH2"
 set topo["Met"] = "HM"
 set topo["MMET"] = "HMET"
 set topo["NH3+"] = "HN+"
 set topo["Amide"] = "HN1,HN2"
 set topo["H2O"] = "H2O"
-set topo["GLY"] = "HN,HA2,HA3,QA,N"
-set topo["ALA"] = "HN,HA,HB,N"
-set topo["VAL"] = "HN,HA,HB,HG1,HG2,QG,N"
-set topo["PHE"] = "HN,HA,HB2,HB3,QB,QD,QE,QR,N"
-set topo["ILE"] = "HN,HA,HB,HG12,HG13,QG,HG,HD,N"
-set topo["LEU"] = "HN,HA,HB2,HB3,QB,HG,HD1,HD2,QD,N"
-set topo["PRO"] = "HA,HB2,HB3,QB,HG2,HG3,QG,HD2,HD3,QD"
-set topo["MET"] = "HN,HA,HB2,HB3,QB,HG2,HG3,QG,HE,N"
-set topo["ASP"] = "HN,HA,HB2,HB3,QB,N"
-set topo["GLU"] = "HN,HA,HB2,HB3,QB,HG2,HG3,QG,N"
-set topo["GLN"] = "HN,HA,HB2,HB3,QB,HG2,HG3,QG,HE21,HE22,QE,N,NE2"
-set topo["LYS"] = "HN,HA,HB2,HB3,QB,HG2,HG3,QG,HD2,HD3,QD,HE2,HE3,QE,HZ,QZ,N,NZ"
-set topo["ARG"] = "HN,HA,HB2,HB3,QB,HG2,HG3,QG,HD2,HD3,QD,HE,HH11,HH12,QH1,HH21,HH22,QH2,QH,N,NE,NH,NH1,NH2"
-set topo["SER"] = "HN,HA,HB2,HB3,QB,N"
-set topo["THR"] = "HN,HA,HB,HG,N"
-set topo["TYR"] = "HN,HA,HB2,HB3,QB,QD,QE,QR,N"
-set topo["HIS"] = "HN,HA,HB2,HB3,QB,N,ND1,NE2"
-set topo["CYS"] = "HN,HA,HB2,HB3,QB,N"
-set topo["ASN"] = "HN,HA,HB2,HB3,QB,HD21,HD22,QD,N,ND,ND2"
-set topo["TRP"] = "HN,HA,HB2,HB3,QB,N.NE1"
+set topo["GLY"] = "HN,HA2,HA3,HA?,QA,N,C,CA"
+set topo["ALA"] = "HN,HA,HB,N,C,CA,CB"
+set topo["VAL"] = "HN,HA,HB,HG1,HG2,HG?,QG,N,C,CA,CB,CG,CG1,CG2"
+set topo["ILE"] = "HN,HA,HB,HG2,HG12,HG13,HG1?,QG,HG,HD,N,C,CA,CB,CG,CG1,CG2,CD"
+set topo["LEU"] = "HN,HA,HB2,HB3,HB?,QB,HG,HD1,HD2,HD?,QD,N,C,CA,CB,CG,CD,CD1,CD2"
+set topo["PRO"] = "HA,HB2,HB3,HB?,QB,HG2,HG3,HG?,QG,HD2,HD3,HD?,QD,C,CA,CB,CG,CD"
+set topo["MET"] = "HN,HA,HB2,HB3,HB?,QB,HG2,HG3,HG?,QG,HE,N,C,CA,CB,CG,CE"
+set topo["ASP"] = "HN,HA,HB2,HB3,HB?,QB,N,C,CA,CB,CG"
+set topo["GLU"] = "HN,HA,HB2,HB3,HB?,QB,HG2,HG3,HG?,QG,N,C,CA,CB,CG,CD"
+set topo["GLN"] = "HN,HA,HB2,HB3,HB?,QB,HG2,HG3,HG?,QG,HE21,HE22,HE2?,QE,N,NE2,C,CA,CB,CG,CD"
+set topo["LYS"] = "HN,HA,HB2,HB3,HB?,QB,HG2,HG3,HG?,QG,HD2,HD3,HD?,QD,HE2,HE3,HE?,QE,HZ,QZ,N,NZ,C,CA,CB,CG,CD,CE"
+set topo["ARG"] = "HN,HA,HB2,HB3,HB?,QB,HG2,HG3,HG?,QG,HD2,HD3,HD?,QD,HE,HH11,HH12,HH1?,QH1,HH21,HH22,HH2?,QH2,QH,N,NE,NH,NH1,NH2,C,CA,CB,CG,CD,CE,CZ"
+set topo["SER"] = $topo["AMX"]
+set topo["CYS"] = $topo["AMX"]
+set topo["THR"] = "HN,HA,HB,HG,HG2,N,C,CA,CB,CG2"
+set topo["PHE"] = ($topo["AMX"] // ',' // $topo["Arom-PHE"])
+set topo["TYR"] = ($topo["AMX"] // ',' // $topo["Arom-TYR"])
+set topo["HIS"] = ($topo["AMX"] // ',' // $topo["Arom-HIS"])
+set topo["TRP"] = ($topo["AMX"] // ',' // $topo["Arom-TRP"])
+; we'll have to choose between ND and ND2 !
+set topo["ASN"] = "HN,HA,HB2,HB3,HB?,QB,HD21,HD22,HD2?,QD,N,ND,ND2,C,CA,CB,CG"
 
 ;the following entries defines some lists
 ; residue duplicate the topo entries, permits to define an order neatly
 set topo["RESIDUE"] = "AMX,AMPTX,LONG,DiMet,ALA,ARG,ASN,ASP,CYS,GLN,GLU,GLY,HIS,ILE,LEU,LYS,MET,PHE,PRO,SER,THR,TRP,TYR,VAL,Arom-PHE,Arom-TYR,Arom-HIS,Arom-TRP,Met,HMET,Amide,NH3+,H2O"
-set topo["PROTON"] = "HN,HA,HA1,HA2,HB,HB2,HB3,HG,HG1,HG2,HG3,HD1,HD2,HD3,HE,HE1,HE2,HE3,HZ,HMET,H2O,HN+,HN1,HN2,N,ND,ND1,ND2,NE,NE2,NZ,NH,NH1,NH2"
-set topo["CARBON"] = "CO,CA,CB,CG,CG1,CG2,CD,CD1,..."
+set topo["PROTON"] = "HN,HA,HA1,HA2,HB,HB2,HB3,HG,HG1,HG2,HG3,HD1,HD2,HD3,HE,HE1,HE2,HE3,HZ,HMET,H2O,HN+,HN1,HN2,N,ND,ND1,ND2,NE,NE2,NZ,NH,NH1,NH2,C,CA"
+set topo["CARBON"] = "C,CA,CB,CG,CG1,CG2,CD,CD1,CD2,CE,CE1,CE2,CE3,CZ,CZ2,CZ3,CH2"
 set topo["AZOTE"] = "N,ND,ND1,ND2,NE,NE2,NZ,NH,NH1,NH2"
 
 dbclose topo
 
-dbopen /usr/local/gifa/macro/att/3let_1let code
+dbopen db/3let_1let code
 ; These data bases defines the known residues.
 ; There are 2 db, one for 3 letters entries, one for 1 letters
 ; is coded : name list_of_spin_systems
@@ -92,7 +91,7 @@ set code["ASN"] = "N AMX,Amide"
 set code["TRP"] = "W AMX,Arom-TRP"
 
 ; now inverse the db
-dbopen /usr/local/gifa/macro/att/1let_3let code2
+dbopen db/1let_3let code2
 foreach i in code
   set j = $code[$i]
   set code2[head($j)] = ($i; tail($j))
@@ -100,4 +99,3 @@ endfor
 dbclose code
 dbclose code2
 
-sh "cd /usr/local/gifa/macro/att/; chmod o+r topology.* 3let_1let.* 1let_3let.*"

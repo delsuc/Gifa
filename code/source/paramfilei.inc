@@ -3,7 +3,7 @@ C This file initialises the parameters common
 C to all the data-set: 1D, 2D & 3D.
 C
 	dim = 2
-	frequency = 400
+	frequency = 400.0d0
 	freq1d = frequency
         freq1 = frequency
         freq2 = frequency

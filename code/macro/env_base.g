@@ -11,7 +11,7 @@ if ($LICENCE s= "NON-VALID") then
 endif
 
 buttonbox About \
-   'About GIFA' gm/config \
+   'About GIFA' config \
    separator \
    'Help' 'help' \
    'Full on-line Documentation...' 'print ("starting";$viewer//"...") sh ($viewer;"/usr/local/gifa/doc/gifa.html &") ' \
@@ -29,8 +29,10 @@ buttonbox File \
    separator \
    'Read all format' gm/readf \
    'Write all format' gm/writef \
-   'Bring from UXNMR' getuxnmr \
+   'Import from XWinNMR/TopSpin' import_bruker.g \
    'Read from VNMR' varian_read \
+    separator \
+    'Bring from Bruker Spectrometer' getuxnmr \
    separator \
    'Add file to current' gm/addf \
    separator \
@@ -41,7 +43,7 @@ buttonbox File \
    *
 
 buttonbox Mode \
-   'Switch to Varian default' Varian \
+   'Switch to Varian default' Varian.g \
    separator \
    'Proc 1D' 'closebutton disp2d 0 cdisp2d 0 disp1d 1 dim 1 env_base.g env_proc1d.g' \
    'Proc 2D' 'closebutton disp2d 1 cdisp2d 0 disp1d 1 dim 2 env_base.g env_proc1d.g env_proc2d.g' \
