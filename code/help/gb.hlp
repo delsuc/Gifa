@@ -1,0 +1,7 @@
+Constant used for Gaussian deconvolution during MaxEnt. Set also by 
+the GM command
+
+related contexts : $GB1 $GB2 $GB3
+
+see also : GM LB EM FILTER
+

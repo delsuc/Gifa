@@ -1,0 +1,10 @@
+Constant used to increment lambda (1 .. 20) The larger the value of 
+LAMBSP, the faster is the advancement of the Maximum Entropy run .
+A too large value for LAMBSP may hamper the correct convergence of 
+the program, a value too small may stop the convergence. Typical 
+values are within 3..5 
+
+related contexts : $LAMBSP
+
+see also : LAMBDA LAMBCONT ALGO MAXENT
+

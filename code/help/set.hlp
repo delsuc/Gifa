@@ -1,0 +1,21 @@
+SET variable_name = value
+SET static_variable := value
+
+Assigns the value of the variable variable_name to value. Creates 
+the variable if it does not already exist. Note that you should not 
+use a $ sign before variable_name. value can be any kind of value : 
+number, string, read from a file, another variable, a calling 
+parameter ($_) or an evaluated expression.
+
+If value is missing, or if $_ is used and no parameter are 
+available, the user is prompted for input.
+
+When the variable is created during the execution of a macro, the 
+first syntax creates a local/volatile variable which value cannot be 
+accessed by subsequent called macros, and that will be removed at 
+the end of the macro. The second syntax creates a global/static 
+variable that can be accessed by any macros, and that will remain 
+until explicitly removed with the UNSET command.
+
+see also : UNSET MUNSET DUMP VARIABLES FUNCTIONS tunset
+

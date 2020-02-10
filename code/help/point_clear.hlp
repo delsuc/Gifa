@@ -1,0 +1,6 @@
+clears the point stack
+
+related contexts : $POINTX[i] $POINTY[i] $NPOINT
+
+see also : POINT_PUSH POINT_POP POINT_INPUT point
+

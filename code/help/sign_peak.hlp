@@ -1,0 +1,6 @@
+SIGN_PEAK 1 / -1
+Indicates to PEAK and to INTEG to search for positive or negative 
+peaks.
+ 
+see also : PEAK INTEG
+

@@ -1,0 +1,31 @@
+linefit line_shape
+
+where line_shape is Lorentz / Gauss used to determine the fitted 
+line-shape (Lorentzian or Gaussian).
+Performs a line fitting of the current 1D spectrum (sometimes
+called incorrectly deconvolution) based on the
+current peak-table contents.
+
+The parameter of the line will be modified 
+to the best fit of the current spectrum using the Levenberg-
+Marquardt method. The fit is estimated with a chi squared value, 
+computing on the displayed region, using the value of the noise. 
+Optimum fit is btained for a chi squared equal to 1. This value is 
+return in the $CHI2 variable. The program will fit the currently 
+displayed region, using the values in the peak table as starting 
+values, and returning the fitted values in the same peak table. Uses 
+the values of TOLERANCE and ITER for the run. All the values in the 
+peak-table will be used, but only the line in the displayed region 
+will be adjusted. Unknown line shapes will be assumed to be 
+Lorentzian.
+
+related contexts : $PK1D_A[i] $PK1D_F[i] $PK1D_P[i] $PK1D_T[i] $PK1D_W[i] 
+     $PK2D_A[i] $PK2D_F1F[i] $PK2D_F1W[i] $PK2D_F2F[i] $PK2D_F2W[i]
+     $PK3D_A[i] $PK3D_F1F[i] $PK3D_F1W[i] $PK3D_F2F[i] $PK3D_F2W[i]
+     $PK3D_F3F[i] $PK3D_F3W[i] $CHI2 $ITERDONE
+ and related errors: $PK1D_Ai_ERR[i] $PK1D_F_ERR[i] $PK1D_W_ERR[i]
+     $PK2D_A_ERR[i] $PK2D_F1F_ERR[i] $PK2D_F1W_ERR[i]
+     $PK2D_F2F_ERR[i] $PK2D_F2W_ERR[i]
+
+see also : NOISE LINEFITD FITEXP SHOW GET PK->DT MINIMIZE FITGENE show_fit plot_fit
+

@@ -1,0 +1,5 @@
+Constant used to set the initial value of the image (1e-3 .. 1e3) 
+Default value is 1.0
+
+see also MAXENT
+

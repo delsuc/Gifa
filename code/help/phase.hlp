@@ -1,0 +1,11 @@
+PHASE X Y {dim) 
+	Permits to modify the phase of the current displayed spectrum. 
+You have to enter zero-order (X) and first-order (Y) corrections, 
+and dimension (dim) in 2D. Values are in degree, and first-order 
+correction uses center point as pivot.
+	For 1D data an interactive phase command is available : PH.
+ 
+related contexts : $PH0 $PH1
+
+see also : PH HPHASE BRUKER_CORR apsl
+

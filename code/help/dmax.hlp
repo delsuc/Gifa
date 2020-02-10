@@ -1,0 +1,8 @@
+DMAX value
+
+Determines the fastest decaying component during Laplace analysis
+Given in arbitrary unit, use DFACTOR to relate to actual values.
+
+related contexts : $DMAX
+
+see also : DMIN DFACTOR UNIT LAPLACE TLAPLACE INVLAP INVTLAP env_dosy.g

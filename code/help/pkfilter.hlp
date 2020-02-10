@@ -1,0 +1,27 @@
+PKFILTER pkradius action distance
+
+search the peak table for peaks less than pkradius apart.
+then applies action of the found peaks
+
+possible actions are :
+   Remove  : remove the small peak and keep only the larger one
+   Link    : keep the small peak but mark it as 'linked' to the larger one
+   Average : remove all peaks and create a new one with coordinates at the barycenter of
+             the found peaks
+
+possible distances are :
+  1 : dist = abs(x) + abs(y)  => square
+  2 : dist = sqrt(x^2 + y^2)  => circle
+  0 : dist = x+y              => diamond
+
+remarks
+-  when the pkradius option is used with the PEAK command, it is equivalent
+   to the  PKFILTER pkradius Link 1
+-  if peak A is close to B and B is close to C A B and C will be considered together,
+   even if A is not close to C (and recursively for larger sets of course)
+  
+Applies only to 2D and 3D peak tables
+
+related contexts : $PKRADIUS
+
+see also : PEAK PKSYM PKPROJ PKRM

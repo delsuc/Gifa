@@ -1,0 +1,7 @@
+	This program "moulinette" will translate back and forth GIFA files from
+H format (handled with READH WRITEH) to S format (handled with READS WRITES).
+
+	It should be strictly equivalent to the sequence
+READH a.h WRITES a.s
+or
+READS a.s WRITEH a.h

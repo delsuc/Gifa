@@ -1,0 +1,231 @@
+<html>
+<head>
+<!-- This document created by dodoc_html V2.1>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#CC0000">
+<TITLE>Commands in V </TITLE>
+<H2> <A HREF="commands.html">Back to Alphabetical List</A> </H2>
+
+<A NAME="VARIABLES">
+<HR> <H3> VARIABLES </H3> 
+<BLOCKQUOTE>
+<pre>
+There are two kinds of variables in the macro language :
+o User variables that are handled in macros
+o Contexts that hold the different internal states of the program
+In all cases, variable names are case insensitive.
+
+User variables :
+ can be set :
+    set a = 3
+ evaluated :
+    $a        (directly)
+    ($a+3)    (or in expressions)
+   
+Variables are usually local to a macro (or a formbox), unless 
+specified :
+	set b := 4
+	creates a variable $b that can be evaluated anywhere, (static and 
+global)
+
+Associative array can be built with the syntaxe :
+	set array["abc"] = 5
+Associative arrays can be linked to dbm data file (see DBMOPEN)
+Associative arrays can be scanned with FIND or FOREACH
+User variables can also be UNSET (removed from the memory)
+The total number of user vatiables is limited, as given by the 
+CONFIG command (the $VAR_MAX context)
+
+On the other hands, contexts can only be evaluated, but not set:
+	if ($dim != 2) ....
+see CONTEXTS for the list of all the context variables
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $VAR_MAX
+
+
+ see also : <A HREF="Ccommands.html#CONFIG">CONFIG</A> <A HREF="Ccommands.html#CONTEXTS">CONTEXTS</A> <A HREF="Dcommands.html#DBOPEN">DBOPEN</A> <A HREF="Fcommands.html#FIND">FIND</A> <A HREF="Fcommands.html#FOREACH">FOREACH</A> <A HREF="Fcommands.html#FORMBOX">FORMBOX</A> <A HREF="Fcommands.html#FUNCTIONS">FUNCTIONS</A> <A HREF="Mcommands.html#MUNSET">MUNSET</A> <A HREF="Scommands.html#SET">SET</A> <A HREF="Ucommands.html#UNSET">UNSET</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="Varian">
+<HR> <H3> Varian </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/Varian">Show macro</A>
+<pre>
+ This command switches to Varian mode
+
+ if you wish to be be permanently in Varian mode, simply
+ put the first liine (SETPATH etc..) as the first line in
+ your startup.g file (either global or personnal)
+
+ 
+ see also : 
+</pre>
+</BLOCKQUOTE>
+<A NAME="varian_param">
+<HR> <H3> varian_param </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/varian_param">Show macro</A>
+<pre>
+ varian_param procpar_file_name
+
+ this macro reads-in the procpar Varian file and sets
+ the Gifa relevant parameters from the values found in the file.
+ The parameters which are sets are :
+ FREQ - SPECW
+
+ 
+ see also : <A HREF="Rcommands.html#READ">READ</A> <A HREF="Rcommands.html#READV">READV</A> <A HREF="Vcommands.html#varian_read">varian_read</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="varian_read">
+<HR> <H3> varian_read </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/varian_read">Show macro</A>
+<pre>
+ varian_read
+
+ reads-in a Varian file and load parameters.
+ The macro asks for the name of the directory which is supposed to
+ hold the data file (called fid) and the parameters (called procpar)
+
+ 
+ see also : <A HREF="Rcommands.html#READV">READV</A> <A HREF="Vcommands.html#varian_param">varian_param</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="VERBOSE">
+<HR> <H3> VERBOSE </H3> 
+<BLOCKQUOTE>
+<pre>
+When this context is set to 1 the program  switches to a more 
+verbose mode. Specially, text output will be generated during macro 
+execution, during MaxEnt run and during LP execution. When verbose 
+equals to 0, no text is generated.
+ 
+
+ see also : <A HREF="Dcommands.html#DEBUG">DEBUG</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="VERT">
+<HR> <H3> VERT </H3> 
+<BLOCKQUOTE>
+<pre>
+vert  i j
+In 3D mode, extract a column orthogonal to the last displayed plane.
+The column is taken at coordinates i and j in this plane.
+
+
+ see also : <A HREF="Ccommands.html#COL">COL</A> <A HREF="Dcommands.html#DIM">DIM</A> <A HREF="Pcommands.html#PLANE">PLANE</A> <A HREF="Pcommands.html#planeint">planeint</A> <A HREF="Rcommands.html#ROW">ROW</A> <A HREF="Vcommands.html#vertint">vertint</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="vertint">
+<HR> <H3> vertint </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/vertint">Show macro</A>
+<pre>
+ interactive
+ permits to choose verts interactively on a 3D by clicking on the 2d plane
+
+
+ see also : <A HREF="Ccommands.html#COL">COL</A> <A HREF="Ccommands.html#colint">colint</A> <A HREF="Pcommands.html#ph2dc">ph2dc</A> <A HREF="Pcommands.html#planeint">planeint</A> <A HREF="Rcommands.html#ROW">ROW</A> <A HREF="Rcommands.html#rowint">rowint</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="vertintf">
+<HR> <H3> vertintf </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro/3d    <A HREF="/usr/local/gifa/macro/3d/vertintf">Show macro</A>
+<pre>
+ interactive
+ permits to choose verts interactively on a JOINed 3D by clicking on the 2d plane
+
+
+ see also : <A HREF="Gcommands.html#GETC">GETC</A> <A HREF="Vcommands.html#vertint">vertint</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="VHEIGHT">
+<HR> <H3> VHEIGHT </H3> 
+<BLOCKQUOTE>
+<pre>
+This context is used when displaying or plotting 1D spectra, it 
+determines the level at which the zero value will be displayed in 
+the window. Values are in %, i.e. 0 corresponds to  the bottom line 
+and 1 to the top. Default value is 0.3
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $VHEIGHT
+
+
+ see also : <A HREF="Dcommands.html#DISP1D">DISP1D</A> <A HREF="Pcommands.html#PLOT">PLOT</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="vi">
+<HR> <H3> vi </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/vi">Show macro</A>
+<pre>
+as in unix
+
+ 
+ see also : <A HREF="Ccommands.html#CD">CD</A> <A HREF="Lcommands.html#ls">ls</A> <A HREF="Mcommands.html#more">more</A> <A HREF="Pcommands.html#pwd">pwd</A> <A HREF="Rcommands.html#rm">rm</A> <A HREF="Scommands.html#SH">SH</A> <A HREF="Vcommands.html#vim">vim</A> <A HREF="Vcommands.html#vip">vip</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="view_manager">
+<HR> <H3> view_manager </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/view_manager">Show macro</A>
+<pre>
+2D view manager
+
+permits to set up the views for 2D analysis
+</pre>
+</BLOCKQUOTE>
+<A NAME="view_manager_2d">
+<HR> <H3> view_manager_2d </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/view_manager_2d">Show macro</A>
+<pre>
+2D view manager
+
+permits to set up the views for 2D analysis
+</pre>
+</BLOCKQUOTE>
+<A NAME="view_res">
+<HR> <H3> view_res </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/view_res">Show macro</A>
+<pre>
+ view_res (interactive)
+
+ create the rasmol script file allowing to 
+ display a selected molecule with a selected residue
+ in CPK. 
+ Molecule and residue are chosen by the user.
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="vim">
+<HR> <H3> vim </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/vim">Show macro</A>
+<pre>
+open with vi a macro in the standard place
+ i.e. in /usr/local/gifa/macro/
+
+ 
+ see also : <A HREF="Ccommands.html#CD">CD</A> <A HREF="Lcommands.html#ls">ls</A> <A HREF="Mcommands.html#more">more</A> <A HREF="Pcommands.html#pwd">pwd</A> <A HREF="Rcommands.html#rm">rm</A> <A HREF="Scommands.html#SH">SH</A> <A HREF="Vcommands.html#vi">vi</A> <A HREF="Vcommands.html#vip">vip</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="vip">
+<HR> <H3> vip </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/vip">Show macro</A>
+<pre>
+open with vi a macro in the $HOME/macro directory
+
+ 
+ see also : <A HREF="Ccommands.html#CD">CD</A> <A HREF="Lcommands.html#ls">ls</A> <A HREF="Mcommands.html#more">more</A> <A HREF="Pcommands.html#pwd">pwd</A> <A HREF="Rcommands.html#rm">rm</A> <A HREF="Scommands.html#SH">SH</A> <A HREF="Vcommands.html#vi">vi</A> <A HREF="Vcommands.html#vim">vim</A> 
+</pre>
+</BLOCKQUOTE>
+
+ </body> 
+ 

@@ -1,0 +1,4 @@
+Performs the transpose of the Laplace transform of the data-set in DATA
+and put the result in the current working 1D buffer
+
+see also : LAPLACE TRANSTLAP

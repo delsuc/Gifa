@@ -1,0 +1,31 @@
+plot plot_file_name
+
+Plots the current spectrum on the plotter, using the current value 
+of contexts (see PLOT?).
+
+If in 1D, plot the 1D spectrum
+
+If in 2D, plot the contour-plot, as displayed with the CDISP2D command.
+
+If in 3D, plot the currently selected plane, as displayed with the 
+  CDISP2D command.
+
+Will create a plot file named file_name, which can later be plotted 
+by the command    Gifa> PAGE plot_file_name
+
+If your GIFA program is working in postscript (check with the CONFIG 
+command), and if you have a postscript previewer (IBM, Silicon 
+Graphics, some X-stations) then you can display the contents of your 
+plot-file before sending it to the plotter.
+The pseudo-filename *s will send the plot to the  screen rather than to
+a file or the plotter.
+The file pseudo-name *PL will create a temporary plot file that will be 
+deleted after plotting.
+
+related contexts : $CONFIG_PLOT $CX $CY
+
+see also : PAGE CX CY PLOTOFFSET PLOTAXIS PLOTAXIS? GRID title 
+    PLOTLINE PLOTLINES PLOTTEXT PLOTTEXTS PLOTPEAKS DISP1D CDISP2D STPL 
+    PLOT3D LEVEL PEN PCOLOR PLOTTER setfont easyplot plot? plot_fit 
+    plotcolordisp plotn setfont
+

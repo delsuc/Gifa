@@ -1,0 +1,6 @@
+Used to set the value for Lambda when no lambda controlling is used.
+
+related contexts : $LAMBDA
+
+see also : LAMBCONT LAMBSP ALGO MAXENT
+

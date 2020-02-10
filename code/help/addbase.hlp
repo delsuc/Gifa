@@ -1,0 +1,8 @@
+   ADDBASE constant
+	Removes a constant to the data. The default value is the value of 
+SHIFT (computed by EVALN).
+
+related contexts : $SHIFT
+
+see also : EVALN SHIFT
+

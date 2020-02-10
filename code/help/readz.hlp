@@ -1,0 +1,8 @@
+READZ filename
+
+Reads from the disk in compacted file format.
+
+related contexts : $NAME
+
+see also : READ WRITEZ ORDER
+

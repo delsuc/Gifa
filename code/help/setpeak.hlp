@@ -1,0 +1,19 @@
+SETPEAK index Amp F1 W1 { F2 W2 { F3 W3 } }
+
+Permit to modify directly the content of the peak table. The number 
+of entries depends whether you are in 1D, 2D or 3D.
+The peak entry at index is modified in the current peak table. All 
+parameters have to be given :
+Amp : amplitude
+Fx : Position in x dimension. in index
+Wx : width in x dimension, in index
+This is not the way for adding new peaks in the peak table, use 
+POINT_INPUT POINT->PK instead.
+
+related contexts : $PK1D_A[i] $PK1D_F[i] $PK1D_P[i] $PK1D_W[i]
+   $PK2D_A[i] $PK2D_F1F[i] $PK2D_F1W[i] $PK2D_F2F[i]
+   $PK2D_F2W[i] $PK3D_A[i] $PK3D_F1F[i] $PK3D_F1W[i] $PK3D_F2F[i]
+   $PK3D_F2W[i] $PK3D_F3F[i] $PK3D_F3W[i]
+
+See also : SETPEAK2 PEAK POINT->PK PKRESET 
+

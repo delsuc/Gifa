@@ -1,0 +1,9 @@
+INVF {Fx}
+
+Process data-sets by multiplying by -1 1 point every 2 points. 
+Equivalent to taking the conjugated on complex data-sets, or 
+hyperconjugated on hypercomplex data-sets. If applied on a complex 
+FID, inverses the final spectrum obtained after Fourier transform.
+ 
+see also : REVF ITYPE FT REVERSE
+

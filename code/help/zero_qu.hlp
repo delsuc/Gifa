@@ -1,0 +1,10 @@
+ZERO_QU 0 or 1
+	Controls the algorithm for INTEG 2D peak integration. When 
+ZERO_QU is 0, normal integration is done, When 1, the amoeba is 
+computed one the Absolute value of the data-set, and the integration 
+is done over this amoeba in normal mode. Useful when integrating 
+NOESY peaks with Zero-Quanta contribution. (Zero-quanta integrates 
+to 0)
+ 
+see also : PEAK INTEG SIGN-PEAK
+

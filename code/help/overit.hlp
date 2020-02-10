@@ -1,0 +1,8 @@
+Controls Maximum Entropy stop points. Overiteration is on then 
+CHI2 = 1.0 is no more the stopping criterion; and only the iteration
+counter is considered.
+
+0 inhibits over-iteration, 1 permits it.
+ 
+see also : MAXENT MAXENTCONT ITER
+

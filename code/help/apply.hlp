@@ -1,0 +1,9 @@
+APPLY what_to_apply 
+	Apply a windowing function to the data-set.
+You can apply :
+FILTER : applies the filter used during MaxEnt iterations, depends 
+on LB, GB, JCONS, FILTER
+WINDOW : applies the window used during MaxEnt iterations.
+
+see also : SHOW GET PUT FILTER WINDOW LB GB JCONS
+

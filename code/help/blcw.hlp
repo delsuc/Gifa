@@ -1,0 +1,6 @@
+To be used with BCORR 3
+When the RMS of the correction is lower than BLCW times the RMS of 
+the data, the correction is finished
+
+see also : BCORR
+

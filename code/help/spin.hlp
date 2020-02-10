@@ -1,0 +1,4 @@
+SPIN n
+Shifts the color table of 2D density image n times. Nice but 
+probably useless. (Only VWS )
+ 

@@ -1,0 +1,8 @@
+This context holds the systematic baseline shift of the current 
+data-set, computed automatically by EVALN.
+Used by INTEG.
+
+related contexts : $SHIFT
+
+see also : EVALN NOISE ADDBASE
+

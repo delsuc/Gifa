@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=iso-8859-1">
+	<TITLE>SPECTRAL PARAMETERS</TITLE>
+	<META NAME="GENERATOR" CONTENT="StarOffice/5.2 (Linux)">
+	<META NAME="CREATED" CONTENT="20010412;19470300">
+	<META NAME="CHANGEDBY" CONTENT="Thierry Gostan">
+	<META NAME="CHANGED" CONTENT="20010412;19474000">
+	<!-- This document was converted from RTF source: 
+By r2net 5.2.4 r2netcmd Unix 
+Translation:html.trn  $Revision: 1.55 $ $Revision: 1.34 $
+See http://www.logictran.com
+Filename:basic.rtf
+OutFileName:basic.html
+Application Directory:/home/gostan/r2net
+Subject:
+Author:
+Operator:
+Document Comments:
+Version Comments:
+Comments:StarWriter
+Keywords:
+Translation Date:04/12/2001
+Translation Time:15:05:51
+Translation Platform:Unix
+Number of Output files:50
+This File:basic-SPECTRAL.html
+SplitDepth=2
+SkipNavPanel=0
+SkipLeadingToc=0
+SkipTrailingToc=1
+GenContents=1
+GenFrames=1
+GenIndex=0
+ -->
+	<STYLE>
+	<!--
+		A:visited { color: #808080 }
+		A:link { color: #cc0000 }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LINK="#cc0000" VLINK="#808080" BGCOLOR="#ffffff">
+<P ALIGN=CENTER STYLE="margin-bottom: 0cm"><A HREF="basic-BASELINE.html"><IMG SRC="images/prev.gif" NAME="Image1" ALT="Previous " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-DISPLAY-2.html"><IMG SRC="images/next.gif" NAME="Image2" ALT="Next " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Title.html"><IMG SRC="images/first.gif" NAME="Image3" ALT="Title Page " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Contents.html"><IMG SRC="images/contents.gif" NAME="Image4" ALT="Contents " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+</P>
+<HR>
+<UL>
+	<LI><P STYLE="margin-bottom: 0cm"><A HREF="basic-SPECTRAL.html#Heading1098">SPECW,
+	OFFSET, UNIT, UNIT_Y FREQ</A> 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm"><A HREF="basic-SPECTRAL.html#Heading1103">size,
+	list</A> 
+	</P>
+	<LI><P><A HREF="basic-SPECTRAL.html#Heading1106">EXTRACT</A> 
+	</P>
+</UL>
+<HR>
+<H1><A NAME="Heading1097"></A><FONT SIZE=4><I><U>SPECTRAL PARAMETERS</U></I></FONT></H1>
+<H3><A NAME="Heading1098"></A><B>SPECW, OFFSET, UNIT, UNIT_Y FREQ</B></H3>
+<P>These contexts describe the spectral widths (<TT><FONT FACE="Courier">SPECW</FONT></TT>)
+of the spectrum and offset (<TT><FONT FACE="Courier">OFFSET</FONT></TT>)
+of the right-most point of the current data-set, thus creating a
+frequency reference for the data-set. Values are in Hz. Frequencies
+are used by <TT><FONT FACE="Courier">EM</FONT></TT>, <TT><FONT FACE="Courier">GM</FONT></TT>,
+and changed by <TT><FONT FACE="Courier">EXTRACT</FONT></TT> (but not
+<TT><FONT FACE="Courier">CHSIZE</FONT></TT>, be careful.). The calib
+macro permits to set the offset in an interactive manner. When no
+information is available on the current data-set the <TT><FONT FACE="Courier">OFFSET</FONT></TT>
+is set to 0 and the spectral widths to 2000*Pi. <BR>The context <TT><FONT FACE="Courier">FREQ</FONT></TT>
+holds the basic frequency of the spectrometer (in MHz). It is used to
+compute ppm from Hz. <BR>The context <TT><FONT FACE="Courier">UNIT</FONT></TT>
+will tell other commands (<TT><FONT FACE="Courier">AXIS</FONT></TT>,
+<TT><FONT FACE="Courier">POINT</FONT></TT>, <TT><FONT FACE="Courier">PKLIST</FONT></TT>,
+etc...) to choose the unit used. <TT><FONT FACE="Courier">UNIT</FONT></TT>
+can take the values <TT><FONT FACE="Courier">INDEX</FONT></TT>
+(number of channel) <TT><FONT FACE="Courier">HERTZ</FONT></TT> (based
+on <TT><FONT FACE="Courier">SPECW</FONT></TT> and <TT><FONT FACE="Courier">OFFSET</FONT></TT>),
+<TT><FONT FACE="Courier">PPM</FONT></TT> (<TT><FONT FACE="Courier">HERTZ</FONT></TT>
+divided by <TT><FONT FACE="Courier">FREQ</FONT></TT>), <TT><FONT FACE="Courier">SECOND</FONT></TT>(based
+on <TT><FONT FACE="Courier">SPECW</FONT></TT>), <TT><FONT FACE="Courier">DAMPING</FONT></TT>
+(based on <TT><FONT FACE="Courier">DMIN</FONT></TT> and <TT><FONT FACE="Courier">DMAX</FONT></TT>),
+or <TT><FONT FACE="Courier">TABULATED</FONT></TT> (based on the <TT><FONT FACE="Courier">TAB</FONT></TT>
+buffer). All other values are invalid. UNIT_Y is equivalent to UNIT
+but used only for the vertical axis (F1) of 2D.</P>
+<H3><A NAME="Heading1103"></A><B>size, list</B></H3>
+<P>These two macros permits examination of the current state of the
+data-set. <TT><FONT FACE="Courier">size</FONT></TT> is a simple
+one-line text. <TT><FONT FACE="Courier">list</FONT></TT> is a
+comprehensive output.</P>
+<H3><A NAME="Heading1106"></A><B>EXTRACT</B></H3>
+<P STYLE="margin-bottom: 0cm">permits to extract a given part of a
+spectrum and thus becoming the new data-set. <TT><FONT FACE="Courier">EXTRACT</FONT></TT>
+is used as <TT><FONT FACE="Courier">ZOOM</FONT></TT> but is obviously
+not reversible.</P>
+<HR>
+<P ALIGN=CENTER STYLE="margin-bottom: 0cm"><A HREF="basic-BASELINE.html"><IMG SRC="images/prev.gif" NAME="Image5" ALT="Previous " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-DISPLAY-2.html"><IMG SRC="images/next.gif" NAME="Image6" ALT="Next " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Title.html"><IMG SRC="images/first.gif" NAME="Image7" ALT="Title Page " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Contents.html"><IMG SRC="images/contents.gif" NAME="Image8" ALT="Contents " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+</P>
+</BODY>
+</HTML>

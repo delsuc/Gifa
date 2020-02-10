@@ -1,0 +1,8 @@
+WRITEH file_name
+Writes the current data set to a file in a standard format 
+compatible with ft-nmr file format.
+
+related contexts : $NAME
+
+see also : READH WRITE
+

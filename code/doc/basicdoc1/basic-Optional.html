@@ -1,0 +1,528 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=iso-8859-1">
+	<TITLE>Optional menus</TITLE>
+	<META NAME="GENERATOR" CONTENT="StarOffice/5.2 (Linux)">
+	<META NAME="CREATED" CONTENT="20010412;19101900">
+	<META NAME="CHANGEDBY" CONTENT="Thierry Gostan">
+	<META NAME="CHANGED" CONTENT="20010611;14432400">
+	<!-- This document was converted from RTF source: 
+By r2net 5.2.4 r2netcmd Unix 
+Translation:html.trn  $Revision: 1.55 $ $Revision: 1.34 $
+See http://www.logictran.com
+Filename:basic.rtf
+OutFileName:basic.html
+Application Directory:/home/gostan/r2net
+Subject:
+Author:
+Operator:
+Document Comments:
+Version Comments:
+Comments:StarWriter
+Keywords:
+Translation Date:04/12/2001
+Translation Time:15:05:48
+Translation Platform:Unix
+Number of Output files:50
+This File:basic-Optional.html
+SplitDepth=2
+SkipNavPanel=0
+SkipLeadingToc=0
+SkipTrailingToc=1
+GenContents=1
+GenFrames=1
+GenIndex=0
+ -->
+	<STYLE>
+	<!--
+		A:visited { color: #808080 }
+		A:link { color: #cc0000 }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LINK="#cc0000" VLINK="#808080" BGCOLOR="#ffffff">
+<P ALIGN=CENTER STYLE="margin-bottom: 0cm"><A HREF="basic-BASIC.html"><IMG SRC="images/up.gif" NAME="Image1" ALT="Up " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-3D.html"><IMG SRC="images/prev.gif" NAME="Image2" ALT="Previous " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-OPERATIO.html"><IMG SRC="images/next.gif" NAME="Image3" ALT="Next " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Title.html"><IMG SRC="images/first.gif" NAME="Image4" ALT="Title Page " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Contents.html"><IMG SRC="images/contents.gif" NAME="Image5" ALT="Contents " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+</P>
+<HR>
+<UL>
+	<LI><P STYLE="margin-bottom: 0cm"><A HREF="basic-Optional.html#Heading613">Advanced
+	proc menu</A> 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm"><A HREF="basic-Optional.html#Heading639">MaxEnt
+	menu</A> 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm"><A HREF="basic-Optional.html#Heading665">Linear
+	Prediction menu</A> 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm"><A HREF="basic-Optional.html#Heading699">Plot
+	menu</A> 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm"><A HREF="basic-Optional.html#Heading720">Peaks
+	menu</A> 
+	</P>
+	<LI><P><A HREF="basic-Optional.html#Heading767">Unix Menu</A> 
+	</P>
+</UL>
+<HR>
+<H2><A NAME="Heading610"></A><I><U>Optional menus</U></I></H2>
+<P>The following optional menus can be accessed from the <B>Mode</B>
+menu.</P>
+<H3><A NAME="Heading613"></A><B>Advanced proc menu</B></H3>
+<UL>
+	<LI><P><U>BCorr linear</U></P>
+</UL>
+<P>Apply a linear baseline correction to the current data-set. You
+have to click on empty regions of the data-set, from which the
+baseline correction will be computed. Equivalent to the <TT><FONT FACE="Courier">point</FONT></TT>
+and <TT><FONT FACE="Courier">BCORR 1</FONT></TT> commands. 
+</P>
+<UL>
+	<LI><P><U>BCorr Spline</U></P>
+</UL>
+<P>Apply a spline baseline correction to the current data-set. You
+have to click on empty regions of the data-set, from which the
+baseline correction will be computed. Equivalent to the <TT><FONT FACE="Courier">point</FONT></TT>
+and <TT><FONT FACE="Courier">BCORR 2</FONT></TT> commands. 
+</P>
+<UL>
+	<LI><P><U>BCorr Polyn.</U></P>
+</UL>
+<P>Apply an automatic peak detection followed by a polynomial
+baseline correction. Equivalent to the <TT><FONT FACE="Courier">BCORR
+3</FONT></TT> command.</P>
+<UL>
+	<LI><P><U>1D Hilbert</U></P>
+</UL>
+<P>Realises the 1D Hilbert transform of the current data-set, that is
+the current real data-set is transformed to a complex data-set with a
+reconstructed imaginary part. The operation is done without changing
+the total number of data points. Is equivalent to <BR><TT><FONT FACE="Courier">IFTBIS
+FT</FONT></TT></P>
+<UL>
+	<LI><P><U>1D invHilb</U></P>
+</UL>
+<P>Realises the 1D inverse Hilbert transform of the current data-set,
+that is the current complex data-set is transformed to a real
+data-set with all the information of the imaginary part brought back
+to the real region. The operation is done without changing the total
+number of data points. Is equivalent to <BR><TT><FONT FACE="Courier">IFT
+CHSIZE(%*2) FT REAL</FONT></TT><BR><TT><FONT FACE="Courier">or</FONT></TT><BR><TT><FONT FACE="Courier">IFT
+FTBIS ; better</FONT></TT></P>
+<UL>
+	<LI><P><U>2d Hilbertsxx and 2DinvHilb xx</U></P>
+</UL>
+<P>These menus realises the direct and inverse Hilbert transform of
+the 2D data-set.</P>
+<UL>
+	<LI><P><U>DMX phase</U></P>
+</UL>
+<P>When an FID comes from a digitally filtered DMX spectrometer, a
+dramatic phase corection as to be applied. This command uses the
+value of DECIM (found in the <TT><FONT FACE="Courier">acqus</FONT></TT>
+file) to compute a phase correction of the current 1D or 2D spectrum.
+To be applied on a SPECTRUM.</P>
+<UL>
+	<LI><P><U>DMX phase</U></P>
+</UL>
+<P>Applies a phase correction correction suitable to restore DMX
+dataset. The phase correction is obtained from DECIM. To be applied
+on a spectrum.</P>
+<UL>
+	<LI><P><U>DMX clean</U></P>
+</UL>
+<P>Uses the phase correction obtained from DECIM to correct the FID
+and generate a causal FID, using the Hilbert transform. To be applied
+on a FID</P>
+<UL>
+	<LI><P><U>Remove H2O</U></P>
+</UL>
+<P>Starts the <TT><FONT FACE="Courier">rem_h2o</FONT></TT> macro
+which remove substantially solvent signal at zero frequency in the
+FID. It does so by removing any slow varying signal in the FID, using
+the baseline correction module. Should be applied on the time-domain
+data-set, before any other processing (before apodisation or Fourier
+transform).</P>
+<H3><A NAME="Heading639"></A><B>MaxEnt menu</B></H3>
+<P>This menu holds some commands than permit to simply process a 1D
+or 2D data-set using Maximum Entropy deconvolution. The menus are
+more or less organised in the order in which you should use them.
+<BR>You should start with a spectrum, phased, baseline corrected,
+but, ideally, not apodised. You can do processing from an apodised
+data-set but you will get better results if you start over with a
+spectrum obtained without any apodisation. <BR>Using this menu,
+Maximum Entropy can only be applied on a spectrum containing only
+positive, absorptive spectra. <BR>For a complete understanding of
+MaxEnt processing, read that part of the manual devoted to MaxEnt.</P>
+<UL>
+	<LI><P><U>Prepare Data</U></P>
+</UL>
+<P>With this command you first select a small region of the spectrum
+that you wish to process. You should not use a complete spectrum, but
+rather concentrate on the interest region with this command.<BR>The
+command also realizes the inverse Fourier transform step which is
+necessary to create the pseudo-FID that will be used later on by
+MaxEnt.</P>
+<UL>
+	<LI><P><U>Eval Noise...</U></P>
+</UL>
+<P>Before running the process you should determine the noise quantity
+present in the pseudo-FID by zooming, with this command, on the end
+of FID holding only noise. If the starting data-set had been
+apodised, the noise quantity will be largely under-estimated; if the
+pseudo-FID is truncated (total decay is not obtained), the noise
+quantity will be overestimated. In any case you may want to correct
+it with the <TT><FONT FACE="Courier">NOISE</FONT></TT> command.</P>
+<UL>
+	<LI><P><U>Deconvolution fct...</U></P>
+</UL>
+<P>Before running the process you should determine the deconvolution
+function, which can be either Lorentzian or Gaussian (other
+possibility are available from the command level). Line-width is
+entered in Hz. The line-shape thus defined will be removed from the
+actual spectrum, thus producing sharer lines. So you should never
+enter here a line-shape larger than the sharper line present in the
+spectrum.</P>
+<UL>
+	<LI><P><U>Iterations...</U></P>
+</UL>
+<P>Determines the number of iterations that will be used for the
+starting computation.</P>
+<UL>
+	<LI><P><U>Start Iteration</U></P>
+</UL>
+<P>Starts the MaxEnt iterations. You are first prompted for the size
+of the spectrum to be computed, which should larger or equal to the
+size of the pseudo-FID. Never starts the computation if<BR>&yen; you
+don't have a FID on screen<BR>&yen; you don't have realised the
+previous steps<BR>During the iterations you should check the
+following values : <I>chi2</I>, should be as small as possible, <I>chi2</I>
+= 1 means the computation is finished; <I>conv</I> should be as small
+as possible, a <I>conv</I> larger than 0.1 means that the convergence
+will never be obtained, probably because the data-set or the
+deconvolution function are incorrectly chosen.</P>
+<UL>
+	<LI><P><U>10 more</U></P>
+</UL>
+<P>Continue the processing for 10 more iterations.</P>
+<UL>
+	<LI><P><U>Restart</U></P>
+</UL>
+<P>Start over the processing with the pseudo-FID.</P>
+<UL>
+	<LI><P><U>remove background...</U></P>
+</UL>
+<P>When the computation is completely finished, you should remove the
+background that MaxEnt always adds to the spectrum, by running this
+command and zooming in an empty region of the spectrum. After this
+operation, the process should be started over. (<U>10 more</U> is not
+available any more)</P>
+<H3><A NAME="Heading665"></A><B>Linear Prediction menu</B></H3>
+<P>This menu holds all the entries for realising simple Linear
+prediction calculations. (still experimental - the menu I mean, the
+commands are fully operational)<BR>To fully understand what is going
+on here, you are supposed to have read the manual (no joking :-).
+Most (all ?) entries here, are supposed to be applied on untouched
+(i.e. not apodised) FID.<BR>This menu is built by the env_lin_pred.g
+macro.</P>
+<UL>
+	<LI><P><U>Order</U></P>
+</UL>
+<P>Permits to determine the value of ORDER used for all LP operation.
+Should be set larger than the number of lines in the spectrum, and
+smaller than the data-set size. The speed of LP operations usually
+depend on this setting.(see LP documentation). Equivalent to the
+ORDER command.</P>
+<UL>
+	<LI><P><U>make FID Cplx</U></P>
+</UL>
+<P>LP commands work only on Complex FIDs, this button transform a
+Real FID into a Complex one by using a Hilbert transform. Equivalent
+to the command <TT><FONT FACE="Courier">IFTBIS FT</FONT></TT></P>
+<UL>
+	<LI><P><U>burg extension</U></P>
+</UL>
+<P>Extend the current FID using the burg method. Can be used to
+correct truncated FID. To be used BEFORE any apodisation. Will prompt
+you for the new size.<BR>Equivalent to using the BURG command, or the
+<TT><FONT FACE="Courier">dt-&gt;ar ar-&gt;dt <I>size</I> 1 </FONT></TT>sequence.</P>
+<UL>
+	<LI><P><U>SVD extension</U></P>
+</UL>
+<P>Is equivalent to the previous button, but uses the SVD method
+which is somewhat slower, but more efficient in the case of noisy
+data. Try this one if burg failed. Equivalent to using the <TT><FONT FACE="Courier">dt-&gt;svd
+% svd-&gt;ar 1 ar-&gt;dt <I>size</I> 1 </FONT></TT>sequence</P>
+<UL>
+	<LI><P><U>stable SVD extension</U></P>
+</UL>
+<P>Equivalent to the precedent, but even slower. That one should
+succeed in all cases. To be used when the previous one failed
+(typically by transforming your FID into &quot;trumpets&quot;
+(increasing exponentially towards the end))<BR>Equivalent to using
+the <TT><FONT FACE="Courier">dt-&gt;svd % svd-&gt;ar 1 ar-&gt;rt 1
+rtreflect 1 rt-&gt;ar 1 ar-&gt;dt <I>size</I> 1</FONT></TT> sequence</P>
+<UL>
+	<LI><P><U>burg 1st points</U></P>
+</UL>
+<P>Uses the burg method to build missing first points. Can be used
+for instance after a lshift to correct for acoustic ringing.<BR>It is
+the burg_rev macro</P>
+<UL>
+	<LI><P><U>SVD 1st points</U></P>
+</UL>
+<P>Equivalent to the previous, but with the SVD method. It is the
+svd_rev macro.</P>
+<UL>
+	<LI><P><U>burg spectrum</U></P>
+</UL>
+<P>Computes the &quot;Burg spectrum&quot; (also called mem1) i.e. an
+estimate of the power spectrum, based on the burg analysis of the
+FID.<BR>Prompts you for a size on which the spectrum should be
+recomputed.</P>
+<UL>
+	<LI><P><U>SVD analysis</U></P>
+</UL>
+<P>Performs a complete SVD analysis of the current FID. Results are
+put into the pklist</P>
+<UL>
+	<LI><P><U>FAB-SVD analysis</U></P>
+</UL>
+<P>The same as previous, but uses the <I>Forward &amp; Backward</I>
+method. Meant to be used on very bas signal/noise cases.<BR>Will
+prompt you for an exact number of line to keep in the spectrum.</P>
+<UL>
+	<LI><P><U>Cadzow proc.</U></P>
+</UL>
+<P>Applies the Cadzow procedure to clean up the current FID. Calls
+the Cadzow macro.</P>
+<UL>
+	<LI><P><U>PKlist</U></P>
+</UL>
+<P>Actually prints the content of the peak table. Equivalent to the
+pklist %% macro.</P>
+<H3><A NAME="Heading699"></A><B>Plot menu</B></H3>
+<P>This menu holds all the entries for realising simple plots.</P>
+<UL>
+	<LI><P><U>Easy plot</U></P>
+</UL>
+<P>This button launches a form which permits to determine all the
+parameters for a standard plot, with axes, grid, choice of colours,
+etc... See the details in the chapter <A HREF="http://www.cbs.univ-montp1.fr/GIFA/gifa_doc/basic/basic-PLOTTING.html" TARGET="_top">Plotting</A>
+</P>
+<UL>
+	<LI><P><U>Plot...</U></P>
+</UL>
+<P>Starts the macro plot? which prompts you for some basic parameters
+associated to plotting : the kind of plotter (postscript or HP-GL),
+the size of the plot in centimetres, the offset of the plot from the
+lower left corner of the page, the vertical offset of 1D plots, the
+rotate state and the parameters for spectral axes. Can be used to
+pre-set the values in <U>Easy Plot</U><BR><BR>The other menu entries
+permit to realise more specific plots. Each entry add a element to
+the current plot, and the final entry <U>Page</U> send this plot to
+the plotter.</P>
+<UL>
+	<LI><P><U>Screen Dump</U></P>
+</UL>
+<P>Adds the current display (1D or 2D) to the plot.</P>
+<UL>
+	<LI><P><U>Title</U></P>
+</UL>
+<P>Adds a title to the current page. When entering more than one
+word, put the complete string into quotes (') or double quotes (&quot;).</P>
+<UL>
+	<LI><P><U>Plotaxis F1 - Plotaxis F2</U></P>
+</UL>
+<P>Add an labelled axes on the F1 (y) or F2 (x) direction, as defined
+with the <U>Plot?</U> command.</P>
+<UL>
+	<LI><P><U>Grid F1 - Grid F2</U></P>
+</UL>
+<P>Add a grid in the F1 or F2 domain according to the definition of
+the axis from <U>Plot?</U> command.</P>
+<UL>
+	<LI><P><U>Page</U></P>
+</UL>
+<P>Send the current plot to the plotter. On certain platform, the
+plot file is displayed on screen before being actually sent.</P>
+<UL>
+	<LI><P><U>Cindy...</U></P>
+</UL>
+<P>Makes a plot file which can then be read with the NMR analysis
+Cindy program (see ftp://www.cbs.univ-montp1.fr/pub/Cindy).
+Equivalent to the <TT><FONT FACE="Courier">FPLOT</FONT></TT> command.</P>
+<H3><A NAME="Heading720"></A><B>Peaks menu</B></H3>
+<P>This menu holds certain facilities for realising peak detection,
+peak integration and line fitting. All the information is held into
+an internal table which can be displayed at any time with the <U>PKLIST</U>
+button.</P>
+<UL>
+	<LI><P><U>eval noise</U></P>
+</UL>
+<P>Asks you to zoom on an empty region, and evaluates noise on the
+selected region. Uses the <TT><FONT FACE="Courier">EVALN</FONT></TT>
+command..</P>
+<UL>
+	<LI><P><U>Peak sign</U></P>
+</UL>
+<P>Permit to choose whether the peak picker will search for positive
+or negative peaks.</P>
+<UL>
+	<LI><P><U>Peak pick</U></P>
+</UL>
+<P>Enter the macro <TT><FONT FACE="Courier">pp</FONT></TT> which
+performs a simple peak-picking. You should have evaluated the noise
+level with the previous button Then zoom on the region to be
+peak-picked. The peak threshold is evaluated from the noise level.</P>
+<UL>
+	<LI><P><U>add peaks</U></P>
+</UL>
+<P>Permits to add a peak into the table by clicking on the data-set.
+Equivalent to the <TT><FONT FACE="Courier">point POINT-&gt;PK</FONT></TT>
+command.</P>
+<UL>
+	<LI><P><U>rem peak</U></P>
+</UL>
+<P>Calls the <TT><FONT FACE="Courier">pkrmi</FONT></TT> macro which
+permits to interactively remove a peak on the data-set.</P>
+<UL>
+	<LI><P><U>rem peaks</U></P>
+</UL>
+<P>Calls the <TT><FONT FACE="Courier">pkrmz</FONT></TT> macro which
+permits to interactively remove a set of peaks on the data-set.</P>
+<UL>
+	<LI><P><U>pkclear</U></P>
+</UL>
+<P>Equivalent to the PKCLEAR command, which removes all peak entries.</P>
+<UL>
+	<LI><P><U>rem peaks along diagonal</U></P>
+</UL>
+<P>Calls the <TT><FONT FACE="Courier">pkrm_diag</FONT></TT> macro
+which removes all peaks within a given distance from the diagonal of
+a homonuclear experiment</P>
+<UL>
+	<LI><P><U>peak symmetrise</U></P>
+</UL>
+<P>Calls the <TT><FONT FACE="Courier">PKSYM</FONT></TT> command,
+which &quot;symmetrises&quot; the 2D peak table, you can either
+remove all peaks with no symmetric counter part or add the missing
+symmetric peak.</P>
+<UL>
+	<LI><P><U>peak projection</U></P>
+</UL>
+<P>Calls the PKPROJ commands which &quot;project&quot; the 2D peak
+table and produce a corresponding 1D peak table.</P>
+<UL>
+	<LI><P><U>SUMREC all peaks</U></P>
+</UL>
+<P>Apply the very simple integration scheme which consists in summing
+all points over a defined rectangle. This is done by calling the
+pksumrec macro, which is built over the SUMREC command.</P>
+<UL>
+	<LI><P><U>Integ</U></P>
+</UL>
+<P>Performs a numeric integration of the data-set by computing masks
+around each peak in the peak table, and integrating over these masks.
+Equivalent to the <TT><FONT FACE="Courier">INTEG %%</FONT></TT>
+command.</P>
+<UL>
+	<LI><P><U>Show Amoeba</U></P>
+</UL>
+<P>Display the masks used by the last INTEG command. Available only
+in 2D. Equivalent to the <TT><FONT FACE="Courier">SHOW&#160;AMOEBA</FONT></TT>
+command.</P>
+<UL>
+	<LI><P><U>ShowPeaks</U></P>
+</UL>
+<P>Display graphically the peaks on the current display. Equivalent
+to the <TT><FONT FACE="Courier">SHOWPEAKS</FONT></TT> command.</P>
+<UL>
+	<LI><P><U>PlotPeaks</U></P>
+</UL>
+<P>Equivalent to ShowPeaks but on a plot file. Equivalent to the
+<TT><FONT FACE="Courier">PLOTPEAKS</FONT></TT> command</P>
+<UL>
+	<LI><P><U>Linefit</U></P>
+</UL>
+<P>Calls the generic line fitter. You are prompted for the line-shape
+to fit (Lorentz or Gauss). Equivalent to the <TT><FONT FACE="Courier">LINEFIT</FONT></TT>
+command.</P>
+<UL>
+	<LI><P><U>Show linefit</U></P>
+</UL>
+<P>Equivalent to the SHOW LINEFIT command. Display the content of the
+current peak table as a simulated spectrum. Can be used after
+LINEFIT, but also at any stage.</P>
+<UL>
+	<LI><P><U>Show_fit</U></P>
+</UL>
+<P>Graphically displays the content of the peak table (as obtained
+for instance, from the last line fitting). Equivalent to the <TT><FONT FACE="Courier">show_fit</FONT></TT>
+macro.</P>
+<UL>
+	<LI><P><U>Residue</U></P>
+</UL>
+<P>Display the residue of the last line-fitting. Data can be restored
+with the <TT><FONT FACE="Courier">GET DATA</FONT></TT> command.</P>
+<UL>
+	<LI><P><U>PkList</U></P>
+</UL>
+<P>Lists the content of the internal peak-table. Equivalent to the
+<TT><FONT FACE="Courier">PKLIST %%</FONT></TT> command.</P>
+<UL>
+	<LI><P><U>PkRead</U></P>
+</UL>
+<P>Reads the content of the peak table on a text file previously
+stored with <U>PkWrite</U>. Equivalent to the <TT><FONT FACE="Courier">PKREAD</FONT></TT>
+command.</P>
+<UL>
+	<LI><P><U>PkWrite</U></P>
+</UL>
+<P>Writes the content of the peak table on a text file. Equivalent to
+the <TT><FONT FACE="Courier">PKWRITE</FONT></TT> command.</P>
+<H3><A NAME="Heading767"></A><B>Unix Menu</B></H3>
+<P>This button holds some facilities for interacting with the UNIX
+Operating System. All the buttons are implemented through the generic
+<TT><FONT FACE="Courier">SH</FONT></TT> command. All entries have
+equivalent macros or commands available in text mode.</P>
+<UL>
+	<LI><P><U>pwd - cd... - more... - ls -l</U></P>
+</UL>
+<P>Realise the Unix counterparts.</P>
+<UL>
+	<LI><P><U>Shell</U></P>
+</UL>
+<P>Opens an XTerm with the current client and server.</P>
+<UL>
+	<LI><P><U>vi...</U></P>
+</UL>
+<P>Opens in <TT><FONT FACE="Courier">vi</FONT></TT> any text file in
+the current directory.</P>
+<UL>
+	<LI><P><U>vi macro/...</U></P>
+</UL>
+<P>Opens in <TT><FONT FACE="Courier">vi</FONT></TT> any text file in
+the global macro directory (/usr/local/gifa/macro). Macros in this
+directory are available to all the Gifa users. Equivalent to the <TT><FONT FACE="Courier">vim</FONT></TT>
+macro.</P>
+<UL>
+	<LI><P><U>vi ~/macro/...</U></P>
+</UL>
+<P>Opens in <TT><FONT FACE="Courier">vi</FONT></TT> any text file in
+the personal macro directory ($HOME/macro). Macros in this directory
+are available to you, wherever the directory you are in. Equivalent
+to the <TT><FONT FACE="Courier">vip</FONT></TT> macro.</P>
+<HR>
+<P ALIGN=CENTER STYLE="margin-bottom: 0cm"><A HREF="basic-BASIC.html"><IMG SRC="images/up.gif" NAME="Image6" ALT="Up " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-3D.html"><IMG SRC="images/prev.gif" NAME="Image7" ALT="Previous " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-OPERATIO.html"><IMG SRC="images/next.gif" NAME="Image8" ALT="Next " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Title.html"><IMG SRC="images/first.gif" NAME="Image9" ALT="Title Page " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Contents.html"><IMG SRC="images/contents.gif" NAME="Image10" ALT="Contents " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+</P>
+</BODY>
+</HTML>

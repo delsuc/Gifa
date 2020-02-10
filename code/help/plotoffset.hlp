@@ -1,0 +1,10 @@
+PLOTOFFSET x y
+
+Values are used to offset the (0,0) origin of the plot at (x,y). 
+Permits to draw several plots on the same page, or to leave room for 
+axes. Default values are 1 1 (in cm).
+
+related contexts : $PLOTOFFSET[1] $PLOTOFFSET[2]
+
+see also : CX CY PLOT
+

@@ -1,0 +1,8 @@
+WRITEM file_name
+Creates an ascii files which can than be read with the MATLAB 
+program, or ith the READM command. Does not work for 3D data-set.
+
+related contexts : $NAME
+
+see also : WRITE READM
+

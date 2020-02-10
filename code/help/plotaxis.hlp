@@ -1,0 +1,15 @@
+PLOTAXIS direc output
+
+This command plots a set of axis on its output. 
+
+If direc=F1 a vertical axis is drawn
+If direc=F2 a horizontal axis is drawn
+If direc=F12 both axes are drawn
+PLOTAXIS uses the current SPECW and OFFSET for the axis calibration.
+
+It uses the unit and the tick space as defined by PLOTAXIS?
+ 
+related contexts : $PLOTAXIS[1] $PLOTAXIS[2] $PLOTAXIS[3]
+
+see also : PLOTAXIS? PLOT AXIS PAGE PLOT GRID PLOTTEXT plotdamp_x plotdamp_y setfont
+

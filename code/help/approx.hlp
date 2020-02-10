@@ -1,0 +1,11 @@
+Used in the BCORR 3 module, to choose the way the baseline is 
+estimated.
+0 : with ITERMA2 times a moving average filtering on a window of
+ size WINMA2.
+1 : with a Legendre polynomial approximation of degree DEGRE.
++10 : with a linear interpolation of signal before approximation.
++100 : with an 'elastic effect' that is a rude way to prevent
+ from burying the weak lines.
+
+see also : BCORR
+

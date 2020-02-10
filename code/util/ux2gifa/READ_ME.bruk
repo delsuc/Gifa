@@ -1,0 +1,85 @@
+    
+    READ_ME                                                Sept. 20, 1989/BUME.
+
+
+    UXNMR TO FTNMR CONVERSION PROGRAM
+    =================================
+
+    This directory contains a conversion program for converting UXNMR "fid" or
+    "ser" data into FTNMR (D. Hare) floating point data, and a set of test data.
+    In addition, the program listPar.c is supplied, to read binary UXNMR 
+    parameters and produce an ASCII parameter value output.
+
+    Binary data depend on the computer architecture. Therefore, the conversion
+    can only be successful, if the architecture of the destination machine is 
+    known, and the proper conversion program is used.
+
+    
+    1. SMALL ENDIAN:
+    
+    The X32 and INTEL based systems are "small endian" architecture and use 
+    IEEE floating point format.
+    For data conversion, use the program  ux2ftnmrs on the X32.
+    
+    
+    2. BIG ENDIAN:
+    
+    Silicon Graphics Iris, Sun SPARC and MOTOROLA 68k based systems are 
+    "big endian" architecture and use IEEE floating point format.
+    For data conversion, use the program ux2ftnmrb on the X32.
+    
+    
+    3. VAX:
+    
+    VAX systems have a "small endian" integer format, but no standard floating
+    point format. The conversion program must be compiled and run on a VAX 
+    (see point 4).
+    
+    
+    4. RUNNING THE CONVERSION PROGRAM ON OTHER SYSTEMS:
+    
+    Before compiling the program ux2ftnmr.c on small endian systems, remove
+    the line 
+        #define BIG_ENDIAN 
+    from the program, by placing a comment in front of it: 
+        /* #define BIG_ENDIAN 
+    Run the c compiler:
+        cc -o ux2ftnmr ux2ftnmr.c
+    
+    
+    5. PROGRAM USAGE:
+    
+    Enter the command
+    
+        ux2ftnmr uxnmr_source_file TD ftnmr_output_file
+             
+    where
+        uxnmr_source_file: binary format uxnmr x32 fid or ser file.
+        TD:                time domain size: number of data points per fid.
+        ftnmr_output_file: ftnmr format output file name.
+    
+ 
+    EXAMPLE:
+    Produce a FTNMR file on an X32 for a Sun 3:
+    
+    ux2ftnmrb /u/data/guest/nmr/bpti/1/fid 4096 bpti.dat
+    
+    
+    6. TEST FILES
+    
+    bpti1d.fid         UXNMR 1D fid file, TD = 4096.
+    bpti1db.dat        FTNMR, big endian format of bpti1d.fid
+    bpti1ds.dat        FTNMR, small endian format of bpti1d.fid
+    bpti1d.parlist     Printout of parameters. Note that AQ_mod is fqs. 
+                       Therefore, bft is needed in the FTNMR program.
+    ux2ftnmr.c         Conversion program (source).
+    ux2ftnmrb          Executable conversion program for the X32, producing
+                       big endian ftnmr data format.
+    ux2ftnmrs          Executable conversion program for the X32, producing
+                       small endian ftnmr data format.
+    pstruc.h	       UXNMR parameter types and definitions.
+    listPar.c          UXNMR binary parameter to ASCII parameter conversion.
+    listPar.x32        Executable for ASPECT X32.
+    listPar.sparc      Executable for SUN SPARC.
+    listPar.iris       Executable for SGI IRIS.
+                            

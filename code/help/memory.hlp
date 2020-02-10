@@ -1,0 +1,28 @@
+The GIFA program holds all the data in one single large memory 
+buffer. This buffer is used for several purposes, and may be divided 
+into smaller pieces. The size of this buffer is displayed when 
+entering the program, or with the CONFIG command. There is no way to 
+use a larger data-set than this memory size but recompiling. This 
+buffer is used for 1D as well as 2D and 3D operations. In all cases 
+the whole buffer is available.  However, when moving back and forth 
+between 1D, 2D or 3D mode, or when using memory intensive commands, 
+only partial regions of the buffers are protected. The size of these 
+protected regions are given with CONFIG command. The idea is that 
+you can eat-up all the available memory for a single data-set if you 
+which, but that certain operations will be forbidden on it.
+
+For instance, you can handle a full memory 2D data-set if you do 
+not wish to do 3D. However, when working in 3D, if you zero-fill a 
+2D plane extracted from the 3D, over the protected area size for 2D, 
+you will destroy a part of the 3D buffer. You will sometime get the 
+question : 'This will overflow the xx buffer, Ok?' when there is any 
+risk of  destroying one of the buffer. This question is not asked in 
+macro execution, where you are supposed to know what you are doing.
+
+See documentation for a more detailed description of the memory  set-up.
+
+related contexts : $MEM_MAX $MEM_PRO_1D $MEM_PRO_2D $MEM_PRO_3D $VAR_MAX
+
+see also : CONFIG VARIABLES GET PUT
+
+

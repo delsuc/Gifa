@@ -1,0 +1,9 @@
+ARLIST n i j
+list the autoregressive coefficients from entry i to entry j.
+n = 1 : forward coefficients
+n = 2 : backward coefficients
+
+related contexts : $NAR
+
+see also : AR->DT AR->RT RT->AR
+

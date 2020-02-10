@@ -1,0 +1,5 @@
+Computes a pseudo-FID from the peaks parameters s held in the PEAK() 
+table. Permits to display a spectrum computed by LP analysis.
+
+see also : RT->PK PEAK SHOW
+

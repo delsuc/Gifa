@@ -1,0 +1,12 @@
+PULLDOWNMENU 0/1
+
+Permit to choose the aspect of the BUTTONBOX graphic interface.
+The user can choose between classic pulldown menu mode (1) and menus 
+as static boxes, remaining on screen (0).
+
+Set to 1 in the standard startup.g
+
+related contexts : $CONFIG_GRAPH
+
+see also : BUTTONBOX startup.g
+

@@ -1,0 +1,12 @@
+RTCLEAN n
+Keep only the roots whose modulus is greater than one. Useful to 
+clean up root-set computed from a backward analysis, before 
+inverting.
+n = 1 : forward roots
+n = 2 : backward roots
+
+related contexts : $NRT 
+
+see also : RT->AR, AR->RT, RTLIST, RTPIV, RTMATCH, RTSELECT, 
+    RTREFLECT, RT->PK, RTINV, ORDER
+

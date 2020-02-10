@@ -1,0 +1,9 @@
+This command will issue the distance value as computed from the 
+reference
+distance, set by CALIBDI, and the current relaxation rate, set by 
+RELAXRATE
+
+related contexts : $DIST
+
+see also : CALIBDI RELAXRATE METH RCRYST
+

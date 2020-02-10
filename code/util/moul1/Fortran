@@ -1,0 +1,25 @@
+#!/bin/sh
+# for fortran compiling, to be able to compile *.for files.
+# Fortran { -O } file_name
+# -O means : to optimize
+# -OO means : special optimization (concurent call on our Alliant)
+# set -v
+case $1 in
+   -O)	opt=Y
+	nom=$2;;
+   -OO) opt=S
+	nom=$2;;
+   *)	opt=N
+	nom=$1;;
+esac
+mv $nom.for $nom.f
+case $opt in
+# modify here for your compiler...
+# Y and S are for speed optimized routines
+   Y) xlf -c  -O  $nom.f  ;;
+   S) xlf -c  -O  $nom.f  ;;
+#N is for standard routines
+   N) xlf -c    $nom.f  ;;
+   *) echo 'error in fortran compiling';;
+esac
+mv $nom.f $nom.for

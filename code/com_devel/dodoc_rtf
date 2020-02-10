@@ -1,0 +1,69 @@
+#!/usr/local/bin/perl
+
+#process switches
+while	($ARGV[0]  =~ /^-/) {
+	shift;
+}
+
+# entete en rtf
+$HEADER_I = "{\\rtf1\\mac\\deff2 {\\fonttbl{\\f0\\fswiss Chicago;}{\\f2\\froman New York;}{\\f3\\fswiss Geneva;}{\\f4\\fmodern Monaco;}{\\f16\\fnil Palatino;}{\\f20\\froman Times;}{\\f21\\fswiss Helvetica;}{\\f22\\fmodern Courier;}{\\f23\\ftech Symbol;}}{\\stylesheet{\\s255\\li20\\sb240 \\b\\f21\\ul \\sbasedon0\\snext0 heading 1;}{\\li560 \\f20 \\sbasedon222\\snext0 Normal;}}\\paperw11880\\paperh16820\\margl1134\\margr1134\\margt851\\margb851\\deftab709\\widowctrl\\ftnbj \\sectd \\sbknone\\linemod0\\linex0\\headery1077\\footery1077";
+
+$HEADER_OUTF = "\\cols1\\colsx709\\endnhere " ;
+$HEADER_DICO = "\\cols3\\colsx709\\endnhere " ;
+
+$TITRE1 = "\\pard\\plain \\s255\\li20\\sb240 \\b\\f21\\ul " ;
+$TEXTE = "\\pard\\plain \\li560 \\f20 ";
+$LIGNE = "\\par\n";
+
+#open out files - with rtf headers
+open(DICO,">dico.doc") || die "cannot open dico.doc\n";
+print DICO $HEADER_I;
+print DICO $HEADER_DICO;
+open(OUTF,">doc.doc") || die "cannot open doc.doc\n";
+print OUTF $HEADER_I;
+print OUTF $HEADER_OUTF;
+
+# loop on file-names
+open(LS,"ls *.for|");
+while(<LS>) {
+
+    $fls = $_;
+    print DICO $TITRE1,$fls,$LIGNE;
+    print DICO $TEXTE;
+
+    open(FILE,$fls);
+    $on = 0;	#marque que l'on cherche une entree
+    while(<FILE>) {
+
+	if ($on == 0) {
+#detect entry points
+	   if ( /^( +|\t)(subroutine|function|program)\s+(\w*)\W/i ) {
+		$entry = $+;
+		$on = 1;
+		print DICO \t,$entry,$LIGNE;
+		$text{$entry} = "$TITRE1 $entry $LIGNE";
+		$text{$entry} = "$text{$entry} $TEXTE in $fls $LIGNE";
+		$text{$entry} = "$text{$entry} $LIGNE";
+		$text{$entry} = "$text{$entry} $_ $LIGNE";
+		next;
+		}
+           }
+	if ($on == 1) {
+	   if (/^( +|\t)(real|integer|logical|charac|double|implicit)/i  ) {
+		$on = 0;		# on entre dans les declarations
+		next; }
+	   if (/^c/i) {
+		$_ = $';
+		}
+	    $text{$entry} = "$text{$entry} $_ $LIGNE";
+	   }
+	}
+    }
+print DICO "}\n";
+
+foreach $key (sort(keys %text)) {
+    print OUTF $text{$key};
+}
+print OUTF "}\n";
+
+

@@ -1,0 +1,11 @@
+HPHASE x y {dim}
+
+Equivalent to PHASE, but the phase rotation is computed for real 
+spectra, using the properties of the Hilbert transform. HPHASE x y 
+is equivalent to the sequence : IFTBIS  CHSIZE *2  FT  PHASE x y  
+REAL 
+
+related contexts : $ITYPE_1D $ITYPE_2D $ITYPE_3D
+
+see also : PHASE FT REAL
+

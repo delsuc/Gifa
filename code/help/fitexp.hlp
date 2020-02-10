@@ -1,0 +1,28 @@
+FITEXP num_of_expo
+
+This command fits the data in memory to a sum of decaying exponentials
+
+The current 1D buffer is used as Y values
+The TAB buffer is used as X values
+
+The following equation is fitted :
+$P1*exp(-$X*$P2)  for a mono exponential
+$P1*exp(-$X*$P2) + $P3*exp(-$X*$P4)  for a bi exponential
+and so forth...
+
+The adapted parameter are stored in the global user variables
+$P1..$Pn, if the variables do not exist before the call they
+will created with initial value of 1.0, if they exists, their value
+will be taken as initial value for the minimization.
+Error bars on the parameters are returned in $DP1..$DPn
+
+This command is equivalent to using FITGENE with the equations
+given above. It is however MUCH faster.
+
+The number of iterations is controled by ITER
+and MINITER. 10 is a good starting value for both of them.
+
+
+related contexts : $CHI2 $SI_TAB $TAB[]
+
+see also : showexp residue ITER MINITER MINIMIZE PUT LINEFIT LINEFITD

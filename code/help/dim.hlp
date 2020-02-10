@@ -1,0 +1,12 @@
+DIM n  (n=1 , 2 or 3)
+
+DIM is a context which equals 1 if you are processing one 
+dimensional  NMR spectra, 2 if you are processing two dimensional 
+spectra and 3 if you are processing three dimensional spectra.
+Since 1D 2D and 3D data-sets are kept in different buffers, you can 
+switch between this 3 modes freely, keeping the data-sets protected.
+
+related contexts : $DIM
+
+see also : COL ROW PLANE DIAG VERT size
+

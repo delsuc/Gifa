@@ -1,0 +1,10 @@
+READS filename
+
+Read from the disk in standard compact format. This format is 
+compatible among incompatible platforms. It is ASCII format and can 
+even be E_Mailed.
+
+related contexts : $NAME
+
+see also : READ WRITES READT
+

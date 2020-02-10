@@ -1,0 +1,6 @@
+SETPROMPT new_prompt_string
+
+Permits to modify the prompt used in the text window.
+
+See also : MACRO
+

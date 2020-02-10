@@ -1,0 +1,10 @@
+SCALE x
+Changes display scale factor. Default value is 1. The data-set is 
+multiplied by SCALE before display. The larger the SCALE, the higher 
+the spectrum will be.
+Used by all graphical output, either on screen or on plots.
+ 
+related contexts : $SCALE
+
+see also : DISP1D, DISP2D, DISP3D, CDISP2D, ZM, PLOT, LEVEL 
+

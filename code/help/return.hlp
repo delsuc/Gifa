@@ -1,0 +1,5 @@
+RETURN value
+
+used in macro to return a value to the caller
+the caller will examine the value in $RETURNED
+

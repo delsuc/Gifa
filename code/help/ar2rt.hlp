@@ -1,0 +1,11 @@
+AR->RT n
+Solve the prediction-error polynomial, calculated from the 
+autoregressive coefficients. This is the third step of the LP-SVD 
+method.
+n = 1 : forward coefficients are used to extracted forward roots
+n = 2 : backward coefficients are used to extracted backward roots
+n = 3 : both set of roots are computed
+
+related contexts : $NRT $SI1_1D
+
+see also : ARLIST RT->AR AR->RT2 ORDER SVD->AR

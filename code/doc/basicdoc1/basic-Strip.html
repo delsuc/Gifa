@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html lang="en">
+<!--
+This document was converted from RTF source: 
+By r2net 5.2.4 r2netcmd Unix 
+Translation:html.trn  $Revision: 1.55 $ $Revision: 1.34 $
+See http://www.logictran.com
+Filename:basic.rtf
+OutFileName:basic.html
+Application Directory:/home/gostan/r2net
+Subject:
+Author:
+Operator:
+Document Comments:
+Version Comments:
+Comments:StarWriter
+Keywords:
+Translation Date:04/12/2001
+Translation Time:15:05:52
+Translation Platform:Unix
+Number of Output files:50
+This File:basic-Strip.html
+SplitDepth=2
+SkipNavPanel=0
+SkipLeadingToc=0
+SkipTrailingToc=1
+GenContents=1
+GenFrames=1
+GenIndex=0
+-->
+<head><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Strip files and Strip plots</title>
+</head>
+
+<body  bgcolor="#FFFFFF" link="#CC0000" vlink="#808080">
+<div align="CENTER"><a href="basic-DISPLAYI.html"><img src="./images/up.gif" alt="Up " border="0"></a> 
+  <a href="basic-Displayi-2.html"><img src="./images/prev.gif" alt="Previous " border="0"></a> 
+  <a href="basic-WORKING.html"><img src="./images/next.gif" alt="Next " border="0"></a> 
+  <a href="basic-Title.html"><img src="./images/first.gif" alt="Title Page " border="0"></a> 
+  <a href="basic-Contents.html"><img src="./images/contents.gif" alt="Contents " border="0"></a> 
+</div>
+<hr>
+
+
+<h2>
+<a name="Heading1380"></a><i><u>Strip files and Strip plots</u></i></h2>
+<div>	A set of macros have been designed to handle strip files. This can be
+performed for all kind of 3D, even if examples will be given here for double
+resonance experiments.	<br>The principle is to extract strips from the 3D where
+you know (from a previous 2D, or from the projection) there is signal, and to
+construct from these strips a pseudo 2D data-set. This is done here by using a
+2D peak picking for locating strips to be extracted.	<br>Imagine you have a 3D
+<sup>1</sup>H-<sup>15</sup>N NOESY-HSQC experiment from which you want to create
+the strip file, (say your <sup>1</sup>H dimension are F1 and F3, and the
+<sup>15</sup>N dimension is F2), here how you could do.<ul>
+<li>Get a nice HSQC plane, by using the adequate projection from the 3D (F1
+projection)</li>
+<li>go in 2D mode and make a peak-picking of this plane, check with SHOWPEAKS
+that all your peaks are there.</li>
+<li>if it's not done join your 3D (yes strips work only on JOINed 3D, no big
+deal, simply write your memory-located 3D and JOIN it !) and start the
+strip_file macro, it prompts you for the axis to strip down (here F1, and the
+starting and ending index of the peak in the table to use.</li>
+<li>you get a 2D where each entry in the 2D peak table has been projected as a
+F1 strip. The spectral width and frequency of the fake F2 dimension have been
+adapted so that in ppm unit, you will have the peak index in the 2D peack table
+as a ppm coordinate.</li></ul><br>You may prefer to use a real 2D HSQC to make
+the peak picking, (with, say, more resolution) the processing is the same, but
+simply start with the 2D, and make our peaking. Just be VERY carefull that the
+ppm calibration is EXACTLY the same than the 3D, since every thing will be
+computed in ppm.<br><br>With the same technique, you can create strip plots with
+the strip_plot macro, an additional information to be given is simply the number
+of strips per page.<br></div>
+
+<hr>
+
+<div align="CENTER"><a href="basic-DISPLAYI.html"><img src="./images/up.gif" alt="Up " border="0"></a> 
+  <a href="basic-Displayi-2.html"><img src="./images/prev.gif" alt="Previous " border="0"></a> 
+  <a href="basic-WORKING.html"><img src="./images/next.gif" alt="Next " border="0"></a> 
+  <a href="basic-Title.html"><img src="./images/first.gif" alt="Title Page " border="0"></a> 
+  <a href="basic-Contents.html"><img src="./images/contents.gif" alt="Contents " border="0"></a> 
+</div>
+
+</body>
+
+</html>

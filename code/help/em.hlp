@@ -1,0 +1,9 @@
+EM lb {lb' {lb"}}
+
+Multiply data by an exponential, and set LB. In 2D, and 3D a 
+parameter is used for each direction.
+ 
+related contexts : $LB1 $LB2 $LB3
+
+see also : LB expbroad GM GB SIN SQSIN TM JMULT FILTER
+

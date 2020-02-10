@@ -1,0 +1,14 @@
+!------------------------------------------------------
+!	Color
+!------------------------------------------------------
+XMgifa*foreground:	black
+XMgifa*background:	aquamarine
+XMgifa*topShadowColor:  medium turquoise
+XMgifa*bottomShadowColor: dark slate grey
+!------------------------------------------------------
+!       Font
+!------------------------------------------------------
+!	General Font :
+XMgifa*fontList: 	-*-times-medium-i-*-*-18-*-*-*-*-*-*-*
+!       this one is used in the ZM box
+XMgifa*XmBulletinBoard*fontList: -*-times-bold-r-*-*-14-*-*-*-*-*-*-*

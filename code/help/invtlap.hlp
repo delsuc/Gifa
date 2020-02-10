@@ -1,0 +1,15 @@
+INVTLAP 
+Computes the inverse Laplace transform of the current data-set, considered as 
+sampled at the location tabulated in the TAB buffer.  Current data-set 
+should have the same number of points than the TAB buffer.  The transform 
+is computed for 'size' data-points spanning the range DMIN-DMAX in a 
+logarithmic manner.
+
+related contexts : $DMIN $DMAX $SI_TAB $TAB[]  $ALGO
+
+see also : DMIN DMAX LAPLACE PUT INVTLAP TRANSTLAP
+    env_dosy.g  dosy2d dosy3d
+
+
+
+

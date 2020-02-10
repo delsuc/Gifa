@@ -1,0 +1,15 @@
+Output to the terminal the actual configuration of the system 
+dependent  parameters :
+-Licence being used
+-Version number
+-Sizes of the different static buffers
+-Operating System (VMS or UNIX)
+-Graphic manager (X_Windows or VWS)
+-Plotter driver (HP-GL or Postscript)
+ 
+related contexts : $CONFIG_GRAPH $CONFIG_OS $CONFIG_PLOT $CONFIG_WIN
+    $LICENCE $MEM_MAX $MEM_PRO_1D $MEM_PRO_2D $MEM_PRO_3D $VAR_MAX 
+    $VERSION
+
+see also : PLOTTER VARIABLES MEMORY size list
+

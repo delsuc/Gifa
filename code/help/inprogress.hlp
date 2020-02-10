@@ -1,0 +1,6 @@
+INPROGRESS i
+Displays the progress of the operation in the progress bar, inited 
+with the INITINPROGRESS command.
+
+see also : INITINPROGRESS PRINT
+

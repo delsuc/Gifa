@@ -1,0 +1,480 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=iso-8859-1">
+	<TITLE>Macro programming - CONTEXTS (INTERNAL VARIABLES)</TITLE>
+	<META NAME="GENERATOR" CONTENT="StarOffice/5.2 (Win32)">
+	<META NAME="CREATED" CONTENT="20011127;16510253">
+	<META NAME="CHANGEDBY" CONTENT="Thierry Gostan">
+	<META NAME="CHANGED" CONTENT="20011127;16523316">
+	<!-- This document was created from RTF source by rtftohtml version 3.9.3 -->
+</HEAD>
+<BODY>
+<P ALIGN=CENTER STYLE="margin-bottom: 0cm"><A HREF="./macro-VARIABLE.html"><IMG SRC="./images/leftg.gif" NAME="Image1" ALT="Prev " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="./macro-EVALUATE.html"><IMG SRC="./images/rightg.gif" NAME="Image2" ALT="Next " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="./macro-Contents.html"><IMG SRC="./images/contg.gif" NAME="Image3" ALT="Contents " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+</P>
+<HR SIZE=4>
+<H1>Contexts (Internal variables)</H1>
+<P STYLE="margin-bottom: 0cm">The contexts are very special
+variables, not defined in the variable table, but which takes the
+value of the internal parameters of the <I>Gifa</I> program. They are
+actually not <I>variables</I>, as they <B>should never be set</B> but
+should be always be changed by using the associated command.</P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm">The list of contexts is :</P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<BR>
+</P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$_
+     value of the next parameter present on the calling line.</FONT></FONT></P>
+<P STYLE="margin-left: 0.74cm; margin-bottom: 0cm">	This context is
+very special, <B>it cannot be used within evaluated expressions</B>.</P>
+<P STYLE="margin-left: 0.74cm; margin-bottom: 0cm">if the following
+command is used : 
+</P>
+<P STYLE="margin-left: 0.74cm; margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>@test 3 test.001 </FONT></FONT>
+</P>
+<P STYLE="margin-left: 0.74cm; margin-bottom: 0cm">within the file
+test, $_ will be 3 the first time and test.001 the second time. If no
+value is present on the calling line, the user will be  prompted for
+the value</P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$ABSMAX
+       current value of ABSMAX</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$ARG
+          True (1) if arguments are present on the calling line </FONT></FONT>
+</P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>
+              (within macro only)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$BUTTON
+       1,2 or 3 depending on which mouse button was last clicked</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$CALIBDI[1]
+   the current calibrating distance, as defined with the </FONT></FONT>
+</P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>
+              CALIBDI command</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$CALIBDI[2]
+   the current calibrating relaxation rate, as defined </FONT></FONT>
+</P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>
+              with the CALIBDI command</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$CCOLOR
+       current value for CCOLOR</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$CDISP2D
+      current value of command CDISP2D</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$CHI2
+         value of the chi2 returned by the last command : MAXENT, </FONT></FONT>
+</P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>
+              LINEFIT, RT-&gt;PK</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$COL
+          index of the last extracted column in 2D</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$COLOR
+        current value for COLOR</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$CONFIG_GRAPH
+ is true if graphic is possible (X_Windows is </FONT></FONT>
+</P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>
+              connected)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$CONFIG_OS
+    The system type, as returned by the CONFIG command</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$CONFIG_PLOT
+  The plot driver, as returned by the CONFIG command</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$CONFIG_WIN
+   The window manager, as returned by the CONFIG command</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$CX
+           current value for CX</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$CY
+           current value for CY</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$CZ
+           current value for CZ</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$C_ABSMAX
+     value of ABSMAX of the currently JOINed dataset</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$C_DFACTOR
+    value of DFACTOR of the currently JOINed dataset</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$C_DMAX
+       value of DMAX of the currently JOINed dataset</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$C_DMIN
+       value of DMIN of the currently JOINed dataset</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$C_DIM
+        value of DIM of the currently JOINed dataset</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$C_FREQ
+       value of FREQ of the currently JOINed dataset</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$C_FREQ1
+      value of FREQ_1D of the currently JOINed dataset</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$C_FREQ2
+      value of FREQ_2D of the currently JOINed dataset</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$C_FREQ3
+      value of FREQ_3D of the currently JOINed dataset</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$C_HEADER
+     last value accessed with the GETHEADER command</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$C_JOINED
+     is  if there is a currently JOINed dataset, 0 otherwise</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$C_OFFSF1
+     value of OFFSET_1 of the currently JOINed dataset</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$C_OFFSF2
+     value of OFFSET_2 of the currently JOINed dataset</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$C_OFFSF3
+     value of OFFSET_3 of the currently JOINed dataset</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$C_SIZEF1
+     value of SI1 of the currently JOINed dataset</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$C_SIZEF2
+     value of SI2 of the currently JOINed dataset</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$C_SIZEF3
+     value of SI3 of the currently JOINed dataset</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$C_SPECWF1
+    value of SPECW_1 of the currently JOINed dataset</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$C_SPECWF2
+    value of SPECW_2 of the currently JOINed dataset</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$C_SPECWF3
+    value of SPECW_3 of the currently JOINed dataset</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$C_TYPE
+       value of ITYPE of the currently JOINed dataset</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$DFACTOR
+      scale factor for damping scale</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$DIM
+          current value of DIM</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$DISP1D
+       current value of command DISP1D</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$DISP2D
+       current value of command DISP2D</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$DISP3D
+       current value of command DISP3D</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$DIST
+         the result of the last DIST command</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$DMAX
+         Upper bond of damping scale</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$DMIN
+         Lower bond of damping scale</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$FND_PK
+       gives the index of the found entry (FIND)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$FND_PK_DST
+   gives the distance to target of the found entry (FIND)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$FREQ
+         main frequency (1H) of the spectrometer</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$FREQ_1D
+      frequency in 1D (in MHz)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$FREQ_1_2D
+    frequency in 2D in F1 (in MHz)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$FREQ_1_3D
+    frequency in 3D in F1 (in MHz)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$FREQ_2_2D
+    frequency in 2D in F2 (in MHz)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$FREQ_2_3D
+    frequency in 3D in F2 (in MHz)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$FREQ_3_3D
+    frequency in 3D in F3 (in MHz)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$GB1
+          value of gb in F1 (in Hz)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$GB2
+          value of gb in F2 (in Hz)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$GB3
+          value of gb in F3 (in Hz)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$GIFAPATH
+     current PATH used for macro, set by th SETPATH command</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$HOME
+         equivalent to the $HOME variable in UNIX</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$ITYPE_1D
+     value of itype in 1D</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$ITYPE_2D
+     value of itype in 2D</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$ITYPE_3D
+     value of itype in 1D</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$LB1
+          value of lb in F1 (in Hz)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$LB2
+          value of lb in F2 (in Hz)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$LB3
+          value of lb in F3 (in Hz)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$LEVEL
+        current value of command LEVEL</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$LICENCE
+      The licence as returned by the CONFIG command</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$LOGA
+         current value of command LOGA</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$MAX[1]
+       value of last computed max computed with the command MAX</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$MAX[2]
+       value of last computed min computed with the command MAX</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$MEM_MAX
+      The larger data set available, as returned by the CONFIG </FONT></FONT>
+</P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>
+              command</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$MEM_PRO_1D
+   The size of the protected 1D area, as returned by the </FONT></FONT>
+</P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>
+              CONFIG command</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$MEM_PRO_2D
+   The size of the protected 2D area, as returned by the </FONT></FONT>
+</P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>
+              CONFIG command</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$MEM_PRO_3D
+   The size of the protected 3D area, as returned by the </FONT></FONT>
+</P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>
+              CONFIG command</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$NAME
+         name of the last read data-set</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Courier"><FONT SIZE=2>$NAME_1D
+      name of the last 1D data-set read</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$NAME_2D
+      name of the last 2D data-set read</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$NAME_3D
+      name of the last 3D data-set read</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$NAR
+          number of A.R. coefficients as listed by ARLIST</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$NOISE
+        value of the noise, as given by the NOISE command</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$NPK1D
+        The number of entries in the 1D peak table</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$NPK2D
+        The number of entries in the 2D peak table</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$NPK3D
+        The number of entries in the 3D peak table</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$NPOINT
+       The number of entries in the point stack</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$NRT
+          Number of root as listed by RTLIST</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$NSVD
+         Number of root as listed by SVDLIST</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$OFFSET_1D
+    spectral offset in 1D (in Hz)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$OFFSET_1_2D
+  spectral offset in 2D in F1 (in Hz)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$OFFSET_1_3D
+  spectral offset in 3D in F1 (in Hz)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$OFFSET_2_2D
+  spectral offset in 2D in F2 (in Hz)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$OFFSET_2_3D
+  spectral offset in 3D in F2 (in Hz)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$OFFSET_3_3D
+  spectral offset in 3D in F3 (in Hz)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$ORDER
+        current value for ORDER</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$PH0
+          0th order of the last phase correction</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$PH1
+          1st order of the last phase correction</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$PK1D_A[i]
+    amplitude of the ith entry in the 1D peak table</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$PK1D_A_ERR[i]
+error on the previous quantity</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$PK1D_F[i]
+    position (in index) of the ith 1D entry</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$PK1D_F_ERR[i]
+error on the previous quantity</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$PK1D_P[i]
+    phase of the ith entry in the 1D peak table</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$PK1D_T[i]
+    analytical form of the ith entry in the 1D peak table</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>
+              GAUSS, LORENTZ, or UNKNOWN</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$PK1D_W[i]
+    width (in index) of the ith entry in the 1D peak table</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$PK1D_W_ERR[i]
+error on the previous quantity</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$PK2D_A[i]
+    amplitude of the ith entry in the 2D peak table</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$PK2D_A_ERR[i]
+error on the previous quantity</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$PK2D_F1F[i]
+  F1 position (in index) of the ith entry in the 2D </FONT></FONT>
+</P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>
+              peak table</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$PK2D_F1F_ERR[i]
+ error on the previous quantity</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$PK2D_F1W[i]
+  F1 width (in index) of the ith entry in the 2D peak table</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$PK2D_F1W_ERR[i]
+ error on the previous quantity</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$PK2D_F2F[i]
+  F2 position (in index) of the ith entry in the 2D </FONT></FONT>
+</P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>
+              peak table</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$PK2D_F2F_ERR[i]
+ error on the previous quantity</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$PK2D_F2W[i]
+  F2 width (in index) of the ith entry in the 2D peak table</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$PK2D_F2W_ERR[i]
+ error on the previous quantity</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$PK3D_A[i]
+    amplitude of the ith entry in the 3D peak table</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$PK3D_F1F[i]
+  F1 position (in index) of the ith entry in the 3D </FONT></FONT>
+</P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>
+              peak table</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$PK3D_F1W[i]
+  F1 width (in index) of the ith entry in the 3D peak </FONT></FONT>
+</P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>
+              table</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$PK3D_F2F[i]
+  F2 position (in index) of the ith entry in the 3D </FONT></FONT>
+</P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>
+              peak table</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$PK3D_F2W[i]
+  F2 width (in index) of the ith entry in the 3D peak table</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$PK3D_F3F[i]
+  F3 position (in index) of the ith entry in the 3D </FONT></FONT>
+</P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>
+              peak table</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$PK3D_F3W[i]
+  F3 width (in index) of the ith entry in the 3D peak table</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$PKNAME
+       The name used by the last PKREAD / PKWRITE command </FONT></FONT>
+</P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$PLANE[1]
+     axis of the last extracted plane in 3D</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$PLANE[2]
+     index of the last extracted plane in 3D</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$PLOTAXIS[1]
+  current value for the unit used in PLOTAXIS</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$PLOTAXIS[2]
+  current value for the tick distance in x axis</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$PLOTAXIS[3]
+  current value for the tick distance in y axis</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$PLOTOFFSET[1]
+current value for plot offset on X axis</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$PLOTOFFSET[2]
+current value for plot offset on Y axis</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$POINTX[i]
+    X coordinates (in index) of ith point in the point stack</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$POINTY[i]
+    Y coordinates (0..1 in 1D; in index if 2D) of ith </FONT></FONT>
+</P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>
+              point in the point stack</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$RANDOM
+       a random variable in the range 0..1 with equiprobable </FONT></FONT>
+</P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>
+              distribution</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$RANDOMG
+      a random variable with normal law, unit variance and zero </FONT></FONT>
+</P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>
+              mean</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$RANDOMZ
+      same as $RANDOM but resets the random series</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$RELAX
+        the result of the last RELAXRATE or SLOPE commands</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$RCRYST
+       the result of the last RCRYST command CALIBDI</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$ROW
+          index of the last extracted row in 2D</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$SCALE
+        current value of the context SCALE</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$SCOLOR
+       current value of the context SCOLOR</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$SHIFT
+        value of the offset, as given by the SHIFT command</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$SI1_1D
+       size of the 1D buffer.</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$SI1_2D
+       size in F1 of the 2D buffer</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$SI1_3D
+       size in F1 of the 3D buffer</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$SI2_2D
+       size in F2 of the 2D buffer</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$SI2_3D
+       size in F2 of the 3D buffer</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$SI3_3D
+       size in F3 of the 3D buffer</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$SI_TAB
+       size of the TAB buffer</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$SIGN
+         current value of context SIGN</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$SIGN_PEAK
+    current value of context SIGN_PEAK</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$SPECW_1D
+     spectral width in 1D (in Hz)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$SPECW_1_2D
+   spectral width in 2D in F1 (in Hz)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$SPECW_1_3D
+   spectral width in 3D in F1 (in Hz)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$SPECW_2_2D
+   spectral width in 2D in F2 (in Hz)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$SPECW_2_3D
+   spectral width in 3D in F2 (in Hz)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$SPECW_3_3D
+   spectral width in 3D in F3 (in Hz)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$SUMREC
+       value returned by the last SUMREC command</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$SUMREC_ERR
+   error on the previous quantity</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$TAB[i]
+       value of the ith point in the TAB buffer</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$UNIT
+         current value for UNIT</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$UNITY
+        current value for UNIT_Y</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$VAR_MAX
+      The total number of user variable available, as returned </FONT></FONT>
+</P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>
+              by the CONFIG command</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$VERSION
+      The current version, as returned by the CONFIG command</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$VHEIGHT
+      current value of command VHEIGHT</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$WIDGET
+       The id of the current graphic form</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$ZONE[1]
+      lower F1 coord. of the mouse-selected region (in index)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$ZONE[2]
+      lower F2 coord. of the mouse-selected region (in index)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$ZONE[3]
+      upper F1 coord. of the mouse-selected region (in index)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$ZONE[4]
+      upper F2 coord. of the mouse-selected region (in index) </FONT></FONT>
+</P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$ZOOM
+         1 if in ZOOM mode</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$ZOOM_1D[1]
+   left coordinate of the 1D zoom window (in index)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$ZOOM_1D[2]
+   right coordinate of the 1D zoom window (in index)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$ZOOM_2D[1]
+   lower F1 coordinate of the 2D zoom window (in index)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$ZOOM_2D[2]
+   left F2 coordinate of the 2D zoom window (in index)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$ZOOM_2D[3]
+   upper F1 coordinate of the 2D zoom window (in index)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$ZOOM_2D[4]
+   right F2 coordinate of the 2D zoom window (in index)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$ZOOM_3D[1]
+   &quot;left&quot; F1 coordinate of the 3D zoom window (in index)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$ZOOM_3D[2]
+   &quot;right&quot; F1 coordinate of the 3D zoom window (in index)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$ZOOM_3D[3]
+   &quot;left&quot; F2 coordinate of the 3D zoom window (in index)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$ZOOM_3D[4]
+   &quot;right&quot; F2 coordinate of the 3D zoom window (in index)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$ZOOM_3D[5]
+   &quot;left&quot; F3 coordinate of the 3D zoom window (in index)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>$ZOOM_3D[6]
+   &quot;right&quot; F3 coordinate of the 3D zoom window (in index)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<BR>
+</P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<HR SIZE=4>
+<P ALIGN=CENTER><A HREF="./macro-VARIABLE.html"><IMG SRC="./images/leftg.gif" NAME="Image4" ALT="Prev " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="./macro-EVALUATE.html"><IMG SRC="./images/rightg.gif" NAME="Image5" ALT="Next " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="./macro-Contents.html"><IMG SRC="./images/contg.gif" NAME="Image6" ALT="Contents " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+</P>
+</BODY>
+</HTML>

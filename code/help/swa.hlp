@@ -1,0 +1,10 @@
+SWA {Fx} 
+Consider the left part of the data as real and the right part as 
+imaginary, and swap them to transform the data set to the internal 
+representation of complex data; i.e. odd points real and even points 
+imaginary. This is the opposite of USWA.
+ 
+related contexts : $ITYPE_1D $ITYPE_2D $ITYPE_3D
+
+see also : USWA REAL FLIP FLOP
+

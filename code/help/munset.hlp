@@ -1,0 +1,8 @@
+munset list_of_variable_name *
+
+Removes all the variables which names are found in 
+list_of_variable_name from the variable table. The list is 
+terminated by a * sign. Note that no $ sign are needed.
+
+see also : SET UNSET VARIABLES tunset
+

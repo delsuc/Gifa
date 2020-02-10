@@ -1,0 +1,7 @@
+Performs the inverse of FLIP.
+See FLIP.
+
+related contexts : $ITYPE_2D
+
+see also : FLIP FT MODULUS ITYPE ft_phase_modu 
+

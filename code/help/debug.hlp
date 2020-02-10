@@ -1,0 +1,5 @@
+When this context is set to 1 some command generate some debuging 
+information. Used mainly by developers.
+
+see also : VERBOSE REFMACRO TIMER
+

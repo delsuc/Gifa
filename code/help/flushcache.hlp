@@ -1,0 +1,7 @@
+Flushes all the modified of the cache memory system onto the 
+associated files.
+
+related contexts : $C_JOINED
+
+see also : FLUSH JOIN
+

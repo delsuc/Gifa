@@ -1,0 +1,35 @@
+To zoom in the display, simply click on the graphic window with 
+the left and middle buttons pressed (or Shift + left button),
+and draw a rectangle on the display. You can redraw as many time
+as wished this rectangle. To zoom into the selected region,
+simply click in this rectangle with the left and right button
+of the mouse (or Shift + right buttons).
+You can also use the Zoom in and Zoom out buttons in the control box.
+
+      Summary
+      -------
+		Mouse		Shift +
+Action		Buttons		Buttons
+-----------------------------------------
+Draw Selection	left + middle	left
+Zoom in		left+right		right
+Zoom out		middle+right	middle
+
+To move the zoom window around, you can use the box which appears
+in the small vignette at the bottom of the Zoom box.
+The eight little arrows can be used also to move around the zoom 
+region. Each arrow will move the selected region by half the size of 
+the zoom box. The ZM 1 command will recompute the display in the vignette
+
+There are five controls to adjust the vertical scale used for 
+displaying the spectra. The Reset button will reset the display to 
+the default, (ABSMAX 0 SCALE 1 ZOOM 0) where the largest peak in the 
+screen in full size. The four other buttons permit to modify the 
+scale value, raising or lowering the SCALE context by factor of 2 
+and of 1.2.
+
+The zoom box also displays the coordinate of the cursor when a 
+button is depressed, the unit used for display depends on UNIT
+
+see also : ZM ZOOM SCALE MONOPOINT UNIT point
+

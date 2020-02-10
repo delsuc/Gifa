@@ -1,0 +1,59 @@
+This program permits handle UX/NMR files coming from X32 or DMX.
+
+version 26/01/2000
+  slight change in the errno declaration, and in proto to make it more portable among unix flavor
+
+version 6-nov-1997, corrected a bug with big/little endian
+  for those PC/Linux out-there
+
+version 8-dec-1995 corrected a bug in cache_mad.c for very assymetric dataset
+   corrected also for badly configurated spectrometers,
+   on which the field INSTRUM is empty.
+   Is this case, the basic frequency default to 360Mhz (!)
+
+version 1-june-1995, adapted to DMX
+
+
+The shell script ux2cache.sh help in handling the program.
+When transfering the experiment NAME=A EXPNO=1 from the spectrometer
+to your machine you should :
+create a directory on the target machine to hold the bruker files,
+FTP in binary mode the files : acqu , acqus , acqu2 , acqu2s , ser
+or use rcp -r
+type ux2cache to convert (then answer the questions with directory name and
+	gifa file name)
+
+The program will create the file in GIFA standard format 
+
+the shell script ux2cache.sh will automatize most of the work for you.
+
+the shell script getnmr even make the transfer from the spectrometer
+
+Be carefull when compiling this prgram that you should not use the -O
+  option on HP-UX, since, due to a compiler bug, the program then
+  does not work anymore.  See the makefile.
+
+NOTE that:
+
+The DMX data-sets, when acquired with the digital filter, present a large
+  shift, which shows up as a VERY distorded line-base, like many waves.
+      
+
+This can be corrected with :
+- a large 1st order correction (try ~ -65 turns as first guess
+                                  i.e.  phase 0 (-65*360)  )
+- a left shift ( lshift 130 as first guess )
+    This last solution creates large baseline distortions.
+
+
+Finally,
+This code uses the library cache_mad.c which is the code for accessing
+Gifa data-files.
+This code is here for convienence, you can use it.
+I give this code freely, it is considered
+as Public Domain, so you can use it, adapt it, modify it, etc...
+
+
+
+I hope this helps
+

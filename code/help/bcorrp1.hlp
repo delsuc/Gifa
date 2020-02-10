@@ -1,0 +1,5 @@
+Enables a configuration with a dynamic clusters segmentation and a 
+moving average approximation for the BCORR 3 module
+
+see also : BCORR, BCORRP, BCORRP0
+

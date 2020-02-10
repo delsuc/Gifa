@@ -1,0 +1,6 @@
+will display on the current graphic, the contents of the internal 
+peak table, thus permitting to visualize the result of the PEAK 
+command.Uses the current definition of SCOLOR for drawing.
+ 
+see also : PEAK PLOTPEAKS SHOWPEAK SCOLOR
+

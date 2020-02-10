@@ -1,0 +1,12 @@
+PLOTTER H(P-GL) / p(ostscript)
+
+Permits to select which kind of output will be generated ans using 
+all the plot commands. HP-GL or postscript code can be selected. If 
+the gifaplot shell script has been correctly set-up, the correct 
+output should be sent to the correct plotter with no user 
+intervention.
+
+related contexts : $CONFIG_PLOT
+
+see also : PLOT PAGE CONFIG gifaplot
+

@@ -1,0 +1,23 @@
+BUTTONBOX menu_name [ button_name gifa_command  | separator ] (n 
+times) *
+Permits to construct a new menu in the menu_bar (will create one if 
+none is available). This menu will appear as menu_name  in the 
+menu_bar. When menu_name  is clicked by the user, a button box will 
+appear, with as many entry as item in the list of commands. Each 
+entry in the list is defined as a couple of word, the first one 
+being the name of the button in the box, the second one being the 
+gifa command to be executed if the button is clicked. The command 
+will be executed exactly as if the user had typed it as the prompt 
+level, thus the command can be a simple command, several commands on 
+a line, of a macro name. However the WHILE, FOR, FOREACH, IF .. 
+THEN, GOTO commands are not available; the IF .. any_command syntaxe 
+is available. If a parameter is missing for the command, the user 
+will be prompted in the text window.
+The special entry separator  is not associated to a command, but 
+permits to enter a separator in the menu box.
+The list is terminated with a star.
+
+related contexts : $CONFIG_GRAPH
+
+see also : CLOSEBUTTON FORMBOX DIALOGBOX MACRO PULLDOWNMENU 
+

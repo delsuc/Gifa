@@ -1,0 +1,9 @@
+Permits to click several time on the data-set. Similar to POINT, but 
+no output is generated. The values of the pseudo-variables $NPOINT, 
+$POINTX[1], $POINTY[1] and $BUTTON are set accordingly. Useful for 
+macros.
+
+related contexts : $NPOINT $POINTX[1] $POINTY[1] $BUTTON
+
+see also : MONOPOINT POINT
+

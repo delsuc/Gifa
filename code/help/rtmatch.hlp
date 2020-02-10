@@ -1,0 +1,11 @@
+RTMATCH nsignals
+"Match" the forward and backward roots to eliminate the roots dues 
+to noise. Those matched roots can then be used by RT->PK, with the 
+"matched forward & backward" roots. nsignals is the number of true 
+roots expected.
+
+related contexts : $NRT
+
+see also : RT->AR, AR->RT, RTLIST, RTPIV, RTCLEAN, RTSELECT, 
+   RTREFLECT, RTINV, RT->PK, ORDER
+

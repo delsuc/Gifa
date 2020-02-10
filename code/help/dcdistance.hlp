@@ -1,0 +1,7 @@
+Selects the norm that will be used for the first segmentation step 
+of BCORR 3 when Dynamic clustering is used.
+0 : Norm 1.
+1 : Euclidian distance.
+
+see also : BCORR
+

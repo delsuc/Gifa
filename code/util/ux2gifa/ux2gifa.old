@@ -1,0 +1,24 @@
+# To help in converting from Bruker/UX-NMR data format to GIFA (FT-NMR)
+echo -n 'Bruker file directory : '
+set direc=$<
+echo -n 'Gifa output file      : '
+set out=$<
+if  ( -e $direc/acqus ) then
+	set param=$direc/acqus 
+else if ( -e $direc/acqu ) then
+	set param=$direc/acqu
+else
+	echo "No acquisition parameter found"
+	echo -n " Enter TD : "
+	set size=$<
+endif
+if  ( -e $direc/ser ) then
+	set file=$direc/ser 
+else if ( -e $direc/fid ) then
+	set file=$direc/fid
+else
+	echo "No data file found"
+	exit
+endif
+if ($?size == 0 ) set size=`/usr/local/bin/listPar.iris $param | grep TD | sed -e s/TD// `
+/usr/local/bin/ux2ftnmr $file $size $out

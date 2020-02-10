@@ -1,0 +1,8 @@
+MAXINBOX f1_low f2_low f1_up f1_up
+Seqarch for the larger point in the given area.
+Value is stored in the context $MAXINBOX
+
+related contexts : $MAXINBOX
+
+see also : INTEG EVALN sumrec_1d pksumrec maxinbox
+

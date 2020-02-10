@@ -1,0 +1,9 @@
+ TM n1 n2 {Fx}
+	This commands applies a trapezoid filter function to the data-
+set. The function raises from 0.0 to 1.0 from the first point to 
+point n1. The function then stays to 1.0 until point n2, from which 
+it goes down to 0.0 at the last point.
+If in 2D or 3D then Fx tells on which axis to apply the filter.
+ 
+see also : SIN SQSIN GM EM FILTER
+

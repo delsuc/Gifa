@@ -1,0 +1,10 @@
+SVDCLEAN1 nsignals flag
+Keep only the first n signals singular values and put the other to 
+0. Use it only if you have a good insight of the number of signals 
+in the spectrum. The flag (yes/no) determines wether you want to 
+remove the noise power associated with the removed root. 
+
+related contexts : $NSVD
+
+see also : SVDCLEAN2 SVDLIST SVD->DT SVD->AR DT->SVD ORDER cadzow
+

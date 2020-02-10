@@ -1,0 +1,196 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=iso-8859-1">
+	<TITLE>Macro programming - BASIC OF MACRO PROGRAMMATION</TITLE>
+	<META NAME="GENERATOR" CONTENT="StarOffice/5.2 (Win32)">
+	<META NAME="CREATED" CONTENT="20011127;16204588">
+	<META NAME="CHANGEDBY" CONTENT="Thierry Gostan">
+	<META NAME="CHANGED" CONTENT="20011127;16414981">
+	<!-- This document was created from RTF source by rtftohtml version 3.9.3 -->
+</HEAD>
+<BODY>
+<P ALIGN=CENTER STYLE="margin-bottom: 0cm"><A HREF="./macro-INTRODUC.html"><IMG SRC="./images/leftg.gif" NAME="Image1" ALT="Prev " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="./macro-VARIABLE.html"><IMG SRC="./images/rightg.gif" NAME="Image2" ALT="Next " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="./macro-Contents.html"><IMG SRC="./images/contg.gif" NAME="Image3" ALT="Contents " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+</P>
+<HR SIZE=4>
+<H1>BASIC OF MACRO PROGRAMMATION</H1>
+<UL>
+	<LI><P STYLE="margin-bottom: 0cm"><A HREF="#Int"><FONT COLOR="#cc0000">Introduction
+	to the control language</FONT></A></P>
+	<LI><P><A HREF="#Det"><FONT COLOR="#cc0000">Detailed Syntax of the
+	Gifa Input.</FONT></A></P>
+</UL>
+<HR SIZE=4>
+<H2><A NAME="Int"></A>Introduction to the control language</H2>
+<P STYLE="margin-bottom: 0cm">It is possible in the <I>Gifa</I>
+program to write command files (macros). The macro file contains the
+very same commands that would be typed on line. The macro is then
+invoked by typing its name, with or whitout a leading @ sign :</P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>Gifa&gt; @file_name</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm">is nearly equivalent to</P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>Gifa&gt; file_name</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm">The syntax</P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>Gifa&gt;
+@(any_evaluated_expression)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm">or</P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>Gifa&gt; @$var</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm">are perfectly valid, however, in this
+case, as @(..) is parsed as a command, no space is allowed within the
+evaluated expression.</P>
+<P STYLE="margin-bottom: 0cm">Using the @ forces the macro execution,
+thus permitting to have a macro with the same name as an internal
+command. In some cases, the @ syntax might be slightly faster.</P>
+<P STYLE="margin-bottom: 0cm">In VMS, a &#145;.GIF&#146; extension
+will be added to the file name if no dot is present in the macro
+name. In UNIX the macro name is the file name, sometime names with a
+.g extension are chosen (used to be .gif before the v4 version, but
+has been changed to separate from the popular graphic file format
+.gif). Any characters (but the blank) can be used in macro name, so
+../test/my_macro or /usr/local/gifa/macro/startup.g or
+[marc]my_macro.gif;-1 are valid names.</P>
+<P STYLE="margin-bottom: 0cm">A macro consists of a series of regular
+<I>Gifa</I> commands used as in the interactive mode. Up to 9
+recursive calls may be nested (i.e. you can call a macro from within
+a macro, down to 9 nested levels). The macro execution can always be
+stopped with the ^C command.</P>
+<P STYLE="margin-bottom: 0cm">Control structures, evaluated
+expressions, and variables are available in the <I>Gifa</I> macro
+language. More about this latter on.</P>
+<H2><A NAME="Det"></A>Detailed Syntax of the Gifa Input.</H2>
+<P STYLE="margin-bottom: 0cm">Each <I>Gifa</I> command line is
+composed of a series of &#147;words&#148; separated by blanks. A word
+can be a command or a parameter. Words are strictly separated by
+blanks, however a word can be of several nature :</P>
+<P STYLE="margin-left: 0.5cm; text-indent: -0.46cm; margin-bottom: 0cm">
+<FONT FACE="Times"><FONT SIZE=2><B>&#149; literal are as typed:</B></FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>chsize</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-left: 0.5cm; text-indent: -0.46cm; margin-bottom: 0cm">
+<FONT FACE="Times"><FONT SIZE=2><B>&#149; literal string are enclosed
+within single (') or double(&quot;) quotes:</B></FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>'a string' or &quot;another string&quot;
+or &quot;yet an'other valid string&quot;</FONT></FONT></P>
+<P STYLE="margin-left: 0.5cm; text-indent: -0.46cm; margin-bottom: 0cm">
+<FONT FACE="Times"><FONT SIZE=2><B>single and double quotes can be
+freely mixed at will, and are strictly equivalent.</B></FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-left: 0.5cm; text-indent: -0.46cm; margin-bottom: 0cm">
+<FONT FACE="Times"><FONT SIZE=2><B>&#149; The special character <FONT FACE="Courier">%</FONT>
+(to be used only as a parameter for a command) takes the place of the
+default value of the command:</B></FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>EM %</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-left: 0.5cm; text-indent: -0.46cm; margin-bottom: 0cm">
+<FONT FACE="Times"><FONT SIZE=2><B>&#149; The special string <FONT FACE="Courier">%%</FONT>
+takes the place of the whole series of all the default values of the
+remaining parameters of the command :</B></FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>ZOOM 1 % % % % and ZOOM 1 %% <FONT SIZE=3><FONT FACE="Times">are
+equivalent (ZOOM needs 4 parameters when in 2D)</FONT></FONT></FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm">Many commands know how to deal with
+this syntax, for instance <FONT FACE="Courier">BCOOR</FONT> (the base
+line correction command) needs a series of point to compute the
+baseline correction. If you have previously used the macro <FONT FACE="Courier">point</FONT>
+and clicked on a set of points on the data, you will be prompted for
+the values corresponding to these points. So</P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>bcorr 1 1 %%</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm">will just do the work.</P>
+<P STYLE="margin-bottom: 0cm">The baseline correction interactive
+macros use this feature.</P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-left: 0.5cm; text-indent: -0.46cm; margin-bottom: 0cm">
+<FONT FACE="Times"><FONT SIZE=2><B>&#149; variables are substituted
+before use (more about this later):</B></FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>$variable1</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-left: 0.5cm; text-indent: -0.46cm; margin-bottom: 0cm">
+<FONT FACE="Times"><FONT SIZE=2><B>&#149; expressions, enclosed
+within parentheses, are evaluated before use (more about this later):</B></FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>( 2*(cos(3) + 1))</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-left: 0.5cm; text-indent: -0.46cm; margin-bottom: 0cm">
+<FONT FACE="Times"><FONT SIZE=2><B>&#149; any of the preceding
+syntaxes may be preceded with a &lt; symbol. In which case the input
+is interpreted as a file name, and the parameters takes the value of
+the next line read in the file (if already <FONT FACE="Courier">OPENed</FONT>).
+A complete line is read at each time.</B></FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm">Each of these syntax can be used in any
+places; however, a single word cannot match a series of words :</P>
+<P STYLE="margin-bottom: 0cm">These are valid syntax :</P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>row
+$i ; select row i</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>row
+(%+1) ; select the next row</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>col
+(2*$i +1) ; select col 2i+1</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>set
+apod = 'sin' $apod 0.5 ; perform sin 0.5</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>read
+(&quot;/usr&quot; // $user // $exp) ; read a file</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>(&quot;simu&quot;
+// &quot;noe&quot;) ; execute the command SIMUNOE</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><FONT FACE="Courier"><FONT SIZE=2>set
+f = test open $f row &lt;$f ; select the row whose index ; is found
+in file 'test'</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm">These are invalid syntax :</P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>set apod = 'sin 0.5' $apod</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm">a single word (here 'sin 0.5') cannot
+be used to match several words</P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<BR>
+</P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>EM 1+2</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm">the parenthesis are needed for
+expression to be evaluated</P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm">A line cannot be longer than 256
+characters, otherwise the end the line will be lost. This limit of
+256 characters is hard-wired every where in the macro language, no
+string can ever get longer than this number.</P>
+<P STYLE="margin-bottom: 0cm">In the case of commands however (and
+only in this case), if a longer line is needed, a continuation sign
+is available : \</P>
+<P STYLE="margin-bottom: 0cm">e.g.</P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>Gifa&gt; print 'A line cannot be
+very long' print \</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>\Gifa&gt; 'But can be continued'
+print 'as many time as you wish'</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm">You can put as many continuation sign
+as you want, however, these signs are considered as &#147;word&#148;,
+so they should be blank separated, and cannot be used within
+evaluated expressions (see below). There is no actual limitation on
+the length of one command line (using \).</P>
+<HR SIZE=4>
+<P ALIGN=CENTER><A HREF="./macro-INTRODUC.html"><IMG SRC="./images/leftg.gif" NAME="Image4" ALT="Prev " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="./macro-VARIABLE.html"><IMG SRC="./images/rightg.gif" NAME="Image5" ALT="Next " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="./macro-Contents.html"><IMG SRC="./images/contg.gif" NAME="Image6" ALT="Contents " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+</P>
+</BODY>
+</HTML>

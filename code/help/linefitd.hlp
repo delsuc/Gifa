@@ -1,0 +1,23 @@
+linefitd { peak_ID  line_shape amp freq line_width } (n times) 0
+
+Start the line fitter, fitting only the selected parameters to fit. 
+The command will prompt for the index of the peak to fit, for the 
+parameters to fit for that peak. Several peaks can be fitted at 
+once, the list is finished with a 0.
+
+All questions are answered with yes/no, but line_shape  which is to 
+be Lorentz/Gauss for Loretzian or Gaussian line-shapes.
+In all cases, the command LINEFITD %% fits all the peaks, retaining 
+the current line-shape of each peaks.
+
+All the values in the peak-table will be used, but only the line 
+with the selected parameters will be adjusted. Unknown line shapes 
+will be assumed to be Lorentzian.
+
+related contexts : $PK1D_A[i] $PK1D_F[i] $PK1D_P[i] $PK1D_T[i] $PK1D_W[i] 
+     $PK2D_A[i] $PK2D_F1F[i] $PK2D_F1W[i] $PK2D_F2F[i] $PK2D_F2W[i]
+     $PK3D_A[i] $PK3D_F1F[i] $PK3D_F1W[i] $PK3D_F2F[i] $PK3D_F2W[i]
+     $PK3D_F3F[i] $PK3D_F3W[i] $CHI2 $ITERDONE
+
+see also : LINEFIT SHOW GET PK->DT  pkadjust
+

@@ -1,0 +1,8 @@
+Continue INVLAP iteration. All the parameters may be 
+modified before CONTinuing, but the current spectrum as hold in the 
+working buffer should not be modified.
+ 
+related contexts : $ITERDONE $CHI2
+
+see also : ITER INVLAP INVTLAPCONT MAXENTCONT 
+

@@ -1,0 +1,6 @@
+FPRINT file_name string
+Outputs the string to the file. file must have previously be OPENed 
+(see OPEN).
+
+see also : OPEN CLOSE PRINT fprintf
+

@@ -1,0 +1,53 @@
+	BCORR A { R {n}  list_of_points 0  }
+Computes and applies a base-line correction to the current data set.
+A   describe the algorithm used:
+    1 is linear correction
+    2 is cubic spline correction.
+    3 is polynomial (and related) correction
+
+o If A is 1 or 2 :
+
+ R   is the radius around which each pivot point is averaged.
+
+ n in 2D is either f1 or f2 (dimension in which correction is 
+applied).
+
+ list_of_points is then the list of the pivot points used for the 
+base-line correction. The list finishes by 0. The content of th 
+point stack is used for prompting.
+Linear correction can use 1 or more pivot points. 1 point 
+corresponds to correction of a continuous level. Spline corrections 
+needs at least 3 points.
+In any case maximum is 100 pivot points.
+
+o If A is 3 : 
+This method uses a correction by estimation of the baseline and 
+subtraction. Words in uppercase are commands.
+The four steps are :
+	* Initial smooth of data : SMOOTH1
+	* First segmentation (detection of signal) : SEGM1
+	* Second segmentation (Polynomial approximation
+	  may be done on several areas) : SEGM2
+	* Approximation (the estimated baseline is an approximation
+	  of data points that are not signal) : APPROX
+If you do not know how to use these corrections the next three 
+commands should help you :
+	* BCORRP : Will prompt you for the related parameters, along with 
+the name of the command..
+	* BCORRP? : the current choices are listed.
+	* BCORRP0 : the default set up is restored.
+	* BCORRP1 : another set up is activated
+
+Polynomial correction is described by a set of related external 
+contexts :
+BLCW, BLCITER, BLOCBASE, BCORRP, BCORRP?, BCORRP0, BCORRP1, SMOOTH1, 
+WINMA, LEVELHYSTE, SEGM1, BLCU, BLCV, SDS, SDB, SCS, SCB, DCFACTOR, 
+DCITER, MORPHOB,  MORPHOS, DCALGO, DCDISTANCE, SEGM2, WINDOW, 
+WINSEGM2, LEVELSEGM2, APPROX, WINMA2, ITERM2, DEGRE, WINLIN.
+
+see also : SMOOTH, MEDIAN, WINDOW, BLCW, BLCITER, BLOCBASE, BCORRP, 
+BCORRP?, BCORRP0, BCORRP1, SMOOTH1, WINMA, LEVELHYSTE, SEGM1, BLCU, 
+BLCV, SDS, SDB, SCS, SCB, DCFACTOR, DCITER, MORPHOB,  MORPHOS, 
+DCALGO, DCDISTANCE, SEGM2, WINDOW, WINSEGM2, LEVELSEGM2, APPROX, 
+WINMA2, ITERM2, DEGRE, WINLIN, point
+

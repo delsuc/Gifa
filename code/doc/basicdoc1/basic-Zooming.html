@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=iso-8859-1">
+	<TITLE>Zooming</TITLE>
+	<META NAME="GENERATOR" CONTENT="StarOffice/5.2 (Linux)">
+	<META NAME="CREATED" CONTENT="20010412;16215000">
+	<META NAME="CHANGEDBY" CONTENT="Thierry Gostan">
+	<META NAME="CHANGED" CONTENT="20010412;16230900">
+	<!-- This document was converted from RTF source: 
+By r2net 5.2.4 r2netcmd Unix 
+Translation:html.trn  $Revision: 1.55 $ $Revision: 1.34 $
+See http://www.logictran.com
+Filename:basic.rtf
+OutFileName:basic.html
+Application Directory:/home/gostan/r2net
+Subject:
+Author:
+Operator:
+Document Comments:
+Version Comments:
+Comments:StarWriter
+Keywords:
+Translation Date:04/12/2001
+Translation Time:15:05:47
+Translation Platform:Unix
+Number of Output files:50
+This File:basic-Zooming.html
+SplitDepth=2
+SkipNavPanel=0
+SkipLeadingToc=0
+SkipTrailingToc=1
+GenContents=1
+GenFrames=1
+GenIndex=0
+ -->
+	<STYLE>
+	<!--
+		A:visited { color: #808080 }
+		A:link { color: #cc0000 }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LINK="#cc0000" VLINK="#808080" BGCOLOR="#ffffff">
+<P ALIGN=CENTER STYLE="margin-bottom: 0cm"><A HREF="basic-BASIC.html"><IMG SRC="images/up.gif" NAME="Image1" ALT="Up " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Display.html"><IMG SRC="images/prev.gif" NAME="Image2" ALT="Previous " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Interact.html"><IMG SRC="images/next.gif" NAME="Image3" ALT="Next " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Title.html"><IMG SRC="images/first.gif" NAME="Image4" ALT="Title Page " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Contents.html"><IMG SRC="images/contents.gif" NAME="Image5" ALT="Contents " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+</P>
+<HR>
+<H2><A NAME="Heading181"></A><I><U>Zooming</U></I></H2>
+<P STYLE="margin-bottom: 0cm"><IMG SRC="images/ZoomBox.gif" NAME="Image11" ALIGN=LEFT HSPACE=8 VSPACE=8 WIDTH=162 HEIGHT=690 BORDER=0><BR>A
+control box (Shown here) should also appear at start-up in the upper
+right corner of the screen. This box holds controls which permits to
+zoom and adjust the scale of the display. (If this box disappears, or
+is absent for any reason, you can make it appear again with the <FONT FACE="Courier">ZM</FONT>
+command (also in the <B>Display</B> menu)). <BR>There are many ways
+for selecting a zoom window in Gifa. Apart from the direct command
+<FONT FACE="Courier">ZOOM</FONT> (see this command), you can simply
+click on the graphic window with the left and middle buttons pressed
+at the same time (or Shift+left button), and draw a rectangle on the
+display. You can redraw as many time as wished this rectangle. Zoom
+into the selected region, simply by clicking in the window with the
+left and right button of the mouse (or Shift+right button). You can
+also use the <U>Zoom in</U> and <U>Zoom out</U> buttons in the
+control box. Of course the <U>Full</U> button resets to the full
+spectral view. <BR>Here is a summary of the possible actions.</P>
+<TABLE BORDER=1 CELLPADDING=2 CELLSPACING=2>
+	<COL WIDTH=213>
+	<COL WIDTH=213>
+	<COL WIDTH=213>
+	<TR VALIGN=TOP>
+		<TD WIDTH=213>
+			<P><BR><B>Action</B></P>
+		</TD>
+		<TD WIDTH=213>
+			<P ALIGN=CENTER><B>Mouse</B><BR><B>Buttons</B></P>
+		</TD>
+		<TD WIDTH=213>
+			<P ALIGN=CENTER><B>Shift +</B><BR><B>Buttons</B></P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=213>
+			<P><B>Draw Selection</B></P>
+		</TD>
+		<TD WIDTH=213>
+			<P ALIGN=CENTER>left + middle</P>
+		</TD>
+		<TD WIDTH=213>
+			<P ALIGN=CENTER>left</P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=213>
+			<P><B>Zoom in</B></P>
+		</TD>
+		<TD WIDTH=213>
+			<P ALIGN=CENTER>left+right</P>
+		</TD>
+		<TD WIDTH=213>
+			<P ALIGN=CENTER>right</P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=213>
+			<P><B>Zoom out</B></P>
+		</TD>
+		<TD WIDTH=213>
+			<P ALIGN=CENTER>middle+right</P>
+		</TD>
+		<TD WIDTH=213>
+			<P ALIGN=CENTER>middle</P>
+		</TD>
+	</TR>
+</TABLE>
+<P STYLE="margin-bottom: 0cm"><BR>The control box holds a miniature
+spectrum of your 2D data-set, it was displayed when you clicked on
+the <U>Catch Spectrum</U> button. The white rectangle in it, shows
+the current zoom region. You can also move around the little zoom box
+in this window with your mouse, and the zoom will move accordingly.
+<BR>The 8 little arrows on the top of the zoom box can be used to
+move around the zoom region. Each arrow will move the selected region
+by half the size of the zoom box. <BR>There are five controls to
+adjust the vertical scale used for displaying the spectra. The <U>Reset</U>
+button will reset the display to the default, (<TT><FONT FACE="Courier">ABSMAX
+0 SCALE 1</FONT></TT>) where the largest peak in the screen in full
+size. The four other buttons permit to modify the scale value,
+raising or lowering the SCALE context by factor of 2 and of 1.2. See
+below for more details on <TT><FONT FACE="Courier">SCALE</FONT></TT>.
+<BR>The refresh button redraw the spectrum on screen, without
+changing the settings.<BR>The pop-up menu <U>Dim</U>, can be used to
+rapidly switch between the 3 working buffers : 1D, 2D and 3D.</P>
+<HR>
+<P ALIGN=CENTER STYLE="margin-bottom: 0cm"><A HREF="basic-BASIC.html"><IMG SRC="images/up.gif" NAME="Image6" ALT="Up " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Display.html"><IMG SRC="images/prev.gif" NAME="Image7" ALT="Previous " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Interact.html"><IMG SRC="images/next.gif" NAME="Image8" ALT="Next " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Title.html"><IMG SRC="images/first.gif" NAME="Image9" ALT="Title Page " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Contents.html"><IMG SRC="images/contents.gif" NAME="Image10" ALT="Contents " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+</P>
+</BODY>
+</HTML>

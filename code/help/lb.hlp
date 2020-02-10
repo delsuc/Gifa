@@ -1,0 +1,9 @@
+Constant used for exponential deconvolution. The value is loaded 
+from the last EM command. A non-zero value indicates the program to 
+do Lorentzian deconvolution during a Maximum Entropy  run (if FILTER 
+is 1).
+
+related contexts : $LB1 $LB2 $LB3
+
+see also : EM GM GB FILTER
+

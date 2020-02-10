@@ -1,0 +1,9 @@
+When this command is issued, the command line will not refresh the 
+current display. Typically used at the end of a command line in macro :
+
+read file  unref	; read the file but does not display it
+
+This is the inverse of REF
+
+see also : CLEAR REF UNREF
+

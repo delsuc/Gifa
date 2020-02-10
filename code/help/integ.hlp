@@ -1,0 +1,26 @@
+INTEG factor slope thres { radius }
+
+INTEG computes the volume of the peak detected by PEAK. You need to
+use the peak-picker PEAK before to use INTEG. INTEG uses the 
+methods described for the PARIS method. It first evaluate the extension of
+the current peak, using 3 criteria :
+
+- factor : the extension stop whenever the level goes below
+  inten/factor (where inten is the intensity of the peak)
+- slope : the extension stop whenever the the slope get larger than
+  slope/point (0 means whenever it goes up)
+- thres the extension stop whenever the level goes below thres.
+
+In 2D, an additional parameter is the maximum extension radius for 
+each peak, and the extensions are stored in an amoeba file.
+  
+INTEG uses the baseline and noise information held in SHIFT 
+and NOISE, which are computed automatically by EVALN
+
+related contexts : $NOISE $SHIFT $NPK1D $NPK2D $NPK3D
+                   $PK1D_A[i] $PK2D_A[i] $PK3D_A[i]
+
+see also : integrate MSKINTEG SIGN_PEAK ZERO_QU PEAK SHIFT NOISE INT1D 
+           mskread mskwrite MSKMODIF MSKCONC SUMREC pksumrec
+           setamb mdfamb saveamb
+

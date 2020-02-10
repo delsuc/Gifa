@@ -1,0 +1,11 @@
+#!/bin/sh
+# gifaprint file1 
+#
+# send file1 to the printer
+# used by gifa for printing files
+# you should adapt it to your local set-up
+#
+if test $1 = '*PRINTER'
+then lp -r $1
+else lp $1
+fi

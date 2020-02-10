@@ -1,0 +1,11 @@
+PKREAD file_name yes/no
+Reads a peak list file created with PKWRITE into internal peak list. 
+Depending on the option, the read values are appended to the current 
+value (no) or the peak table is cleared before reading the file.
+
+related contexts : $PKNAME $NPK1D $NPK2D $NPK3D $PK1D_A[i] $PK1D_F[i]
+  $PK1D_P[i] $PK1D_W[i] $PK2D_A[i] $PK2D_ERR[i] $PK2D_F1F[i] $PK2D_F1W[i]
+  $PK2D_F2F[i] $PK2D_F2W[i] $PK3D_A[i] $PK3D_F1F[i] $PK3D_F1W[i]
+  $PK3D_F2F[i] $PK3D_F2W[i]  $PK3D_F3F[i] $PK3D_F3W[i] 
+
+see also : PKWRITE PEAK PKRESET

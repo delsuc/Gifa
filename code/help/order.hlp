@@ -1,0 +1,12 @@
+ORDER n
+
+This context determines the order for all linear prediction 
+operations. Should be an integer, typically one third of data size 
+for spectral analysis, smaller values for simple operations such as 
+compacting. You should set it before starting any linear prediction 
+calculation.
+
+related contexts : $ORDER
+
+see also : DT->AR DT->SVD BURG 
+

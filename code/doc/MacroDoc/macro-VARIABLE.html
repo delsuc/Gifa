@@ -1,0 +1,160 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=iso-8859-1">
+	<TITLE>Macro programming - VARIABLES</TITLE>
+	<META NAME="GENERATOR" CONTENT="StarOffice/5.2 (Win32)">
+	<META NAME="CREATED" CONTENT="20011127;16424324">
+	<META NAME="CHANGEDBY" CONTENT="Thierry Gostan">
+	<META NAME="CHANGED" CONTENT="20011127;16491868">
+	<!-- This document was created from RTF source by rtftohtml version 3.9.3 -->
+</HEAD>
+<BODY>
+<P ALIGN=CENTER STYLE="margin-bottom: 0cm"><A HREF="./macro-BASIC.html"><IMG SRC="./images/leftg.gif" NAME="Image1" ALT="Prev " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="./macro-CONTEXTS.html"><IMG SRC="./images/rightg.gif" NAME="Image2" ALT="Next " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="./macro-Contents.html"><IMG SRC="./images/contg.gif" NAME="Image3" ALT="Contents " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+</P>
+<HR SIZE=4>
+<H1>VARIABLES</H1>
+<UL>
+	<LI><P STYLE="margin-bottom: 0cm"><A HREF="#Basic"><FONT COLOR="#cc0000">Basic</FONT></A><FONT COLOR="#cc0000">
+	</FONT>
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm"><A HREF="#Scope"><FONT COLOR="#cc0000">Scope
+	of variables</FONT></A></P>
+	<LI><P STYLE="margin-bottom: 0cm"><A HREF="#Assoc"><FONT COLOR="#cc0000">Associative
+	arrays</FONT></A></P>
+	<LI><P STYLE="margin-bottom: 0cm"><A HREF="#Spec"><FONT COLOR="#cc0000">Special
+	Commands</FONT></A></P>
+	<UL>
+		<LI><P STYLE="margin-bottom: 0cm"><A HREF="#SET"><FONT COLOR="#cc0000">SET,
+		UNSET, MUNSET</FONT></A></P>
+		<LI><P><A HREF="#DUMP"><FONT COLOR="#cc0000">DUMP</FONT></A><FONT COLOR="#cc0000">
+		</FONT>
+		</P>
+	</UL>
+</UL>
+<HR SIZE=4>
+<H2><A NAME="Basic"></A>Basic</H2>
+<P STYLE="margin-bottom: 0cm">	Variables can be used in <I>Gifa</I>,
+this feature is mainly useful when writing macro commands, however,
+it can be used at any time in the program. Variables are set (and
+created if not yet defined) with the command : SET :</P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>Gifa&gt; set foo = 'hello
+world'	set bar = 3</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>Gifa&gt; set var := 'hello mom'			;
+other syntax, see below</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm">	Variables are then just used by
+prefixing the name with $ :</P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>Gifa&gt; em $bar	print $var</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm">	Variables can be used anywhere a
+regular entry is needed. Variables are not typed, but contain always
+a string. The maximum string is currently of 256 characters. The
+string is interpreted as a number when needed. Variable names are not
+case sensitive, the name is a maximum of 31 characters long; and must
+be built from purely alpha-numeric characters only (including the
+underscore : _ ). The number of available variables is limited at
+compile time (and reported by the macro <FONT FACE="Courier">config</FONT>,
+and variable <FONT FACE="Courier">$VAR_MAX</FONT> (see below)), but a
+larger table can easily be built by recompilation if needed.</P>
+<H2><A NAME="Scope"></A>Scope of variables</H2>
+<P STYLE="margin-bottom: 0cm">	Variables are allocated the first time
+they are set; referencing a variable not yet allocated generate an
+error. Variable are automatically deallocated when exiting the macro;
+they cannot be accessed by any other macros that would be executed
+during the life of the variable. In other words, variables have local
+scope, and are volatile (dynamically allocated and removed).</P>
+<P STYLE="margin-bottom: 0cm">	Variables created at the interactive
+level (not within a macro) have a special treatment: their life will
+be as long as the program (unless an <FONT FACE="Courier">UNSET</FONT>
+command is explicitly used), and they can be accessed by any other
+macro: they are static and have global scope.</P>
+<P STYLE="margin-bottom: 0cm">	If you which to create such a static
+variable from a macro (useful to remember parameters from one call to
+the other), you can use the following syntax :</P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>	set d := 'this variable is static'</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm">d is created static. If <FONT FACE="Courier">d</FONT>
+was already declared as volatile previously in the macro, the
+preceding command has the effect of creating a new variable, called
+$d, but in the static storage, independent of the volatile $d.</P>
+<H2><A NAME="Assoc"></A>Associative arrays</H2>
+<P STYLE="margin-bottom: 0cm">Associative arrays can be built using
+the construction [index] :</P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>Gifa&gt; set d[$k] = (cos($k/10))</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm">	Associative arrays are special entries
+where each entry is created when needed, entries do not have to be
+sequential, and the index does not even have to be integer :</P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>	$d[1] ; $d[3] ; $d[$var] ; $d['foo
+bar']</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm">is a valid array. Associative arrays
+are coming from the standard UNIX program <FONT FACE="Courier">awk </FONT>or<FONT FACE="Courier">
+perl</FONT>, search for a manual of this program if you need some
+more help with associative arrays. The <FONT FACE="Courier">FOREACH</FONT>
+control permits to go through all the entries of a given array (see
+below).  The function <FONT FACE="Courier">nextlm()</FONT> can do the
+same with a much finer control.</P>
+<P STYLE="margin-bottom: 0cm">Associative arrays can be used to
+simulate many other data-structure. You can use them to set-up
+multi-dimensionnal arrays; tree structure; structured data-set (in
+the C sense); etc... See examples below.</P>
+<H2><A NAME="Spec"></A>Special Commands</H2>
+<H3><A NAME="SET"></A>SET, UNSET, MUNSET</H3>
+<P STYLE="margin-bottom: 0cm">These commands permits to create and
+set the values of variables, as well as to delete them if needed.</P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>SET varname = value</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm">This line set the variable called
+<FONT FACE="Courier">varname</FONT> to the value <FONT FACE="Courier">value</FONT>.
+Subsequent use of <FONT FACE="Courier">$varname</FONT> will return
+<FONT FACE="Courier">value</FONT></P>
+<P STYLE="margin-bottom: 0cm">The variable is created if it did not
+existed before, or set to the new value if it existed.</P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>SET var2 := value		; create and set
+a global variable</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm">Note the := sign with imforce the
+variable to be of global scope.</P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>UNSET varname</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm">remove the variable from the table</P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>MUNSET list of vars finishing with
+a *</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm">removes all the variables in the list.</P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H3><A NAME="DUMP"></A>DUMP</H3>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>DUMP			; dump the content of all
+currently defined </FONT></FONT>
+</P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>			; variables</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm">	The format of the <FONT FACE="Courier">DUMP</FONT>
+is : name of the variable ; context of the variable : (20 is static,
+21 to 29 are macro call levels, higher are for formboxes) ; content
+of the variable.</P>
+<P STYLE="margin-bottom: 0cm">	Using <FONT FACE="Courier">DUMP</FONT>
+you will find that there might be entries in the variable table that
+do not correspond to user variables. This is due to the fact that the
+parser uses this table for particular use (dbm arrays, positions of
+label, location of <FONT FACE="Courier">GOTO, IF, WHILE,FOR</FONT>
+and <FONT FACE="Courier">FOREACH</FONT> controls). These entries have
+different formats that the user variables, thus cannot be mistaken
+with them. Some of these entries hold binary data that might disturb
+the terminal when using the DUMP command.</P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<HR SIZE=4>
+<P ALIGN=CENTER><A HREF="./macro-BASIC.html"><IMG SRC="./images/leftg.gif" NAME="Image4" ALT="Prev " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="./macro-CONTEXTS.html"><IMG SRC="./images/rightg.gif" NAME="Image5" ALT="Next " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="./macro-Contents.html"><IMG SRC="./images/contg.gif" NAME="Image6" ALT="Contents " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+</P>
+</BODY>
+</HTML>

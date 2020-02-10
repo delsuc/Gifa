@@ -1,0 +1,13 @@
+MODIFYSIZE si1 si2 {si3}
+
+Used mostly for hacking
+Permits to modify the leading sizes of a 2D or a 3D data-set, 
+provided the product of the sizes : si1*si2{*si3} is equal to the 
+product of the old ones.
+
+Does not actually modify the data.
+
+related contexts : $SI1_1D $SI1_2D $SI1_3D $SI2_2D $SI2_3D $SI3_3D
+
+see also : size CHSIZE
+

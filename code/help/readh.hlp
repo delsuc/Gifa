@@ -1,0 +1,7 @@
+READH file_name
+Will read ft-nmr compatible files.
+ 
+related contexts : $NAME
+
+see also : READ WRITEH
+

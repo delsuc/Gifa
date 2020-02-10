@@ -1,0 +1,16 @@
+This dis2cache utility has been written by Georgy Salnikov <sge@tomosoft.nsk.su>
+in January 1996.
+
+Here is an extract from his mail :
+I've just written a DISNMR-to-GIFA converter. I have called it dis2cach,
+analogous to your ux2cach UXNMR converter. The archive I've sent uuencoded
+separately contains the sources and makefile, which should be put somewhere
+into gifa/util/dis2cache or something like this. The converter translates
+1D FIDs and 2D .SERs to the native Gifa format (there is no 3D in DISNMR,
+and I mean there is little use to convert DISNMR processed spectra). There
+is also a small program disinfo to print a few information about DISNMR
+spectra. The spectra to convert should be transfered from ASPECT to Gifa
+machine as is, and with -1-th sector, with BINARY KERMIT, or NMRLINK.
+
+Not tested !
+

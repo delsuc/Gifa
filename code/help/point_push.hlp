@@ -1,0 +1,25 @@
+Add one entry into the point stack.
+
+The point stack contains spectral coordinates, which can be used 
+within macros, and are also used by certain commands (typically 
+BCORR).
+
+Whithin macros, the content of the point stack can be examined with 
+the context variables : $npoint; $pointx[i]; $pointy[i]
+
+The POINT_CLEAR command empties the stack.
+The MONOPOINT command sets the top entry on the stack.
+The POINT_PUSH command push the entry on the top, thus duplicating 
+the entry, and adding an entry in the stack.
+The POINT_INPUT command permits to enter a value with determined 
+values
+The POINT_POP command pops one entry in the stack.
+The macro point permits fill the stack by clicking on the spectra
+The macro point_dump permits to dump the content of the stack
+
+related contexts : $POINTX[i] $POINTY[i] $NPOINT
+                   $ZONE[1] $ZONE[2] $ZONE[3] $ZONE[4]
+
+see also : POINT_INPUT POINT_POP POINT_CLEAR MONOPOINT BCORR
+           POINT->PK point point_dump
+

@@ -1,0 +1,31 @@
+Cach2xeasy converts Gifa cache format files into Xeasy v.1.2. data 
+(spectrum) and parameter files.  The program takes two command line
+parameters:
+
+cach2xeasy cache_input_file xeasy_output_file
+
+where "cache_input_file" is a Gifa cache format input file name
+and "xeasy_output_file" is a base name for Xeasy data and param files.
+
+The program strips off the Xeasy suffix "3D.16" or "3D.param" if these 
+are included in the file name.  If the files already exist, they are
+overwritten.
+
+The program cach2xeasy was written by Kalle Gehring, Nov. 1998, based on 
+the conversion programs ux2cach.c (by M.A.Delsuc), uxnmr_to_xeasy.c (by 
+R.W.Glaser), and spec_interface.c and related programs (by C.Bartels).
+The program uses several Gifa "system" calls for reading the cache format 
+data and parameters.  These subroutine calls are located in the cache_mad.c 
+library.  Two Gifa headers with compiler definitions and data structure 
+definitions are also required (cache_mad.h util.h and util_mad.c)  [Note 
+that util.h is an empty file.]  All of the code for creating and writing
+the Xeasy files is self-contained.  Use the included makefile for compilation.
+
+As of this writing, submatrix block sizes are maintained from Gifa to Xeasy
+and Xeasy spectrum references (offsets) use the high field (maximum chemical
+shift convention (rather than the center chemical shift.)
+
+Kalle Gehring
+
+Montreal, Canada
+Oct. 31, 1998 (Happy Halloween)

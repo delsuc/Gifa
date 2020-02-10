@@ -1,0 +1,12 @@
+EVALN x1 y1 {x2 y2}
+
+evaluates the noise level as well as the overall offset of the data, 
+over a area of the data. The results are stored in the NOISE and 
+SHIFT contexts This command is called automatically whenever a data 
+set is read. The command will prompt for the last selected region 
+with the POINT command
+
+related contexts : $NOISE $SHIFT
+
+see also SHIFT NOISE
+

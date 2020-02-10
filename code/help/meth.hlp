@@ -1,0 +1,8 @@
+METH 0/1/2
+
+When set to 0, indicates that the current build-up curve is taken 
+from 2 simple hydrogens, when set to 1, indicates that there is 1 
+methyle group, when set to 2, 2 methyle groups. Used by DIST
+
+see also : RELAXRATE DIST CALIBDI
+

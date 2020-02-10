@@ -1,0 +1,10 @@
+The Entropy expression during Maximum Entropy run is computed as 
+follow :
+A = Escale * Sum(F(i))
+P(i) = F(i)/A
+S = -Sum( log(P(i)) * P(i) )
+
+Escale should be set to 1.0 for normal operation
+ 
+see also : CONJG GIFA MAXENT
+

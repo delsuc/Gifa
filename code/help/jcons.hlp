@@ -1,0 +1,9 @@
+JCONS J1 {J2) k
+
+Permits to set up the J (J1 and J2) constant for J-deconvolution; 
+the J entered should be half the J of the coupling you want to 
+deconvoluate. k is either A or P if you want Antiphase or Inphase J-
+deconvolution.
+
+see also JMULT FILTER
+

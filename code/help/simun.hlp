@@ -1,0 +1,24 @@
+(1D) simun ampl linecoord linewidth phase
+
+(2D) simun flg ampl linecoordf1 linecoordf2 linewidthf1 \
+  linewidthf2 phasef1 phasef2
+
+(3D) simun ampl linecoordf1 linecoordf2 linecoordf3 \
+   linewidthf1 linewidthf2 linewidthf3 phasef1 phasef2 phasef3
+
+  Simulate data, works in 1D in 2D and in 3D
+ You will be prompted for input. One line is simulated at each run,
+ and is added to the data. The line coordinates are entered in PPM,
+ Hz or Index, according to the unit value. The line widthes are in 
+Hz.
+ The 1D and 3D data are complex in all dimensions, the 2D data can 
+be 
+ phase or amplitude modulated, depending on flg :
+ flg = 0 : the data are simulated in phase modulation
+ flg = 1 : the data are simulated in amplitude modulation
+
+SIMUN memorizes the last used values 
+ so SIMUN %% is a valid syntax.
+
+ see also : ZERO SIMU READ ADDNOISE SimSpect2D
+

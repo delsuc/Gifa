@@ -1,0 +1,11 @@
+DT->SVD size
+Calculates the Toeplitz rectangular matrix from the data and perform 
+the singular value decomposition. size is the size of data used in 
+the formation of Toeplitz matrix. This is the first step of the LP-
+SVD spectral analysis method. The same singular value decomposition 
+can be used to perform forward and backward analysis.
+
+related contexts : $ORDER $NSVD
+
+see also : SVD->DT SVDLIST SVDCLEAN1 SVD->AR
+

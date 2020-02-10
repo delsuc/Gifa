@@ -1,0 +1,12 @@
+RTLIST n i j
+List the roots of prediction-error polynomial from entry i to entry 
+j.
+n = 1 : forward roots 
+n = 2 : backward roots 
+n = 3 : matched roots
+
+related contexts : $NRT 
+
+see also : RT->AR, AR->RT, RTPIV, RTCLEAN, RTMATCH, RTSELECT, 
+   RTREFLECT, RTINV, RT->PK
+

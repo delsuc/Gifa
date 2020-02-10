@@ -1,0 +1,7 @@
+Number of iterations used by all the iterative modules of GIFA : 
+MaxEnt with MAXENT or MAXENTCONT . But also LINEFIT and AUTOPHASE
+
+related contexts : $ITER $ITERDONE
+
+see also : MINITER
+

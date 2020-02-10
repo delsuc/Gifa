@@ -1,0 +1,8 @@
+REVF {Fx}
+   Processes FID data-sets by multiplying by -1 2 points out of 4. 
+Permits to preprocess Bruker FIDs in Dim 2 (Bruker trick) before 
+RFT, or permits to bring back zero frequency in the center for some 
+other data formats
+ 
+see also : INVF ITYPE FT REVERSE
+

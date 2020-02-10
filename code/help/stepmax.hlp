@@ -1,0 +1,6 @@
+This context holds the  maximum extension of the search during the 
+line-minimization. Default value is 1.2 for GIFA algorithm, 100 for 
+CONJG.
+ 
+see also : STEP ALGO MAXENT
+

@@ -1,0 +1,15 @@
+SETPEAK2 index F1 { F2 { F3 } }
+
+Permit to modify directly the content of the peak table. The number 
+of entries depends whether you are in 1D, 2D or 3D.
+The peak entry at index is modified in the current peak table. Only 
+coordinates have to be given in index, intensity is taken form the 
+data-set, widthes and other parameters are lost.
+This is not the way for adding new peaks in the peak table, use 
+POINT_INPUT POINT->PK instead.
+
+related contexts : $PK1D_F[i] $PK2D_F1F[i] $PK2D_F2F[i] $PK3D_F1F[i]
+         $PK3D_F2F[i] $PK3D_F3F[i]
+
+See also : SETPEAK PEAK POINT->PK PKRESET 
+

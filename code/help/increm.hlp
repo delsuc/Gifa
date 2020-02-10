@@ -1,0 +1,4 @@
+Constant used to increment lambda during MaxEnt iteration(0.1 .. 1) 
+
+see also : LAMBDA LAMBCONT MAXENT
+

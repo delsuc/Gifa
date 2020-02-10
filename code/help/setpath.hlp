@@ -1,0 +1,14 @@
+SETPATH new_path_string
+
+Permits to change the current GifaPath used for calling macros.
+The new_path_string contents all the directories in which macros 
+file will searched for, the list is blank separated. The content of 
+the current GifaPath is held into the $GIFAPATH context. So the 
+following is a very typical use for adding an address
+
+SETPATH ("new_directory"; $GIFAPATH)
+
+related contexts : $GIFAPATH
+
+See also : MACRO SETPROMPT
+

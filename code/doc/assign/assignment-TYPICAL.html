@@ -1,0 +1,118 @@
+<HTML><HEAD>
+<!-- This document was created from RTF source by rtftohtml version 3.9.3 -->
+<TITLE>Assignment on-line Documentation - TYPICAL WORK</TITLE></HEAD>
+<BODY>
+<A HREF="assignment-DYNAMIC.html"><IMG SRC="leftg.gif" ALT="Prev " border=0></A>
+ <A HREF="assignment-MACRO.html"><IMG SRC="rightg.gif" ALT="Next " border=0></A>
+ <A HREF="assignment-Title.html"> </A>
+ <A HREF="assignment-Contents.html"><IMG SRC="contg.gif" ALT="Contents " border=0></A>
+<hr size=4>
+<H1>
+TYPICAL WORK</H1>
+<UL>
+<LI><A HREF="#Heading98">assignment </A>
+<LI><A HREF="#Heading99">Qualitative or quantitative intensity analysis</A>
+<LI><A HREF="#Heading100">Heteronuclear Relaxation analysis</A>
+</UL>
+<hr size=4>
+
+<h2>
+<A NAME="Heading98">assignment </A></h2>
+
+<p>With
+this set-up, a typical assignment work on a small protein, done in the
+<i>W&uuml;thrich</i> way, consists in:<ol>
+<li>	get a set of <i>nice </i>processed homonuclear<i> </i>2D experiments
+somewhere on the computer system.
+<li>	create a new project, enter the primary sequence, and link all your nice
+<i>2D </i>into the <i>spectra </i>directory; then read-in the TOCSY.
+<li>	peak-pick the TOCSY spectrum, at least on the finger print region and copy
+it over into the assignment data-base, eventually redo so for the NH-side chain
+regions.
+<li>	use the <b>marker </b>tool to note peak alignments, eventually confirm by
+"showing" also the NOESY, or a TOCSY from other experimental conditions.
+<li>	once a spin system is found, and noted with one or several markers,
+eventually create the corresponding additional peaks with marker tool, create
+spins, and put them in the special "build-list";
+<li>	<b>promote</b> the spin-list to a spin-system
+<li>	go back to 4) as long as there are spin-systems to assign.
+<li>	load the NOESY in place of the TOCSY. Peak-pick the NOESY spectrum and
+merge the NOESY peak table with the TOCY peak data-base (<b>Copy the db from
+another data-set</b> and <b>Merge the peak table into the db</b> commands)
+<li>	use the NH-NH region and the NH-Ha region to do the sequential assignment,
+use the marker tool again to create new NOESY peaks in the data-base. Check
+peaks and spins with the <b>find peak </b>and <b>find spin </b>tools, use
+<b>edit peak </b>to add peaks in the NOESY data base.
+<li>	once a sequential is found, modify the spin systems accordingly
+<li>	go back to 9 as long as the sequential is not finished
+<li>	assign all remaining NOESY peaks.
+<li>	output the NOESY peaks in the form of a constraint file (see
+<i>Integration</i> menu).</ol>Thirteen steps, not such a big deal after all
+!<br>
+You will notice that the program slows down when the data-base get bigger, this
+is why it is not recommended to start with a big peak-picking, and then to
+handle a big data-base throughout the whole process.</p>
+
+<h2>
+<A NAME="Heading99">Qualitative or quantitative intensity analysis</A></h2>
+
+<p>
+  The intensity analysis (<i>Integration</i>) menu implements a set of simple
+tools dedicated to the analysis of peak intensity according to the assignment
+database. Here is a simple 'recipe' on how to use this menu:<br>
+ If you want to produce a constraint file used for structure generation:<ol>
+<li>	Determine intensities of database peaks using the command <b>Single
+data-set integration tool</b>. 
+<li>	Determine a set of calibration peaks, which will be used to define
+distance estimates on the current peak of the database  (see command <b>Choose
+the calibration intensities</b> above). This set of peaks contains the
+calibration distances chosen for a series of peaks, for which the corresponding
+intensities are contained in the database.
+<li>	Write the output constraint file, according to the set of calibration
+peaks. The file can be written in XPLOR or DYANA format, and the distance
+estimates can be generated in the 'build_up' or 'qualitative' ways. 'Build-up'
+way means that a precise distance estimate is quantitatively determined from
+the information contained in the peak calibration set. Then, a general
+uncertainty can be supposed for all the distances.</ol>   If you want to
+generate files containing intensity variation on a series of data-sets (in the
+case you want to perform quantitative T1, T2 or nOe analysis).<ol>
+<li>	Copy the database to an ascii peak file (same format than those used in
+pkread/pkwrite commands), and save the lookup table giving the peak index in
+function of the database index (<b>Copy db to a pk file)</b>.
+<li>	Then read this peak file (<b>PkRead</b>) and integrate it using the amoeba
+procedure. Save the amoeba file using the same basename than the peak file.
+<li>	Finally, perform a multiple integration of the series of data-sets
+according to the saved amoeba file, using the <b>Multiple Integration Tool</b>.
+For each peak in the database, an intensity file is generated and you can check
+it by using the <b>Show Integration Curve</b> command.</ol></p>
+
+<h2>
+<A NAME="Heading100">Heteronuclear Relaxation analysis</A></h2>
+
+<p>
+  The Dynamic analysis (<i>Dynamic</i> ) menu implements a set of simple tools
+dedicated to the analysis of heteronuclear relaxation. Here is a simple
+'recipe' on how to use this menu:<ol>
+<li>	Get a set of 2D relaxation experiments, in the same acquisition and
+processing conditions (be carefull with ppm calibration)
+<li>	Fill up the assignment database for all the peak you want to analyse.
+<li>	Set up the dataset list file, which determine which experiments should be
+used, and what are the experimental parameters
+<li>	Try to process one peak to check if everything is correct.
+<li>	zoom on the region you want to process and start the integration tool.
+<li>	Once the integration is finished, start the parameter estimate.
+<li>	You may finally want to check if every thing is correct by running the
+Monte-Carlo tool. This one is currently very slow, so may choose to write a
+batch file and start it off-graphic with the following command issued in the
+project directory :</ol></p>
+
+<pre>
+gifa &lt; batch_file &gt; log_file &amp;
+</pre>
+<p></p>
+<P><hr size=4>
+<A HREF="assignment-DYNAMIC.html"><IMG SRC="leftg.gif" ALT="Prev " border=0></A>
+ <A HREF="assignment-MACRO.html"><IMG SRC="rightg.gif" ALT="Next " border=0></A>
+ <A HREF="assignment-Title.html"> </A>
+ <A HREF="assignment-Contents.html"><IMG SRC="contg.gif" ALT="Contents " border=0></A>
+</body></html>

@@ -1,0 +1,8 @@
+MSKCONC previous_peak new_peak
+
+Reasigns all the points of the amoeba associated to previous_peak 
+with the amoeba of the peak new_peak. After this operation, 
+previous_peak does not have any amoeba left.
+
+see also : MSKMODIF MSKSEARCH MSKINTEG INTEG mskread mskwrite
+

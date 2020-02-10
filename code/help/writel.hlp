@@ -1,0 +1,7 @@
+WRITEL file_name
+  Write a NMR1/NMR2 compatible data-set
+ 
+related contexts : $NAME
+
+see also : READL WRITE
+

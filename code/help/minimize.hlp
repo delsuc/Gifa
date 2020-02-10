@@ -1,0 +1,35 @@
+MINIMIZE 'expression to minimize' num_of_param
+
+This command calls the generic minimizer and permits to compute the
+value and the location of the minimimum of a given function.
+
+'expression to minimize' is the function, given in Gifa language
+    that will be minimized. The free (adaptable) parameters will
+    be called $Pi with i ranging from 1 to num_of_par.
+
+num_of_par is the number of parameters to adapt in the previous
+    expression
+
+The adapted parameter are stored in the global user variables
+$P1..$Pn, if the variables do not exist before the call they
+will created with initial value of 1.0, if they exists, their value
+will be taken as initial value for the minimization
+
+The algorithm used is the Powell method, which does not
+require any derivative.  The number of iterations is controled by ITER
+and MINITER.
+
+eg :
+	MINIMIZE 'sin($p1)*sin($p2)' 2
+
+will find the minimum to be  -1.0
+      and the optimum to be : 1.57064 and -1.57122
+		stored in $p1 and $p2
+
+
+
+
+related contexts : $CHI2
+
+see also : FITGENE FITEXP LINEFIT LINEFITD ITER MINITER
+

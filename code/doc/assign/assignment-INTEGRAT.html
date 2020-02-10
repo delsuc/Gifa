@@ -1,0 +1,208 @@
+<HTML><HEAD>
+<!-- This document was created from RTF source by rtftohtml version 3.9.3 -->
+<TITLE>Assignment on-line Documentation - INTEGRATION</TITLE></HEAD>
+<BODY>
+<A HREF="assignment-MENUS.html"><IMG SRC="leftg.gif" ALT="Prev " border=0></A>
+ <A HREF="assignment-DYNAMIC.html"><IMG SRC="rightg.gif" ALT="Next " border=0></A>
+ <A HREF="assignment-Title.html"> </A>
+ <A HREF="assignment-Contents.html"><IMG SRC="contg.gif" ALT="Contents " border=0></A>
+<hr size=4>
+<H1>
+INTEGRATION</H1>
+<UL>
+<LI><A HREF="#Heading71">Integration menu</A>
+<UL>
+<LI><A HREF="#Heading72">Help (short)</A>
+<LI><A HREF="#Heading73">Single data-set integration tool</A>
+<LI><A HREF="#Heading74">Write build-up constraints file</A>
+<LI><A HREF="#Heading75">Write qualitative constraints file</A>
+<LI><A HREF="#Heading76">Copy db to a peak file</A>
+<LI><A HREF="#Heading77">Read peak file</A>
+<LI><A HREF="#Heading78">PkList</A>
+<LI><A HREF="#Heading79">ShowPeaks</A>
+<LI><A HREF="#Heading80">Eval noise</A>
+<LI><A HREF="#Heading81">Integ</A>
+<LI><A HREF="#Heading82">Show Amoeba</A>
+<LI><A HREF="#Heading83">Modify Amoeba</A>
+<LI><A HREF="#Heading84">Read Peaks/Amoeba</A>
+<LI><A HREF="#Heading85">Save Peaks/Amoeba</A>
+<LI><A HREF="#Heading86">Multiple integration tool</A>
+<LI><A HREF="#Heading87">Show integration curve</A>
+<LI><A HREF="#Heading88">Peak movie</A>
+</UL>
+</UL>
+<hr size=4>
+
+<h2>
+<A NAME="Heading71">Integration menu</A></h2>
+
+<p>This
+menu allows the calculation of peak intensites, and the output of distance
+constraint files or peak intensity curve.</p>
+
+<h3>
+<A NAME="Heading72">Help (short)</A></h3>
+
+<p>Produces
+a short help of the Integration manu as a 'recipe' to use this menu. The
+complete assignment help contained in the HTML documentation can be called from
+this short help.</p>
+
+<h3>
+<A NAME="Heading73">Single data-set integration tool</A></h3>
+
+<p>Performs
+integration of all the peaks of the opened dbm assignment table (it is not
+possible to perform this integration only on the current zoom window, because
+of a bug in dbm described in CAVEAT). The calulated volumes are put into the
+dbm dbm amplitude Different integration methods can be used: 'Max in box' gives
+the data-set value at the peak maximum (located within the integration box),
+'sumrec' and 'amoeba' make use of the commands SUMREC and INTEG respectively.</p>
+
+<h3>
+<A NAME="Heading74">Write build-up constraints file</A></h3>
+
+<p>From
+the calibration peak set, the program determines by a least-square method a
+proportionality coefficient between intensity values and the inverse sixth
+power of the distance. this coefficient is then used to associate a distance to
+each element of the peak data-base. Then, using the uncertainty on the distance
+provided the user, it write a constraint file with distance upper and lower
+bounds. The file format can be 
+<a TARGET="_top" href="http://xplor.csb.yale.edu/">XPLOR</a>
+or 
+<a TARGET="_top" href="http://www.mol.biol.ethz.ch/wuthrich/software/dyana/">DYANA</a>
+format.</p>
+
+<h3>
+<A NAME="Heading75">Write qualitative constraints file</A></h3>
+
+<p>From
+the calibration peak set, the program determines by a least-square method a
+proportionality coefficient between intensity values and the inverse sixth
+power of the distance. this coefficient is then used to associate a distance to
+each element of the peak data-base. Then, using distance interval and upper and
+lower bounds given for each interval by the user, it write a constraint file
+with distance upper and lower bounds. The file format can be 
+<a TARGET="_top" href="http://xplor.csb.yale.edu/">XPLOR</a>
+or 
+<a TARGET="_top" href="http://www.mol.biol.ethz.ch/wuthrich/software/dyana/">DYANA</a>
+format.</p>
+
+<h3>
+<A NAME="Heading76">Copy db to a peak file</A></h3>
+
+<p>Copy
+the current assignment data-base to a peak file that can be read with PKREAD,
+and create a lookup database giving the relation between the peak index in the
+assignment data-base and in the peak file. The peak file name is basename.atr
+and the lookup file names are: basename.hash.dir and basename.hash.pag.</p>
+
+<h3>
+<A NAME="Heading77">Read peak file</A></h3>
+
+<p>Reads
+a peak file with the command 
+<a TARGET="_top" href="../Pcommands.html#PKREAD">PKREAD</a>.</p>
+
+<h3>
+<A NAME="Heading78">PkList</A></h3>
+
+<p>Lists
+the peak table (see command 
+<a TARGET="_top" href="../Pcommands.html#PKLIST">PKLIST</a>).</p>
+
+<h3>
+<A NAME="Heading79">ShowPeaks</A></h3>
+
+<p>Displays
+the peaks located in the current zoom window (see command 
+<a TARGET="_top" href="../Scommands.html#SHOWPEAKS">SHOWPEAKS</a>).</p>
+
+<h3>
+<A NAME="Heading80">Eval noise</A></h3>
+
+<p>Evaluates
+the noise on the data-sets using a zoom window given by the user.</p>
+
+<h3>
+<A NAME="Heading81">Integ</A></h3>
+
+<p>Performs
+the peak integration according to the noise level and the peak table, by
+calculating for each peak an amoeba (see command 
+<a TARGET="_top" href="../Icommands.html#INTEG">INTEG</a>).</p>
+
+<h3>
+<A NAME="Heading82">Show Amoeba</A></h3>
+
+<p>Show
+on the disp2d window the amoeba located in the current zoom window (see command 
+<a TARGET="_top" href="../Scommands.html#SHOW">SHOW</a>)..</p>
+
+<h3>
+<A NAME="Heading83">Modify Amoeba</A></h3>
+
+<p>After
+selecting this command, the program will ask you to click on a peak, and will
+create a formbox, which permits to interactively and graphically modify the
+peak amoeba by selecting one-by-one pixels. Two possibilities are available:
+"add" adds the selected pixel to the peak amoeba, "erase" removes the selected
+pixel from the peak amoeba.<br>
+If the flag is set-up to 'add' and the pixel is in another peak amoeba, the
+program ask to user to take a decision.</p>
+
+<h3>
+<A NAME="Heading84">Read Peaks/Amoeba</A></h3>
+
+<p>Reads
+a peak file and an amoeba file according to a basename given by the user. The
+peak file name is: basename.pek, and the amoeba file name is: basename.amb</p>
+
+<h3>
+<A NAME="Heading85">Save Peaks/Amoeba</A></h3>
+
+<p>Saves
+the current peak table and the current amoeba to a peak file and to an amoeba
+file according to a basename given by the user. The peak file name is:
+basename.pek, and the amoeba file name is: basename.amb. If the peaks/amoeba
+files already exist with the same basename, the user is asked to remove them.</p>
+
+<h3>
+<A NAME="Heading86">Multiple integration tool</A></h3>
+
+<p>Permits
+the integration of peaks along a series of experiments according to an
+assignment database, an amoeba file and the project list of spectra. For each
+peak, the integral values are written in  an independent file, located in the
+<i>processing</i> directory. Two formats are possible: free ascii format or 
+<a TARGET="_top" href="http://sumppu.fmi.fi/prog/tela.html">Tela</a>
+macro format. The user can select in the formbox the spectra he want to be used
+in the integration.<br>
+To perform the multiple integration of peaks, the amoeba basename file should
+be the same than the basename of the lookup data-base between the indexes of
+peaks in assignment data-base and peak file (see the command <b>Copy db to a
+peak file</b> above).</p>
+
+<h3>
+<A NAME="Heading87">Show integration curve</A></h3>
+
+<p>Permits
+the display of the curve obtained with the multiple integration utility, by
+clicking on the corresponding peak.</p>
+
+<h3>
+<A NAME="Heading88">Peak movie</A></h3>
+
+<p>After
+selecting this command, the program ask to you to click on a peak, and then
+creates a formbox, which allows to display successively the selected peak on
+the list of project spectra. The user can select in the list the spectra to be
+displayed.
+</p>
+<P><hr size=4>
+<A HREF="assignment-MENUS.html"><IMG SRC="leftg.gif" ALT="Prev " border=0></A>
+ <A HREF="assignment-DYNAMIC.html"><IMG SRC="rightg.gif" ALT="Next " border=0></A>
+ <A HREF="assignment-Title.html"> </A>
+ <A HREF="assignment-Contents.html"><IMG SRC="contg.gif" ALT="Contents " border=0></A>
+</body></html>

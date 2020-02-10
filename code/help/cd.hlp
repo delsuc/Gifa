@@ -1,0 +1,5 @@
+CD new_directory_path
+Changes the current working directory.
+
+see also : SH ls pwd more rm vi vim vip 
+

@@ -1,0 +1,9 @@
+PKWRITE file_name
+
+Writes the contents of the peak table on a file. The table can then 
+be read with the PKREAD command.
+
+related contexts : $PKNAME
+
+see also : PKREAD PEAK
+

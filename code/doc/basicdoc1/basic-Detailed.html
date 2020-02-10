@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=iso-8859-1">
+	<TITLE>Detailed Principle of Operation</TITLE>
+	<META NAME="GENERATOR" CONTENT="StarOffice/5.2 (Linux)">
+	<META NAME="CREATED" CONTENT="20010412;18492800">
+	<META NAME="CHANGEDBY" CONTENT="Thierry Gostan">
+	<META NAME="CHANGED" CONTENT="20010412;18541300">
+	<!-- This document was converted from RTF source: 
+By r2net 5.2.4 r2netcmd Unix 
+Translation:html.trn  $Revision: 1.55 $ $Revision: 1.34 $
+See http://www.logictran.com
+Filename:basic.rtf
+OutFileName:basic.html
+Application Directory:/home/gostan/r2net
+Subject:
+Author:
+Operator:
+Document Comments:
+Version Comments:
+Comments:StarWriter
+Keywords:
+Translation Date:04/12/2001
+Translation Time:15:05:52
+Translation Platform:Unix
+Number of Output files:50
+This File:basic-Detailed.html
+SplitDepth=2
+SkipNavPanel=0
+SkipLeadingToc=0
+SkipTrailingToc=1
+GenContents=1
+GenFrames=1
+GenIndex=0
+ -->
+	<STYLE>
+	<!--
+		A:visited { color: #808080 }
+		A:link { color: #cc0000 }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LINK="#cc0000" VLINK="#808080" BGCOLOR="#ffffff">
+<P ALIGN=CENTER STYLE="margin-bottom: 0cm"><A HREF="basic-WORKING.html"><IMG SRC="images/up.gif" NAME="Image1" ALT="Up " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Introduc-2.html"><IMG SRC="images/prev.gif" NAME="Image2" ALT="Previous " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Commands-2.html"><IMG SRC="images/next.gif" NAME="Image3" ALT="Next " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Title.html"><IMG SRC="images/first.gif" NAME="Image4" ALT="Title Page " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Contents.html"><IMG SRC="images/contents.gif" NAME="Image5" ALT="Contents " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+</P>
+<HR>
+<H2><A NAME="Heading1396"></A><I><U>Detailed Principle of Operation</U></I></H2>
+<P>The cache memory works on the standard file format ( accessed also
+through the <TT><FONT FACE="Courier">READ</FONT></TT> / <TT><FONT FACE="Courier">WRITE</FONT></TT>
+commands). It is based on two principles : 
+</P>
+<UL>
+	<LI><P>A block structure of 2D and 3D data set files, that permits
+	random access of data in any direction,</P>
+	<LI><P>A memory area that is devoted to minimising the number of
+	disk accesses (the cache-memory system).</P>
+</UL>
+<P>In the previous version of the cache (Cache version 1.0, in Gifa
+3.x and in pre-release of Gifa 4.0), the blocks were of a fixed size
+of 4096 words (16 kbytes) corresponding to 16x16x16 in 3D, to 64x64
+in 2D and to 4k in 1D. This is no longer true, in the present version
+(Cache version 2.0, since Gifa 4.0), the blocks are adapted to the
+experiment and to the computer. This means that the block may take
+any value, optimised for the current hard-ware (typically 4kbytes and
+16 kbytes), and that the division of the blocks will depend on the
+sizes of the experiment, in order to optimise access speed in all the
+spectroscopic dimensions.</P>
+<P>The standard format features also a header which holds all the
+parameters of the data (such as dimensionality, sizes, spectral
+widths, etc...). This header is in text format, and can easily be
+displayed with a more command. The user can easily add his own
+information in the header with the <TT><FONT FACE="Courier">GETHEADER</FONT></TT>
+<TT><FONT FACE="Courier">PUTHEADER</FONT></TT> commands. The header
+is of a fixed size equal to the size of a data block. The cache
+system can be used with several files in the same time.</P>
+<P>Cache memory access is much faster than a disk access. The block
+structure of the file speeds up the processing of large data sets.
+For instance to access 2 successive planes of a 3D, the first plane
+will be loaded from the disk, and then the second will be
+subsequently held into the cache memory. There is no real limitation
+of the size that the cache system may handle, however each file
+opened with the cache system will use room in the computer memory
+allowing to fit several line (plane) of the 2D (3D) experiment. <BR>It
+is important to note that writing onto the cache is not equivalent to
+writing onto disk. There is some mechanism, that will store on disk
+the content of modified block when needed; but the content of the
+file is not warranted when working through the cache system (this is
+very different from the WRITE command). This has no effect when
+working from within Gifa itself, since all file access will go
+through the cache system that will insure the coherence of the data.
+However it may have effect in certain cases such as : 
+</P>
+<UL>
+	<LI><P STYLE="margin-bottom: 0cm">the file from another program (may
+	be another Gifa); 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm">failure of the computer; 
+	</P>
+	<LI><P>bug in Gifa (?).</P>
+</UL>
+<P STYLE="margin-bottom: 0cm"><BR>When needed, it is possible to
+&laquo;&#160;flush&#160;&raquo; the cache and to copy to disk all the
+modified blocks with the commands <TT><FONT FACE="Courier">FLUSH</FONT></TT>
+and <TT><FONT FACE="Courier">FLUSHCACHE</FONT></TT>. <BR>Processing
+data-sets with the cache memory system usually requires using some
+macro for scanning through the complete data-set for the operation to
+be completed. A set of macros is provided which will permit an
+efficient and easy processing (see below).</P>
+<HR>
+<P ALIGN=CENTER STYLE="margin-bottom: 0cm"><A HREF="basic-WORKING.html"><IMG SRC="images/up.gif" NAME="Image6" ALT="Up " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Introduc-2.html"><IMG SRC="images/prev.gif" NAME="Image7" ALT="Previous " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Commands-2.html"><IMG SRC="images/next.gif" NAME="Image8" ALT="Next " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Title.html"><IMG SRC="images/first.gif" NAME="Image9" ALT="Title Page " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Contents.html"><IMG SRC="images/contents.gif" NAME="Image10" ALT="Contents " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+</P>
+</BODY>
+</HTML>

@@ -1,0 +1,5 @@
+CLOSE file_name
+Closes the file that was previously OPENed.
+
+see also : OPEN FPRINT CONNECT
+

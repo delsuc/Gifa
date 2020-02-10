@@ -1,0 +1,8 @@
+PLOTTEXTS string X Y plot_file
+
+Sends the string "string" to the plot_file, at the X, Y position (in 
+index unit, projected on the CX x CY area, as used by the PLOT 
+command)
+
+see also : PLOTLINE PLOTLINES PLOTTEXTS PLOT setfont
+

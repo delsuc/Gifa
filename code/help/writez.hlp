@@ -1,0 +1,8 @@
+WRITEZ filename
+Write from the disk in compacted file format. Uses ORDER for 
+compaction.
+
+related contexts : $NAME
+
+see also : READZ WRITE
+

@@ -1,0 +1,15 @@
+RTINV n
+
+Calculate the inverse conjugate of all the polynomial roots, thus 
+converting backward and forward polynomial. To be used after a 
+backward analysis.
+n = 1 : forward roots are inversed, and their inverses are put in 
+the backward root array.
+n = 2 : backward roots are inversed, and their inverses are put in 
+the forward root array.
+
+related contexts : $NRT 
+
+see also : RT->AR, AR->RT, RTLIST, RTPIV, RTCLEAN, RTMATCH, 
+    RTSELECT, RTREFLECT, RT->PK, ORDER
+

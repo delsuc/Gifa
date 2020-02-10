@@ -1,0 +1,25 @@
+#!/bin/sh
+# gifaprint file1 
+#
+# send file1 to the printer
+# used by gifa for printing files
+# you should adapt it to your local set-up
+# this example is for SPARC Solaris 2.4
+#lp -o nobanner $1
+#if test $1 = '*PRINTER'
+#then
+#	 rm -f $i
+#fi
+# this example is for SGI Indy IRIX 5.3
+#lp -c -dhplj4l $1
+#if test $1 = '*PRINTER'
+#then
+#	 rm -f $i
+#fi
+# this example is for PC Linux
+if test $1 = '*PRINTER'
+then
+	lpr -h -r -Praw $1
+else
+	lpr -h -Praw $1
+fi

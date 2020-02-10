@@ -1,0 +1,180 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=iso-8859-1">
+	<TITLE>BASELINE CORRECTION : BCORR</TITLE>
+	<META NAME="GENERATOR" CONTENT="StarOffice/5.2 (Linux)">
+	<META NAME="CREATED" CONTENT="20010412;16393300">
+	<META NAME="CHANGEDBY" CONTENT="Thierry Gostan">
+	<META NAME="CHANGED" CONTENT="20010412;16531000">
+	<!-- This document was converted from RTF source: 
+By r2net 5.2.4 r2netcmd Unix 
+Translation:html.trn  $Revision: 1.55 $ $Revision: 1.34 $
+See http://www.logictran.com
+Filename:basic.rtf
+OutFileName:basic.html
+Application Directory:/home/gostan/r2net
+Subject:
+Author:
+Operator:
+Document Comments:
+Version Comments:
+Comments:StarWriter
+Keywords:
+Translation Date:04/12/2001
+Translation Time:15:05:50
+Translation Platform:Unix
+Number of Output files:50
+This File:basic-BASELINE.html
+SplitDepth=2
+SkipNavPanel=0
+SkipLeadingToc=0
+SkipTrailingToc=1
+GenContents=1
+GenFrames=1
+GenIndex=0
+ -->
+	<STYLE>
+	<!--
+		A:visited { color: #808080 }
+		A:link { color: #cc0000 }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LINK="#cc0000" VLINK="#808080" BGCOLOR="#ffffff">
+<P ALIGN=CENTER STYLE="margin-bottom: 0cm"><A HREF="basic-Commands.html"><IMG SRC="images/prev.gif" NAME="Image1" ALT="Previous " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-SPECTRAL.html"><IMG SRC="images/next.gif" NAME="Image2" ALT="Next " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Title.html"><IMG SRC="images/first.gif" NAME="Image3" ALT="Title Page " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Contents.html"><IMG SRC="images/contents.gif" NAME="Image4" ALT="Contents " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+</P>
+<HR>
+<H1><A NAME="Heading1034"></A><FONT SIZE=4><I><U>BASELINE CORRECTION
+: BCORR</U></I></FONT></H1>
+<P><TT><FONT FACE="Courier">BCORR</FONT></TT> is a comprehensive
+base-line correction module. Linear, cubic spline or polynomial
+base-line correction algorithms can be selected. The 2 first modes
+will use a set of points or &quot;pivot&quot; points to compute the
+base-line. A given radius is used around each pivot point for
+averaging the pivot value. <BR>Linear mode will then realise a linear
+regression through the pivots points and remove the linear baseline
+thus found. If only one point is given, then a horizontal baseline is
+computed. Spline mode will compute a cubic spline going through the
+pivot points and remove it from the data set. Spline mode requires at
+least 3 pivot points to work. <TT><FONT FACE="Courier">BCORR</FONT></TT>
+proposes as default values for the index of the pivot points, the
+last clicked points with the point (the values in the point stack)
+command; you can thus use the %% syntax.<BR>A third option is
+available in <TT><FONT FACE="Courier">BCORR</FONT></TT>,
+corresponding to polynomial (and related) baseline correction. This
+last option of the baseline correction is modular. The correction is
+made in three steps:</P>
+<UL>
+	<LI><P>First the signals and the baseline are separated in zones
+	(referred in the following as the first segmentation), this first
+	segmentation is eventually helped by a temporary smoothing of the
+	data,</P>
+	<LI><P>These zones are then joined together in several sets of
+	related area (referred in the following as the second segmentation)</P>
+	<LI><P>The correction is finally computed.</P>
+</UL>
+<P>There are three general parameters :</P>
+<P><TT><FONT FACE="Courier">BLOCBASE</FONT></TT> : all parameters in
+point unit are scaled in the ratio of the data set size to this
+parameter.</P>
+<P><TT><FONT FACE="Courier">BLCITER</FONT></TT> : the maximum number
+of iterations for the whole process</P>
+<P><TT><FONT FACE="Courier">BLCW</FONT></TT> : when the RMS of the
+correction is lower than <TT><FONT FACE="Courier">BLCW</FONT></TT>
+times the RMS of the data, the correction is finished. <BR>There are
+several commands and parameters to configure the correction :</P>
+<P><TT><FONT FACE="Courier">SMOOTH1</FONT></TT> : controls the
+smoothing of data.</P>
+<UL>
+	<LI><P>0 : no smoothing.</P>
+	<LI><P>+1 : moving average of the data set on a window of <TT><FONT FACE="Courier">WINMA</FONT></TT>
+	points.</P>
+	<LI><P>+10 : hysteresis smoothing of the data set with the value
+	<TT><FONT FACE="Courier">LEVELHYSTE</FONT></TT>.</P>
+</UL>
+<P><TT><FONT FACE="Courier">SEGM1</FONT></TT> : you can choose the
+way the first segmentation is done as follows .</P>
+<UL>
+	<LI><P>0 : without.</P>
+	<LI><P>1 : with a standard deviation algorithm on the data set.</P>
+	<LI><P>2 : with a standard deviation algorithm on the first
+	derivative of the data set.</P>
+	<LI><P>3 : with thresholds on the data set, and on the first and
+	second derivatives.</P>
+	<LI><P>4 : with a dynamic clusters algorithm.</P>
+	<LI><P>+10 : with a morphological filtering after the segmentation.</P>
+</UL>
+<P>The two parameters used by the standard deviation algorithm are
+<TT><FONT FACE="Courier">BLCU</FONT></TT> and <TT><FONT FACE="Courier">BLCV</FONT></TT>.
+You should only use <TT><FONT FACE="Courier">BLCV</FONT></TT>, for
+example if you increase <TT><FONT FACE="Courier">BLCV</FONT></TT> you
+reduce the sensibility of detection in order to correct a dispersive
+line shape.<BR>The threshold option just remain for historical means,
+the four thresholds are <TT><FONT FACE="Courier">SDS, SDB, SCB,
+SCS</FONT></TT>.<BR>The dynamic clusters algorithm is controlled by
+four commands :</P>
+<P><TT><FONT FACE="Courier">DCALGO</FONT></TT> : select the data on
+which the algorithm operates.</P>
+<UL>
+	<LI><P>+1 : the algorithm runs on the data set.</P>
+	<LI><P>+10 : the algorithm runs on the first derivative of the data
+	set.</P>
+	<LI><P>+100 : the algorithm runs on the second derivative of the
+	data set.</P>
+</UL>
+<P><TT><FONT FACE="Courier">DCDISTANCE</FONT></TT> : 
+</P>
+<UL>
+	<LI><P>0 : Norm 1.</P>
+	<LI><P>1 : Euclidean distance.</P>
+</UL>
+<P><TT><FONT FACE="Courier">DCITER</FONT></TT> : the maximum number
+of iterations for the dynamic clusters algorithm.</P>
+<P><TT><FONT FACE="Courier">DCFACTOR</FONT></TT> : used in a
+logarithmic scaling of the data set.</P>
+<P>Then you can add a morphological filtering either on the baseline
+selection or on the signal selection by choosing a number of points
+with MORPHOB and MORPHOS.</P>
+<P><TT><FONT FACE="Courier">SEGM2</FONT></TT> : this feature is only
+useful with a polynomial approximation.</P>
+<UL>
+	<LI><P>0 : without.</P>
+	<LI><P>1 : interactive.</P>
+	<LI><P>2 : automatic.</P>
+</UL>
+<P>When you choose an interactive second segmentation, you have to
+choose one or several areas with the <TT><FONT FACE="Courier">WINDOW</FONT></TT>
+command to allow the program to cut the correction in these areas if
+needed.<BR>The automatic segmentation uses a window, <TT><FONT FACE="Courier">WINSEGM2</FONT></TT>,
+and a threshold, <TT><FONT FACE="Courier">LEVELSEGM2</FONT></TT>.</P>
+<P><TT><FONT FACE="Courier">APPROX</FONT></TT> : the last step is to
+choose the way the baseline is estimated.</P>
+<UL>
+	<LI><P>0 : with ITERMA2 times a moving average filtering on a window
+	of size <TT><FONT FACE="Courier">WINMA2</FONT></TT>.</P>
+	<LI><P>1 : with a Legendre polynomial approximation of degree <TT><FONT FACE="Courier">DEGRE</FONT></TT>.</P>
+	<LI><P>+10 : with a linear interpolation of signal before
+	approximation.</P>
+	<LI><P>+100 : with an 'elastic effect' that is a rude way to prevent
+	from burying the weak lines.</P>
+</UL>
+<P>There are four special commands that may help you with all these
+options :</P>
+<P><TT><FONT FACE="Courier">BCORRP0</FONT></TT> : restores the
+initial configuration with a polynomial approximation.<BR><TT><FONT FACE="Courier">BCORRP1</FONT></TT>
+: enable a configuration with a dynamic clusters segmentation and a
+moving average approximation.<BR><TT><FONT FACE="Courier">BCORRP? </FONT></TT>:
+lists the current configuration.<BR><TT><FONT FACE="Courier">BCORRP</FONT></TT>
+: a step by step command to choose a set up.</P>
+<HR>
+<P ALIGN=CENTER STYLE="margin-bottom: 0cm"><A HREF="basic-Commands.html"><IMG SRC="images/prev.gif" NAME="Image5" ALT="Previous " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-SPECTRAL.html"><IMG SRC="images/next.gif" NAME="Image6" ALT="Next " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Title.html"><IMG SRC="images/first.gif" NAME="Image7" ALT="Title Page " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Contents.html"><IMG SRC="images/contents.gif" NAME="Image8" ALT="Contents " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+</P>
+</BODY>
+</HTML>

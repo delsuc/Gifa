@@ -1,0 +1,24 @@
+GET buffer_name
+
+Moves the content of another buffer, back to the current buffer with 
+buffer_name equal to:
+DATA:      get the content of the Data buffer
+LINEFIT:   get the simulated spectrum obtained form the current
+            peak table
+WINDOW:    get actual window used to compute the chisquare
+FILTER:    get filter used for Deconvolution
+LAMB:      get evolution of Lambda during MaxEnt iteration
+ENT:       get evolution of Entropy  during MaxEnt iteration
+CHI:       get evolution of ChiSquare during MaxEnt iteration
+SUM:       get evolution of Sum of point of Image during MaxEnt iteration
+CONV:      get evolution of Convergence during MaxEnt iteration
+STEP:      get evolution of Step during MaxEnt iteration
+RESIDUE:   get residue of the spectrum after a MaxEnt run
+AMOEBA:    get the Amoeba map used during the last integration
+            (in 2D only)
+TAB        get the Tab buffer used for tabulated fit
+
+related contexts : $SI_TAB $TAB[] $ITERDONE 
+
+see also : PUT SHOW APPLY
+

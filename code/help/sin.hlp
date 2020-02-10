@@ -1,0 +1,12 @@
+ SIN x { axis }
+	SIN is used to multiply data by a trigonometric function varying 
+continuously from pure sine to pure cosine. It works for 1D 2D and 
+3D spectra. You have to enter first the value of the parameter x 
+varying continuously from 0 (pure cosine) to 0.5 (pure sine). x 
+corresponds to the position of the maximum of the filter in your 
+window.  If you are working on a 2D or a 3D spectrum, there is 
+another parameter which determines on which axis (axes) the 
+apodization will be applies.
+
+see also : SQSIN EM GM TM JMULT FILTER
+

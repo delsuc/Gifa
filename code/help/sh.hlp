@@ -1,0 +1,8 @@
+SH string
+
+Will pass the string to the operating system. For instance, used by 
+macros such as pwd, ls, more, etc...
+SH alone will enter the Operating system
+
+see also : CD ls pwd more rm vi vim vip 
+

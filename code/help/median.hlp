@@ -1,0 +1,9 @@
+MEDIAN { y } x index
+
+Executes a median filter on the data-set (1D or 2D).a window of x 
+points (or y by x in 2D) is moved along the data set, the point are 
+ordered, and the indexth point is taken as the new point for the 
+data set.
+
+see also : SMOOTH
+

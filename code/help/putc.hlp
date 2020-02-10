@@ -1,0 +1,16 @@
+syntaxe depends on the dimentionnality of the currently joined data-
+set (to) and on the current context dim (from) :
+1D to 1D : PUTC left right
+1D to 2D : PUTC axis index left right
+1D to 3D : PUTC axis index1 index2 left right
+2D to 2D : PUTC left1 left2 right1 right2
+2D to 3D : PUTC axis index left1 left2 right1 right2
+3D to 3D : PUTC left1 left2 left3 right1 right2 right3
+
+Writes into the currently connected file, the area of data as 
+described.
+
+related contexts : $C_JOINED $C_NAME
+
+see also : GETC JOIN dataset listfilec
+

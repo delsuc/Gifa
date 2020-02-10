@@ -1,0 +1,288 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=iso-8859-1">
+	<TITLE>Macro programming - EVALUATED EXPRESSIONS</TITLE>
+	<META NAME="GENERATOR" CONTENT="StarOffice/5.2 (Win32)">
+	<META NAME="CREATED" CONTENT="20011127;16535854">
+	<META NAME="CHANGEDBY" CONTENT="Thierry Gostan">
+	<META NAME="CHANGED" CONTENT="20011127;17005953">
+	<!-- This document was created from RTF source by rtftohtml version 3.9.3 -->
+</HEAD>
+<BODY>
+<P ALIGN=CENTER STYLE="margin-bottom: 0cm"><A HREF="./macro-CONTEXTS.html"><IMG SRC="./images/leftg.gif" NAME="Image1" ALT="Prev " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="./macro-CONTROL.html"><IMG SRC="./images/rightg.gif" NAME="Image2" ALT="Next " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="./macro-Contents.html"><IMG SRC="./images/contg.gif" NAME="Image3" ALT="Contents " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+</P>
+<HR SIZE=4>
+<H1>EVALUATED EXPRESSIONS</H1>
+<UL>
+	<LI><P STYLE="margin-bottom: 0cm"><A HREF="#Blanks"><FONT COLOR="#cc0000">Blanks</FONT></A></P>
+	<LI><P STYLE="margin-bottom: 0cm"><A HREF="#List"><FONT COLOR="#cc0000">List
+	of functions and operators</FONT></A></P>
+	<UL>
+		<LI><P STYLE="margin-bottom: 0cm"><A HREF="#mathe"><FONT COLOR="#cc0000">mathematical</FONT></A></P>
+		<LI><P STYLE="margin-bottom: 0cm"><A HREF="#the alpha"><FONT COLOR="#cc0000">the
+		alphanumeric operators :</FONT></A></P>
+		<LI><P STYLE="margin-bottom: 0cm"><A HREF="#list"><FONT COLOR="#cc0000">list
+		operators</FONT></A></P>
+		<LI><P STYLE="margin-bottom: 0cm"><A HREF="#logical"><FONT COLOR="#cc0000">logical
+		operators</FONT></A></P>
+		<LI><P><A HREF="#data"><FONT COLOR="#cc0000">data access functions</FONT></A></P>
+	</UL>
+</UL>
+<HR SIZE=4>
+<P STYLE="margin-bottom: 0cm">	Expressions can be evaluated in the
+<I>Gifa</I> program. Expressions <B>should </B>be enclosed in
+parentheses. Expressions can use most of the entries found in the
+paragraph SYNTAX, at the exception of the special entries : <FONT FACE="Courier">%%</FONT>
+ <FONT FACE="Courier">&lt;from_file</FONT> and the pseudo variable <FONT FACE="Courier">$_
+</FONT>which are illegal in expressions<FONT FACE="Courier">.</FONT>(see
+below)</P>
+<P STYLE="margin-bottom: 0cm">	<FONT FACE="Courier">( 2*(5-1)) 
+(cos($i))</FONT> are examples of expressions. Expressions can be used
+whenever a <I>Gifa</I> input is needed (command as well as
+parameters). Expressions must fit on one line (i.e. 256 characters
+long), continuation mark cannot be used within expressions.</P>
+<P STYLE="margin-bottom: 0cm">	Values can be numeric, string or
+logical. Strings should be enclosed within '..' or &quot;..&quot;.
+Logicals are stored as 0 for false and 1 for true (or any non-zero
+value).</P>
+<P STYLE="margin-bottom: 0cm">	When evaluating expressions, all the
+internal computations are untyped and performed on strings. This
+permits to mix integer and string freely. Thus the following
+expressions are perfectly valid :</P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>	( cos(1) // 'a string' // ($i==1))</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>	( toupper($file // ($i+1)) )</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>	( log ('0.1') )</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H2><A NAME="Blanks"></A>Blanks</H2>
+<P STYLE="margin-bottom: 0cm">	In contrast with the parsing of action
+and parameters, blanks are not required to separate values within
+expression. As long as the meaning is unequivocal, tyou can freely
+decide to use or not use them. So the following are equivalent</P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Courier">(2 + 3 * 5)</FONT>
+and  <FONT FACE="Courier">(2+3*5)</FONT></P>
+<P STYLE="margin-bottom: 0cm">There are a few cases however where you
+should be careful: There should be <B>no</B> blanks between a
+function name and the open parenthesis <FONT FACE="Courier">(cos($x))</FONT>
+is fine <FONT FACE="Courier">(cos ($x))</FONT> is not. There <B>should</B>
+be one blank when using a variable name and a diadic operatr starting
+with a letter. eg; <FONT FACE="Courier">($var&nbsp;s=&nbsp;'a') </FONT>is
+fine <FONT FACE="Courier">($vars='a')</FONT> is equivocal.</P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H2><A NAME="List"></A>List of functions and operators</H2>
+<P STYLE="margin-bottom: 0cm">	The following operators and functions
+are implemented :</P>
+<H3><A NAME="mathe"></A>mathematical</H3>
+<P STYLE="margin-left: 0.5cm; text-indent: -0.46cm; margin-bottom: 0cm">
+<FONT FACE="Times"><FONT SIZE=2><B>&#149;	the regular 4 operations :
++ - / *  e.g. :	(2*3 - 1)</B></FONT></FONT></P>
+<P STYLE="margin-left: 0.5cm; text-indent: -0.46cm; margin-bottom: 0cm">
+<FONT FACE="Times"><FONT SIZE=2><B>&#149;	the modulo function : %	(12
+% 5)</B></FONT></FONT></P>
+<P STYLE="margin-left: 0.5cm; text-indent: -0.46cm; margin-bottom: 0cm">
+<FONT FACE="Times"><FONT SIZE=2><B>&#149;	the power ^
+operator	(3^2.1)</B></FONT></FONT></P>
+<P STYLE="margin-left: 0.5cm; text-indent: -0.46cm; margin-bottom: 0cm">
+<FONT FACE="Times"><FONT SIZE=2><B>&#149;	the regular mathematical
+functions :</B></FONT></FONT></P>
+<P STYLE="margin-left: 0.5cm; text-indent: -0.46cm; margin-bottom: 0cm">
+<FONT FACE="Times"><FONT SIZE=2><B>	<I>sqrt(x) cos(x) sin (x) atan(x)
+log(x) exp(x) abs(x) int(x) max(x,y) min(x,y), round(x)</I></B></FONT></FONT></P>
+<P STYLE="margin-left: 0.5cm; text-indent: -0.46cm; margin-bottom: 0cm">
+<FONT FACE="Times"><FONT SIZE=2><B>&#149;	the special function
+<I>power2(n)</I> will have the value of the closest power of 2 below
+or equal to the number n :  power2(130) will be 128 (2<SUP>7</SUP>)</B></FONT></FONT></P>
+<H3><A NAME="the alpha"></A>the alphanumeric operators :</H3>
+<P STYLE="margin-left: 0.5cm; text-indent: -0.46cm; margin-bottom: 0cm">
+<FONT FACE="Times"><FONT SIZE=2><B>&#149;	the concatenation operator
+: //	('string1' // &quot;string2&quot;  )</B></FONT></FONT></P>
+<P STYLE="margin-left: 0.5cm; text-indent: -0.46cm; margin-bottom: 0cm">
+<FONT FACE="Times"><FONT SIZE=2><B>&#149;	the formatting operator :
+;<I>equivalent</I> to // ' ' //<BR>(&quot;Value is:&quot; ; $a)  <I>is
+equivalent</I> <I>to</I>  (&quot;Value is:&quot; // ' ' // $a)</B></FONT></FONT></P>
+<P STYLE="margin-left: 0.5cm; text-indent: -0.46cm; margin-bottom: 0cm">
+<FONT FACE="Times"><FONT SIZE=2><B><I>&#149;	toupper(st)</I> put
+string in upper case</B></FONT></FONT></P>
+<P STYLE="margin-left: 0.5cm; text-indent: -0.46cm; margin-bottom: 0cm">
+<FONT FACE="Times"><FONT SIZE=2><B><I>&#149;	tolower(st) </I>put
+string in lower case</B></FONT></FONT></P>
+<P STYLE="margin-left: 0.5cm; text-indent: -0.46cm; margin-bottom: 0cm">
+<FONT FACE="Times"><FONT SIZE=2><B><I>&#149;	sp(i)</I> generates a
+string of i blanks</B></FONT></FONT></P>
+<P STYLE="margin-left: 0.5cm; text-indent: -0.46cm; margin-bottom: 0cm">
+<FONT FACE="Times"><FONT SIZE=2><B><I>&#149;	len(st)</I> is the
+length of the string</B></FONT></FONT></P>
+<P STYLE="margin-left: 0.5cm; text-indent: -0.46cm; margin-bottom: 0cm">
+<FONT FACE="Times"><FONT SIZE=2><B><I>&#149;	index(st1,st2)</I> is
+the position of st2 located in st1, 0 if not present</B></FONT></FONT></P>
+<P STYLE="margin-left: 0.5cm; text-indent: -0.46cm; margin-bottom: 0cm">
+<FONT FACE="Times"><FONT SIZE=2><B><I>&#149;	subst(st,i,j)</I> is the
+substring from st, starting at i, ending at j</B></FONT></FONT></P>
+<P STYLE="margin-left: 0.5cm; text-indent: -0.46cm; margin-bottom: 0cm">
+<FONT FACE="Times"><FONT SIZE=2><B><I>&#149;	isalpha(st)</I> and
+<I>isnumb(st)</I> are true whenever st is (respectively) alphanumeric
+or numeric</B></FONT></FONT></P>
+<H3><A NAME="list"></A>list operators</H3>
+<P STYLE="margin-left: 0.5cm; text-indent: -0.46cm; margin-bottom: 0cm">
+<FONT FACE="Times"><FONT SIZE=2><B><I>&#149;	head(st)</I> will be the
+first word in string st (blank separated)</B></FONT></FONT></P>
+<P STYLE="margin-left: 0.5cm; text-indent: -0.46cm; margin-bottom: 0cm">
+<FONT FACE="Times"><FONT SIZE=2><B><I>&#149;	tail(st)</I> will be the
+string st but the first word.</B></FONT></FONT></P>
+<P STYLE="margin-left: 0.5cm; text-indent: -0.46cm; margin-bottom: 0cm">
+<FONT FACE="Times"><FONT SIZE=2><B><I>&#149;	headx(st,c)</I> and
+<I>tailx(st,c)</I> are equivalent to head and tail but the character
+c is used rather than blank.</B></FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm">One typical use of the head() and
+tail() functions is to parse parameters concatenated into a single
+string, e.g.:</P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>set params = 'value1 value2 value3
+value4'</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>set par1 = (head($params))	set par2
+= (head(tail($params)))  etc...</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>; one obtains : par1 contains
+'value1' par2 : 'value2', ... </FONT></FONT>
+</P>
+<P STYLE="margin-bottom: 0cm">another use is using such a string for
+iterative constructs :</P>
+<P STYLE="margin-bottom: 0cm">set params = 'value1 value2 value3
+value4'</P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>while ($params s! '')</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>	set val = (head($params))	set
+params = (tail($params))</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>	some processing on $val ...</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>endwhile</FONT></FONT></P>
+<P STYLE="margin-left: 0.5cm; text-indent: -0.46cm; margin-bottom: 0cm">
+<FONT FACE="Times"><FONT SIZE=2><B>&#149;	the next element function :
+<I>nextlm(array,entry)</I>. If i is an entry in the associative array
+$array, the construction nextlm(array,i) will have the value of the
+next available entry. The end of the array is notified with an empty
+string. The series is also initialised with an empty string. The
+series is gone through in the internal order which is not related
+neither to the input order nor the sequential order. For instance the
+following macro will print all the entries of the array $table :</B></FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>set $index = (nextlm('table',' '))</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>while ($index s! ' ')</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>	print ($index // ' : ' //
+$table[$index])</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>	set $index =
+(nextlm('table',$index))</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>endwhile</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm">However the command <FONT FACE="Courier">FOREACH</FONT>
+is much simpler to use for the same purpose.</P>
+<P STYLE="margin-bottom: 0cm">Check for instance the macro <FONT FACE="Courier">tunset</FONT>,
+which permits to remove all the entries of an array.</P>
+<H3><A NAME="logical"></A>logical operators</H3>
+<P STYLE="margin-left: 0.5cm; text-indent: -0.46cm; margin-bottom: 0cm">
+<FONT FACE="Times"><FONT SIZE=2><B>&#149;	the numeral comparison
+operators : == != &lt; &gt; &lt;= and &gt;= for comparing numbers :</B></FONT></FONT></P>
+<P STYLE="margin-left: 0.5cm; text-indent: -0.46cm; margin-bottom: 0cm">
+<FONT FACE="Times"><FONT SIZE=2><B>		($x&lt;=0.5)</B></FONT></FONT></P>
+<P STYLE="margin-left: 0.5cm; text-indent: -0.46cm; margin-bottom: 0cm">
+<FONT FACE="Times"><FONT SIZE=2><B>&#149;	the string comparison s=
+(equal) and s! (different) for comparing strings :</B></FONT></FONT></P>
+<P STYLE="margin-left: 0.5cm; text-indent: -0.46cm; margin-bottom: 0cm">
+<FONT FACE="Times"><FONT SIZE=2><B>		($s s= 'name')</B></FONT></FONT></P>
+<P STYLE="margin-left: 0.5cm; text-indent: -0.46cm; margin-bottom: 0cm">
+<FONT FACE="Times"><FONT SIZE=2><B>&#149;	the logical operators : |
+(or) and &amp; (and) :	(($x&lt;=0.5)&amp;($s s= 'name'))</B></FONT></FONT></P>
+<P STYLE="margin-left: 0.5cm; text-indent: -0.46cm; margin-bottom: 0cm">
+<FONT FACE="Times"><FONT SIZE=2><B>&#149;	the not operation : !
+:	(!($i==1))    (!$arg)</B></FONT></FONT></P>
+<P STYLE="margin-left: 0.5cm; text-indent: -0.46cm; margin-bottom: 0cm">
+<FONT FACE="Times"><FONT SIZE=2><B>&#149;	the function <I>eof(file_name)</I>
+will be true if the last input from file file_name (with &lt;file_name)
+had reached the end of the file, will be false otherwise.</B></FONT></FONT></P>
+<P STYLE="margin-left: 0.5cm; text-indent: -0.46cm; margin-bottom: 0cm">
+<FONT FACE="Times"><FONT SIZE=2><B>&#149;	the function
+<I>dbm(array_name)</I> is true if array_name is bound to a dbm file
+with the DBOPEN command</B></FONT></FONT></P>
+<P STYLE="margin-left: 0.5cm; text-indent: -0.46cm; margin-bottom: 0cm">
+<FONT FACE="Times"><FONT SIZE=2><B>&#149;	the function
+<I>exist(var_name)</I> will be true if var_name is a user variable
+either local or global. e.g.</B></FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>	if (exist(&quot;i&quot;)) set j =
+($i+1)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm">	j is computed only if $i exists as a
+variable.</P>
+<P STYLE="margin-bottom: 0cm">	The special syntax <FONT FACE="Courier">(exist(&quot;foo[]&quot;))</FONT>
+checks whether the array foo exists with at least one index. It works
+both for regular and dbm arrays.</P>
+<H3><A NAME="data"></A>data and file access functions</H3>
+<P STYLE="margin-left: 0.5cm; text-indent: -0.46cm; margin-bottom: 0cm">
+<FONT FACE="Times"><FONT SIZE=2><B>&#149;	the functions <I>va1d(i),
+val2d(i,j)</I> and <I>val3d(i,j,k) </I>returns the value of the
+content of the main <I>Gifa</I> working buffers. In 2D i and j are
+the index in F1 and F2 respectively, in 3D in F1, F2 and F3. This
+replaces the old $VAL[] construct. <I>valamb(i,j)</I> returns the
+value of the amoeba buffer.</B></FONT></FONT></P>
+<P STYLE="margin-left: 0.5cm; text-indent: -0.46cm; margin-bottom: 0cm">
+<FONT FACE="Times"><FONT SIZE=2><B>&#149;	the <I>hexist(name)</I>
+function returns true or false whether the parameter name is
+available in the header of the currently joined file. If this
+parameter is available, the <I>header(name)</I> returns its value</B></FONT></FONT></P>
+<P STYLE="margin-left: 0.5cm; text-indent: -0.46cm; margin-bottom: 0cm">
+<FONT FACE="Times"><FONT SIZE=2><B>&#149;	The <I>sh(command)</I>
+function permit to very easily call an operating system <I>command</I>
+and the function returns the value of the first line returned by the
+command. Look at the command SH for further details.</B></FONT></FONT></P>
+<P STYLE="margin-left: 0.5cm; text-indent: -0.46cm; margin-bottom: 0cm">
+<FONT FACE="Times"><FONT SIZE=2><B>&#149; The <I>fexist(file_name)</I>
+return true if the file called <I>file_name</I> currently exists. </B></FONT></FONT>
+</P>
+<P STYLE="margin-left: 0.5cm; text-indent: -0.46cm; margin-bottom: 0cm">
+<FONT FACE="Times"><FONT SIZE=2><B>&#149;	the functions  
+<I>itoh(index,dim,axis), htoi(hertz,dim,axis), itop(index,dim,axis),
+ptoi(ppm,dim,axis), htop(hertz dim, axis), ptoh(ppm,dim,axis),
+itos(index,dim,axis), stoi(second,dim,axis), itod(index,dim,axis),
+dtoi(damping,dim,axis), itot(index) and ttoi(tabulated)</I> perform
+unit conversion. Respectively : index to hertz and back; index to ppm
+and back; hertz to ppm and back; index to second and back, index to
+damping factors and back; index to tabulated and back.<BR>For each
+function, index, ppm, hertz, second, damping or tabulated is the
+value to be converted, dim is the dimension to use (1, 2 or 3) and
+axis is the axis to use, depending on which spectral widths and
+frequencies you want to use for the conversion. Note that since there
+is only one tabulated axis that can be defined the additional
+parameters are useless. If dim = 0, then the conversion is done in
+the context of the currently JOINed file rather than in the context
+of the internal buffers.</B></FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm">eg:</P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Courier">(itop(100,2,2))</FONT>
+is the value in ppm of the point of index 100, along axis F2 in 2D</P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Courier">(ptoi(3.3,2,1))</FONT>
+is the index location of the point located at 3.3 ppm , along axis F1
+in 2D</P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Courier">(stoi(0.1,1,1))</FONT>
+is the index location of the point located at 0.1 sec from the
+beginning of the 1D FID</P>
+<P STYLE="margin-bottom: 0cm">These constructs can be freely mixed.</P>
+<HR SIZE=4>
+<P ALIGN=CENTER><A HREF="./macro-CONTEXTS.html"><IMG SRC="./images/leftg.gif" NAME="Image4" ALT="Prev " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="./macro-CONTROL.html"><IMG SRC="./images/rightg.gif" NAME="Image5" ALT="Next " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="./macro-Contents.html"><IMG SRC="./images/contg.gif" NAME="Image6" ALT="Contents " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+</P>
+</BODY>
+</HTML>

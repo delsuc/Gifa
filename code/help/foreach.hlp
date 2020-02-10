@@ -1,0 +1,22 @@
+FOREACH var IN array { WITHIN nD coord_set }
+... GIFA commands
+ENDFOR
+
+Control structure permitting to go through all the entries of a user 
+array, or a user dbm file. The variable var will take successively 
+all the values of the entries in the array, ( $array[$var] ). The 
+order is irrelevant. var will be created if does not exist yet.
+
+If the array entries are of the form : "x { y {z } } some other stuff"
+where x (y, z) is (are) numerical values, then the optionnal WITHIN 
+syntax permits to specifically restrict the scanning to entries 
+located in a given range. nD (1, 2 or 3) tells WITHIN to use 1, 2 or 
+3 numerical entries. Then coord_set is a set of coordinates, 
+determining a range, as with the zoom syntax : 
+range_low_1 { range_low_2 { range_low_3 }} range_high_1 { range_high_2 { range_high_3 }}
+
+FOREACH and ENDFOR should appear alone on one line, eventually 
+followed by a comment.
+
+see also : FOR DBOPEN IF WHILE GOTO CONTROLS FIND
+

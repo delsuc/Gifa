@@ -1,0 +1,10 @@
+This command will add the point in the point stack (set by the user 
+with the last point or MONOPOINT command), into the current peak 
+table.
+
+related contexts : $POINTX[i] $POINTY[i] $NPOINT $PK1D_A[i] $PK1D_F[i]
+      $PK1D_P[i] $PK1D_W[i] $PK2D_A[i] $PK2D_ERR[i] $PK2D_F1F[i]
+      $PK2D_F1W[i] $PK2D_F2F[i] $PK2D_F2W[i]
+
+see also : MONOPOINT PEAK pklist SETPEAK POINT_PUSH point
+

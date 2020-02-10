@@ -1,0 +1,6 @@
+beta b
+This context is the angle along the OY axis by which the cube is 
+rotated during a 3D display with the DISP3D/REF3D set of commands
+
+see also : ALPHA GAMA DISP3D
+

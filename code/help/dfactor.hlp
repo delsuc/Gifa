@@ -1,0 +1,7 @@
+DFACTOR value
+
+Relates arbitrary unit decay factors given by DMIN and DMAX to actual unit.
+
+related contexts : $DFACTOR
+
+see also : DMIN DMAX UNIT calibdosy env_dosy.g

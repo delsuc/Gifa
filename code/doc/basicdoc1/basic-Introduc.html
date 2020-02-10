@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=iso-8859-1">
+	<TITLE>Introduction to 2D and 3D processing</TITLE>
+	<META NAME="GENERATOR" CONTENT="StarOffice/5.2 (Linux)">
+	<META NAME="CREATED" CONTENT="20010412;19033100">
+	<META NAME="CHANGEDBY" CONTENT="Thierry Gostan">
+	<META NAME="CHANGED" CONTENT="20010412;19053100">
+	<!-- This document was converted from RTF source: 
+By r2net 5.2.4 r2netcmd Unix 
+Translation:html.trn  $Revision: 1.55 $ $Revision: 1.34 $
+See http://www.logictran.com
+Filename:basic.rtf
+OutFileName:basic.html
+Application Directory:/home/gostan/r2net
+Subject:
+Author:
+Operator:
+Document Comments:
+Version Comments:
+Comments:StarWriter
+Keywords:
+Translation Date:04/12/2001
+Translation Time:15:05:50
+Translation Platform:Unix
+Number of Output files:50
+This File:basic-Introduc.html
+SplitDepth=2
+SkipNavPanel=0
+SkipLeadingToc=0
+SkipTrailingToc=1
+GenContents=1
+GenFrames=1
+GenIndex=0
+ -->
+	<STYLE>
+	<!--
+		A:visited { color: #808080 }
+		A:link { color: #cc0000 }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LINK="#cc0000" VLINK="#808080" BGCOLOR="#ffffff">
+<P ALIGN=CENTER STYLE="margin-bottom: 0cm"><A HREF="basic-HANDLING.html"><IMG SRC="images/up.gif" NAME="Image1" ALT="Up " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-HANDLING.html"><IMG SRC="images/prev.gif" NAME="Image2" ALT="Previous " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Differen-2.html"><IMG SRC="images/next.gif" NAME="Image3" ALT="Next " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Title.html"><IMG SRC="images/first.gif" NAME="Image4" ALT="Title Page " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Contents.html"><IMG SRC="images/contents.gif" NAME="Image5" ALT="Contents " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+</P>
+<HR>
+<UL>
+	<LI><P><A HREF="basic-Introduc.html#Heading966">The working buffer
+	and the DIM command.</A> 
+	</P>
+</UL>
+<HR>
+<H2><A NAME="Heading963"></A><I><U>Introduction to 2D and 3D
+processing</U></I></H2>
+<P>Processing of 2D and 3D data-sets is similar to 1D data-sets in
+many respects. The processing steps are mostly equivalent : reading
+the file, windowing, pre-processing and zero-filling, Fourier
+transformation, Post-Processing (phasing, smoothing, <TT><FONT FACE="Courier">REAL</FONT></TT>
+etc...) and writing output file. This is due to the fact that the
+whole data-set is merely held into central memory. <BR>This design is
+optimum whenever the data-set is small enough to be kept in memory
+without even using the disk (up to 2 Mega (2D : 1Kx2K or 3D :
+128x128x128) points on a typical system). The main drawback is that
+there is a definitive upper-limit for the size of the data-set. This
+limit depends on your system, but is typically 4 Mega (2D : 2Kx2K or
+3D : 128x128x256) on most small to middle work-stations, and 16 Mega
+(2D : 4Kx4K or 3D : 256x256x256) on larger machines. This setting can
+easily be modified by recompiling the program. If you need to work on
+a larger data-set, you will have to resort to the <A HREF="basic-WORKING.html" TARGET="RightFrame">cache
+memory system</A>.</P>
+<H3><A NAME="Heading966"></A><B>The working buffer and the DIM
+command.</B></H3>
+<P STYLE="margin-bottom: 0cm">The state of the program is described
+by the <TT><FONT FACE="Courier">DIM</FONT></TT> context which holds
+either 1, 2 or 3 (standing for 1D 2D and 3D). Each mode is associated
+to a buffer, thus there are 3 buffers, for 1D, 2D and 3D. The
+unselected buffers remains unchanged during the processing of other
+buffers. All commands refer to the current working buffer, and most
+of the commands works on all three modes, however, the commands may
+change their behaviour depending on DIM. The command DIM permits to
+change the current working buffer, and can take the values 1, 2 or 3.
+When the graphic user interface is used, the 1D th 2D and the 3D
+command are separated, and a error will be issued if you use a 1D
+command (say) in 2D mode.</P>
+<HR>
+<P ALIGN=CENTER STYLE="margin-bottom: 0cm"><A HREF="basic-HANDLING.html"><IMG SRC="images/up.gif" NAME="Image6" ALT="Up " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-HANDLING.html"><IMG SRC="images/prev.gif" NAME="Image7" ALT="Previous " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Differen-2.html"><IMG SRC="images/next.gif" NAME="Image8" ALT="Next " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Title.html"><IMG SRC="images/first.gif" NAME="Image9" ALT="Title Page " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Contents.html"><IMG SRC="images/contents.gif" NAME="Image10" ALT="Contents " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+</P>
+</BODY>
+</HTML>

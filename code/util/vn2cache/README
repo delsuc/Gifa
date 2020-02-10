@@ -1,0 +1,96 @@
+New version by Tara Sprules <tara@bri.nrc.ca> on Dec 22 1999
+
+>Hi,
+>	I don't know if anyone has been using the Varian to Gifa
+>conversion programme, but I discovered that Varian 3D data sets can be
+>saved in at least 2 configurations, and my original convert_varian only
+>sorted the fids correctly for one instance. I am not sure what parameter
+>in Vnmr determines this, and the person who was helping me with the
+>operation of the Varian spectrometer was not aware of the difference, but
+>I have modified convert_varian to deal with the 2 types of 3D data sets
+>that I have come across. The updated convert_varian and vn2cach.sh
+>programmes are in the tar attachment if you would like to update to
+>version available on the Gifa web site.
+>	I have called the modes 1 and 2. In the first the fids are
+>completely interleaved. ie the first fid is row 1 in plane 1, the second
+>is row 2 in plane 2, r2,p1 r2,p2 and so on until fid (size1*size2)-1= row
+>size2, plane size1-1 and fid (size1*size2) = row size2, plane size1.
+>	In "mode 2" data is saved as fid 1= row 1,plane 1, fid 2=
+>row 2,plane 1, fid 3=row 1, plane 2, fid 4=row 2, plane 2, fid 5= r3,p1
+>and so on. Both cases require revf in all 3 dimensions, and ft_n+p for
+>echo-antiecho if necessary.
+>	At any rate it is obvious when you process the first plane if you
+>used the correct conversion mode. If you or anyone else knows the correct
+>terminology/varian parameter to describe this feel free to correct my
+>description. 
+>				Tara
+>
+>Tara J. Sprules
+>Graduate Student
+>NMR Spectroscopy
+>Department of Biochemistry
+>McGill University
+>Montreal, PQ
+>tara@bri.nrc.ca
+>
+>
+
+This program converts vnmr files to gifa 'cache' files
+This is sometimes needed when processing large (3D) data files
+which have to be processed through the cache system.
+
+initial version 28.7.99 by Tara Sprules <tara@bri.nrc.ca>
+not fully tested (not on Linux), but it sure works on my SGI !
+
+Quoting her mail :
+
+>Date: Fri, 30 Jul 1999 10:51:34 -0400 (EDT)
+>From: Tara Sprules <tara@bri.nrc.ca>
+>To: Marc-Andre.Delsuc@cbs.univ-montp1.fr
+>Subject: vn2cache
+>MIME-Version: 1.0
+>
+>Content-Type: TEXT/PLAIN; CHARSET=US-ASCII
+>Content-ID: <Pine.SGI.3.95.990730104921.5961B@moscow.bri.nrc.ca>
+>
+>Hi,
+>	After Kalle asked you about converting varian files to cache
+>format and our problems with a very large file, I started working on
+>a conversion programme for varian to cache format. After a crash course in
+>C programming I've got a working version that I made from lvarian.c and
+>ux2cach.c. It is the file convert_varian.c that is included in
+>vn2cache.tar. It will convert 1d, 2d and 3d files, and converts a 3d
+>varian into a 3d cache file. It doesn't address the reverse problem
+>though- perhaps I'll try and improve it later on.
+>	vn2cache.sh just prompts the user to input sizes, frequencies,
+>etc. since it looked like it would be hard to get sw1,sw2 etc. assigned to
+>the correct axes (as with varian_param), and after finishing
+>convert_varian I've had enough programming to last for a few days! 
+>	I also included the util_mad.c etc. files that I used to compile
+>the programme just in case there are slightly different versions around.
+>I've tested it out on 1d, 2d, and 3d datasets on our SGI and had no
+>problems.
+>	Hope this will be helpful,
+>
+>				Tara 
+>
+>Tara J. Sprules
+>Graduate Student
+>NMR Spectroscopy
+>Department of Biochemistry
+>McGill University
+>Montreal, PQ
+>tara@bri.nrc.ca
+>
+>
+>Content-Type: APPLICATION/OCTET-STREAM; NAME="vn2cache.tar"
+>Content-ID: <Pine.SGI.3.95.990729163843.4454B@moscow.bri.nrc.ca>
+>Content-Description: 
+>
+>Attachment converted: util:vn2cache.tar (????/----) (00003CA3)
+
+Be carefull when compiling this prgram that you should not use the -O
+  option on HP-UX, since, due to a compiler bug, the program then
+  does not work anymore.  (a bug in the optimization of reversebyte)
+
+M.A.D.

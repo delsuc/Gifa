@@ -1,0 +1,9 @@
+MAXENT  SI1 { SI2 }
+
+Start Maximum Entropy iteration. The user is prompted for the size 
+of the reconstructed image.
+
+related contexts : $ITERDONE $CHI2  $ALGO
+
+see also : ALGO MAXENTCONT ITER NDISP INVLAP INVTLAP gifa conjg gad
+

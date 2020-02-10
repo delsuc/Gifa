@@ -1,0 +1,23 @@
+ZOOM n f_low f_up  (1D) or  f1_low f2_low f1_up f2_up  (2D) 
+    or  f1_low f2_low f3_low f1_up f2_up f3_up (3D)
+
+The basic command for defining zoom windows
+(used mostly in macros)
+
+See ZM for information on interactive zooming
+
+if n=0, zoom mode is off.
+if n=1, zoom mode is on, you are then prompted for the coordinates 
+(row,col) of the lower left point and upper right point for defining 
+the 2D zoom window.
+
+In 1D, you are only prompted for left and right borders. 
+If a region was already selected on the display with the POINT 
+command, this region is proposed as the default region.
+
+
+related contexts : $ZOOM $ZONE[1] $ZONE[2] $ZONE[3] $ZONE[4] $ZOOM
+    $ZOOM_1D[1] $ZOOM_1D[2] $ZOOM_2D[1] $ZOOM_2D[2] $ZOOM_2D[3] $ZOOM_2D[4]
+
+see also : ZOOM_INTERACTIVE ZM multi_zoom point zoom3di rzoom center upzoom zoom_old
+

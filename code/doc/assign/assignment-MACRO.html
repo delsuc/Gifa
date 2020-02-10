@@ -1,0 +1,88 @@
+<HTML><HEAD>
+<!-- This document was created from RTF source by rtftohtml version 3.9.3 -->
+<TITLE>Assignment on-line Documentation - MACRO PROGRAMMING</TITLE></HEAD>
+<BODY>
+<A HREF="assignment-TYPICAL.html"><IMG SRC="leftg.gif" ALT="Prev " border=0></A>
+ <A HREF="assignment-CAVEAT.html"><IMG SRC="rightg.gif" ALT="Next " border=0></A>
+ <A HREF="assignment-Title.html"> </A>
+ <A HREF="assignment-Contents.html"><IMG SRC="contg.gif" ALT="Contents " border=0></A>
+<hr size=4>
+<H1>
+MACRO PROGRAMMING</H1>
+<p>The complete assignment module is written in nothing but macros. So you
+could have written it yourself ! At least you can modify it to fit your needs.
+Here is some help to do so.<br>
+All the macros are in <i>/usr/local/gifa/macro/att </i>, this address is added
+to the <tt>GifaPath</tt> when entering the module. Static information (list of
+possible atom names, residue names, etc...) are defined in the
+<i>basic_db.g</i> and <i>build_static_db.g</i> macros. You can very simply
+adapt this one for some new residues. Some static information is stored in dbm
+data-bases: the "topology" data-base stores the structures of the different
+residues defined and the names of valid spins. The data-base 3let_1let and
+1let_3let stores lookup tables permitting to convert rapidly 1 lettre residue
+names (C Y K..) to 3 letters names (Cys Typ Lys...). These 3 dat-bases are also
+stored in /usr/local/gifa/macro/att and can be recreated with the
+build_static_db.g macro. This can be done if you want to add new types of
+residues, it may also be needed in the case of a new installation of Gifa,
+since the dbm format is not fully binary compatible among all UNIX platforms
+(be carefull, you, Limux users). <br>
+The static data-bases are opened when entering the assignment module. Other
+data-bases are associated to the project associative arrays <tt>att[]
+spin[]</tt> and <tt>sys[]</tt> for the peak data-base, the spin data-base, and
+the spin-system data-base respectively. Entries are thus of the kind :
+<tt>$att[$peak_id]</tt> for instance. The different pieces of information are
+stored as blank separated fields in the variable. Coding is the following :</p>
+
+<pre>
+	$att[#att] = f1 f2 amp #spin1 #spin2 type note
+	$spin[#spin] = delta  name #sys note
+	$sys[#sys] = index type list_of_spin note
+</pre>
+<p>where<br>
+<tt>#att, #spin #sys</tt> are used here to note the indexes.<br>
+<tt>f1</tt> and <tt>f2</tt> are coordinates in ppm;<br>
+<tt>amp</tt> is the peak amplitude in arbitrary unit;<br>
+<tt>type</tt> codes for the kind of experiment;<br>
+<tt>delta</tt> is chemical shift in ppm;<br>
+<tt>index</tt> is the number in the primary sequence<br>
+<tt>type</tt> is the name of the residue<br>
+<tt>note</tt> is a free field, that you can use for whatever function.<br>
+Each dbm associative array <tt>att[] spin[]</tt> and <tt>sys[]</tt> contain the
+special entry LARGEST, which contains the index of the LARGEST id (<tt>#att,
+#spin, or #sys</tt>) yet assigned. So, when creating a new entry (spin in the
+example), you are supposed to do something like :</p>
+
+<pre>
+	set new_id = ($spin["LARGEST"] + 1)
+	set $spin[$new_id ] = "New entry ..."
+	set $spin["LARGEST"] = $new_id		; updated only if no error occured
+</pre>
+<p><br>
+When programming some function that scan the whole data-base, you will probably
+end-up writing something like :</p>
+
+<pre>
+foreach i in att           	; let's scan all the peak as an example
+	if ($i s! "LARGEST") then         ; don't forget this one !
+		set peak = $att[$i]	              ; this is the complete entry
+     ; then parse the entry, this is one way :
+		set f1 = (head($peak))	set peak = (tail($peak))
+		set f2 = (head($peak))	set peak = (tail($peak))
+		set amp = (head($peak))	set peak = (tail($peak))
+                                                ; etc...
+	endif
+endfor
+</pre>
+<p>When
+loaded, the calibration distances defined by the command <b>Choose the
+calibration intensities</b>, are stored in an associative array called
+calib_dst[]. <br>
+If you manage to make something useful, you can transmit it to me so that I
+will make it available to other users.
+</p>
+<P><hr size=4>
+<A HREF="assignment-TYPICAL.html"><IMG SRC="leftg.gif" ALT="Prev " border=0></A>
+ <A HREF="assignment-CAVEAT.html"><IMG SRC="rightg.gif" ALT="Next " border=0></A>
+ <A HREF="assignment-Title.html"> </A>
+ <A HREF="assignment-Contents.html"><IMG SRC="contg.gif" ALT="Contents " border=0></A>
+</body></html>

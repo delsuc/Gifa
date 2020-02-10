@@ -1,0 +1,15 @@
+	This program "transdata" will read Bruker file which have accessed 
+to the UNIX machines and through networks with the following path :
+from AM machines to X32 through ligtnet in "with parameter block" mode
+and from X32 to "normal UNIX machines" through FTP in BINARY mode.
+
+it will then create a H format file for GIFA.
+
+This program has been adapted from the tape program.
+This program is being used successfully on SGI machines.
+No attempt was made to make it fully portable, you may have to play around
+to adapt it to your machine!
+
+
+
+

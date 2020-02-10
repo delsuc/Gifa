@@ -1,0 +1,6 @@
+Obsolete command, has been superseded by mkdbppm
+This command is an help for constructing chemical shift files to be 
+used with the SIMUNOE command.
+ 
+see also : SimSpect2D SIMUNOE
+

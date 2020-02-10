@@ -1,0 +1,37 @@
+#!/bin/sh
+# fortran for f2c,  fortan { -O } file_name.f
+# -O means : to optimize
+# set -v
+# set -x
+case $1 in
+   -O)	opt=Y
+	nom=$2;;
+   *)	opt=N
+	nom=$1;;
+esac
+base=`basename $nom .f`
+echo $base
+echo $nom
+case $base in
+   display2d) f2c -h -a -kr -!R $nom
+     sed 's/static integer bitmap/static char bitmap/' $base.c > $base.cc
+     mv $base.cc $base.c
+     cc -c -I/usr/local/include $base.c;;
+   unix_lib) f2c -h -a -kr -!R $nom
+     sed 's/signal_/signal/' $base.c |
+     sed 's/signal(&c__2/signal(2/' > $base.cc
+     mv $base.cc $base.c
+     cc -c -I/usr/local/include $base.c;;
+   gifa | execute ) f2c -Nx400 -NL1600 -Nn1604 -h -a -kr -!R $nom 
+	cc -c -Wf,-XNd3800 -Wf,-XNp15000 -I/usr/local/include $base.c;;
+   variable) f2c -NL400 -Nx400 -NL1600 -Nn1604 -h -a -kr -!R $nom 
+	cc -c -Wf,-XNp8400 -I/usr/local/include $base.c;;
+   *)
+case $opt in
+   Y) f2c -h -a -kr -!R  $nom
+	cc -c -O -I/usr/local/include $base.c;;
+   N) f2c -h -a -kr -!R  $nom
+	cc -c -g -I/usr/local/include $base.c;;
+esac
+esac
+#rm $base.c

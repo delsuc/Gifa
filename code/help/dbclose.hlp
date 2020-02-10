@@ -1,0 +1,7 @@
+DBCLOSE array_name
+
+Closes the db file previously associated to the array  array_name by 
+a previous DBOPEN command.
+
+see also : DBOPEN
+

@@ -1,0 +1,35 @@
+There are two kinds of variables in the macro language :
+o User variables that are handled in macros
+o Contexts that hold the different internal states of the program
+In all cases, variable names are case insensitive.
+
+User variables :
+ can be set :
+    set a = 3
+ evaluated :
+    $a        (directly)
+    ($a+3)    (or in expressions)
+   
+Variables are usually local to a macro (or a formbox), unless 
+specified :
+	set b := 4
+	creates a variable $b that can be evaluated anywhere, (static and 
+global)
+
+Associative array can be built with the syntaxe :
+	set array["abc"] = 5
+Associative arrays can be linked to dbm data file (see DBMOPEN)
+Associative arrays can be scanned with FIND or FOREACH
+User variables can also be UNSET (removed from the memory)
+The total number of user vatiables is limited, as given by the 
+CONFIG command (the $VAR_MAX context)
+
+On the other hands, contexts can only be evaluated, but not set:
+	if ($dim != 2) ....
+see CONTEXTS for the list of all the context variables
+
+related contexts : $VAR_MAX
+
+see also : CONTEXTS FUNCTIONS SET UNSET MUNSET CONFIG
+           DBOPEN FIND FOREACH FORMBOX
+

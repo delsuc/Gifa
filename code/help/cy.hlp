@@ -1,0 +1,8 @@
+CY y
+Size in centimeters of the y-axis used for the graphic windows and 
+for the plot. Used by PLOT and STPL.
+ 
+related contexts : $CY
+
+see also : CX CZ PLOT STPL
+

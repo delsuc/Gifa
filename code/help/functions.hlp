@@ -1,0 +1,81 @@
+the following functions and operators are available within evaluated 
+expression :
+
+mathematical
+o	the regular 4 operations : + - / *  e.g. :	(2*3 - 1)
+o	the modulo function : %	(12 % 5)
+o	the power ^ operator	(3^2.1)
+o	the regular mathematical functions :
+	sqrt(x) cos(x) sin (x) atan(x) log(x) exp(x) abs(x) int(x) max(x,y) min(x,y), round(x)
+o	the special function power2(n) will have the value of the closest power of 2 below
+	or equal to the number n :  power2(130) will be 128 (2^7)
+
+the alphanumeric operators :
+o	the concatenation operator : //	('string1' // "string2"  )
+o	the formatting operator : ;equivalent to // ' ' //
+	("Value is:" ; $a)  is equivalent to  ("Value is:" // ' ' // $a)
+o	toupper(st) put string in upper case
+o	tolower(st) put string in lower case
+o	sp(i) generates a string of i blanks
+o	len(st) is the length of the string
+o	index(st1,st2) is the position of st2 located in st1, 0 if not present
+o	subst(st,i,j) is the substring from st, starting at i, ending at j
+o	isalpha(st) and isnumb(st) are true whenever st is (respectively)
+
+	alphanumeric or numeric list operators
+o	head(st) will be the first word in string st (blank separated)
+o	tail(st) will be the string st but the first word.
+o	headx(st,c) and tailx(st,c) are equivalent to head and tail but the character c 
+	is used rather than blank.
+o	the next element function : nextlm(array,entry). If i is an entry in the 
+	 associative array $array, the construction nextlm(array,i) will have 
+	 the value of the next available entry. The end of the array is notified 
+	 with an empty string. The series is also initialised with an empty string. 
+	 The series is gone through in the internal order which is not related neither 
+	 to the input order nor the sequential order. For instance the following macro 
+	 will print all the entries of the array $table :
+
+logical operators
+o	the numeral comparison operators : == != < > <= and >= for comparing numbers :
+		($x<=0.5)
+o	the string comparison s= (equal) and s! (different) for comparing strings :
+		($s s= 'name')
+o	the logical operators : | (or) and & (and) :	(($x<=0.5)&($s s= 'name'))
+o	the not operation : ! :	(!($i==1))    (!$arg)
+o	the function eof(file_name) will be true if the last input from file file_name 
+	 (with <file_name) had reached the end of the file, will be false otherwise.
+o	the function dbm(array_name) is true if array_name is bound to a dbm file with the DBOPEN command
+o	the function exist(var_name) will be true if var_name is a user variable either 
+	 local or global. e.g.
+	if (exist("i")) set j = ($i+1)
+	j is computed only if $i exists as a variable.
+	The special syntax (exist("foo[]")) checks whether the array foo exists wit 
+	h at least one index. It works both for regular and dbm arrays.
+
+data and file access functions
+o	the functions va1d(i), val2d(i,j) and val3d(i,j,k) returns the value of the 
+	 content of the main Gifa working buffers. In 2D i and j are the index in F1 
+	 and F2 respectively, in 3D in F1, F2 and F3. This replaces the old $VAL[] construct. 
+	 valamb(i,j) returns the value of the amoeba buffer.
+o	the hexist(name) function returns true or false whether the parameter name is 
+	 available in the header of the currently joined file. If this parameter is 
+	 available, the header(name) returns its value
+o	The sh(command) function permit to very easily call an operating system command 
+	 and the function returns the value of the first line returned by the command. 
+	 Look at the command SH for further details.
+o The fexist(file_name) return true if the file called file_name currently exists. 
+o	the functions   itoh(index,dim,axis), htoi(hertz,dim,axis), itop(index,dim,axis), 
+	 ptoi(ppm,dim,axis), htop(hertz dim, axis), ptoh(ppm,dim,axis), itos(index,dim,axis), 
+	 stoi(second,dim,axis), itod(index,dim,axis), dtoi(damping,dim,axis), 
+	 itot(index) and ttoi(tabulated) perform unit conversion. 
+	 Respectively : index to hertz and back; index to ppm and back; 
+	 hertz to ppm and back; index to second and back, index to damping factors and back; 
+	 index to tabulated and back.
+For each function, index, ppm, hertz, second, damping or tabulated is the value to be converted, 
+	 dim is the dimension to use (1, 2 or 3) and axis is the axis to use, depending on 
+	 which spectral widths and frequencies you want to use for the conversion. 
+	 Note that since there is only one tabulated axis that can be defined 
+	 the additional parameters are useless. If dim = 0, then the conversion is done 
+	 in the context of the currently JOINed file rather than in the context of the internal buffers.
+see also : VARIABLES CONTEXTS CONTROLS MACRO
+

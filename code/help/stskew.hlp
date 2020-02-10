@@ -1,0 +1,1 @@
+Determines how the horizontal lines are skewed during a stacked plot. If 0 no skewing occurs, if positive the plot is skewed to the right, if negative, the plot is skewed to the left.For instance, a value of -1.0 will skew the horizontal by 45¡ to the left. STSKEW gives nice effects in conjunction with STSHIFT. see also : STPL STPL?

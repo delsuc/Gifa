@@ -1,0 +1,9 @@
+NDISP n
+
+During a MaxEnt process, the display will refreshed every n 
+iteration. n=0 means never.
+
+related contexts : $NDISP
+
+see also : MAXENT INVLAP INVTLAP
+

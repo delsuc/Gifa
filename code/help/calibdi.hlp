@@ -1,0 +1,8 @@
+CALIBDI distance_ref rate_ref
+Sets the reference distance to a reference relaxation rate. Used 
+when computing interspin distances from nOe build-up measurements.
+
+related contexts : $CALIBDI[1] $CALIBDI[2] $DIST
+
+see also : RELAXRATE METH
+

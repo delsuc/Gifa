@@ -1,0 +1,290 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=iso-8859-1">
+	<TITLE>PEAK-TABLES, PEAK-PICKING LINE-FITTING AND INTEGRATION, THE PAR</TITLE>
+	<META NAME="GENERATOR" CONTENT="StarOffice/5.2 (Linux)">
+	<META NAME="CREATED" CONTENT="20010412;19261100">
+	<META NAME="CHANGEDBY" CONTENT="Thierry Gostan">
+	<META NAME="CHANGED" CONTENT="20010519;16070700">
+	<!-- This document was converted from RTF source: 
+By r2net 5.2.4 r2netcmd Unix 
+Translation:html.trn  $Revision: 1.55 $ $Revision: 1.34 $
+See http://www.logictran.com
+Filename:basic.rtf
+OutFileName:basic.html
+Application Directory:/home/gostan/r2net
+Subject:
+Author:
+Operator:
+Document Comments:
+Version Comments:
+Comments:StarWriter
+Keywords:
+Translation Date:04/12/2001
+Translation Time:15:05:53
+Translation Platform:Unix
+Number of Output files:50
+This File:basic-PEAK_TAB.html
+SplitDepth=2
+SkipNavPanel=0
+SkipLeadingToc=0
+SkipTrailingToc=1
+GenContents=1
+GenFrames=1
+GenIndex=0
+ -->
+	<STYLE>
+	<!--
+		A:visited { color: #808080 }
+		A:link { color: #cc0000 }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LINK="#cc0000" VLINK="#808080" BGCOLOR="#ffffff">
+<P ALIGN=CENTER STYLE="margin-bottom: 0cm"><A HREF="./basic-SIMULATI.html"><IMG SRC="./images/prev.gif" NAME="Image1" ALT="Previous " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="./basic-THE-3.html"><IMG SRC="./images/next.gif" NAME="Image2" ALT="Next " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="./basic-Title.html"><IMG SRC="./images/first.gif" NAME="Image3" ALT="Title Page " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="./basic-Contents.html"><IMG SRC="./images/contents.gif" NAME="Image4" ALT="Contents " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+</P>
+<HR>
+<UL>
+  <LI>
+    <P STYLE="margin-bottom: 0cm"><A HREF="./basic-PEAK_TAB.html#Heading1490">MAX, 
+      MINIMAX, PEAK</A> </P>
+  <LI>
+    <P STYLE="margin-bottom: 0cm"><A HREF="./basic-PEAK_TAB.html#Heading1499">Viewing 
+      : <font color="#CC0000">REFPEAKS</font>, pklist, SHOWPEAK, SHOWPEAKS, PLOTPEAKS.<FONT COLOR="#23ff23"></FONT></A> 
+    </P>
+  
+  <LI>
+    <P STYLE="margin-bottom: 0cm"><A HREF="./basic-PEAK_TAB.html#Heading1503">Modifying 
+      : PKSELECT, PKRM, pkrmi, pkrmz, PKCLEAR, PKCLEAN, PKRESET, POINT-&gt;PK, 
+      SETPEAK, SETPEAK2</A> </P>
+  <LI>
+    <P STYLE="margin-bottom: 0cm"><A HREF="./basic-PEAK_TAB.html#Heading1510">Storing 
+      : PKREAD, PKWRITE, PKRESET</A> </P>
+  <LI>
+    <P STYLE="margin-bottom: 0cm"><A HREF="./basic-PEAK_TAB.html#Heading1513">PKPROJ, 
+      PKSYM</A> </P>
+  <LI>
+    <P STYLE="margin-bottom: 0cm"><A HREF="./basic-PEAK_TAB.html#Heading1516">Integrating 
+      : INTEG, MSKINTEG, mskread, mskwrite, MSKMODIF, MSKCONC</A> </P>
+  <LI>
+    <P STYLE="margin-bottom: 0cm"><A HREF="./basic-PEAK_TAB.html#Heading1529">Line 
+      fitting : LINEFIT LINEFITD</A> </P>
+  <LI>
+    <P STYLE="margin-bottom: 0cm"><A HREF="./basic-PEAK_TAB.html#Heading1543">SUMREC</A> 
+    </P>
+  <LI>
+    <P><A HREF="./basic-PEAK_TAB.html#Heading1545">INT1D</A> </P>
+</UL>
+<HR>
+<H1><A NAME="Heading1484"></A><FONT SIZE=4><I><U>PEAK-TABLES,
+PEAK-PICKING LINE-FITTING AND INTEGRATION, THE PARIS MODULE</U></I></FONT></H1>
+<P><BR>The Gifa program has a complete capability to detect,
+integrate, line fit and manipulate peaks. <BR>This facility is based
+on an internal structure holding information on the last peaks
+detected. This internal structure is called the peak-table. 3 such
+peak tables are simultaneously held in the program, respectively for
+the 1D, 2D and 3D data sets. Peak tables can be loaded, listed, read
+and written onto disk, and peaks can be selectively removed form the
+table. The commands relative to the peak table always refer to the
+current peak table, as defined with the <TT><FONT FACE="Courier">DIM</FONT></TT>
+context. <BR>The peak table is used by the peak-picker module,
+integrator module, the line fitting module and the linear prediction
+module.</P>
+<H3><A NAME="Heading1490"></A><B>MAX, MINIMAX, PEAK</B></H3>
+<P>These commands permit to perform an automatic peak picking of the
+peak in the current data set (1D, 2D or 3D).You have first to choose
+a &quot;value-window&quot; which will be used by the peak-picker to
+select peaks in the data-set, the <TT><FONT FACE="Courier">MINIMAX</FONT></TT>
+command permits to select the upper and lower bound for this window.
+<BR>One way of doing is by searching for the largest and smallest
+points in the data-set with the MAX command, which set the default
+values for <TT><FONT FACE="Courier">MINIMAX</FONT></TT>. However, the
+smallest value has usually to be reset by the user to a more
+realistic value. For instance you can compute the mean level of noise
+with the <TT><FONT FACE="Courier">EVALN</FONT></TT> command, and
+enter the noise level time a given scalar as the minimum intensity
+for a peak :<BR><TT><FONT FACE="Courier">point ;select an empty
+area</FONT></TT><BR><TT><FONT FACE="Courier">max evaln %% minimax
+(4*$noise) % ; loads the value</FONT></TT><BR><BR>The command <TT><FONT FACE="Courier">PEAK</FONT></TT>
+will then find all the local maxima which lies within the upper and
+lower bounds in the data-set, and load the peak table. It will search
+for peaks only in the currently defined ZOOM window. The peak table
+will restrict its search to the currently displayed spectrum, thus
+permitting to perform a peak-picking on a restraint area of the
+spectrum by zooming at it. When using <TT><FONT FACE="Courier">PEAK</FONT></TT>
+in 2D and 3D, you will be prompted for a packing radius. Giving a
+non-zero value has the effect of &quot;packing&quot; or &quot;linking&quot;
+all the peaks which are less than n points apart from each other into
+the larger one, thus removing the entries of the smaller ones from
+the peak output. <BR>The macro <TT><FONT FACE="Courier">peak_pick</FONT></TT>
+has been designed to help in this process, and is called from the
+GUI.</P>
+<H3><A NAME="Heading1499"></A><B>Viewing : <font color="#000000">REFPEAKS,</font><font color="#00ff00"> 
+  </font>pklist, SHOWPEAK, SHOWPEAKS, PLOTPEAKS,<FONT COLOR="#00ff00"> </FONT></B></H3>
+<P>These commands are the basic commands for displaying the peak table.<BR>
+  <TT><FONT FACE="Courier">pklist i<I> j</I> </FONT></TT>will list the contents 
+  of the current peak table to the screen from peak <I>i</I> to peak <I>j</I>. 
+  <TT><FONT FACE="Courier">pklist %%</FONT></TT> will list the complete peak table. 
+  The origin of the peak table (picker, integrator, LP, etc...) is given, and 
+  all the descriptors of each peak. The unit used for the coordinates of the peaks 
+  depends on the context <TT><FONT FACE="Courier">UNIT</FONT></TT>. This command 
+  can be successfully used with the <TT><FONT FACE="Courier">CONNECT</FONT></TT> 
+  - <TT><FONT FACE="Courier">DISCONNECT</FONT></TT> commands to generate listings. 
+  It is a macro, so can modify it to fit you specific needs. <BR>
+  <font color="#000000">In the Peak menu, <font face="Courier, monospace">REFPEAKS 
+  </font>is used instead of <font face="Courier, monospace">SHOWPEAKS</font>, 
+  in order to display, at each time the screen is refresh, the peak table.</font> 
+  The commands <TT><FONT FACE="Courier">SHOWPEAKS</FONT></TT> and <TT><FONT FACE="Courier">PLOTPEAKS</FONT></TT> 
+  display respectively on the screen or on the current plot, the content of the 
+  peak table. <TT><FONT FACE="Courier">SHOWPEAK</FONT></TT> permits to highlight 
+  a specific peak in the peak table, by drawing a cross. <TT><FONT FACE="Courier">SHOWPEAKS</FONT></TT> 
+  and <TT><FONT FACE="Courier">SHOWPEAK</FONT></TT> uses the current definition 
+  of <TT><FONT FACE="Courier">SCOLOR</FONT></TT>.</P>
+<P>&nbsp;</P>
+<H3><A NAME="Heading1503"></A><B>Modifying : PKSELECT, PKRM, pkrmi,
+pkrmz, PKCLEAR, PKCLEAN, PKRESET, POINT-&gt;PK, SETPEAK, SETPEAK2</B></H3>
+<P>These commands are the basic commands for the modifying the
+content of the peak table. <BR><TT><FONT FACE="Courier">PKSELECT</FONT></TT>
+permits to select specific entry into the peak table. Non selected
+entry will be lost. <TT><FONT FACE="Courier">PKCLEAR</FONT></TT>
+removes all entries from the peak table. It is thus equivalent to
+<TT><FONT FACE="Courier">PKSELECT 0</FONT></TT>. On the other hand
+<TT><FONT FACE="Courier">PKRM</FONT></TT> permits to remove a single
+entry in the current peak table. <BR>The two macros : <TT><FONT FACE="Courier">pkrmi</FONT></TT>
+and <TT><FONT FACE="Courier">pkrmz</FONT></TT> have been designed to
+graphically help the user in removing peaks. <TT><FONT FACE="Courier">pkrmi</FONT></TT>
+remove one peak, clicked by the user; <TT><FONT FACE="Courier">pkrmz</FONT></TT>
+removes all the peaks located within one region. <BR><TT><FONT FACE="Courier">PKCLEAN</FONT></TT>
+permits to remove entries in the peak table with intensities smaller
+than a given value. <TT><FONT FACE="Courier">PKRESET</FONT></TT>
+reload the intensities in the peak-table, as found on the data-set.
+<BR><TT><FONT FACE="Courier">POINT-&gt;PK</FONT></TT> adds the
+content of the point stack (see above) to the current peak table.
+This permits to interactively add missing peaks in the peak table.
+<BR><TT><FONT FACE="Courier">SETPEAK</FONT></TT> and <TT><FONT FACE="Courier">SETPEAK2</FONT></TT>
+are other commands for modifying the content of the peak table : the
+parameter of the peaks can be manually entered with these commands.
+<TT><FONT FACE="Courier">SETPEAK</FONT></TT> permits the user to
+enter all the parameters of the peak, while <TT><FONT FACE="Courier">SETPEAK2</FONT></TT>
+requires only the coordinates.</P>
+<H3><A NAME="Heading1510"></A><B>Storing : PKREAD, PKWRITE, PKRESET</B></H3>
+<P>These two commands permits to read and write peak tables on the
+disk. The files created are in text format one peak per line in free
+format. When reading with <TT><FONT FACE="Courier">PKREAD</FONT></TT>,
+the values read can either be added to the current peak table, or
+used as a new peak table. <TT><FONT FACE="Courier">PKREAD</FONT></TT>
+loads all the values as stored in the file, thus the intensities are
+also reloaded, the command <TT><FONT FACE="Courier">PKRESET</FONT></TT>
+permits to compute again the intensities from the peak position.
+<TT><FONT FACE="Courier">PKRESET</FONT></TT> is also useful when the
+data set has changed.</P>
+<H3><A NAME="Heading1513"></A><B>PKPROJ, PKSYM</B></H3>
+<P>These commands permit to perform mathematics on the 2D peak table.
+<TT><FONT FACE="Courier">PKPROJ</FONT></TT> will load the 1D peak
+table with content of the 2D peak table projected along one
+dimension. <TT><FONT FACE="Courier">PKSYM</FONT></TT> will symetrise
+the 2D peak table either removing or adding non symmetrical values.</P>
+<H3><A NAME="Heading1516"></A><B>Integrating : INTEG, MSKINTEG,
+mskread, mskwrite, MSKMODIF, MSKCONC</B></H3>
+<P><TT><FONT FACE="Courier">INTEG</FONT></TT> integrates all the peak
+found in the peak-table. This is an implementation of the PARIS
+algorithm (V.Stoven et al. J.Magn.Reson. 82-1). The integration of a
+peak is performed by finding a contour spanning the largest extension
+of the peak (the amoeba); the sum of the points under this amoeba is
+then computed. The defined amoebae are stored as a matrix within the
+program. <BR>The amoeba is determined by four criteria, with four
+parameters associated : RATIO, SLOPE, THRESHOLD, and RADIUS. The
+first criterion that will trigger will determine where the extension
+of the amoeba should stop.<BR>RATIO triggers when the ratio between
+the largest point in the peak and the current evaluated point gets
+below RATIO.<BR>SLOPE triggers when the slope changes. A value of 0
+will be triggered anytime the slope changes from negative to positive
+(thus starting to climb on another peak); a larger value will permit
+more freedom on the slope.<BR>THRESHOLD will trigger whenever the
+evaluated point is below the (absolute) value of THRESHOLD.<BR>RADIUS
+determines the maximum extent of the amoeba from the central peak.
+<BR>When using the integrator, the noise level and the systematic
+offset of the surface should have been evaluated with the <TT><FONT FACE="Courier">EVALN</FONT></TT>
+commands <BR>There are two additional contexts that determine fully
+the PARIS module : <TT><FONT FACE="Courier">SIGN_PEAK</FONT></TT>
+tells the peak-picker if the peaks are to be found either as positive
+peaks or as negatives peaks. <TT><FONT FACE="Courier">ZERO_QU</FONT></TT>
+tells the integrator that the amoebae should be computed on the
+absolute value of the surface, (but the integrator will still work on
+the normal surface). This is very useful when working on NOESY
+spectra where there is zero-quantum coherences signals (the
+integration of which is zero). <BR>The <TT><FONT FACE="Courier">SHOW
+AMOEBA</FONT></TT> command shows the amoebae that have been found at
+the last integration step. <BR>The <TT><FONT FACE="Courier">MSKINTEG</FONT></TT>
+will integrate the peaks as defined by the current peak table and
+mask (amoeba) matrix. This command permits to integrate several
+experiments using the same amoeba definition. The amoeba matrix can
+moved around with the <TT><FONT FACE="Courier">PUT</FONT></TT> and
+<TT><FONT FACE="Courier">GET</FONT></TT> commands. The 2 macro
+<TT><FONT FACE="Courier">mskread</FONT></TT> and <TT><FONT FACE="Courier">mskwrite</FONT></TT>
+permit to read and write directly amoeba matrices along with peak
+tables. <BR><TT><FONT FACE="Courier">mskread</FONT></TT> and <TT><FONT FACE="Courier">mskwrite</FONT></TT>
+are 2 macros meant for storing on file and retrieving the current
+peak and amoeba definitions. <BR>The amoeba can also be modified with
+the <TT><FONT FACE="Courier">MSKMODIF</FONT></TT> and <TT><FONT FACE="Courier">MSKCONC</FONT></TT>
+commands which permit respectively to set a given pixel to a given
+peak (or to remove it from the amoeba definition), and to concatenate
+two amoebae.</P>
+<H3><A NAME="Heading1529"></A><B>Line fitting : LINEFIT LINEFITD</B></H3>
+<P>These commands start a line fitter, based on a Levenberg-Marquardt minimiser, 
+  convergence is determine either by the number of iteration (context <TT><FONT FACE="Courier">ITER</FONT></TT>) 
+  or by the size of the step (context TOLERANCE). Fitted line can be either Lorentzian 
+  or Gaussian, as chosen by the parameter of the command LINEFIT. The content 
+  of the peak table is used as starting values, and the result of the fit is stored 
+  back in the peak table. The quality of the fit is estimated with a <IMG SRC="./images/Equation4.gif" NAME="Image9" ALIGN=BOTTOM WIDTH=18 HEIGHT=21 BORDER=0>value, 
+  which is computed as the sum of the residues : <IMG SRC="./images/Equation5.gif" NAME="Image10" ALIGN=MIDDLE WIDTH=130 HEIGHT=48 BORDER=0></P>
+<P>Where Y is the recomputed spectrum, y is the current spectrum and <IMG SRC="./images/Equation6.gif" NAME="Image11" ALIGN=BOTTOM WIDTH=19 HEIGHT=21 BORDER=0>is 
+  the variance of the noise, estimated from the NOISE command. Thus a correct 
+  fit corresponds to a final <IMG SRC="./images/Equation4.gif" NAME="Image12" ALIGN=BOTTOM WIDTH=18 HEIGHT=21 BORDER=0>equal 
+  to 1.<BR>
+  Optimized parameters are returned as updated values in the
+peak table. Error bars are computed from the covariance matrix
+computed during the fit. Values and error bars are available as
+contexts for further processing. Note that error bars are equal to
+two times the standard deviation estimated from the covariance
+matrix, thus corresponding to 95% confidence limit. If you prefer the
+68.3% confidence limit, divide all error bars by 2.<BR>Results can be
+examine with the standard commands <TT><FONT FACE="Courier">SHOW
+LINEFIT</FONT></TT> or <TT><FONT FACE="Courier">SHOWPEAKS</FONT></TT>.
+As an addition, macros called <TT><FONT FACE="Courier">show_fit</FONT></TT>
+and <TT><FONT FACE="Courier">plot_fit</FONT></TT> are provided, which
+permit to display/plot a composite display of the current data set
+with the fitted lines superimposed on the spectrum.<BR>All the values
+extracted during the fit are actually stored into the peak table. All
+the fitted parameters are stored back as the peak parameters, as
+welll as the error bars on the fitted values. The peaks (or
+quantities) which are not fitted stay unmodified.<BR>The command
+:<BR><TT><FONT FACE="Courier">put data get linefit mult -1
+adddata</FONT></TT><BR>Permits to obtain the residue (that part of
+the data which is not fitted), the command<BR><TT><FONT FACE="Courier">get
+data</FONT></TT><BR>returning to the current data-set.<BR>The
+<TT><FONT FACE="Courier">LINEFITD</FONT></TT> (linefit detailed)
+command permits to finely select which peak and which parameters will
+be fitted, and which will not, for instance fitting only the
+amplitude in a series of relaxation measurements, or fitting only the
+frequencies in a titration.</P>
+<H3><A NAME="Heading1543"></A><B>SUMREC</B></H3>
+<P>is a simpler integrator that will integrate on a rectangular area
+determined by the user. You can use point to select the integration
+area.</P>
+<H3><A NAME="Heading1545"></A><B>INT1D</B></H3>
+<P STYLE="margin-bottom: 0cm">Is a simple graphical integrator for 1D
+data-sets, similar to the old CW mode. Its actually replaces the
+contents of the 1D buffer with the running integration of it.</P>
+<HR>
+<P ALIGN=CENTER STYLE="margin-bottom: 0cm"><A HREF="./basic-SIMULATI.html"><IMG SRC="./images/prev.gif" NAME="Image5" ALT="Previous " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="./basic-THE-3.html"><IMG SRC="./images/next.gif" NAME="Image6" ALT="Next " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="./basic-Title.html"><IMG SRC="./images/first.gif" NAME="Image7" ALT="Title Page " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="./basic-Contents.html"><IMG SRC="./images/contents.gif" NAME="Image8" ALT="Contents " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+</P>
+</BODY>
+</HTML>

@@ -1,0 +1,6 @@
+   ADDH  name_of_file
+
+Same as ADD, with H format files.
+
+see also : ADD ADDDATA MULT CONCAT
+

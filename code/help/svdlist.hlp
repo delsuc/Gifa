@@ -1,0 +1,5 @@
+SVDLIST i j
+List the singular values from index i to j.
+
+see also : SVDCLEAN1 SVD->AR SVD->DT
+

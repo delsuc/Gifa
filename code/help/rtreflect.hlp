@@ -1,0 +1,11 @@
+RTREFLECT n
+Calculate the inverse conjugate of roots lying outside the unity 
+circle. The modified roots are let in the same root array.
+n = 1 : forward roots
+n = 2 : backward roots
+
+related contexts : $NRT
+
+see also : RT->AR, AR->RT, RTLIST, RTPIV, RTCLEAN, RTMATCH, 
+    RTSELECT, RTINV, RT->PK, ORDER
+

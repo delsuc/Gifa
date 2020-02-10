@@ -1,0 +1,13 @@
+UNIT value
+	The context UNIT will determine the unit that will be used
+by the program for displaying dataset cordinates  
+UNIT can take the values INDEX (number of 
+channel) HERTZ (based on SPECW and OFFSET), PPM (HERTZ divided by 
+FREQ), SECOND (usefull only for FID), TABULATED (values are taken from 
+the TAB buffer) or DAMPING (in damping values). All other values are 
+invalid.
+
+related contexts : $UNIT
+
+see also : UNIT_Y AXIS choose_unit pklist SPECW OFFSET FREQ DMIN DMAX PUT calib point PLOTAXIS plotaxis_x
+

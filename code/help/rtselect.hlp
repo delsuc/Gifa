@@ -1,0 +1,12 @@
+RTSELECT n index()
+Select the roots whose index() are given. To end selection, enter 
+the index 0.
+n = 1 : forward roots
+n = 2 : backward roots
+n = 3 : matched roots
+
+related contexts : $NRT
+
+see also : RT->AR, AR->RT, RTLIST, RTPIV, RTCLEAN, RTMATCH, 
+   RTREFLECT, RTINV, RT->PK, ORDER
+

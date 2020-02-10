@@ -1,0 +1,15 @@
+ONERRORGOTO label
+
+this command changes the standard error behaviour in the macro langage.
+when this is set, errors do not abort macro execution
+but rather redirect the control flow to the label given as argument,
+in a manner equivalent to a GOTO.
+Active only within the macro where it is issued (errors are still valid in
+called macros )
+
+The ONERRORGOTO condition is clear at once after the error.
+
+You can also clear the ONERRORGOTO by giving a blank argument (" ") to the command,
+thus reactivating errors.
+
+see also : ERROR

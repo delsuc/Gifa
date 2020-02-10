@@ -1,0 +1,10 @@
+gifaplot file_name plotter-type
+
+in /usr/local/gifa/com
+
+This is a shell script which is called by the PAGE command, whenenver a 
+plot is to be issued to the currently defined plotter.
+
+This shell script should adapted to your current set-up.
+
+see also : PAGE

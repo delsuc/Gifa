@@ -1,0 +1,7 @@
+A very crude 1D graphic integrator. The data is replaced by the 
+running sum of the previous data. Better integrals will be obtain 
+with base-line corrected spectra. The curve can then be optimized 
+with BCORR, ADDBASE, etc...
+ 
+see also : INTEG
+

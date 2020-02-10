@@ -1,0 +1,6 @@
+ 1 create numeric output of the data for each Maximum Entropy 
+iteration
+Mostly used for debugging purpose.
+ 
+see also : MAXENT
+

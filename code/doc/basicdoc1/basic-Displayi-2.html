@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=iso-8859-1">
+	<TITLE>Displaying and Plotting 3D Volumes</TITLE>
+	<META NAME="GENERATOR" CONTENT="StarOffice/5.2 (Linux)">
+	<META NAME="CREATED" CONTENT="20010412;18580500">
+	<META NAME="CHANGEDBY" CONTENT="Thierry Gostan">
+	<META NAME="CHANGED" CONTENT="20010412;18584800">
+	<!-- This document was converted from RTF source: 
+By r2net 5.2.4 r2netcmd Unix 
+Translation:html.trn  $Revision: 1.55 $ $Revision: 1.34 $
+See http://www.logictran.com
+Filename:basic.rtf
+OutFileName:basic.html
+Application Directory:/home/gostan/r2net
+Subject:
+Author:
+Operator:
+Document Comments:
+Version Comments:
+Comments:StarWriter
+Keywords:
+Translation Date:04/12/2001
+Translation Time:15:05:52
+Translation Platform:Unix
+Number of Output files:50
+This File:basic-Displayi-2.html
+SplitDepth=2
+SkipNavPanel=0
+SkipLeadingToc=0
+SkipTrailingToc=1
+GenContents=1
+GenFrames=1
+GenIndex=0
+ -->
+	<STYLE>
+	<!--
+		A:visited { color: #808080 }
+		A:link { color: #cc0000 }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LINK="#cc0000" VLINK="#808080" BGCOLOR="#ffffff">
+<P ALIGN=CENTER STYLE="margin-bottom: 0cm"><A HREF="basic-DISPLAYI.html"><IMG SRC="images/up.gif" NAME="Image1" ALT="Up " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Plane.html"><IMG SRC="images/prev.gif" NAME="Image2" ALT="Previous " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Strip.html"><IMG SRC="images/next.gif" NAME="Image3" ALT="Next " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Title.html"><IMG SRC="images/first.gif" NAME="Image4" ALT="Title Page " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Contents.html"><IMG SRC="images/contents.gif" NAME="Image5" ALT="Contents " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+</P>
+<HR>
+<UL>
+	<LI><P STYLE="margin-bottom: 0cm"><A HREF="basic-Displayi-2.html#Heading1369">DISP3D,
+	REF3D</A> 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm"><A HREF="basic-Displayi-2.html#Heading1371">CX,
+	CY, CZ, ALPHA, BETA, GAMA, AXIS3D, ZNOT, OFFSET3D, SCALE3D</A> 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm"><A HREF="basic-Displayi-2.html#Heading1373">DISP3D?,
+	CHECK3D</A> 
+	</P>
+	<LI><P><A HREF="basic-Displayi-2.html#Heading1377">PLOT3D</A> 
+	</P>
+</UL>
+<HR>
+<H2><A NAME="Heading1367"></A><I><U>Displaying and Plotting 3D
+Volumes</U></I></H2>
+<P>It is possible to display 3D pictures of 3D data set. The
+principle is to draw a series of contour plots for each axes in a 3D
+space. This kind of display is useful for checking the quality of a
+3D data-set, and also for making nice pictures.</P>
+<H3><A NAME="Heading1369"></A><B>DISP3D, REF3D</B></H3>
+<P><TT><FONT FACE="Courier">DISP3D</FONT></TT> will open a window
+devoted to 3D display. No picture is displayed when opening because
+of the time a 3D display usually takes to compute. Unlike the 1D and
+2D display, the 3D display must be forced with the <TT><FONT FACE="Courier">REF3D</FONT></TT>
+command, and will remain unchanged even if the data or the parameters
+are changed. As usual ^C permits to stop the 3D display being
+computed.</P>
+<H3><A NAME="Heading1371"></A><B>CX, CY, CZ, ALPHA, BETA, GAMA,
+AXIS3D, ZNOT, OFFSET3D, SCALE3D</B></H3>
+<P>This commands determine the aspect of the 3D display. The volume
+size is described by the <TT><FONT FACE="Courier">CX, CY, CZ</FONT></TT>
+contexts. When opening the 3D window the size is taken to be equal to
+the largest of the 3 contexts. <TT><FONT FACE="Courier">ALPHA, BETA</FONT></TT>
+and <TT><FONT FACE="Courier">GAMA</FONT></TT> are the angles which
+describe the view point. <TT><FONT FACE="Courier">AXIS3D</FONT></TT>
+determines which planes will be contoured. A value of F123 describes
+a complete contour, but simpler display (and faster) may be chosen.
+Usually a F1 value is the fastest choice. <TT><FONT FACE="Courier">ZNOT</FONT></TT>
+is the focal with which the volume is displayed. A large value
+corresponds to a &laquo;&#160;tele&#160;&raquo; position, a small
+value to a &laquo;&#160;wide&#160;&raquo;. <TT><FONT FACE="Courier">OFFSET3D</FONT></TT>
+determines the position of the 0 point, values range from 0 to 1.
+<TT><FONT FACE="Courier">SCALE3D</FONT></TT> is a scaling factor
+applied to the final image.</P>
+<H3><A NAME="Heading1373"></A><B>DISP3D?, CHECK3D</B></H3>
+<P>All these parameters can be easily entered and checked with the
+<TT><FONT FACE="Courier">DISP3D?</FONT></TT> macro. An interactive,
+graphical mode is provided with the command <TT><FONT FACE="Courier">CHECK3D</FONT></TT>,
+which display interactively an empty cube, thus permitting to modify
+the main ones. <BR>Buttons are available with the <TT><FONT FACE="Courier">CHECK3D</FONT></TT>
+command, which permits to directly choose some typical points of view
+(along each axis, along the main 3D diagonal of the cube). See above
+the definition of the box in the Graphic User Interface manual part.</P>
+<H3><A NAME="Heading1377"></A><B>PLOT3D</B></H3>
+<P>This command generate on a plot file a plot equivalent to the
+display obtained with the <TT><FONT FACE="Courier">REF3D</FONT></TT>
+command. The plot file must then be closed with the PAGE command, see
+the chapter on plotting.</P>
+<HR>
+<P ALIGN=CENTER STYLE="margin-bottom: 0cm"><A HREF="basic-DISPLAYI.html"><IMG SRC="images/up.gif" NAME="Image6" ALT="Up " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Plane.html"><IMG SRC="images/prev.gif" NAME="Image7" ALT="Previous " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Strip.html"><IMG SRC="images/next.gif" NAME="Image8" ALT="Next " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Title.html"><IMG SRC="images/first.gif" NAME="Image9" ALT="Title Page " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Contents.html"><IMG SRC="images/contents.gif" NAME="Image10" ALT="Contents " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+</P>
+</BODY>
+</HTML>

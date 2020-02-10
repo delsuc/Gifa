@@ -1,0 +1,10 @@
+Permits to click once on the data-set. The top value on the point 
+stak : context variables, $POINTX[1], $POINTY[1] and $BUTTON are set 
+accordingly. If $NPOINT is zero (after a POINT_CLEAR) it is set to 
+1, unchanged otherwise.
+Useful for macros.
+
+related contexts : $NPOINT $POINTX[1] $POINTY[1] $BUTTON
+
+see also : ZM POINT_PUSH point
+

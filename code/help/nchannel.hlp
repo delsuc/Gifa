@@ -1,0 +1,16 @@
+Context which holds the number of channels for multi-channel Maximum Entropy
+
+If NCHANNEL is equal to n>1, then the filter buffer is 
+supposed to hold n different versions of the filter function (thus 
+filter_size = n*size_of_data). n versions of the spectrum are 
+reconstructed from the data, corresponding to the n different 
+filters. To be active, FILTER should be set to 2, and the filter 
+buffer loaded "by hand" with the PUT FILTER command. You can then 
+manipulate the MaxEnt spectrum in 2D mode with the following sequence :
+
+Gifa> DIM 2 CHSIZE 1 n*size_of_one_spectrum PUT ROW 1 MODIFYSIZE n %
+
+related contexts : $NCHANNEL
+
+see also : PUT FILTER SHOW MAXENT
+

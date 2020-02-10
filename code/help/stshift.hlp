@@ -1,0 +1,7 @@
+Parameter for STPL.
+STPL will shift each new by stshift points to the right during the 
+plot. May be negative, null or positive; may be fractional.
+Default is 0.5.
+ 
+see also : STPL STPL?
+

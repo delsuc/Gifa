@@ -1,0 +1,7 @@
+Calculates the autoregressive coefficients directly from the data 
+using the Burg method. 
+
+related contexts : $ORDER $NAR
+
+see also : AR->DT BURG ARLIST ORDER
+

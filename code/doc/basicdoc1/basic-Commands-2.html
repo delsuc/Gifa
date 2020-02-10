@@ -1,0 +1,275 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=iso-8859-1">
+	<TITLE>Commands for using the Cache</TITLE>
+	<META NAME="GENERATOR" CONTENT="StarOffice/5.2 (Linux)">
+	<META NAME="CREATED" CONTENT="20010412;18242100">
+	<META NAME="CHANGEDBY" CONTENT="Thierry Gostan">
+	<META NAME="CHANGED" CONTENT="20010412;18323200">
+	<!-- This document was converted from RTF source: 
+By r2net 5.2.4 r2netcmd Unix 
+Translation:html.trn  $Revision: 1.55 $ $Revision: 1.34 $
+See http://www.logictran.com
+Filename:basic.rtf
+OutFileName:basic.html
+Application Directory:/home/gostan/r2net
+Subject:
+Author:
+Operator:
+Document Comments:
+Version Comments:
+Comments:StarWriter
+Keywords:
+Translation Date:04/12/2001
+Translation Time:15:05:52
+Translation Platform:Unix
+Number of Output files:50
+This File:basic-Commands-2.html
+SplitDepth=2
+SkipNavPanel=0
+SkipLeadingToc=0
+SkipTrailingToc=1
+GenContents=1
+GenFrames=1
+GenIndex=0
+ -->
+	<STYLE>
+	<!--
+		A:visited { color: #808080 }
+		A:link { color: #cc0000 }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LINK="#cc0000" VLINK="#808080" BGCOLOR="#ffffff">
+<P ALIGN=CENTER STYLE="margin-bottom: 0cm"><A HREF="basic-WORKING.html"><IMG SRC="images/up.gif" NAME="Image1" ALT="Up " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Detailed.html"><IMG SRC="images/prev.gif" NAME="Image2" ALT="Previous " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-UNDERSTA.html"><IMG SRC="images/next.gif" NAME="Image3" ALT="Next " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Title.html"><IMG SRC="images/first.gif" NAME="Image4" ALT="Title Page " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Contents.html"><IMG SRC="images/contents.gif" NAME="Image5" ALT="Contents " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+</P>
+<HR>
+<UL>
+	<LI><P STYLE="margin-bottom: 0cm"><A HREF="basic-Commands-2.html#Heading1409">JOIN,
+	DISJOIN, LISTFILEC</A> 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm"><A HREF="basic-Commands-2.html#Heading1411">dataset,
+	GETHEADER, PUTHEADER </A>
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm"><A HREF="basic-Commands-2.html#Heading1413">GETC,
+	PUTC</A> 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm"><A HREF="basic-Commands-2.html#Heading1441">SHOWC</A>
+		</P>
+	<LI><P STYLE="margin-bottom: 0cm"><A HREF="basic-Commands-2.html#Heading1446">FLUSH,
+	FLUSHCACHE</A> 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm"><A HREF="basic-Commands-2.html#Heading1450">NEWFILEC</A>
+		</P>
+	<LI><P STYLE="margin-bottom: 0cm"><A HREF="basic-Commands-2.html#Heading1453">READC,
+	WRITEC</A> 
+	</P>
+	<LI><P><A HREF="basic-Commands-2.html#Heading1456">Using macro :
+	proc2d proc3d proj3d easy2d</A> 
+	</P>
+</UL>
+<HR>
+<H2><A NAME="Heading1407"></A><I><U>Commands for using the Cache</U></I></H2>
+<P>Working with the cache system consists in creating a file in
+standard format (with <TT><FONT FACE="Courier">WRITE</FONT></TT> or
+with <TT><FONT FACE="Courier">NEWFILEC</FONT></TT>), connecting to
+the file without actually reading the file (with <TT><FONT FACE="Courier">JOIN</FONT></TT>),
+and applying the processing either row by row (1D and 2D) or plane by
+plane (3D). 
+</P>
+<H3><A NAME="Heading1409"></A><B>JOIN, DISJOIN, LISTFILEC</B></H3>
+<P>The command <TT><FONT FACE="Courier">JOIN</FONT></TT> permits to
+connect the program to a standard file format, without actually
+loading any data into memory. The effect is to load the contexts that
+describe the connected file (such as size, dimensionality, itype,
+etc... see below the variable paragraph). Several files can be <TT><FONT FACE="Courier">JOINed</FONT></TT>
+independently, the contexts will always hold the parameters of the
+last <TT><FONT FACE="Courier">JOINed</FONT></TT> file. <TT><FONT FACE="Courier">DISJOIN</FONT></TT>
+will disconnect the program from the currently connected file, any
+modified data on the data-set will be saved onto the file. <TT><FONT FACE="Courier">LISTFILEC</FONT></TT>
+output the list of the currently <TT><FONT FACE="Courier">JOINed</FONT></TT>
+file.</P>
+<H3><A NAME="Heading1411"></A><B>dataset, GETHEADER, PUTHEADER </B>
+</H3>
+<P><TT><FONT FACE="Courier">dataset</FONT></TT> lists the value of
+the contexts describing the last <TT><FONT FACE="Courier">JOINed</FONT></TT>
+data-set. <TT><FONT FACE="Courier">PUTHEADER</FONT></TT> permits to
+specifically modify a parameter of the currently connected data-set,
+the modification is directly stored to the file(after a <TT><FONT FACE="Courier">FLUSH</FONT></TT>
+or a <TT><FONT FACE="Courier">DISJOIN</FONT></TT>). The parameters
+handled by Gifa (as returned by dataset) can be modified, but any
+parameter can be put into the header with this command. <TT><FONT FACE="Courier">GETHEADER</FONT></TT>
+permits to read the value of parameter in the file header. The read
+value is available in the <TT><FONT FACE="Courier">$c_header</FONT></TT>
+variable.</P>
+<H3><A NAME="Heading1413"></A><B>GETC, PUTC</B></H3>
+<P>This two commands permits to move data back and forth between the
+file and the main working memory. <BR><TT><FONT FACE="Courier">GETC</FONT></TT>
+loads data from the file to the memory; <TT><FONT FACE="Courier">PUTC</FONT></TT>
+copies the content of the memory to the file. Both commands have a
+similar syntax. They permit to handle data areas as well as complete
+lines, planes and cubes. The action taken depends on the
+dimensionality of the <TT><FONT FACE="Courier">JOINed</FONT></TT>
+file as well as the value of <TT><FONT FACE="Courier">DIM</FONT></TT>
+in the Gifa working context.</P>
+<PRE STYLE="margin-left: 6.09cm; margin-bottom: 0.5cm">dimensionality of the JOINed file :</PRE>
+<TABLE BORDER=1 CELLPADDING=2 CELLSPACING=2>
+	<COL WIDTH=121>
+	<COL WIDTH=171>
+	<COL WIDTH=171>
+	<COL WIDTH=171>
+	<TR VALIGN=TOP>
+		<TD WIDTH=121>
+			<P>value of dim :</P>
+		</TD>
+		<TD WIDTH=171>
+			<P ALIGN=CENTER>1D</P>
+		</TD>
+		<TD WIDTH=171>
+			<P ALIGN=CENTER>2D</P>
+		</TD>
+		<TD WIDTH=171>
+			<P ALIGN=CENTER>3D</P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=121>
+			<P ALIGN=RIGHT>1D</P>
+		</TD>
+		<TD WIDTH=171>
+			<P ALIGN=CENTER>1D area</P>
+		</TD>
+		<TD WIDTH=171>
+			<P ALIGN=CENTER>1D area</P>
+		</TD>
+		<TD WIDTH=171>
+			<P ALIGN=CENTER>1D area</P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=121>
+			<P ALIGN=RIGHT>2D</P>
+		</TD>
+		<TD WIDTH=171>
+			<P ALIGN=CENTER>not applicable</P>
+		</TD>
+		<TD WIDTH=171>
+			<P ALIGN=CENTER>2D area</P>
+		</TD>
+		<TD WIDTH=171>
+			<P ALIGN=CENTER>2D area</P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=121>
+			<P ALIGN=RIGHT>3D</P>
+		</TD>
+		<TD WIDTH=171>
+			<P ALIGN=CENTER>not applicable</P>
+		</TD>
+		<TD WIDTH=171>
+			<P ALIGN=CENTER>not applicable</P>
+		</TD>
+		<TD WIDTH=171>
+			<P ALIGN=CENTER>3D area</P>
+		</TD>
+	</TR>
+</TABLE>
+<P><BR><BR>
+</P>
+<P>general syntax is :<BR><TT><FONT FACE="Courier">GETC / PUTC low up</FONT></TT>
+<BR>in 1D, where low and up determines the area to load, or<BR><TT><FONT FACE="Courier">GETC
+/ PUTC axis ... index ... low up ...</FONT></TT> <BR>in 2D and 3D
+where the number of axes, indexes and coordinates depends on the kind
+of transfer.<BR>See per command manual for the detailed syntax.</P>
+<H3><A NAME="Heading1441"></A><B>SHOWC</B></H3>
+<P>This command permits to display a currently <TT><FONT FACE="Courier">JOINed</FONT></TT>
+data-set, without actually loading it into the main memory. All the
+current display parameters are used for the display, but the scale
+which has to be defined to the command. The coordinates of the
+current zoom window used for the display is converted to ppm, and
+used for the display of the <TT><FONT FACE="Courier">JOINed</FONT></TT>
+data-set. This permits to display spectra acquired in very different
+conditions.<BR>The <TT><FONT FACE="Courier">SHOWC</FONT></TT> command
+does not actually load the whole data-set in memory for displaying,
+plays game with the cache memory. This is why it is slower than the
+regular display.<BR>This command is used in the <TT><FONT FACE="Courier">super1d</FONT></TT>
+and <TT><FONT FACE="Courier">super2d</FONT></TT> macros which permit
+to overlay several display on screen.</P>
+<H3><A NAME="Heading1446"></A><B>FLUSH, FLUSHCACHE</B></H3>
+<P>The <TT><FONT FACE="Courier">GETC, PUTC</FONT></TT> commands do
+not read and write data directly from the disk, but from the cache
+memory. If some data are modified, the cache system takes the burden
+of updating the file when needed. However, in certain cases, it might
+be needed to have an updated file. <BR><TT><FONT FACE="Courier">FLUSH</FONT></TT>
+flushes onto disk the modified data corresponding the currently
+<TT><FONT FACE="Courier">JOINed</FONT></TT> file. <TT><FONT FACE="Courier">FLUSHCACHE</FONT></TT>
+will flush all the file currently <TT><FONT FACE="Courier">JOINed</FONT></TT>.</P>
+<H3><A NAME="Heading1450"></A><B>NEWFILEC</B></H3>
+<P>This command creates a template for a standard file format, and
+reserve the room for the data. The command prompts the user for all
+the parameters that will be needed to create that file. It will be
+then possible to fill that file with the <TT><FONT FACE="Courier">PUTC</FONT></TT>
+command. Note that the file created with the <TT><FONT FACE="Courier">NEWFILEC</FONT></TT>
+command are in 'write only' mode. This strange mode consist to a file
+on which only <TT><FONT FACE="Courier">PUTC</FONT></TT> is available,
+and in writing blocks on the file without checking if data were
+already present. This is fine as long as you scan regularly the
+output file with a <TT><FONT FACE="Courier">for i =1 to $c_size..</FONT></TT>
+loop. Thus random writing on such files, even though not forbidden,
+produces wrong results.</P>
+<H3><A NAME="Heading1453"></A><B>READC, WRITEC</B></H3>
+<P>This two commands have been already seen in a previous paragraph.
+They are strictly equivalent to the <TT><FONT FACE="Courier">READ
+WRITE</FONT></TT> command. They could have been developed as macros,
+using the <TT><FONT FACE="Courier">JOIN</FONT></TT> and <TT><FONT FACE="Courier">GETC</FONT></TT>
+commands for <TT><FONT FACE="Courier">READC</FONT></TT>; and <TT><FONT FACE="Courier">NEWFILEC</FONT></TT>
+and <TT><FONT FACE="Courier">PUTC</FONT></TT> for <TT><FONT FACE="Courier">WRITEC</FONT></TT>.</P>
+<H3><A NAME="Heading1456"></A><B>Using macro : proc2d proc3d proj3d
+easy2d</B></H3>
+<P>A set of macro is provided to process on file data : <TT><FONT FACE="Courier">proc2d</FONT></TT>
+and <TT><FONT FACE="Courier">proc3d</FONT></TT> in
+<TT><FONT FACE="Courier">/usr/local/gifa/macro</FONT></TT>.<BR>Each
+command requires the name of the input file, the name of the output
+file, the axis to process and the commands to apply.</P>
+<UL>
+	<LI><P><U>proc2d :</U></P>
+</UL>
+<P><TT><FONT FACE="Courier">proc2d in_file out_file axis 'list of
+commands'</FONT></TT><BR>process the data row by row or column by
+column depending on axis (either F1 or F2). You can also use proc2d
+in interactive manner, being prompted for each value. In this latter
+case, when entering the list of commands, you can use several lines,
+finishing the last empty line with a ^D. The commands are regular
+Gifa commands, in 1D mode. Macro are valid.</P>
+<UL>
+	<LI><P><U>proc3d :</U></P>
+</UL>
+<P><TT><FONT FACE="Courier">proc3d in_file out_file axis 'list of
+commands'</FONT></TT><BR>is equivalent to <TT><FONT FACE="Courier">proc2d</FONT></TT>,
+but processes the 3D in a plane wise manner. Be careful that the
+command you enter will be in 2D mode, and that whatever plane you
+choose for the processing of the 3D, the commands will refer to the
+plane as F1, F2.</P>
+<UL>
+	<LI><P><U>proj3d :</U></P>
+</UL>
+<P>Computes the projection of the JOINed 3D data-set. One of the 3
+axes F1, F2 or F3 should be chosen, as well as the projection
+algorithm.<BR><BR>Note that the macro <TT><FONT FACE="Courier">easy2d</FONT></TT>
+will switch by itself to on-file processing if the file is too large
+to be processed in memory.</P>
+<HR>
+<P ALIGN=CENTER STYLE="margin-bottom: 0cm"><A HREF="basic-WORKING.html"><IMG SRC="images/up.gif" NAME="Image6" ALT="Up " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Detailed.html"><IMG SRC="images/prev.gif" NAME="Image7" ALT="Previous " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-UNDERSTA.html"><IMG SRC="images/next.gif" NAME="Image8" ALT="Next " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Title.html"><IMG SRC="images/first.gif" NAME="Image9" ALT="Title Page " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Contents.html"><IMG SRC="images/contents.gif" NAME="Image10" ALT="Contents " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+</P>
+</BODY>
+</HTML>

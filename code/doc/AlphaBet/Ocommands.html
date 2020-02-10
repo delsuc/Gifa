@@ -1,0 +1,182 @@
+<html>
+<head>
+<!-- This document created by dodoc_html V2.1>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#CC0000">
+<TITLE>Commands in O </TITLE>
+<H2> <A HREF="commands.html">Back to Alphabetical List</A> </H2>
+
+<A NAME="OFFSET">
+<HR> <H3> OFFSET </H3> 
+<BLOCKQUOTE>
+<pre>
+Permits to specify the offset of the right-most (upper right most in 
+2D) point of the data set. The value for offset are changed by 
+EXTRACT
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $OFFSET_1D $OFFSET_1_2D $OFFSET_1_3D $OFFSET_2_2D
+                   $OFFSET_2_3D $OFFSET_3_3D
+
+
+ see also : <A HREF="Ccommands.html#calib">calib</A> <A HREF="Scommands.html#size">size</A> <A HREF="Scommands.html#SPECW">SPECW</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="OFFSET3D">
+<HR> <H3> OFFSET3D </H3> 
+<BLOCKQUOTE>
+<pre>
+offset3d dx dy dz
+
+This context holds the shift by which the (0,0,0) point will be 
+shifted from the lower left corner of the DISP3D window during a 3D 
+display with the DISP3D/REF3D set of commands. A value of 0 
+corresponds to the lower left corner; a value of 1 to the upper 
+right corner; a value of 0.5 corresponds to the center of the 
+window.
+
+
+ see also : <A HREF="Ccommands.html#CHECK3D">CHECK3D</A> <A HREF="Dcommands.html#DISP3D">DISP3D</A> <A HREF="Pcommands.html#PLOT3D">PLOT3D</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="ONE">
+<HR> <H3> ONE </H3> 
+<BLOCKQUOTE>
+<pre>
+Put the value one (1.0) in the current buffer
+
+
+ see also : <A HREF="Mcommands.html#MINUS">MINUS</A> <A HREF="Pcommands.html#PLUS">PLUS</A> <A HREF="Zcommands.html#ZERO">ZERO</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="ONERRORGOTO">
+<HR> <H3> ONERRORGOTO </H3> 
+<BLOCKQUOTE>
+<pre>
+ONERRORGOTO label
+
+this command changes the standard error behaviour in the macro langage.
+when this is set, errors do not abort macro execution
+but rather redirect the control flow to the label given as argument,
+in a manner equivalent to a GOTO.
+Active only within the macro where it is issued (errors are still valid in
+called macros )
+
+The ONERRORGOTO condition is clear at once after the error.
+
+You can also clear the ONERRORGOTO by giving a blank argument (" ") to the command,
+thus reactivating errors.
+
+
+ see also : <A HREF="Ecommands.html#ERROR">ERROR</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="OPEN">
+<HR> <H3> OPEN </H3> 
+<BLOCKQUOTE>
+<pre>
+OPEN file_name
+Opens the file called file_name for reading or writing. Writing is 
+performed with the FPRINT command. Reading is done through the 
+&lt;file_name syntax.
+e.g.   read &lt;file_name
+	read the file which name is found as the next line of the file 
+file_name
+set line = &lt;file_name
+	set the variable line to the contents of the next line of the 
+file file_name
+OPENing an already OPENed file will rewind the file to the 
+beginning.
+
+
+ see also : <A HREF="Ccommands.html#CLOSE">CLOSE</A> <A HREF="Dcommands.html#DBOPEN">DBOPEN</A> <A HREF="Fcommands.html#FPRINT">FPRINT</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="open_cnst_db">
+<HR> <H3> open_cnst_db </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/open_cnst_db">Show macro</A>
+<pre>
+open_cnst_db #dbname
+
+ open a cnst database.
+</pre>
+</BLOCKQUOTE>
+<A NAME="ORDER">
+<HR> <H3> ORDER </H3> 
+<BLOCKQUOTE>
+<pre>
+ORDER n
+
+This context determines the order for all linear prediction 
+operations. Should be an integer, typically one third of data size 
+for spectral analysis, smaller values for simple operations such as 
+compacting. You should set it before starting any linear prediction 
+calculation.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $ORDER
+
+
+ see also : <A HREF="Bcommands.html#BURG">BURG</A> <A HREF="Dcommands.html#DT-&gt;AR">DT-&gt;AR</A> <A HREF="Dcommands.html#DT-&gt;SVD">DT-&gt;SVD</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="OUTPUT">
+<HR> <H3> OUTPUT </H3> 
+<BLOCKQUOTE>
+<pre>
+ 1 create numeric output of the data for each Maximum Entropy 
+iteration
+Mostly used for debugging purpose.
+ 
+
+ see also : <A HREF="Mcommands.html#MAXENT">MAXENT</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="output_cnst_db">
+<HR> <H3> output_cnst_db </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/output_cnst_db">Show macro</A>
+<pre>
+ output_cnst_db (interactive)
+
+ permits the output of a DYANA or XPLOR/CNS constraint file according 
+ to the set of constraint data base.
+
+
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="output_cnst_db.save">
+<HR> <H3> output_cnst_db.save </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/output_cnst_db.save">Show macro</A>
+<pre>
+ output_cnst_db (interactive)
+
+ permits the output of a DYANA or XPLOR constraint file according 
+ to the set of constraint data base.
+
+
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="OVERIT">
+<HR> <H3> OVERIT </H3> 
+<BLOCKQUOTE>
+<pre>
+Controls Maximum Entropy stop points. Overiteration is on then 
+CHI2 = 1.0 is no more the stopping criterion; and only the iteration
+counter is considered.
+
+0 inhibits over-iteration, 1 permits it.
+ 
+
+ see also : <A HREF="Icommands.html#ITER">ITER</A> <A HREF="Mcommands.html#MAXENT">MAXENT</A> <A HREF="Mcommands.html#MAXENTCONT">MAXENTCONT</A> 
+</pre>
+</BLOCKQUOTE>
+
+ </body> 
+ 

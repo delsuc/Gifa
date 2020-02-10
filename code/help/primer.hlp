@@ -1,0 +1,35 @@
+  	The GIFA program is a multi-purpose NMR program. It is designed 
+for the processing, the display and the analysis of 1D
+and muti-dimensional NMR data-sets.
+
+	Gifa can be operated either form the menus or from the command 
+line. Both are strictly equivalent, since the menu buttons simply 
+internally call commands and macros.
+	If you are a novice user, you can swich to simplified
+menus (in the About menu). In this mode the actions defined in the menus
+correspond to the most basic actions, and you can switch back to
+complete menus at any time.
+
+You should also know that :
+o 1D, 2D and 3D processing can be selected
+o plots are available on postscript as well as HP-GL
+o there is a peak-picker in 1D, 2D and 3D, as well as a line-fitter 
+  (in 1D and 2D so far)
+o MaxEnt and Linear Prediction are available with a comprehensive 
+  set of commands
+o Inverse Laplace Transform is available for DOSY processing.
+o you can write your own commands with the command langage
+o you can even set-up your own graphic interface with the BUTTONBOX 
+  command.
+o macros are case-sensitive, but commands are not even though 
+  commands are always given in UPPERCASE in the documentation.
+o the command to get out of it is 'exit n'
+o the Documentation command, in the About menu should start an HTML
+  browser giving access to the whole Gifa manual.
+  If this fails, try adapting the /usr/local/gifa/macro/startup.g macro
+
+Try also :
+* help a_given_command      / for instance :  help ft
+* apropos a_given_topic     / for instance :  apropos hilbert
+* reading the manual        / try Documentation in the About menu.
+

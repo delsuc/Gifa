@@ -1,0 +1,7 @@
+PLOTTEXT string X Y plot_file
+
+Sends the string "string" to the plot_file, at the X, Y position (in 
+cm, relative to PLOTOFFSET)
+
+see also : PLOTLINE PLOTLINES PLOTTEXT PLOT setfont
+

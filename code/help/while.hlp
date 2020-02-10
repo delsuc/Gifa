@@ -1,0 +1,12 @@
+WHILE test
+..commands
+ENDWHILE
+
+Commands in the WHILE .. ENDWHILE structure will be executed as long 
+as the test holds true. Can be used only in macro command files.
+
+WHILE and ENDWHILE should appear alone on one line, eventually 
+followed by a comment.
+
+see also : IF FOR FOREACH GOTO FUNCTIONS CONTROLS
+

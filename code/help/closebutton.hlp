@@ -1,0 +1,6 @@
+This command closes the current menu bar, and all the associated 
+opened menu box. It is equivalent to closing it with the graphical 
+close box.
+
+see also : CLOSEFORM BUTTONBOX
+

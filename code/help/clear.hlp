@@ -1,0 +1,10 @@
+CLEAR 0/1
+
+When set to 0, the 1D spectrum displayed by the current command, is 
+put on the top of the currently displayed spectrum. Permits to add many 
+spectrum images on the same display.
+
+When set to 1, the display reacts in the standard fashion.
+
+see also : COLOR, REF, UNREF
+

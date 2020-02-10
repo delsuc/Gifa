@@ -1,0 +1,6 @@
+vert  i j
+In 3D mode, extract a column orthogonal to the last displayed plane.
+The column is taken at coordinates i and j in this plane.
+
+see also : PLANE COL ROW DIM vertint planeint
+

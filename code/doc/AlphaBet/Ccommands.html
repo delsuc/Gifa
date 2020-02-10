@@ -1,0 +1,1082 @@
+<html>
+<head>
+<!-- This document created by dodoc_html V2.1>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#CC0000">
+<TITLE>Commands in C </TITLE>
+<H2> <A HREF="commands.html">Back to Alphabetical List</A> </H2>
+
+<A NAME="cadzow">
+<HR> <H3> cadzow </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/cadzow">Show macro</A>
+<pre>
+ cadzow n_of_line n_of_iter
+
+ apply the cadzow procedure to remove noise from the current FID.
+ should be followed with an FT or an LP-SVD analysis
+
+ 
+ see also : <A HREF="Ocommands.html#ORDER">ORDER</A> <A HREF="Scommands.html#SVDCLEAN1">SVDCLEAN1</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="calc_dist">
+<HR> <H3> calc_dist </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/calc_dist">Show macro</A>
+<pre>
+ calc_dist 
+
+ calculate the inter-atomic distances in a PDB file 
+ from the parameters given
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="calc_dist_mat">
+<HR> <H3> calc_dist_mat </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/calc_dist_mat">Show macro</A>
+<pre>
+ calc_dist_mat
+
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="calib">
+<HR> <H3> calib </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/calib">Show macro</A>
+<pre>
+ interactive 
+ permits to assign chemical shift to a given point
+ will change the offset
+
+
+ see also : <A HREF="Ccommands.html#calibdosy">calibdosy</A> <A HREF="Fcommands.html#FREQ">FREQ</A> <A HREF="Ocommands.html#OFFSET">OFFSET</A> <A HREF="Pcommands.html#point">point</A> <A HREF="Scommands.html#SPECW">SPECW</A> <A HREF="Ucommands.html#UNIT">UNIT</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="CALIBDI">
+<HR> <H3> CALIBDI </H3> 
+<BLOCKQUOTE>
+<pre>
+CALIBDI distance_ref rate_ref
+Sets the reference distance to a reference relaxation rate. Used 
+when computing interspin distances from nOe build-up measurements.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $CALIBDI[1] $CALIBDI[2] $DIST
+
+
+ see also : <A HREF="Mcommands.html#METH">METH</A> <A HREF="Rcommands.html#RELAXRATE">RELAXRATE</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="calibdosy">
+<HR> <H3> calibdosy </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/calibdosy">Show macro</A>
+<pre>
+ calibdosy { sequence nucleus grad_length grad_delay grad_calib grad_shape }
+
+ computes theoretical dfactor from experimental parameters
+ for some nucleus (1H, 2H, 13C, 15N, 17O, 19F, 31P)
+ When calibration is correct, your DOSY spectra should be directly
+ readable in diffusion factors (in micron^2/sec) when using unit d (damping)
+
+ Delays are in seconds, gradients are in Gauss/cm
+
+ Gradient shape can be either :  Square  or  Other shape defined by ascii file
+
+ 
+ see also : <A HREF="Ccommands.html#calib">calib</A> <A HREF="Dcommands.html#DFACTOR">DFACTOR</A> <A HREF="Dcommands.html#DMAX">DMAX</A> <A HREF="Dcommands.html#DMIN">DMIN</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="calib_integ">
+<HR> <H3> calib_integ </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/calib_integ">Show macro</A>
+<pre>
+ calib_integ  (interactive)
+
+ creates a tool which permits to handle several peaks used for intensity 
+ calibration
+
+   This calibration is used to estimate the intensity of the NOESY peaks,
+ when building the constraints for a structure generation.
+   Choose a set of peaks, spanning the intensities observed on your data-set
+ and associate to each peak a 'typical' distance. 
+   Then, when building building the constraint file, each peak intensity is compared
+ to the set of reference intensities, and a constraint is thus obtained, either
+ in a qualit`tive fashion (large / medium / small ) or in a semi quantitative fashion.
+
+ With this tool, you can
+  - enter peaks in the calibration list, and associate distance
+  - remove defined peaks
+  - display the chosen peaks, and drae the calibartion set.
+  -  store and load a set of peak definitions (stored as macro commands)
+
+ when loaded, the peak definition are stored in an associative array called
+ calib_dst[]
+
+ 
+ see also : <A HREF="Ccommands.html#cnst_qualit">cnst_qualit</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="CCOLOR">
+<HR> <H3> CCOLOR </H3> 
+<BLOCKQUOTE>
+<pre>
+ccolor n
+If n = 1 color plots (command CDISP2D) are displayed in color,
+if n = 0 color plots are displayed in B&amp;W mode
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $CCOLOR
+
+
+ see also : <A HREF="Ccommands.html#CDISP2D">CDISP2D</A> <A HREF="Ccommands.html#COLOR">COLOR</A> <A HREF="Scommands.html#SCOLOR">SCOLOR</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="CD">
+<HR> <H3> CD </H3> 
+<BLOCKQUOTE>
+<pre>
+CD new_directory_path
+Changes the current working directory.
+
+
+ see also : <A HREF="Lcommands.html#ls">ls</A> <A HREF="Mcommands.html#more">more</A> <A HREF="Pcommands.html#pwd">pwd</A> <A HREF="Rcommands.html#rm">rm</A> <A HREF="Scommands.html#SH">SH</A> <A HREF="Vcommands.html#vi">vi</A> <A HREF="Vcommands.html#vim">vim</A> <A HREF="Vcommands.html#vip">vip</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="cdisp">
+<HR> <H3> cdisp </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/cdisp">Show macro</A>
+<pre>
+ obsolete, for compatibility
+</pre>
+</BLOCKQUOTE>
+<A NAME="CDISP2D">
+<HR> <H3> CDISP2D </H3> 
+<BLOCKQUOTE>
+<pre>
+CDISP2D 0/1
+When CDISP2D is 1 the window displaying the contour plot of the 2D 
+buffer is activated on the graphic screen in 2D.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $CDISP2D $ABSMAX $BCOLOR $CCOLOR $COLOR $LEVEL $LOGA 
+    $SCALE $SIGN $AXIS $ZOOM ZOOM_2D[1] ZOOM_2D[2] ZOOM_2D[3] ZOOM_2D[4]
+
+
+ see also : <A HREF="Acommands.html#AXIS">AXIS</A> <A HREF="Bcommands.html#BCOLOR">BCOLOR</A> <A HREF="Ccommands.html#CCOLOR">CCOLOR</A> <A HREF="Ccommands.html#CLEAR">CLEAR</A> <A HREF="Ccommands.html#COLOR">COLOR</A> <A HREF="Dcommands.html#DISP1D">DISP1D</A> <A HREF="Dcommands.html#DISP2D">DISP2D</A> <A HREF="Dcommands.html#DISP3D">DISP3D</A> <A HREF="Dcommands.html#dispcont">dispcont</A> <A HREF="Lcommands.html#LEVEL">LEVEL</A> <A HREF="Lcommands.html#LOGA">LOGA</A> <A HREF="Scommands.html#SCALE">SCALE</A> <A HREF="Scommands.html#SHOWC">SHOWC</A> <A HREF="Scommands.html#STPL">STPL</A> <A HREF="Scommands.html#STPL?">STPL?</A> <A HREF="Scommands.html#super2d">super2d</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="center">
+<HR> <H3> center </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/center">Show macro</A>
+<pre>
+ center $f1 { $f2 { $f3 } }
+
+ centers the zoom window on the coordinates
+ the zoom window is kept with the same size
+</pre>
+</BLOCKQUOTE>
+<A NAME="CHECK3D">
+<HR> <H3> CHECK3D </H3> 
+<BLOCKQUOTE>
+<pre>
+This command enters a interactive mode in which the user can choose 
+the different parameters used for a 3D display. Only the cube is 
+shown for speed convinience. DISP3D must have been previously set to 1.
+
+
+ see also : <A HREF="Dcommands.html#DISP3D">DISP3D</A> <A HREF="Rcommands.html#REF3D">REF3D</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="check_ass">
+<HR> <H3> check_ass </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/check_ass">Show macro</A>
+<pre>
+ check_ass $grep_type $cr_par $line
+
+ For a given line $line of an assignment, and a given criterion 
+ $grep_type and criterion parameter value $cr_par, look if the 
+ peak meets the criterion with the criterion parameter value.
+ if the peak meets, returned = 1
+ else returned = 0
+
+ 
+ see also : <A HREF="Gcommands.html#grep_ass">grep_ass</A> <A HREF="Gcommands.html#grep_peak">grep_peak</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="check_peak">
+<HR> <H3> check_peak </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/check_peak">Show macro</A>
+<pre>
+ check_peak $grep_type $cr_par $i
+
+ For a given peak number $i, and a given criterion $grep_type and 
+ criterion parameter value $cr_par, look if the peak meets the criterion
+ with the crieterion parameter value.
+ if the peak meets, returned = 1
+ else returned = 0
+
+ 
+ see also : <A HREF="Gcommands.html#grep_peak">grep_peak</A> <A HREF="Scommands.html#SHOWPEAKS">SHOWPEAKS</A> <A HREF="Scommands.html#show_att">show_att</A> <A HREF="Scommands.html#show_curr">show_curr</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="check_topo">
+<HR> <H3> check_topo </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/check_topo">Show macro</A>
+<pre>
+ check_topo sys
+
+ checks the topology of a given spin system
+</pre>
+</BLOCKQUOTE>
+<A NAME="CHEMS">
+<HR> <H3> CHEMS </H3> 
+<BLOCKQUOTE>
+<pre>
+Obsolete command, has been superseded by mkdbppm
+This command is an help for constructing chemical shift files to be 
+used with the SIMUNOE command.
+ 
+
+ see also : <A HREF="Scommands.html#SimSpect2D">SimSpect2D</A> <A HREF="Scommands.html#SIMUNOE">SIMUNOE</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="choose_scolor">
+<HR> <H3> choose_scolor </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/choose_scolor">Show macro</A>
+<pre>
+ to choose interactively the show color
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="choose_unit">
+<HR> <H3> choose_unit </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/choose_unit">Show macro</A>
+<pre>
+ chose_unit
+
+ permit to choose display unit
+ 
+ see also : <A HREF="Ucommands.html#UNIT">UNIT</A> <A HREF="Ucommands.html#UNIT_Y">UNIT_Y</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="CHSIZE">
+<HR> <H3> CHSIZE </H3> 
+<BLOCKQUOTE>
+<pre>
+CHSIZE SI1 { SI2 { SI3 } }
+Change size of data, zero-fill or truncate.
+DO NOT change the value of OFFSET and SPECW, so EXTRACT should 
+always be preferred on spectra (unless you know exactly what your 
+are doing).
+ 
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $SI1_1D $SI1_2D $SI1_3D $SI2_2D $SI2_3D $SI3_3D
+
+
+ see also : <A HREF="Ecommands.html#EXTRACT">EXTRACT</A> <A HREF="Lcommands.html#lshift">lshift</A> <A HREF="Mcommands.html#MODIFYSIZE">MODIFYSIZE</A> <A HREF="Rcommands.html#rshift">rshift</A> <A HREF="Scommands.html#size">size</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="ch_param">
+<HR> <H3> ch_param </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/ch_param">Show macro</A>
+<pre>
+ ch_param
+
+ change the parameters for the current project
+</pre>
+</BLOCKQUOTE>
+<A NAME="CLEAR">
+<HR> <H3> CLEAR </H3> 
+<BLOCKQUOTE>
+<pre>
+CLEAR 0/1
+
+When set to 0, the 1D spectrum displayed by the current command, is 
+put on the top of the currently displayed spectrum. Permits to add many 
+spectrum images on the same display.
+
+When set to 1, the display reacts in the standard fashion.
+
+
+ see also : <A HREF="Ccommands.html#COLOR">COLOR</A> <A HREF="Rcommands.html#REF">REF</A> <A HREF="Ucommands.html#UNREF">UNREF</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="CLOSE">
+<HR> <H3> CLOSE </H3> 
+<BLOCKQUOTE>
+<pre>
+CLOSE file_name
+Closes the file that was previously OPENed.
+
+
+ see also : <A HREF="Ccommands.html#CONNECT">CONNECT</A> <A HREF="Fcommands.html#FPRINT">FPRINT</A> <A HREF="Ocommands.html#OPEN">OPEN</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="CLOSEBUTTON">
+<HR> <H3> CLOSEBUTTON </H3> 
+<BLOCKQUOTE>
+<pre>
+This command closes the current menu bar, and all the associated 
+opened menu box. It is equivalent to closing it with the graphical 
+close box.
+
+
+ see also : <A HREF="Bcommands.html#BUTTONBOX">BUTTONBOX</A> <A HREF="Ccommands.html#CLOSEFORM">CLOSEFORM</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="CLOSEFORM">
+<HR> <H3> CLOSEFORM </H3> 
+<BLOCKQUOTE>
+<pre>
+CLOSEFORM #id
+This command closes the FormBox, which id is #id
+The context $WIDGET when evaluated wihtin a form, contains
+the #id of the current form.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $WIDGET
+
+
+ see also : <A HREF="Ccommands.html#CLOSEBUTTON">CLOSEBUTTON</A> <A HREF="Fcommands.html#FORMBOX">FORMBOX</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="close_all_view">
+<HR> <H3> close_all_view </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/close_all_view">Show macro</A>
+<pre>
+ closes all opened view
+
+ 
+ see also : 
+</pre>
+</BLOCKQUOTE>
+<A NAME="cnst_buildup">
+<HR> <H3> cnst_buildup </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/cnst_buildup">Show macro</A>
+<pre>
+ cnst_buildup (interactive)
+
+ permits the output of a constraint file according to the set of 
+ calibration peaks. The constraint distances are defined from 
+ the calibration peaks, and a distance uncertainty.
+
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="cnst_qualit">
+<HR> <H3> cnst_qualit </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/cnst_qualit">Show macro</A>
+<pre>
+ cnst_qualit (interactive)
+
+ permits the output of a constraint file according to the set of 
+ calibration peaks. The constraint distances are qualitatively
+ defined from the calibration peaks, and the bounds given by the 
+ user.
+
+
+
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="cnst_qualit.init">
+<HR> <H3> cnst_qualit.init </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/cnst_qualit.init">Show macro</A>
+<pre>
+ cnst_qualit (interactive)
+
+ permits the output of a constraint file according to the set of 
+ calibration peaks. The constraint distances are qualitatively
+ defined from the calibration peaks, and the bounds given by the 
+ user.
+
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="cnst_qualit_new">
+<HR> <H3> cnst_qualit_new </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/cnst_qualit_new">Show macro</A>
+<pre>
+ cnst_qualit (interactive)
+
+ permits the output of a constraint file according to the set of 
+ calibration peaks. The constraint distances are qualitatively
+ defined from the calibration peaks, and the bounds given by the 
+ user.
+
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="COL">
+<HR> <H3> COL </H3> 
+<BLOCKQUOTE>
+<pre>
+COL index
+
+Extracts a 1D column (along F1 axis) from the active 2D data-set, 
+and displays it in the 1D window. The column will be available as a 1D 
+data set when going from 2D to 1D
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $COL
+
+
+ see also : <A HREF="Ccommands.html#colint">colint</A> <A HREF="Dcommands.html#DIAG">DIAG</A> <A HREF="Dcommands.html#DIM">DIM</A> <A HREF="Pcommands.html#PLANE">PLANE</A> <A HREF="Rcommands.html#ROW">ROW</A> <A HREF="Rcommands.html#rowint">rowint</A> <A HREF="Vcommands.html#VERT">VERT</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="colint">
+<HR> <H3> colint </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/colint">Show macro</A>
+<pre>
+ interactive
+ permits to choose columns interactively on a 2D by clicking on the data-set
+
+
+ see also : <A HREF="Ccommands.html#COL">COL</A> <A HREF="Pcommands.html#ph2dc">ph2dc</A> <A HREF="Pcommands.html#planeint">planeint</A> <A HREF="Rcommands.html#ROW">ROW</A> <A HREF="Rcommands.html#rowint">rowint</A> <A HREF="Vcommands.html#vertint">vertint</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="COLOR">
+<HR> <H3> COLOR </H3> 
+<BLOCKQUOTE>
+<pre>
+COLOR index window
+
+Defines the current color used for display. The chosen color remains 
+until the next
+COLOR command.
+index is :	1:white  2:red  3:yellow  4:green
+		5:cian  6:blue  7:purple  8:black
+Window is :   1:1D 2:disp 3:contour 4:3D
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $COLOR
+
+
+ see also : <A HREF="Bcommands.html#BCOLOR">BCOLOR</A> <A HREF="Ccommands.html#CCOLOR">CCOLOR</A> <A HREF="Ccommands.html#CDISP2D">CDISP2D</A> <A HREF="Dcommands.html#DISP1D">DISP1D</A> <A HREF="Dcommands.html#DISP2D">DISP2D</A> <A HREF="Dcommands.html#DISP3D">DISP3D</A> <A HREF="Scommands.html#SCOLOR">SCOLOR</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="compute_aa">
+<HR> <H3> compute_aa </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/compute_aa">Show macro</A>
+<pre>
+ compute_aa $nopk
+
+ Determine the aa number of a peak when this peak 
+ is assigned 
+ if the peak is homoresidue, issue one value
+ issue i-j otherwise
+
+ compute_aa is called by mult_integ
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="compute_label">
+<HR> <H3> compute_label </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/compute_label">Show macro</A>
+<pre>
+ compute_label $nopk
+
+ Determine the label of a peak when this peak 
+ is assigned 
+ compute_label is called by mult_integ
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="comp_spin_label">
+<HR> <H3> comp_spin_label </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/comp_spin_label">Show macro</A>
+<pre>
+ comp_spin_label  $spin
+
+ given a spin_id, returns a string
+ SPIN_NAME SYS_NAME SYS_INDEX_IN_PRIM
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="CONCAT">
+<HR> <H3> CONCAT </H3> 
+<BLOCKQUOTE>
+<pre>
+CONCAT file_name
+Appends the content of file_name to the current data-set in memory. 
+Work with 'H' files
+
+
+ see also : <A HREF="Acommands.html#ADDH">ADDH</A> <A HREF="Rcommands.html#READH">READH</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="CONFIG">
+<HR> <H3> CONFIG </H3> 
+<BLOCKQUOTE>
+<pre>
+Output to the terminal the actual configuration of the system 
+dependent  parameters :
+-Licence being used
+-Version number
+-Sizes of the different static buffers
+-Operating System (VMS or UNIX)
+-Graphic manager (X_Windows or VWS)
+-Plotter driver (HP-GL or Postscript)
+ 
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $CONFIG_GRAPH $CONFIG_OS $CONFIG_PLOT $CONFIG_WIN
+    $LICENCE $MEM_MAX $MEM_PRO_1D $MEM_PRO_2D $MEM_PRO_3D $VAR_MAX 
+    $VERSION
+
+
+ see also : <A HREF="Lcommands.html#list">list</A> <A HREF="Mcommands.html#MEMORY">MEMORY</A> <A HREF="Pcommands.html#PLOTTER">PLOTTER</A> <A HREF="Scommands.html#size">size</A> <A HREF="Vcommands.html#VARIABLES">VARIABLES</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="config">
+<HR> <H3> config </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro/gm    <A HREF="/usr/local/gifa/macro/gm/config">Show macro</A>
+<pre>
+ equivalent to the config command
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="conjg">
+<HR> <H3> conjg </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/conjg">Show macro</A>
+<pre>
+ set up for Conjugated Gradient algorithm for MAXENT
+
+ 
+ see also : <A HREF="Acommands.html#ALGO">ALGO</A> <A HREF="Gcommands.html#gad">gad</A> <A HREF="Gcommands.html#gifa">gifa</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="CONNECT">
+<HR> <H3> CONNECT </H3> 
+<BLOCKQUOTE>
+<pre>
+CONNECT file_name
+
+The journaling of all the actions, performed by GIFA is directed to 
+the file_name. Journaling is resumed to the standard gifa.log files 
+with DISCONNECT.
+
+
+ see also : <A HREF="Ccommands.html#CLOSE">CLOSE</A> <A HREF="Dcommands.html#DISCONNECT">DISCONNECT</A> <A HREF="Lcommands.html#LOG">LOG</A> <A HREF="Ocommands.html#OPEN">OPEN</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="cont">
+<HR> <H3> cont </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/cont">Show macro</A>
+<pre>
+ obsolete, for compatibility
+</pre>
+</BLOCKQUOTE>
+<A NAME="CONTEXTS">
+<HR> <H3> CONTEXTS </H3> 
+<BLOCKQUOTE>
+<pre>
+Contexts are internal Gifa variables that can be easily
+accessed in macro programming. They appear as regular
+variables, and can be used in any computation just as
+regular variables.
+Just about all pertinent information (sizes, spectral widths,
+last clicked location, etc..) are available through contexts.
+
+Note that contexts should not be set, but usually are modified with
+regular Gifa commands.
+eg:      set absmax = 10        ; is wrong
+         absmax 10              ; is much better.
+
+Actually, Gifa search for variables in the following order :
+-first local user variables
+-then global user variables
+-CONTEXTS
+-finally, currently db bound arrays.
+
+So, if a local or global user variables hapens to have the same name than
+a context (if you do set absmax = 10 for instance, which creates
+a local variable called absmax), then this context is not available
+anymore.
+i.e. in the present example, the use of  will not make any error
+but you will acces the local variable A just created, rather
+than the context you wish to access.
+
+
+List of the internal GIFA variables (contexts):
+
+$_      value of the next parameter present on the calling line. CANNOT 
+        BE USED WITHIN EVALUATED EXPRESSIONS.
+        if the following command is used : 
+        @test 3 test.001 
+        within the file test, $_ will be 3 the first time and test.001 the 
+        second time.
+        If no value is present on the calling line, the user will be 
+        prompted for the value
+$ABSMAX        current value of ABSMAX
+$ALPHA         value of the current ALPHA angle
+$ARG           True (1) if arguments are present on the calling line 
+               (within macro only)
+$AXIS3D        current value of the AXIS3D command
+$BETA          value of the current BETA angle
+$BUTTON        1,2 or 3 depending on which mouse button was last clicked
+$CACHE[id]     id the internal identifier of a file currently opened in the cache system
+               on such context exists for each opened file
+$CALIBDI[1]    the current calibrating distance, as defined with the 
+               CALIBDI command
+$CALIBDI[2]    the current calibrating relaxation rate, as defined 
+               with the CALIBDI command
+$CCOLOR        current value for CCOLOR
+$CDISP2D       current value of command CDISP2D
+$CHI2          value of the chi2 returned by the last command : MAXENT, 
+               LINEFIT, RT-&gt;PK
+$COL           index of the last extracted column in 2D
+$COLOR         current value for COLOR
+$CONFIG_GRAPH  is true if graphic is possible (X_Windows is 
+               connected)
+$CONFIG_OS     The system type, as returned by the CONFIG command
+$CONFIG_PLOT   The plot driver, as returned by the CONFIG command
+$CONFIG_WIN    The window manager, as returned by the CONFIG command
+$CX            current value for CX
+$CY            current value for CY
+$CZ            current value for CZ
+$C_ABSMAX      value of ABSMAX of the currently JOINed dataset
+$C_DFACTOR     value of DFACTOR of the currently JOINed dataset
+$C_DMAX        value of DMAX of the currently JOINed dataset
+$C_DMIN        value of DMIN of the currently JOINed dataset
+$C_DIM         value of DIM of the currently JOINed dataset
+$C_FREQ        value of FREQ of the currently JOINed dataset
+$C_FREQ1       value of FREQ_1D of the currently JOINed dataset
+$C_FREQ2       value of FREQ_2D of the currently JOINed dataset
+$C_FREQ3       value of FREQ_3D of the currently JOINed dataset
+$C_HEADER      last value accessed with the GETHEADER command
+$C_JOINED      is  if there is a currently JOINed dataset, 0 otherwise
+$C_OFFSF1      value of OFFSET_1 of the currently JOINed dataset
+$C_OFFSF2      value of OFFSET_2 of the currently JOINed dataset
+$C_OFFSF3      value of OFFSET_3 of the currently JOINed dataset
+$C_SIZEF1      value of SI1 of the currently JOINed dataset
+$C_SIZEF2      value of SI2 of the currently JOINed dataset
+$C_SIZEF3      value of SI3 of the currently JOINed dataset
+$C_SPECWF1     value of SPECW_1 of the currently JOINed dataset
+$C_SPECWF2     value of SPECW_2 of the currently JOINed dataset
+$C_SPECWF3     value of SPECW_3 of the currently JOINed dataset
+$C_TYPE        value of ITYPE of the currently JOINed dataset
+$CLEAR         value of the current CLEAR state
+$DEBUG         value of the current DEBUG state
+$DFACTOR       scale factor for damping scale
+$DIM           current value of DIM
+$DISP1D        current value of command DISP1D
+$DISP2D        current value of command DISP2D
+$DISP3D        current value of command DISP3D
+$DIST          the result of the last DIST command
+$DMAX          Upper bond of damping scale
+$DMIN          Lower bond of damping scale
+$FND_PK        gives the index of the found entry (FIND)
+$FND_PK_DST    gives the distance to target of the found entry (FIND)
+$FREQ          main frequency (1H) of the spectrometer
+$FREQ_1D       frequency in 1D (in MHz)
+$FREQ_1_2D     frequency in 2D in F1 (in MHz)
+$FREQ_1_3D     frequency in 3D in F1 (in MHz)
+$FREQ_2_2D     frequency in 2D in F2 (in MHz)
+$FREQ_2_3D     frequency in 3D in F2 (in MHz)
+$FREQ_3_3D     frequency in 3D in F3 (in MHz)
+$GAMA          value of the current GAMA angle
+$GB1           value of gb in F1 (in Hz)
+$GB2           value of gb in F2 (in Hz)
+$GB3           value of gb in F3 (in Hz)
+$GIFAPATH      current PATH used for macro, set by th SETPATH command
+$HOME          equivalent to the $HOME variable in UNIX
+$ITYPE_1D      value of itype in 1D
+$ITYPE_2D      value of itype in 2D
+$ITYPE_3D      value of itype in 1D
+$LB1           value of lb in F1 (in Hz)
+$LB2           value of lb in F2 (in Hz)
+$LB3           value of lb in F3 (in Hz)
+$LEVEL         current value of command LEVEL
+$LICENCE       The licence as returned by the CONFIG command
+$LOGA          current value of command LOGA
+$MACRONAME     the name of the macro being currently executed
+$MAX[1]        value of last computed max computed with the command MAX
+$MAX[2]        value of last computed min computed with the command MAX
+$MAXINBOX      value of the last MAXINBOX command
+$MEM_MAX       The larger data set available, as returned by the CONFIG 
+               command
+$MEM_PRO_1D    The size of the protected 1D area, as returned by the 
+               CONFIG command
+$MEM_PRO_2D    The size of the protected 2D area, as returned by the 
+               CONFIG command
+$MEM_PRO_3D    The size of the protected 3D area, as returned by the 
+               CONFIG command
+$NAME          name of the last read data-set
+$NAME_1D       name of the last 1D data-set read
+$NAME_2D       name of the last 2D data-set read
+$NAME_3D       name of the last 3D data-set read
+$NAR           number of A.R. coefficients as listed by ARLIST
+$NOISE         value of the noise, as given by the NOISE command
+$NPK1D         The number of entries in the 1D peak table
+$NPK2D         The number of entries in the 2D peak table
+$NPK3D         The number of entries in the 3D peak table
+$NPOINT        The number of entries in the point stack
+$NRT           Number of root as listed by RTLIST
+$NSVD          Number of root as listed by SVDLIST
+$OFFSET_1D     spectral offset in 1D (in Hz)
+$OFFSET_1_2D   spectral offset in 2D in F1 (in Hz)
+$OFFSET_1_3D   spectral offset in 3D in F1 (in Hz)
+$OFFSET_2_2D   spectral offset in 2D in F2 (in Hz)
+$OFFSET_2_3D   spectral offset in 3D in F2 (in Hz)
+$OFFSET_3_3D   spectral offset in 3D in F3 (in Hz)
+$OFFSET3D[1]   X offset in the 3D display
+$OFFSET3D[2]   Y offset in the 3D display
+$OFFSET3D[3]   Z offset in the 3D display
+$ORDER         current value for ORDER
+$PH0           0th order of the last phase correction
+$PH1           1st order of the last phase correction
+$PK1D_A[i]     amplitude of the ith entry in the 1D peak table
+$PK1D_A_ERR[i] error on the previous quantity
+$PK1D_F[i]     position (in index) of the ith 1D entry
+$PK1D_F_ERR[i] error on the previous quantity
+$PK1D_P[i]     phase of the ith entry in the 1D peak table
+$PK1D_T[i]     analytical form of the ith entry in the 1D peak table
+               GAUSS, LORENTZ, or UNKNOWN
+$PK1D_W[i]     width (in index) of the ith entry in the 1D peak table
+$PK1D_W_ERR[i] error on the previous quantity
+$PK2D_A[i]     amplitude of the ith entry in the 2D peak table
+$PK2D_A_ERR[i] error on the previous quantity
+$PK2D_F1F[i]   F1 position (in index) of the ith entry in the 2D 
+               peak table
+$PK2D_F1F_ERR[i]  error on the previous quantity
+$PK2D_F1W[i]   F1 width (in index) of the ith entry in the 2D peak table
+$PK2D_F1W_ERR[i]  error on the previous quantity
+$PK2D_F2F[i]   F2 position (in index) of the ith entry in the 2D 
+               peak table
+$PK2D_F2F_ERR[i]  error on the previous quantity
+$PK2D_F2W[i]   F2 width (in index) of the ith entry in the 2D peak table
+$PK2D_F2W_ERR[i]  error on the previous quantity
+$PK3D_A[i]     amplitude of the ith entry in the 3D peak table
+$PK3D_F1F[i]   F1 position (in index) of the ith entry in the 3D 
+               peak table
+$PK3D_F1W[i]   F1 width (in index) of the ith entry in the 3D peak 
+               table
+$PK3D_F2F[i]   F2 position (in index) of the ith entry in the 3D 
+               peak table
+$PK3D_F2W[i]   F2 width (in index) of the ith entry in the 3D peak table
+$PK3D_F3F[i]   F3 position (in index) of the ith entry in the 3D 
+               peak table
+$PK3D_F3W[i]   F3 width (in index) of the ith entry in the 3D peak table
+$PKNAME        The name used by the last PKREAD / PKWRITE command 
+$PKRADIUS      The last radius value used by the PEAK command
+$PLANE[1]      axis of the last extracted plane in 3D
+$PLANE[2]      index of the last extracted plane in 3D
+$PLOTAXIS[1]   current value for the unit used in PLOTAXIS
+$PLOTAXIS[2]   current value for the tick distance in x axis
+$PLOTAXIS[3]   current value for the tick distance in y axis
+$PLOTOFFSET[1] current value for plot offset on X axis
+$PLOTOFFSET[2] current value for plot offset on Y axis
+$POINTX[i]     X coordinates (in index) of ith point in the point stack
+$POINTY[i]     Y coordinates (0..1 in 1D; in index if 2D) of ith 
+               point in the point stack
+$PULLDOWMENU   value of the current PULLDOWNMENU state
+$RANDOM        a random variable in the range 0..1 with equiprobable 
+               distribution
+$RANDOMG       a random variable with normal law, unit variance and zero 
+               mean
+$RANDOMZ       same as $RANDOM but resets the random series
+$RELAX         the result of the last RELAXRATE or SLOPE commands
+$RETURNED      the value associated to RETURN in the last called macro
+$RCRYST        the result of the last RCRYST command CALIBDI
+$ROW           index of the last extracted row in 2D
+$SCALE         current value of the context SCALE
+$SCALE3D       current value of the context SCALE3D
+$SCOLOR        current value of the context SCOLOR
+$SHIFT         value of the offset, as given by the SHIFT command
+$SI1_1D        size of the 1D buffer.
+$SI1_2D        size in F1 of the 2D buffer
+$SI1_3D        size in F1 of the 3D buffer
+$SI2_2D        size in F2 of the 2D buffer
+$SI2_3D        size in F2 of the 3D buffer
+$SI3_3D        size in F3 of the 3D buffer
+$SI_TAB        size of the TAB buffer
+$SIGN          current value of context SIGN
+$SIGN_PEAK     current value of context SIGN_PEAK
+$SPECW_1D      spectral width in 1D (in Hz)
+$SPECW_1_2D    spectral width in 2D in F1 (in Hz)
+$SPECW_1_3D    spectral width in 3D in F1 (in Hz)
+$SPECW_2_2D    spectral width in 2D in F2 (in Hz)
+$SPECW_2_3D    spectral width in 3D in F2 (in Hz)
+$SPECW_3_3D    spectral width in 3D in F3 (in Hz)
+$SUMREC        value returned by the last SUMREC command
+$SUMREC_ERR    error on the previous quantity
+$TAB[i]        value of the ith point in the TAB buffer
+$UNIT          current value for UNIT
+$UNITY         current value for UNIT_Y
+$VAR_MAX       The total number of user variable available, as returned 
+               by the CONFIG command
+$VERBOSE       value of the current VERBOSE state
+$VERSION       The current version, as returned by the CONFIG command
+$VHEIGHT       current value of command VHEIGHT
+$VIEW[name]    name is the identifier of a view currently opened
+               on such context exists for each opened view
+$WIDGET        The id of the current graphic form
+$ZNOT          current value of the AXIS3D command 
+$ZONE[1]       lower F1 coord. of the mouse-selected region (in index)
+$ZONE[2]       lower F2 coord. of the mouse-selected region (in index)
+$ZONE[3]       upper F1 coord. of the mouse-selected region (in index)
+$ZONE[4]       upper F2 coord. of the mouse-selected region (in index) 
+$ZOOM          1 if in ZOOM mode
+$ZOOM_1D[1]    left coordinate of the 1D zoom window (in index)
+$ZOOM_1D[2]    right coordinate of the 1D zoom window (in index)
+$ZOOM_2D[1]    lower F1 coordinate of the 2D zoom window (in index)
+$ZOOM_2D[2]    left F2 coordinate of the 2D zoom window (in index)
+$ZOOM_2D[3]    upper F1 coordinate of the 2D zoom window (in index)
+$ZOOM_2D[4]    right F2 coordinate of the 2D zoom window (in index)
+$ZOOM_3D[1]    "left" F1 coordinate of the 3D zoom window (in index)
+$ZOOM_3D[2]    "right" F1 coordinate of the 3D zoom window (in index)
+$ZOOM_3D[3]    "left" F2 coordinate of the 3D zoom window (in index)
+$ZOOM_3D[4]    "right" F2 coordinate of the 3D zoom window (in index)
+$ZOOM_3D[5]    "left" F3 coordinate of the 3D zoom window (in index)
+$ZOOM_3D[6]    "right" F3 coordinate of the 3D zoom window (in index)
+</pre>
+</BLOCKQUOTE>
+<A NAME="CONTROLS">
+<HR> <H3> CONTROLS </H3> 
+<BLOCKQUOTE>
+<pre>
+Several control structures are available in the macros file :
+
+GOTO
+one line IF
+multiple line IF .. ELSEIF .. ELSE .. ENDIF
+FOR loop
+FOREACH loop
+WHILE loop
+
+macros can be called from within macros, up to 9 levels of nesting.
+No recursivity is allowed.
+
+
+ see also : <A HREF="Ccommands.html#CONTEXTS">CONTEXTS</A> <A HREF="Ecommands.html#ERROR">ERROR</A> <A HREF="Fcommands.html#FOR">FOR</A> <A HREF="Fcommands.html#FOREACH">FOREACH</A> <A HREF="Fcommands.html#FUNCTIONS">FUNCTIONS</A> <A HREF="Gcommands.html#GOTO">GOTO</A> <A HREF="Icommands.html#IF">IF</A> <A HREF="Mcommands.html#MACRO">MACRO</A> <A HREF="Ocommands.html#ONERRORGOTO">ONERRORGOTO</A> <A HREF="Scommands.html#SETPATH">SETPATH</A> <A HREF="Scommands.html#SETPROMPT">SETPROMPT</A> <A HREF="Vcommands.html#VARIABLES">VARIABLES</A> <A HREF="Wcommands.html#WHILE">WHILE</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="conv_n+p">
+<HR> <H3> conv_n+p </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/conv_n+p">Show macro</A>
+<pre>
+ conv_n+p
+
+ preprocess a n+p experiment;
+ i.e. PFG enhanced acquisition, with positive and negative gradients alternated
+ and make it States-Haberkorn
+
+ Can actually be applied before or after Fourier Transform in F2
+
+ 
+ see also : <A HREF="Fcommands.html#ft_sh">ft_sh</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="conv_n+p_onfile">
+<HR> <H3> conv_n+p_onfile </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/conv_n+p_onfile">Show macro</A>
+<pre>
+ conv_n+p_onfile filename
+
+ preprocess a n+p experiment  - WORKS IN PLACE !!!
+ i.e. PFG enhanced acquisition, with positive and negative gradients alternated
+ and make it States-Haberkorn
+
+ Can actually be applied before or after Fourier Transform in F2
+
+ 
+ see also : 
+</pre>
+</BLOCKQUOTE>
+<A NAME="copy_att">
+<HR> <H3> copy_att </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/copy_att">Show macro</A>
+<pre>
+ copy_att filename.in filename.out
+
+ copy the database filename.in into the database filename.out
+</pre>
+</BLOCKQUOTE>
+<A NAME="correct1st">
+<HR> <H3> correct1st </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/correct1st">Show macro</A>
+<pre>
+ no parameter
+
+ corrects for the 1st point by dividing it by 2
+
+ 
+ see also : <A HREF="Fcommands.html#FT">FT</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="correctppm">
+<HR> <H3> correctppm </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/correctppm">Show macro</A>
+<pre>
+ to correct the ppm/Hz computation in Gifa
+ with version &lt; 4.10
+
+ in Gifa version &lt; 4.10 ,  (i.e up to 4.09)
+ computation of ppm and Hz is slightly wrong, by a factor (size-1)/size.
+ This macro corrects the internal values of specw and offset
+ to give a correct computation of ppm and Hz.
+ however, ppm definition will shift a little for spectral region at high field.
+ so you might want to recalibrate afterward.
+ It should be applied only ONCE to a data-set.
+
+ Since it modifies the spectral parameters of the data-set,
+ this data-set, if wrote onto a file will be wrong when read with
+ a corrected version of Gifa.
+
+ so the following procedure is proposed :
+ Do not touch to your files, version 4.10 should be available by sept. 1996
+ Rather read your files, and apply correctppm after reading, so that the
+ in-memory file is correct. Do not write it back, at least not on file
+ you wish to use later on.
+
+ Note also that peak-files are stored in ppm format
+ so peak-tables stored in corrected ppm, will be Ok when read with the
+ corrected version of Gifa.
+ If you have already peak-tables that you wish to keep,
+ and you want to correct the ppm values, do the following :
+   read file         ; get file
+   pkread peaks.old  ; load peaks
+   correctppm        ; peaks won't move because they are internally in index !
+   pkwrite peaks.new ; store corrected peak values.
+ next time you use it
+   read file    correctppm   pkread peaks.new   ; is fine
+</pre>
+</BLOCKQUOTE>
+<A NAME="cosy_fit">
+<HR> <H3> cosy_fit </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/cosy_fit">Show macro</A>
+<pre>
+ cosy_fit f1 f2 J_act F1_pat F2_pat
+
+ f1 f2 : cross peak center, in ppm
+ J_act : estimation of the active coupling value, in Hz
+ F1_pat F2_pat : shape of the spins
+       D T Q M :  Doublet Triplet Quadruplet Multiplet.
+ returns J_act value in $returned
+</pre>
+</BLOCKQUOTE>
+<A NAME="count">
+<HR> <H3> count </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/count">Show macro</A>
+<pre>
+ count value
+
+ Count the data_point which have an intensity above the value.
+ The results are stored in the returned variable.
+
+ 
+ see also : <A HREF="Ccommands.html#count_3d_dosy">count_3d_dosy</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="count_2d_dosy">
+<HR> <H3> count_2d_dosy </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/count_2d_dosy">Show macro</A>
+<pre>
+ count_3d_dosy $thres 
+
+ Count the number of columns to process in the dosy2d macro
+
+ 
+ see also : <A HREF="Ccommands.html#count">count</A> <A HREF="Dcommands.html#dosy2d">dosy2d</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="count_3d_dosy">
+<HR> <H3> count_3d_dosy </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/count_3d_dosy">Show macro</A>
+<pre>
+ count_3d_dosy $thres $filein
+
+ Count the number of columns to process in the dosy3d macro
+
+ 
+ see also : <A HREF="Ccommands.html#count">count</A> <A HREF="Dcommands.html#dosy3d">dosy3d</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="CX">
+<HR> <H3> CX </H3> 
+<BLOCKQUOTE>
+<pre>
+CX x
+
+Size in centimeters in the x-axis used for the graphic windows and 
+for the plot. Used by PLOT and STPL
+ 
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $CX
+
+
+ see also : <A HREF="Ccommands.html#CY">CY</A> <A HREF="Ccommands.html#CZ">CZ</A> <A HREF="Pcommands.html#PLOT">PLOT</A> <A HREF="Scommands.html#STPL">STPL</A> <A HREF="Scommands.html#STPL?">STPL?</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="CY">
+<HR> <H3> CY </H3> 
+<BLOCKQUOTE>
+<pre>
+CY y
+Size in centimeters of the y-axis used for the graphic windows and 
+for the plot. Used by PLOT and STPL.
+ 
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $CY
+
+
+ see also : <A HREF="Ccommands.html#CX">CX</A> <A HREF="Ccommands.html#CZ">CZ</A> <A HREF="Pcommands.html#PLOT">PLOT</A> <A HREF="Scommands.html#STPL">STPL</A> <A HREF="Scommands.html#STPL?">STPL?</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="CZ">
+<HR> <H3> CZ </H3> 
+<BLOCKQUOTE>
+<pre>
+CZ z
+
+Size in centimeters of the z-axis used for 3D display. 
+  
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $CZ
+
+
+ see also : <A HREF="Ccommands.html#CX">CX</A> <A HREF="Ccommands.html#CY">CY</A> <A HREF="Dcommands.html#DISP3D">DISP3D</A> <A HREF="Pcommands.html#PLOT3D">PLOT3D</A> 
+</pre>
+</BLOCKQUOTE>
+
+ </body> 
+ 

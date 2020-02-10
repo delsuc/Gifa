@@ -1,0 +1,13 @@
+RT->AR n
+
+Compute back the autoregressive coefficients from a given set of 
+roots.
+n = 1 : forward coefficients are calculated from forward roots
+n = 2 : backward coefficients are calculated from backward roots
+n = 3 : both coefficient sets are calculated
+
+related contexts : $NAR $NRT
+
+see also : AR->RT, RTLIST, RTPIV, RTCLEAN, RTMATCH, RTSELECT, 
+    RTREFLECT, RTINV, RT->PK, ORDER
+

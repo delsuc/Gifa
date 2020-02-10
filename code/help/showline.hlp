@@ -1,0 +1,9 @@
+showline x1 y1 x2 y2
+Will draw a line on the displayed spectrum. Coordinates are in index 
+values. The line will be drawn accordingly to the zoom mode. When in 
+2D with density plot and contour plot both on, the contour plot will 
+be used for display. Uses the current definition of SCOLOR for 
+drawing.
+
+see also : SHOWLINETAB SHOWTEXT SHOWPATTERN PLOTLINES PLOTLINE SHOWPEAKS SHOWPEAK SCOLOR
+

@@ -1,0 +1,8 @@
+setval i { j {  k } } x
+Will set the value of the data point to x. The number of coordinates 
+of the point depends of dim. In dim 2 or 3, coordinates are F1 F2 or 
+F1 F2 F3. Can be usefully used when associated to the functions 
+valnd() to change data point value.
+
+see also : SET FUNCTIONS
+

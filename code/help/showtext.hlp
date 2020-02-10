@@ -1,0 +1,8 @@
+SHOWTEXT string X Y 
+Displays the string "string" on the displayed spectrum, at the X, Y 
+position. Coordinates are in index values. When in 2D with density 
+plot and contour plot both on, the contour plot will be used for 
+display. Uses the current definition of SCOLOR for drawing.
+
+see also : PLOTTEXT PLOTTEXTS SHOWLINE SHOWPEAKS SHOWPEAK SCOLOR
+

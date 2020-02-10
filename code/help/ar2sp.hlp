@@ -1,0 +1,7 @@
+Calculate the modulus of spectrum from the autoregressive Burg 
+coefficients. This is the so-called Burg spectrum, (sometimes 
+unfortunately called mem spectrum). The spectrum is computed to the 
+size of the current 1D buffer size.
+
+see also : DT->AR ORDER
+

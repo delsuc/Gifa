@@ -1,0 +1,28 @@
+PROFILER 0/1
+
+When this context is set to 1, each macro line execution is timed.
+Results are stored in a static user asociative array called $_P[],
+were the index in the array is the macro name concatenated with the line number.
+
+As an example, executing the macro conv_n+p will produce the following values :
+
+ $_P[CONV_N+P-15] : 290.00     ( line 15 of conv_n+p lasted 290 msec )
+ $_P[CONV_N+P-16] : 90.00     ( line 16 of conv_n+p lasted 90 msec )
+ ...
+ $_P[CONV_N+P-24] : 90.01       etc...   
+ ....
+
+line 15 of conv_n+p is     for i = 2 to ($si1_2d) STEP 2
+.... 16 ..............     set k = ($i-1)
+.... 24 ..............     adddata phase 90 0
+
+if a macro name is absent then its execution time was too short to be timed.
+
+Note that - arithmetic is not very fast in Gifa  - macro names are converted to uppercase,
+
+These values are analysed with the 'profile' macro.
+
+PROFILER and TIMER are incompatible.
+
+see also : TIMER profile 
+

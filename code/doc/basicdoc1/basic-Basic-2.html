@@ -1,0 +1,507 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=iso-8859-1">
+	<TITLE>Basic environment</TITLE>
+	<META NAME="GENERATOR" CONTENT="StarOffice/5.2 (Linux)">
+	<META NAME="CREATED" CONTENT="20010412;16540000">
+	<META NAME="CHANGEDBY" CONTENT="Thierry Gostan">
+	<META NAME="CHANGED" CONTENT="20010412;17013700">
+	<!-- This document was converted from RTF source: 
+By r2net 5.2.4 r2netcmd Unix 
+Translation:html.trn  $Revision: 1.55 $ $Revision: 1.34 $
+See http://www.logictran.com
+Filename:basic.rtf
+OutFileName:basic.html
+Application Directory:/home/gostan/r2net
+Subject:
+Author:
+Operator:
+Document Comments:
+Version Comments:
+Comments:StarWriter
+Keywords:
+Translation Date:04/12/2001
+Translation Time:15:05:47
+Translation Platform:Unix
+Number of Output files:50
+This File:basic-Basic-2.html
+SplitDepth=2
+SkipNavPanel=0
+SkipLeadingToc=0
+SkipTrailingToc=1
+GenContents=1
+GenFrames=1
+GenIndex=0
+ -->
+	<STYLE>
+	<!--
+		A:visited { color: #808080 }
+		A:link { color: #cc0000 }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LINK="#cc0000" VLINK="#808080" BGCOLOR="#ffffff">
+<P ALIGN=CENTER STYLE="margin-bottom: 0cm"><A HREF="basic-BASIC.html"><IMG SRC="images/up.gif" NAME="Image1" ALT="Up " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Menu.html"><IMG SRC="images/prev.gif" NAME="Image2" ALT="Previous " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Processi.html"><IMG SRC="images/next.gif" NAME="Image3" ALT="Next " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Title.html"><IMG SRC="images/first.gif" NAME="Image4" ALT="Title Page " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Contents.html"><IMG SRC="images/contents.gif" NAME="Image5" ALT="Contents " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+</P>
+<HR>
+<UL>
+	<LI><P STYLE="margin-bottom: 0cm"><A HREF="basic-Basic-2.html#Heading227">About
+	menu</A> 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm"><A HREF="basic-Basic-2.html#Heading254">File
+	menu</A> 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm"><A HREF="basic-Basic-2.html#Heading278">Mode
+	menu</A> 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm"><A HREF="basic-Basic-2.html#Heading309">Display
+	menu</A> 
+	</P>
+	<LI><P><A HREF="basic-Basic-2.html#Heading352">Move menu</A> 
+	</P>
+</UL>
+<HR>
+<H2><A NAME="Heading220"></A><U><I>Basic environment</I></U></H2>
+<P>The following menus are usually present whenever the graphic
+interface is activated, they are independent from the kind or work
+currently in progress (except in the assignment module). <BR>If the
+graphic is missing, try typing the following command <TT><FONT FACE="Courier">env_base.g</FONT></TT>,
+which executes the macro which loads the default menu-bar, from which
+you can add all the specific menus.<BR>Some menus are optional or may
+not be on screen at the same moment, see the <B>Mode</B>
+Menu.<BR>Entries followed by 3 dots (...) indicates that some input
+will be asked to the user by the command. <BR>The name of the entries
+in the menus have been chosen to resemble as closely as possible to
+the command name which would realise the same action. This makes the
+menus a bit cryptic, but ease the process of learning the commands,
+which can then be used to extend the capabilities of the program by
+writing macros. These menus implement most of the actions that you
+will need in regular processing, however there are many more
+capabilities in Gifa than the ones which are available from this
+standard menu interface.</P>
+<H3><A NAME="Heading227"></A><B>About menu</B></H3>
+<P>This menu gives access to the basic information and documentation.</P>
+<UL>
+	<LI><P><U>About GIFA</U></P>
+</UL>
+<P>Will print introduction text, giving the some ideas on the Gifa
+program, as well as some hints on how getting more information or
+help.<BR>This button is equivalent to the HELP command without
+parameter.</P>
+<UL>
+	<LI><P><U>History file</U></P>
+</UL>
+<P>Gives access to the text of the History file.</P>
+<UL>
+	<LI><P><U>Help...</U></P>
+</UL>
+<P>Will prompt you for a command/macro name and will display the help
+associated with that command/macro.<BR>This button is equivalent to
+the <TT><FONT FACE="Courier">help</FONT></TT> macro called with a
+parameter.</P>
+<UL>
+	<LI><P><U>APropos...</U></P>
+</UL>
+<P>Will prompt you for a word, and will show the name of all the
+commands/macros that have this word in their help file (case
+insensitive). Try for instance <I>Fourier</I> or <I>display</I><BR>This
+button is equivalent to the apropos macro.</P>
+<UL>
+	<LI><P><U>Documentation...</U></P>
+</UL>
+<P>This button launch the Netscape program, with an hyper-text
+version of the current manual.</P>
+<UL>
+	<LI><P><U>Gifa home page on the WEB...</U></P>
+</UL>
+<P>This button launch the Netscape program, directly pointing to the
+Gifa home page : <A HREF="http://www.cbs.univ-montp1.fr/GIFA/base.html" TARGET="_top">http://www.cbs.univ-montp1.fr/GIFA/base.html</A>.</P>
+<UL>
+	<LI><P><U>Config</U></P>
+</UL>
+<P>Will give all the details on the internal configuration of the
+program. You will have information on the current version number and
+the licence of the program, as well as the value of the basic
+parameters. Some values are hard-wired in the program at compile
+time, such as the size of the working buffer, or the number of user
+variables; some values may be modified by the user such as the kind
+of plotter currently in use (see below).<BR>This button is equivalent
+to the CONFIG command.</P>
+<UL>
+	<LI><P><U>bug report</U></P>
+</UL>
+<P>Permits to edit and mail to me
+<A HREF="mailto:Marc-Andre.Delsuc@cbs.univ-montp1.fr" TARGET="_top">Marc-Andre.Delsuc@cbs.univ-montp1.fr</A>
+a short bug report.</P>
+<UL>
+	<LI><P><U>Switch to Simplified menu</U></P>
+</UL>
+<P>Switch to a simplified mode of the menu environment. This
+simplified mode is design to help the first time user to use Gifa,
+concentrating on the most standard features.</P>
+<UL>
+	<LI><P><U>Quit GIFA</U></P>
+</UL>
+<P>Will quit the Gifa program loosing all data in memory not saved
+with a WRITE command, and removing the journaling file. If you want
+to keep the journaling file (a file called gifa.log in your $HOME
+directory, which holds all the command issued during the Gifa
+session), you will have to type in the QUIT command directly.<BR>This
+button is equivalent to the <FONT FACE="Courier">QUIT N</FONT>
+command.</P>
+<H3><A NAME="Heading254"></A><B>File menu</B></H3>
+<P>This menu holds the basic commands for getting information on the
+program, reading and writing data-sets and quitting the program.</P>
+<UL>
+	<LI><P><U>Read...</U></P>
+</UL>
+<P>Will prompt you for the name of the file to be loaded into memory.
+The program will switch to 1D, 2D or 3D depending on the data-set
+itself. File should be in the standard Gifa format.<BR>This button is
+equivalent to the READ command.</P>
+<UL>
+	<LI><P><U>Write...</U></P>
+</UL>
+<P>Will prompt you for the name of the file to be written from the
+data held into memory. The data-set will be created depending on the
+DIM currently selected (1D, 2D or 3D).<BR>This button is equivalent
+to the WRITE command.</P>
+<UL>
+	<LI><P><U>Read all format - Write all format</U></P>
+</UL>
+<P>Are equivalent to <U>Read</U> and <U>Write</U> but a selection box
+permits to choose among all the supported Gifa file formats. For
+details, see below in the manual at the READx command</P>
+<UL>
+	<LI><P><U>Bring from UXNMR</U></P>
+</UL>
+<P>This button calls an interactive utilities that permits to easily
+bring data from a remote Bruker spectrometer, and convert it to Gifa
+data-set.</P>
+<UL>
+	<LI><P><U>Read from VNMR</U></P>
+</UL>
+<P>Calls the macro <TT><FONT FACE="Courier">varian_read</FONT></TT>
+which makes an interface around the <TT><FONT FACE="Courier">READV</FONT></TT>
+command, which reads VNMR <TT><FONT FACE="Courier">FID</FONT></TT>
+files, and the macro <TT><FONT FACE="Courier">varian_param</FONT></TT>
+which scans the <TT><FONT FACE="Courier">procpar</FONT></TT> file to
+get acquisition parameters.</P>
+<UL>
+	<LI><P><U>Add file to current</U></P>
+</UL>
+<P>Calls the command <TT><FONT FACE="Courier">ADD</FONT></TT> which
+permits to add a file to the current data-set (1D, 2D or 3D). A
+multiplier is used, which permit also to substract, or any other
+operation.</P>
+<UL>
+	<LI><P><U>File name</U></P>
+</UL>
+<P>Will give you the name of the last read or written file with the
+<TT><FONT FACE="Courier">READ</FONT></TT> or <TT><FONT FACE="Courier">WRITE</FONT></TT>
+commands (or the Read... or Write... button).</P>
+<UL>
+	<LI><P><U>Size of data</U></P>
+</UL>
+<P>Will give you the detail on the dimension, the sizes, the spectral
+widths, etc... of the current data-set.<BR>This button is equivalent
+to the <TT><FONT FACE="Courier">size</FONT></TT> macro.</P>
+<UL>
+	<LI><P><U>More details</U></P>
+</UL>
+<P>Will give you the even more details the current data-set, such as
+the zoom window, the display values, etc...<BR>This button is
+equivalent to the <TT><FONT FACE="Courier">list</FONT></TT> macro.</P>
+<H3><A NAME="Heading278"></A><B>Mode menu</B></H3>
+<P>This menu permit to choose between different interface, already
+prepared in the standard distribution. Some button will completely
+change the interface, some, noted with 3 leading points, will add a
+menu at the end of the menu-bar</P>
+<UL>
+	<LI><P><U>Switch to Varian default</U></P>
+</UL>
+<P>After this command has been called, standard processing include a
+reverse operation, which is suitable for Varian data file, also the
+<TT><FONT FACE="Courier">easy2d</FONT></TT> form presents an
+additional entry which permits to directly handle VNMR data files.
+This is equivalent to using the <TT><FONT FACE="Courier">Varian</FONT></TT>
+macro</P>
+<UL>
+	<LI><P><U>Proc 1D</U></P>
+</UL>
+<P>Will activate a graphic interface suitable for processing and
+displaying 1D data-sets only.</P>
+<UL>
+	<LI><P><U>Proc 2D</U></P>
+</UL>
+<P>Will activate a graphic interface suitable for processing and
+displaying 2D and 1D data-sets.</P>
+<UL>
+	<LI><P><U>Proc 3D</U></P>
+</UL>
+<P>Will activate a graphic interface suitable for processing and
+displaying 3D, 2D and 1D data-sets.</P>
+<UL>
+	<LI><P><U>Assignment</U></P>
+</UL>
+<P>Will activate the assignment module (see <A HREF="http://www.cbs.univ-montp1.fr/GIFA/gifa_doc/basic/assign/assignement.html" TARGET="_top">assignment
+documentation</A>)</P>
+<UL>
+	<LI><P><U>... Advanced proc</U></P>
+</UL>
+<P>Will add a menu permitting extended processing, such as baseline
+correction, water suppression, etc...</P>
+<UL>
+	<LI><P><U>...MaxEnt</U></P>
+</UL>
+<P>Will add a menu permitting to realise MaxEnt processing of the
+data-sets. (see <A HREF="http://www.cbs.univ-montp1.fr/GIFA/gifa_doc/basic/MaxEnt/MaxEnt.html" TARGET="_top">MaxEnt
+documentation</A>)</P>
+<UL>
+	<LI><P><U>...Linear Prediction</U></P>
+</UL>
+<P>Will add a menu permitting Linear Prediction processing. (see
+<A HREF="http://www.cbs.univ-montp1.fr/GIFA/gifa_doc/basic/lin_pred/LinearPrediction.html">Linear
+Prediction Documentation</A>)</P>
+<UL>
+	<LI><P><U>...Dosy Processing</U></P>
+</UL>
+<P>Will add a menu permitting Dosy processing. (see <A HREF="http://www.cbs.univ-montp1.fr/GIFA/gifa_doc/basic/dosy/dosy.html" TARGET="_top">Dosy
+Processing documentation</A>)</P>
+<UL>
+	<LI><P><U>... Plot</U></P>
+</UL>
+<P>Will add a menu permitting all commands associated to plots.</P>
+<UL>
+	<LI><P><U>... Peak</U></P>
+</UL>
+<P>Will add a menu permitting all commands associated to Peak-picking
+and Line fitting.</P>
+<UL>
+	<LI><P><U>... Unix</U></P>
+</UL>
+<P>Will add a menu permitting Unix-like commands.</P>
+<UL>
+	<LI><P><U>Pulldown menus</U></P>
+</UL>
+<P>Set the menu bar interface to act as a regular pulldown menus.
+Also resets the interface to <U>2D Mode</U></P>
+<UL>
+	<LI><P><U>Static box menus</U></P>
+</UL>
+<P>Set the menu bar interface to act as a set of static button boxes.
+Also resets the interface to <U>2D Mode</U></P>
+<H3><A NAME="Heading309"></A><B>Display menu</B></H3>
+<P>This menu holds the commands permitting to interact with the
+display.</P>
+<UL>
+	<LI><P><U>Disp1D on</U></P>
+</UL>
+<P>Will switch on the graphic window associated to the 1D buffer. Has
+no effect if the window is already displayed.<BR>This button is
+equivalent to the <TT><FONT FACE="Courier">DISP1D 1</FONT></TT>
+command.</P>
+<UL>
+	<LI><P><U>Disp2D on</U></P>
+</UL>
+<P>Will switch on the graphic window associated to the 2D buffer,
+displaying the density plot. Has no effect if the window is already
+displayed.<BR>This button is equivalent to the <TT><FONT FACE="Courier">DISP2D
+1</FONT></TT> command.</P>
+<UL>
+	<LI><P><U>CDisp2D on</U></P>
+</UL>
+<P>Will switch on the graphic window associated to the 2D buffer,
+displaying the contour plot. Has no effect if the window is already
+displayed.<BR>By default when entering the program, the DISP1D and
+DISP2D windows are on but the CDISP2D window is off. This is because
+the display in contour plot might be much slower than the density
+display, and it makes little sense to display a FID in contour
+plot!<BR>This button is equivalent to the <TT><FONT FACE="Courier">CDISP2D
+1</FONT></TT> command.</P>
+<UL>
+	<LI><P><U>Zm (Zoom Control)</U></P>
+</UL>
+<P>This button will enter a Zoom mode, were you can define a zoom
+window, zoom in and out, and modify the scale of display. The four
+little arrows permit to move the zoom window around without modifying
+its size.<BR>This button is equivalent to the <TT><FONT FACE="Courier">ZM</FONT></TT>
+command.</P>
+<UL>
+	<LI><P><U>Display Control</U></P>
+</UL>
+<P><IMG SRC="images/DisplayCtrl.gif" NAME="Image11" ALIGN=LEFT HSPACE=8 VSPACE=8 WIDTH=402 HEIGHT=196 BORDER=0>This
+button will launch a form which permits to control other display
+parameters such as the state of the contour display window, the
+display of the negative regions, the number of levels and the spacing
+algorithm.</P>
+<P>Equivalent to calling the <TT><FONT FACE="Courier">dispcont</FONT></TT>
+macro <BR>-sign determines whether positive negative or both levels
+will be displayed<BR>-level controls the number of levels displayed
+in the contour 2D window<BR>-loga controls the algorithm used for the
+level spacing</P>
+<UL>
+	<LI><P><U>Freeze</U></P>
+</UL>
+<P>This button will permit you to &quot;freeze&quot; a currently
+opened window, by duplicating it. It is a bit like taking a snapshot
+of the window, letting it on screen as long as you wish. There is no
+way of altering a FREEZEd window but closing it. <BR>This button is
+equivalent to the <TT><FONT FACE="Courier">FREEZE</FONT></TT>
+command.</P>
+<UL>
+	<LI><P><U>Rzoom</U></P>
+</UL>
+<P>When in zoom mode, this button will jump to symmetrical zoom
+region, relative to the diagonal.<BR>This button is equivalent to the
+<TT><FONT FACE="Courier">rzoom</FONT></TT> macro.</P>
+<UL>
+	<LI><P><U>Store zoom</U></P>
+</UL>
+<P>Clicking this will memorise the current zoom window, it will be
+possible, at any later time to click on the <U>back to stored zoom</U>
+to go back to that window.</P>
+<UL>
+	<LI><P><U>Back to stored zoom</U></P>
+</UL>
+<P>Jumps back to the last stored zoom window</P>
+<UL>
+	<LI><P><U>multi_zoom</U></P>
+</UL>
+<P><IMG SRC="images/ZoomCtrl.gif" NAME="Image12" ALIGN=LEFT HSPACE=8 VSPACE=8 WIDTH=361 HEIGHT=186 BORDER=0>Brings
+up a tool which permits to handle several zoom regions easily.<BR>Use
+the <U>pop-up</U> menu to choose the region you want to zoom-in; use
+the <U>Jump</U> button to actually jump into the selected region;
+<U>Define</U> permits to define new regions which will appear in the
+pop-up; <U>Draw</U> draws the defined regions on screen; <U>Load</U>
+and <U>Store</U> permit to save the configuration to a file call
+zoom_window. The Rzoom button will do the same action as the command
+<U>Rzoom</U> above.<BR>This button is equivalent to the multi_zoom
+macro.</P>
+<UL>
+	<LI><P><U>super1D</U></P>
+</UL>
+<P>Creates a form box which permits to display up to 2 additional 1D
+spectra on the top of the current 1D spectrum held in
+memory<BR>Equivalent to the <TT><FONT FACE="Courier">super1d</FONT></TT>
+macro<BR>Be carefull that this command (as well as super2D)
+superimposes spectra on the basis of the chemical shift. This permits
+to compare spectra acquired in very different conditions (spectral
+width, resolution, even field), but requires that the spectra are
+correctly calibrated.</P>
+<UL>
+	<LI><P><U>super2D</U></P>
+</UL>
+<P>Creates a form box which permits to display up to 2 additional 2D
+spectra on the top of the current 2D spectrum held in memory, and
+displayed on the contour (<U>CDisp2D on</U>) window.<BR>Equivalent to
+the <TT><FONT FACE="Courier">super2d</FONT></TT> macro</P>
+<H3><A NAME="Heading352"></A><B>Move menu</B></H3>
+<P>This menu holds all the commands permitting to navigate in the
+different mode of the program, or to move data between the different
+buffers. <BR>All the processing in Gifa is performed in working
+buffers. There are 3 main such buffers, the 1D, the 2D and the 3D
+buffers. The content of the 1D and 2D buffers is directly visualised
+in the 1D and 2D graphic windows. Only one such working area can be
+selected at a given time, however switching from one buffer to the
+other is virtually instantaneous. All commands and actions apply to
+the currently selected buffer; processing commands (FT, etc..) as
+well as display commands (<TT><FONT FACE="Courier">SCALE</FONT></TT>,
+<TT><FONT FACE="Courier">ZOOM</FONT></TT>, etc...). <BR>Choosing a
+working buffer is completely independent from choosing to display one
+data space or another.</P>
+<UL>
+	<LI><P><U>dim 1 - dim 2 - dim 3</U></P>
+</UL>
+<P>Switches the active working buffer. Respectively to 1D, 2D and 3D.
+These buttons are equivalent to the <TT><FONT FACE="Courier">DIM x</FONT></TT>
+command, or to changing <U>DIM</U> from the Zoom Box.<BR><BR>An
+independent buffer is available, which can hold indifferently a 1D,
+2D or 3D data-set. This buffer cannot be easily processed nor
+visualised, but can be used as an additional &quot;hand&quot; for
+processing or comparison.</P>
+<UL>
+	<LI><P><U>Put Data</U></P>
+</UL>
+<P>Loads the <TT><FONT FACE="Courier">DATA</FONT></TT> buffer with
+the contents of the currently active buffer. Equivalent to the <TT><FONT FACE="Courier">PUT
+DATA </FONT></TT>command.</P>
+<UL>
+	<LI><P><U>Get Data</U></P>
+</UL>
+<P>Brings back the content of the DATA buffer into the working
+buffer. Equivalent to the <TT><FONT FACE="Courier">GET DATA </FONT></TT>command.
+The sequence<BR><TT><FONT FACE="Courier"><U>Put Data</U> ...any
+processing... <U>Get Data</U></FONT></TT><BR>can be used as a kind of
+limited undo facility. Note however that certain commands use the
+DATA buffer, thus destroying the <U>Get Data</U> capability.</P>
+<UL>
+	<LI><P><U>AddData</U></P>
+</UL>
+<P>Adds the content of the DATA buffer with the content of the
+working buffer, and put the result into the working buffer. To make a
+difference spectra, simply multiply the working buffer by -1 (<TT><FONT FACE="Courier">mult
+-1</FONT></TT>) before adding. Equivalent to the <TT><FONT FACE="Courier">ADDDATA</FONT></TT>
+command.</P>
+<UL>
+	<LI><P><U>Point</U></P>
+</UL>
+<P>Enter an interactive mode, where the coordinates of the cursor are
+displayed. Click into the text box to exit this mode. Equivalent to
+the <TT><FONT FACE="Courier">point </FONT></TT>macro.</P>
+<UL>
+	<LI><P><U>Unit...</U></P>
+</UL>
+<P>Permits to choose the unit in which the coordinates of the cursor
+are displayed during the <U>Point</U> mode. Unit can be either Index,
+Hertz, ppm, second, damping or tabulated. Different unit can be
+chosen for horizontal and vertical axes in 2D. Equivalent to the <TT><FONT FACE="Courier">UNIT
+</FONT></TT>and<TT><FONT FACE="Courier"> UNIT_Y </FONT></TT>commands.</P>
+<UL>
+	<LI><P><U>Calib...</U></P>
+</UL>
+<P>Starts a macro (<TT><FONT FACE="Courier">calib</FONT></TT>) which
+permits to calibrate the current spectrum, by clicking on the
+reference peak, then entering its coordinates.</P>
+<UL>
+	<LI><P><U>Select Row</U></P>
+</UL>
+<P>Starts the macro <TT><FONT FACE="Courier">rowint</FONT></TT>,
+which permits to interactively select rows (F2 sections) in the 2D
+window and display them in the 1D window. You exit this mode by
+clicking on the right mouse button. The last selected row is copied
+into the 1D working buffer.</P>
+<UL>
+	<LI><P><U>Select Col</U></P>
+</UL>
+<P>Starts the macro <TT><FONT FACE="Courier">colint</FONT></TT>,
+which permits to interactively select columns (F1 sections) in the 2D
+window and display them in the 1D window. You exit this mode by
+clicking on the right mouse button. The last selected column is
+copied into the 1D working buffer.</P>
+<UL>
+	<LI><P><U>Row...</U></P>
+</UL>
+<P>Permits to copy a 2D row, selected by its index, into the 1D
+working buffer. Equivalent to the <TT><FONT FACE="Courier">ROW
+</FONT></TT>command.</P>
+<UL>
+	<LI><P><U>Col...</U></P>
+</UL>
+<P>Permits to copy a 2D column, selected by its index, into the 1D
+working buffer. Equivalent to the <TT><FONT FACE="Courier">COL
+</FONT></TT>command.</P>
+<HR>
+<P ALIGN=CENTER STYLE="margin-bottom: 0cm"><A HREF="basic-BASIC.html"><IMG SRC="images/up.gif" NAME="Image6" ALT="Up " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Menu.html"><IMG SRC="images/prev.gif" NAME="Image7" ALT="Previous " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Processi.html"><IMG SRC="images/next.gif" NAME="Image8" ALT="Next " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Title.html"><IMG SRC="images/first.gif" NAME="Image9" ALT="Title Page " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Contents.html"><IMG SRC="images/contents.gif" NAME="Image10" ALT="Contents " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+</P>
+</BODY>
+</HTML>

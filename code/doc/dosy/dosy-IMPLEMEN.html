@@ -1,0 +1,186 @@
+<HTML><HEAD>
+<!-- This document was created from RTF source by rtftohtml version 3.9.3 -->
+<TITLE>DOSY Processing - IMPLEMENTATION,</TITLE></HEAD>
+<BODY>
+<A HREF="dosy-THEORY.html"><IMG SRC="leftg.gif" ALT="Prev " border=0></A>
+ <A HREF="dosy-USAGE.html"><IMG SRC="rightg.gif" ALT="Next " border=0></A>
+ <A HREF="dosy-Title.html"> </A>
+ <A HREF="dosy-Contents.html"><IMG SRC="contg.gif" ALT="Contents " border=0></A>
+<hr size=4>
+<H1>
+IMPLEMENTATION,</H1>
+<UL>
+<LI><A HREF="#Heading4">Using the general fitter - dosyfit - dosyfit_2</A>
+<LI><A HREF="#Heading5">MaxEnt implementation</A>
+<UL>
+<LI><A HREF="#Heading6">Direct space : regular sampling</A>
+<LI><A HREF="#Heading7">Direct space : Tab_buffer, showtab</A>
+<LI><A HREF="#Heading8">Reciprocal space : DMIN, DMAX, DFACTOR, calibdosy, dosy_setup</A>
+</UL>
+<LI><A HREF="#Heading9">Specific actions</A>
+<UL>
+<LI><A HREF="#Heading10">LAPLACE, TLAPLACE</A>
+<LI><A HREF="#Heading11">INVLAP, INVTLAP, INVLAPCONT, INVTLAPCONT</A>
+<LI><A HREF="#Heading12">TRANSLAP, TRANSTLAP</A>
+<LI><A HREF="#Heading13">dosy2d, dosy3d</A>
+</UL>
+</UL>
+<hr size=4>
+<p>The possibility in Gifa to handle DOSY spectra and Laplace transform has
+needed the implementation of additional data representations as well as a set
+of additionnal commands.</p>
+
+<h2>
+<A NAME="Heading4">Using the general fitter - dosyfit - dosyfit_2</A></h2>
+
+<p>The
+fit techniques, consists simply in using the <tt>FITGENE</tt> command, which is
+able to fit the data held in the 1D buffer, to one or two damped
+exponentials.<br>
+The two macros, <tt>dosyfit</tt> and <tt>dosyfit_2</tt> realizes this fit. Note
+that these macros realizes this fit in such a way that the result is
+independent on the <tt>DMIN</tt> <tt>DMAX</tt> parameters. The noise level
+however, should be determine with care.</p>
+
+<h2>
+<A NAME="Heading5">MaxEnt implementation</A></h2>
+
+<p>Direct
+space data-sets can be handled in memory in two representations : as a regular
+sampling of the direct space, or as a tabulated data-set, i.e. data-points
+measured at arbitrary locations of the direct space.</p>
+
+<h3>
+<A NAME="Heading6">Direct space : regular sampling</A></h3>
+
+<p>When
+regularly sampled, the direct space is assimilated to a time space. So seconds
+are the natural unit, and the spacing of points in the buffer is determined by
+the spectral width (<tt>SPECW</tt>).</p>
+
+<h3>
+<A NAME="Heading7">Direct space : Tab_buffer, showtab</A></h3>
+
+<p>When
+using tabulated data-sets (sampled at arbitrary locations), the location of the
+sampled points are stored in a special buffer 'TAB' designed for this purpose.
+The <tt>tab_buffer</tt> macro :<ul>
+<li>	reads a plain ascii file (one value per line, # and ; are comments) as a
+1D data-set (<tt>load</tt> macro),
+<li>	calculates the square of a 1D data-set,
+<li>	puts the 1D data-set in a TAB buffer (<tt>PUT TAB</tt> command).</ul>The
+<tt>GET TAB</tt> command realises the opposite, and copy the TAB buffer to the
+current working 1D buffer. When handling tabulated data, the current UNIT can
+be set to TAB in order to locate points in this natural unit rather than in
+index. The macro <tt>showtab</tt> has been written to display the normal view
+of such data-sets.</p>
+
+<h3>
+<A NAME="Heading8">Reciprocal space : DMIN, DMAX, DFACTOR, calibdosy, dosy_setup</A></h3>
+
+<p>Values
+in the reciprocal space (damping amplitudes) are always stored in a geometrical
+series, the slower decay on the left, the faster on the right. The smallest
+value (lower index) is given with the context <tt>DMIN</tt>, and the largest
+with <tt>DMAX</tt> (<tt>DMIN</tt> and <tt>DMAX</tt> values are stored, in the
+data file header, as <tt>DMIN</tt>/<tt>DFACTOR</tt> and
+<tt>DMAX</tt>/<tt>DFACTOR</tt>). This decribes the values as they will be used
+in the Laplace transform, along with the direct space values. However, one
+might want to correlate the reciprocal space values to a physical constant
+(such as diffusion for instance), for this purpose, a calibrating factor is
+added which is multiplied to the actual value when computing the coordinate :
+<tt>DFACTOR</tt>. The macro calib has been adapted to permit <tt>DFACTOR</tt>
+calibration from a known signal, on the other hand, the macro<tt>
+calibdosy</tt> tries to set <tt>DFACTOR</tt> from the experimental parameters
+of the DOSY experiment itself (Wu, D.H., Chen, A.D. and Johnson, C.S. (1995)
+<i>J. Magn. Reson. Ser. A, </i><b>115</b>, 260-264).<br>
+<sub>	
+<IMG HEIGHT=47 WIDTH=156 SRC="dosy07.GIF">
+		eq[3]</sub><br>
+were <sub>
+<IMG HEIGHT=13 WIDTH=11 SRC="dosy08.GIF"></sub>,
+<sub>
+<IMG HEIGHT=13 WIDTH=10 SRC="dosy09.GIF"></sub>
+and <sub>
+<IMG HEIGHT=12 WIDTH=12 SRC="dosy10.GIF"></sub>
+are respectively the gyromagnetic ratio of the observed nucleus, the length of
+the gradient pulse and the duration of the diffusion delay. a is the gradient
+area and is equal to <sub>
+<IMG HEIGHT=16 WIDTH=18 SRC="dosy11.GIF"></sub>
+(g : intensity in G/cm of a nominal gradient of 1.0) for square gradients. <sub>
+<IMG HEIGHT=10 WIDTH=10 SRC="dosy12.GIF"></sub>
+is the inter-pulse delai in the bipolar-pulse LED sequence and is equal to 0 in
+the LED sequence <br>
+The dosy_setup macro creates an interactive environment which permits to set
+most of the pertinent parameters more easily.</p>
+
+<h2>
+<A NAME="Heading9">Specific actions</A></h2>
+
+
+<h3>
+<A NAME="Heading10">LAPLACE, TLAPLACE</A></h3>
+
+<p>These
+two commands perform the direct Laplace transform  from a reciprocal space
+distribution, to either a regularly sampled direct space data-set
+(<tt>LAPLACE</tt>) or to a tabulated one (<tt>TLAPLACE</tt>). Both commands
+prompt for the final data-set size, which is completely independent of the
+starting size. Sizes do not have to be powers of 2.</p>
+
+<h3>
+<A NAME="Heading11">INVLAP, INVTLAP, INVLAPCONT, INVTLAPCONT</A></h3>
+
+<p>These
+commands actually implements the Maximum Entropy Laplace inversion.
+<tt>INVLAP</tt> and <tt>INVTLAP</tt> starts the inversion. They both prompt for
+the final size, and should be issued with the direct-space data-set (damped
+data) in the current 1D buffer. They will start for <tt>ITER</tt> number of
+iterations. Information on the process will be issued every <tt>NDISP</tt>
+iterations, if display is enabled, the progress of the process is also
+displayed on screen. <tt>INVLAP</tt> is for regularly sampled data-sets,
+whereas <tt>INVTLAP</tt> is for tabulated data-sets.<br>
+When the number of iterations is reached, it is possible to increase the
+<tt>ITER</tt> context, and the <tt>INVLAPCONT</tt> and <tt>INVTLAPCONT</tt>
+commands permit to continue the process, restarting from the current state.</p>
+
+<h3>
+<A NAME="Heading12">TRANSLAP, TRANSTLAP</A></h3>
+
+<p>In
+the Maximum Entropy theory, the transpose of the Laplace transform appears in
+the computation of the derivative. These commands implements this transform,
+they may be needed in certain cases.</p>
+
+<h3>
+<A NAME="Heading13">dosy2d, dosy3d</A></h3>
+
+<p>These
+two realise the Laplace inversion of the actual DOSY experiments.
+<tt>dosy2d</tt> is for the processing of a 2D DOSY experiment : a set of 1D
+spectra, weighted by the diffusion coefficients; <tt>dosy3d</tt> is for a 3D
+DOSY : a set of 2D spectra weighted by the diffusion coefficients.<br>
+Both macros require 5 parameters : nature of the data-set (regular or
+tabulated); the processing to do; the final size, a noise threshold which
+permits to determine which slices will be processed; and finally the name of
+the output file.<br>
+For the processing you can choose to use MaxEnt, fit or fit with 2 components.
+The fit  technique extract a parameter rather than a diffusion profile, in this
+case, the profile is reconstructed from the fitted parameters, using a FT
+algorithm. The error on the position is used to reconstruct the width of the
+line in reconstructed profile. Note however that this width is usually rather
+optimistic as based solely on the noise level, and not on the other artefacts
+that may appear in the data. The noise threshold is used to determine wich
+column to process by considering the initial spectrum of the data-set, the
+diffusion dimension is processed only if the related point in this initial
+data-set is higher than the noise level time the threshold. <br>
+<tt>dosy3d</tt> also asks for a input file-name (initial 3D dataset, in memory)
+and a output file-name, in order to create a file in which the result will be
+stored (in memory).
+</p>
+<P><hr size=4>
+<A HREF="dosy-THEORY.html"><IMG SRC="leftg.gif" ALT="Prev " border=0></A>
+ <A HREF="dosy-USAGE.html"><IMG SRC="rightg.gif" ALT="Next " border=0></A>
+ <A HREF="dosy-Title.html"> </A>
+ <A HREF="dosy-Contents.html"><IMG SRC="contg.gif" ALT="Contents " border=0></A>
+</body></html>

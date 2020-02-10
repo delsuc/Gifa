@@ -1,0 +1,10 @@
+TIMER 0/1
+
+When this context is set to 1, then the time needed to execute each 
+command is given. If the command TIMER 1 is given while the value of 
+timer is already 1, the timing is issued, and the clock reseted to 
+0. Within macros, only the overall execution time of the macro is 
+given, unless an explicit TIMER 1 or TIMER 0 is given.
+
+see also : PROFILER VERBOSE DEBUG REFMACRO SH
+

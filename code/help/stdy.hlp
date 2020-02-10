@@ -1,0 +1,6 @@
+Parameter for STPL.
+Each new line during STPL is shifted by STDY centimeters on the Y 
+axis. Default is 0.1
+ 
+see also : STPL STPL?
+

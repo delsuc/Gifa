@@ -1,0 +1,10 @@
+addnoise noise seed
+
+add to the current data-set (1D, 2D, 3D) a white-gaussian, 
+characterized
+by its level noise, and the random generator seed.
+
+related contexts : $NOISE $RANDOM $RANDOMG $RANDOMZ
+
+see also: SIMUN, SIMU, EVALN
+

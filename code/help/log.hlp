@@ -1,0 +1,7 @@
+The LOG file is a text file journaling all the actions performed 
+during the session in the GIFA program. This file is called 
+gifa.log. When exiting the program, you are asked whether you want 
+to keep this file for latter use.
+
+see also : CONNECT DISCONNECT
+

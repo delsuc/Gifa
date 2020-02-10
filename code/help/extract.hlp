@@ -1,0 +1,8 @@
+EXTRACT x1 y1 {x2 y2}
+	Permits to extract a portion of the data currently displayed. 
+Data can then be processed as a regular data-set. EXTRACT changes 
+the value of OFFSET and SPECW accordingly. The command will prompt 
+for the last selected region with the POINT command
+
+see also POINT ZOOM CHSIZE lshift rshift 
+

@@ -1,0 +1,12 @@
+Determines the filter used during Maximum Entropy processing, Filter 
+can take values: 0, 1, or 2. Default value is 1.
+0: is no filtering at all
+1: is filtering done only if one of the following is non 0 : LB GB 
+or JCONS
+The filter is constructed automatically from the value of those 
+parameters
+2: is filtering always, the filter used is the one currently loaded 
+(can be checked with SHOW FILTER , and changed with PUT FILTER)
+
+see also SHOW GET PUT WINDOW NCHANNEL
+

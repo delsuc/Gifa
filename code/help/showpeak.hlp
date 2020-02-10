@@ -1,0 +1,6 @@
+showpeak index
+will display on the current graphic, the indexth peak of the peak 
+table. Uses the current definition of SCOLOR for drawing.
+
+see also : PEAK PLOTPEAKS SHOWPEAKS SCOLOR
+

@@ -1,0 +1,10 @@
+	Switch from a itype=1 2D data-set to a itype=2 by exchanging the 
+imaginary parts. Useful only for processing phase modulated 2D data-
+sets :
+Gifa> FT F2 FLIP FT F1 REAL F1
+will process a phase modulated data-set.
+
+related contexts : $ITYPE_2D
+
+see also : FLOP FT MODULUS ITYPE ft_phase_modu
+

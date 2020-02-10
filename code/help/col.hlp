@@ -1,0 +1,10 @@
+COL index
+
+Extracts a 1D column (along F1 axis) from the active 2D data-set, 
+and displays it in the 1D window. The column will be available as a 1D 
+data set when going from 2D to 1D
+
+related contexts : $COL
+
+see also : ROW PLANE DIAG VERT DIM rowint colint
+

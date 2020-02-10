@@ -1,0 +1,9 @@
+SUMREC f1_low f2_low f1_up f1_up
+Realizes the integration under a given area (in 2D),  value is 
+corrected for baseline shift (if any computed with EVALN).
+Volume is also stored in the context $SUMREC
+
+related contexts : $SUMREC
+
+see also : INTEG EVALN MAXINBOX sumrec_1d pksumrec
+

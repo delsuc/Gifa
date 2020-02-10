@@ -1,0 +1,14 @@
+SEGM1 n
+
+choose the way the first segmentation is done in BCORR 3 .
+0 : without.
+1 : with a standard deviation algorithm on the data set.
+2 : with a standard deviation algorithm on the first derivative
+ of the data set.
+3 : with thresholds on the data set, and on the first and second 
+derivatives.
+4 : with a dynamic clusters algorithm.
++10 : with a morphological filtering after the segmentation.
+
+see also : BCORR
+

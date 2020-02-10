@@ -1,0 +1,6 @@
+CONCAT file_name
+Appends the content of file_name to the current data-set in memory. 
+Work with 'H' files
+
+see also : ADDH READH
+

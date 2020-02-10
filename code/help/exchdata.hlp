@@ -1,0 +1,4 @@
+	Exchange the contents of the DATA buffer with the current data-set. 
+
+see also : ADDDATA MULTDATA MAXDATA MINDATA ADD ADDH MULT PUT
+

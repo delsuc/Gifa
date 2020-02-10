@@ -1,0 +1,11 @@
+INVLAP size
+
+Realizes the inverse Laplace transform of the current data-set, considered as 
+regularly sampling the time domain with a sampling rate SPECW.  The 
+transform is computed for 'size' data-points spanning the range DMIN-DMAX 
+in a logarithmic manner. The inversion is performed by MaxEnt iteration.
+
+related contexts : $ITERDONE $CHI2 $DMIN $DMAX $ALGO
+
+see also : DMIN DMAX LAPLACE PUT INVTLAP MAXENT TRANSLAP
+    INVTLAPCONT env_dosy.g  dosy2d dosy3d

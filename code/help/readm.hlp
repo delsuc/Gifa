@@ -1,0 +1,9 @@
+READM file_name
+
+Loads a file created with the program MATLAB, using the -ascii 
+option; or with the WRITEM command.
+
+related contexts : $NAME
+
+see also : READ WRITEM READT load
+

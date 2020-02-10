@@ -1,0 +1,1568 @@
+<html>
+<head>
+<!-- This document created by dodoc_html V2.1>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#CC0000">
+<TITLE>Commands in P </TITLE>
+<H2> <A HREF="commands.html">Back to Alphabetical List</A> </H2>
+
+<A NAME="PAGE">
+<HR> <H3> PAGE </H3> 
+<BLOCKQUOTE>
+<pre>
+PAGE plot_file_name
+	This command appends code at the end of plot_file_name for page 
+ejection; closes the plot file; and send it to the plotter.
+ 
+
+ see also : <A HREF="Fcommands.html#FORGET">FORGET</A> <A HREF="Pcommands.html#PLOT">PLOT</A> <A HREF="Pcommands.html#PLOTTER">PLOTTER</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="param">
+<HR> <H3> param </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/param">Show macro</A>
+<pre>
+ param
+
+ generates a form with all the pertinent parameter for the current file
+
+ 
+ see also : <A HREF="Dcommands.html#dataset">dataset</A> <A HREF="Fcommands.html#FREQ">FREQ</A> <A HREF="Icommands.html#ITYPE">ITYPE</A> <A HREF="Lcommands.html#list">list</A> <A HREF="Lcommands.html#listd">listd</A> <A HREF="Ocommands.html#OFFSET">OFFSET</A> <A HREF="Scommands.html#size">size</A> <A HREF="Scommands.html#SPECW">SPECW</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="pca_1d">
+<HR> <H3> pca_1d </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/pca_1d">Show macro</A>
+<pre>
+ pca_1d  algo
+
+ applies the PCA analysis on a set of 1D
+ (Stoyanova et al JMR Ser A 115 (1995) p 265)
+ (Brown et al JMR Ser B 112 (1996) p 32)
+ 
+       algo is 0 or 1
+ 0 : directly computes the intensity of the line,
+
+ 1 : iteratively correct for 1st order errors
+     on shift and phase
+
+ in all cases, the result is in the 1D buffer
+ and the initial data kept in the DATA buffer
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="PCOLOR">
+<HR> <H3> PCOLOR </H3> 
+<BLOCKQUOTE>
+<pre>
+PCOLOR color_index plot_file_name
+	This command permit to change the color mode when plotting on a 
+color Postscript printer. On HPGL PCLOR and PEN are equivalent.
+
+color_index is :	1:black  2:red  3:yellow  4:green
+		5:cian  6:blue  7:purple  8:white
+
+
+ see also : <A HREF="Ccommands.html#COLOR">COLOR</A> <A HREF="Pcommands.html#PEN">PEN</A> <A HREF="Pcommands.html#PLOT">PLOT</A> <A HREF="Scommands.html#setfont">setfont</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="pdb2primary">
+<HR> <H3> pdb2primary </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/pdb2primary">Show macro</A>
+<pre>
+ pdb2primary
+
+ Reads a PDB file and extract the primary sequence
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="PEAK">
+<HR> <H3> PEAK </H3> 
+<BLOCKQUOTE>
+<pre>
+PEAK output {radius}
+
+Will generate a peak-table from the current data set, output can 
+be either a file-name or *screen. Peaks are located if their 
+intensity lies within the margin defined by the MINIMAX command.
+
+In 2D, PEAK will prompt you for a "packing radius". Peaks which 
+lies within a distance equal or smaller than this packing radius (in 
+points) will be ignored in favor of the larger peak in this radius.
+
+The command SHOWPEAKS will show you on the display where the peaks 
+have been found. The command pklist will list the peak table 
+contents.
+
+This is the peak-picker form the PARIS integrator.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $PKRADIUS $PK1D_A[i] $PK1D_F[i] $PK1D_P[i] $PK1D_T[i] $PK1D_W[i]  $PK1D_ID[i]
+     $PK2D_A[i] $PK2D_F1F[i] $PK2D_F1W[i] $PK2D_F2F[i] $PK2D_F2W[i] $PK2D_ID[i]
+     $PK3D_A[i] $PK3D_F1F[i] $PK3D_F1W[i] $PK3D_F2F[i] $PK3D_F2W[i]
+     $PK3D_F3F[i] $PK3D_F3W[i] $PK1D_ID[i]
+
+
+ see also : <A HREF="Icommands.html#INTEG">INTEG</A> <A HREF="Icommands.html#integrate">integrate</A> <A HREF="Lcommands.html#LINEFIT">LINEFIT</A> <A HREF="Mcommands.html#MAX">MAX</A> <A HREF="Mcommands.html#MINIMAX">MINIMAX</A> <A HREF="Pcommands.html#peak_pick">peak_pick</A> <A HREF="Pcommands.html#PK-&gt;DT">PK-&gt;DT</A> <A HREF="Pcommands.html#PKCLEAN">PKCLEAN</A> <A HREF="Pcommands.html#PKCLEAR">PKCLEAR</A> <A HREF="Pcommands.html#PKFILTER">PKFILTER</A> <A HREF="Pcommands.html#pklist">pklist</A> <A HREF="Pcommands.html#PKPROJ">PKPROJ</A> <A HREF="Pcommands.html#PKREAD">PKREAD</A> <A HREF="Pcommands.html#PKRESET">PKRESET</A> <A HREF="Pcommands.html#PKRM">PKRM</A> <A HREF="Pcommands.html#PKSELECT">PKSELECT</A> <A HREF="Pcommands.html#PKSYM">PKSYM</A> <A HREF="Pcommands.html#PKWRITE">PKWRITE</A> <A HREF="Pcommands.html#POINT-&gt;PK">POINT-&gt;PK</A> <A HREF="Scommands.html#SETPEAK">SETPEAK</A> <A HREF="Scommands.html#SETPEAKID">SETPEAKID</A> <A HREF="Scommands.html#SHOWPEAK">SHOWPEAK</A> <A HREF="Scommands.html#SHOWPEAKS">SHOWPEAKS</A> <A HREF="Scommands.html#SIGN_PEAK">SIGN_PEAK</A> <A HREF="Zcommands.html#ZERO_QU">ZERO_QU</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="PEAK-PICKING">
+<HR> <H3> PEAK-PICKING </H3> 
+<BLOCKQUOTE>
+<pre>
+A complete peak-picker is implemented in Gifa, in 1D, 2D and 3D.  peak 
+table can be displayed, edited, and stored.
+
+Peaks thus obtained can be fitted to lorentzian and Gaussian shapes in 1D 
+as well as in 2D.
+
+Try Peak in the Mode menu.</pre>
+</BLOCKQUOTE>
+<A NAME="peak_pick">
+<HR> <H3> peak_pick </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/peak_pick">Show macro</A>
+<pre>
+ peak_pick  - interactive
+
+ sets - up every thing for peak picking and realizes it
+ permits peakpicking in a interactive, graphical manner.
+
+ related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $NOISE $MAX[] $NPK1D $NPK2D $NPK3D and all $PKXX
+
+ 
+ see also : <A HREF="Mcommands.html#MAX">MAX</A> <A HREF="Mcommands.html#MINIMAX">MINIMAX</A> <A HREF="Pcommands.html#PEAK">PEAK</A> <A HREF="Pcommands.html#pklist">pklist</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="PEN">
+<HR> <H3> PEN </H3> 
+<BLOCKQUOTE>
+<pre>
+Pen n plot_file_name
+Selects the pen number n on the plotter. On a postscript laser 
+printer, this corresponds to different line width and dash patterns.
+ 
+
+ see also : <A HREF="Pcommands.html#PAGE">PAGE</A> <A HREF="Pcommands.html#PCOLOR">PCOLOR</A> <A HREF="Pcommands.html#PLOT">PLOT</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="percentile.g">
+<HR> <H3> percentile.g </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/percentile.g">Show macro</A>
+<pre>
+ percentile nb_degre_of_freedom
+
+ gives the 95% confidence limit on Chi2
+</pre>
+</BLOCKQUOTE>
+<A NAME="PH">
+<HR> <H3> PH </H3> 
+<BLOCKQUOTE>
+<pre>
+PH is an interactive 1D phasing module. A button window pops-up 
+which permits the user to adjust the 0th and 1st order phase. The 
+1st order pivot point is set by clicking in the 1D Spectrum window.
+	If you exit by clicking in Ok the phase correction is applied, 
+and the phase values becomes then the default values for the PHASE 
+command. If you exit with Cancel, no phase correction is applied and 
+the original data is restored.
+ 
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $PH0 $PH1
+
+
+ see also : <A HREF="Acommands.html#apsl">apsl</A> <A HREF="Hcommands.html#HPHASE">HPHASE</A> <A HREF="Pcommands.html#ph2dc">ph2dc</A> <A HREF="Pcommands.html#ph2dr">ph2dr</A> <A HREF="Pcommands.html#PHASE">PHASE</A> <A HREF="Zcommands.html#ZM">ZM</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="ph2dc">
+<HR> <H3> ph2dc </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/ph2dc">Show macro</A>
+<pre>
+ interactive
+ permits to phase a 2D in F1 by interactively selecting columns
+ and building a composite 1D
+
+ 
+ see also : <A HREF="Ccommands.html#colint">colint</A> <A HREF="Pcommands.html#PH">PH</A> <A HREF="Pcommands.html#ph2dr">ph2dr</A> <A HREF="Rcommands.html#rowint">rowint</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="ph2dr">
+<HR> <H3> ph2dr </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/ph2dr">Show macro</A>
+<pre>
+ interactive
+ permits to phase a 2D in F2 by interactively selecting rows
+ and building a composite 1D
+
+
+ 
+ see also : <A HREF="Ccommands.html#colint">colint</A> <A HREF="Pcommands.html#PH">PH</A> <A HREF="Pcommands.html#ph2dc">ph2dc</A> <A HREF="Rcommands.html#rowint">rowint</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="PHASE">
+<HR> <H3> PHASE </H3> 
+<BLOCKQUOTE>
+<pre>
+PHASE X Y {dim) 
+	Permits to modify the phase of the current displayed spectrum. 
+You have to enter zero-order (X) and first-order (Y) corrections, 
+and dimension (dim) in 2D. Values are in degree, and first-order 
+correction uses center point as pivot.
+	For 1D data an interactive phase command is available : PH.
+ 
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $PH0 $PH1
+
+
+ see also : <A HREF="Acommands.html#apsl">apsl</A> <A HREF="Hcommands.html#HPHASE">HPHASE</A> <A HREF="Pcommands.html#PH">PH</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="PK-&gt;DT">
+<HR> <H3> PK-&gt;DT </H3> 
+<BLOCKQUOTE>
+<pre>
+Computes a pseudo-FID from the peaks parameters s held in the PEAK() 
+table. Permits to display a spectrum computed by LP analysis.
+
+
+ see also : <A HREF="Pcommands.html#PEAK">PEAK</A> <A HREF="Rcommands.html#RT-&gt;PK">RT-&gt;PK</A> <A HREF="Scommands.html#SHOW">SHOW</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="pk->att">
+<HR> <H3> pk->att </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/pk->att">Show macro</A>
+<pre>
+ pk-&gt;att
+
+ copy the current peak table (from the peak picker)
+ to the current assignment data-base
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="pkadjust">
+<HR> <H3> pkadjust </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/pkadjust">Show macro</A>
+<pre>
+ pkadjust line_shape
+ with line_shape lorentzian / gaussian
+
+ adjust each peak in the table by fitting around it
+
+ 
+ see also : <A HREF="Lcommands.html#LINEFIT">LINEFIT</A> <A HREF="Lcommands.html#LINEFITD">LINEFITD</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="PKCLEAN">
+<HR> <H3> PKCLEAN </H3> 
+<BLOCKQUOTE>
+<pre>
+pkclean min_int
+
+Will remove from the pak table entries with intensity less than min_int
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $NPK1D $NPK2D $NPK3D $PK1D_A[i] $PK2D_A[i] $PK3D_A[i]
+
+
+ see also : <A HREF="Pcommands.html#PEAK">PEAK</A> <A HREF="Pcommands.html#PKCLEAR">PKCLEAR</A> <A HREF="Pcommands.html#PKRESET">PKRESET</A> <A HREF="Pcommands.html#PKSELECT">PKSELECT</A> <A HREF="Rcommands.html#RT-&gt;PK">RT-&gt;PK</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="PKCLEAR">
+<HR> <H3> PKCLEAR </H3> 
+<BLOCKQUOTE>
+<pre>
+This command remove all entry from the current peak table.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $NPK1D $NPK2D $NPK3D
+
+
+ see also : <A HREF="Pcommands.html#PEAK">PEAK</A> <A HREF="Pcommands.html#PKRESET">PKRESET</A> <A HREF="Pcommands.html#PKRM">PKRM</A> <A HREF="Pcommands.html#PKSELECT">PKSELECT</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="PKFILTER">
+<HR> <H3> PKFILTER </H3> 
+<BLOCKQUOTE>
+<pre>
+PKFILTER pkradius action distance
+
+search the peak table for peaks less than pkradius apart.
+then applies action of the found peaks
+
+possible actions are :
+   Remove  : remove the small peak and keep only the larger one
+   Link    : keep the small peak but mark it as 'linked' to the larger one
+   Average : remove all peaks and create a new one with coordinates at the barycenter of
+             the found peaks
+
+possible distances are :
+  1 : dist = abs(x) + abs(y)  =&gt; square
+  2 : dist = sqrt(x^2 + y^2)  =&gt; circle
+  0 : dist = x+y              =&gt; diamond
+
+remarks
+-  when the pkradius option is used with the PEAK command, it is equivalent
+   to the  PKFILTER pkradius Link 1
+-  if peak A is close to B and B is close to C A B and C will be considered together,
+   even if A is not close to C (and recursively for larger sets of course)
+  
+Applies only to 2D and 3D peak tables
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $PKRADIUS
+
+
+ see also : <A HREF="Pcommands.html#PEAK">PEAK</A> <A HREF="Pcommands.html#PKPROJ">PKPROJ</A> <A HREF="Pcommands.html#PKRM">PKRM</A> <A HREF="Pcommands.html#PKSYM">PKSYM</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="pkl">
+<HR> <H3> pkl </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/pkl">Show macro</A>
+<pre>
+ pklist start end
+
+ lists the content of the internal peak table from entry `start' to entry `end'
+
+ (formats have been chosen in order to have as compact as possible outputs,
+  If you want more accuracy, then go to the $PKXX contexts themselves )
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $NPK1D $NPK2D $NPK3D and all $PKXX
+
+
+ see also : <A HREF="Pcommands.html#PEAK">PEAK</A> <A HREF="Pcommands.html#peak_pick">peak_pick</A> <A HREF="Pcommands.html#PKREAD">PKREAD</A> <A HREF="Pcommands.html#PKSELECT">PKSELECT</A> <A HREF="Pcommands.html#PKWRITE">PKWRITE</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="PKLIST">
+<HR> <H3> PKLIST </H3> 
+<BLOCKQUOTE>
+<pre>
+pklist i j
+
+List the contents of the current peak table, from entry i to entry j.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $NPK1D $NPK2D $NPK3D
+
+
+ see also : <A HREF="Icommands.html#INTEG">INTEG</A> <A HREF="Pcommands.html#PEAK">PEAK</A> <A HREF="Pcommands.html#PKSELECT">PKSELECT</A> <A HREF="Rcommands.html#RT-&gt;PK">RT-&gt;PK</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="pklist">
+<HR> <H3> pklist </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/pklist">Show macro</A>
+<pre>
+ pklist start end
+
+ lists the content of the internal peak table from entry `start' to entry `end'
+
+ Values are display with the current unit
+
+ (formats have been chosen in order to have compact outputs,
+  If you want more accuracy, then go to the $PKXX contexts themselves )
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $NPK1D $NPK2D $NPK3D and all $PKXX
+
+
+ see also : <A HREF="Pcommands.html#PEAK">PEAK</A> <A HREF="Pcommands.html#peak_pick">peak_pick</A> <A HREF="Pcommands.html#PKREAD">PKREAD</A> <A HREF="Pcommands.html#PKSELECT">PKSELECT</A> <A HREF="Pcommands.html#PKWRITE">PKWRITE</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="pklist.1">
+<HR> <H3> pklist.1 </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/pklist.1">Show macro</A>
+<pre>
+ pklist start end
+
+ lists the content of the internal peak table from entry `start' to entry `end'
+
+ Values are display with the current unit
+
+ (formats have been chosen in order to have compact outputs,
+  If you want more accuracy, then go to the $PKXX contexts themselves )
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $NPK1D $NPK2D $NPK3D and all $PKXX
+
+
+ see also : <A HREF="Pcommands.html#PEAK">PEAK</A> <A HREF="Pcommands.html#peak_pick">peak_pick</A> <A HREF="Pcommands.html#PKREAD">PKREAD</A> <A HREF="Pcommands.html#PKSELECT">PKSELECT</A> <A HREF="Pcommands.html#PKWRITE">PKWRITE</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="PKPROJ">
+<HR> <H3> PKPROJ </H3> 
+<BLOCKQUOTE>
+<pre>
+PKPROJ axis alogrithm tolerance
+
+Propagates the contents of the 2D peak-table on the 1D peak-table. 
+All the 2D peaks will generate an entry in the 1D table. If two (or 
+n) peaks are less than tolerance (in Hz) apart during the 
+projection, they will be merged into one peak. The intensity of the 
+resulting peak will be either the mean value ot the max value of the 
+initial peak, depending on the chosen algorithm (Mean or Skyline).
+PKPROJ does not modify the spectral parameters (spectral width, 
+frequences and offsets), so, if the 1D spectral parameters are 
+different from the 2D parameters, strange results can be obtained.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $NPK1D $NPK2D $PK1D_A[i] $PK1D_F[i] $PK1D_P[i] $PK1D_W[i]
+
+
+ see also : <A HREF="Pcommands.html#PEAK">PEAK</A> <A HREF="Pcommands.html#PKSYM">PKSYM</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="PKREAD">
+<HR> <H3> PKREAD </H3> 
+<BLOCKQUOTE>
+<pre>
+PKREAD file_name yes/no
+Reads a peak list file created with PKWRITE into internal peak list. 
+Depending on the option, the read values are appended to the current 
+value (no) or the peak table is cleared before reading the file.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $PKNAME $NPK1D $NPK2D $NPK3D $PK1D_A[i] $PK1D_F[i]
+  $PK1D_P[i] $PK1D_W[i] $PK2D_A[i] $PK2D_ERR[i] $PK2D_F1F[i] $PK2D_F1W[i]
+  $PK2D_F2F[i] $PK2D_F2W[i] $PK3D_A[i] $PK3D_F1F[i] $PK3D_F1W[i]
+  $PK3D_F2F[i] $PK3D_F2W[i]  $PK3D_F3F[i] $PK3D_F3W[i] 
+
+
+ see also : <A HREF="Pcommands.html#PEAK">PEAK</A> <A HREF="Pcommands.html#PKRESET">PKRESET</A> <A HREF="Pcommands.html#PKWRITE">PKWRITE</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="PKRESET">
+<HR> <H3> PKRESET </H3> 
+<BLOCKQUOTE>
+<pre>
+This command recompute peak intensities from the current data set 
+and the current peak table, giving results equivalent to PEAK. 
+Usefull when either the data-set or the peak table has changed. Note 
+that PKREAD reads in the whole peak table, including intensities, 
+thus PKRESET permits to recompute intensities form a stored table.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $PK1D_A[i] $PK2D_A[i] $PK3D_A[i]
+
+
+ see also : <A HREF="Pcommands.html#PEAK">PEAK</A> <A HREF="Pcommands.html#PKCLEAR">PKCLEAR</A> <A HREF="Pcommands.html#pklist">pklist</A> <A HREF="Pcommands.html#PKREAD">PKREAD</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="PKRM">
+<HR> <H3> PKRM </H3> 
+<BLOCKQUOTE>
+<pre>
+PKRM index_list
+
+Remove the peaks from the current peak table, which indexes are given in the index_list.
+The list is ended by a 0.
+
+eg :
+Gifa&gt; pkrm 1 5 7 0
+removes the 3 peaks {1, 5 and 7} from the peak table.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $NPK1D $NPK2D $NPK3D
+
+
+ see also : <A HREF="Pcommands.html#PEAK">PEAK</A> <A HREF="Pcommands.html#PKCLEAN">PKCLEAN</A> <A HREF="Pcommands.html#PKCLEAR">PKCLEAR</A> <A HREF="Pcommands.html#PKRESET">PKRESET</A> <A HREF="Pcommands.html#pkrmi">pkrmi</A> <A HREF="Pcommands.html#pkrm_diag">pkrm_diag</A> <A HREF="Pcommands.html#PKSELECT">PKSELECT</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="pkrmi">
+<HR> <H3> pkrmi </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/pkrmi">Show macro</A>
+<pre>
+pkrmi  interactive
+
+ this macro permits to interactively and graphically
+ remove peaks from the peak table
+
+ 
+ see also : <A HREF="Mcommands.html#MONOPOINT">MONOPOINT</A> <A HREF="Pcommands.html#PKRM">PKRM</A> <A HREF="Pcommands.html#pkrmz">pkrmz</A> <A HREF="Pcommands.html#pkrm_diag">pkrm_diag</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="pkrmz">
+<HR> <H3> pkrmz </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/pkrmz">Show macro</A>
+<pre>
+ pkrmz
+
+ permits to remove all the peaks within a given zone
+
+ 
+ see also : <A HREF="Pcommands.html#PKRM">PKRM</A> <A HREF="Pcommands.html#pkrmi">pkrmi</A> <A HREF="Pcommands.html#pkrm_diag">pkrm_diag</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="pkrm_diag">
+<HR> <H3> pkrm_diag </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/pkrm_diag">Show macro</A>
+<pre>
+ removes all peaks along the diagonal
+
+ asks for the width of the diagonal to remove.
+
+ 
+ see also : <A HREF="Pcommands.html#PKRM">PKRM</A> <A HREF="Pcommands.html#pkrmi">pkrmi</A> <A HREF="Pcommands.html#pkrmz">pkrmz</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="PKSELECT">
+<HR> <H3> PKSELECT </H3> 
+<BLOCKQUOTE>
+<pre>
+PKSELECT index()
+
+Select the peaks parameters whose index() are given. To end 
+selection, enter the index 0.
+
+
+ see also : <A HREF="Pcommands.html#PEAK">PEAK</A> <A HREF="Pcommands.html#PKCLEAN">PKCLEAN</A> <A HREF="Pcommands.html#PKCLEAR">PKCLEAR</A> <A HREF="Pcommands.html#PKRESET">PKRESET</A> <A HREF="Pcommands.html#PKRM">PKRM</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="pksumrec">
+<HR> <H3> pksumrec </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/pksumrec">Show macro</A>
+<pre>
+ pksumrec  { height(F1) width(F2)}
+
+ permit to integrate all the peaks in the current peak table
+ over a given rectangle.
+
+ if called with no argument, build a graphic interface,
+ if called with arguments, uese them as the width and the height of the box
+ (n means -n +n range, e.g. 2 means integrate over 5 points)
+ 
+ see also : <A HREF="Icommands.html#INTEG">INTEG</A> <A HREF="Scommands.html#SUMREC">SUMREC</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="PKSYM">
+<HR> <H3> PKSYM </H3> 
+<BLOCKQUOTE>
+<pre>
+PKSYM param tolerance
+
+Symmetrize in the 2D peak-table by either removing (param=0) entries 
+in the peak table that do not have a symmetrical counterpart, or by 
+adding (param=1) a symmetrical peak in the table. The presence or 
+absence of a symmetrical peak is checked within a window of 
+tolerance (in Hz) around the peak.
+PKSYM does not modify the spectral parameters (spectral width, 
+frequences and offsets), so, if they significally different on the 
+both axis, strange results can be obtained.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $PK2D_A[i] $PK2D_ERR[i] $PK2D_F1F[i] $PK2D_F1W[i] 
+                   $PK2D_F2F[i] $PK2D_F2W[i]
+
+
+ see also : <A HREF="Pcommands.html#PEAK">PEAK</A> <A HREF="Pcommands.html#PKPROJ">PKPROJ</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="PKWRITE">
+<HR> <H3> PKWRITE </H3> 
+<BLOCKQUOTE>
+<pre>
+PKWRITE file_name
+
+Writes the contents of the peak table on a file. The table can then 
+be read with the PKREAD command.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $PKNAME
+
+
+ see also : <A HREF="Pcommands.html#PEAK">PEAK</A> <A HREF="Pcommands.html#PKREAD">PKREAD</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="PLANE">
+<HR> <H3> PLANE </H3> 
+<BLOCKQUOTE>
+<pre>
+PLANE axis index
+
+In 3D only.
+Permits to select a plane from the 3D buffer and copies it to the 2D 
+buffer. Axis is either F1, F2 or F3 as the axis orthogonal to the 
+chosen plane. Thus F1 selects plane F23, etc...
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $PLANE[1] $PLANE[2]
+
+
+ see also : <A HREF="Ccommands.html#COL">COL</A> <A HREF="Dcommands.html#DIAG">DIAG</A> <A HREF="Dcommands.html#DIM">DIM</A> <A HREF="Pcommands.html#planeint">planeint</A> <A HREF="Rcommands.html#ROW">ROW</A> <A HREF="Vcommands.html#VERT">VERT</A> <A HREF="Vcommands.html#vertint">vertint</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="planeint">
+<HR> <H3> planeint </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/planeint">Show macro</A>
+<pre>
+ interactive
+ permits to choose a plane interactively on a 3D by clicking on the 1D
+ typically, the 1D should come from a vert command (or equivalent direction)
+ and the currently displayed plane determines the direction
+
+
+ see also : <A HREF="Ccommands.html#COL">COL</A> <A HREF="Pcommands.html#ph2dc">ph2dc</A> <A HREF="Rcommands.html#ROW">ROW</A> <A HREF="Rcommands.html#rowint">rowint</A> <A HREF="Vcommands.html#vertint">vertint</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="PLOT">
+<HR> <H3> PLOT </H3> 
+<BLOCKQUOTE>
+<pre>
+plot plot_file_name
+
+Plots the current spectrum on the plotter, using the current value 
+of contexts (see PLOT?).
+
+If in 1D, plot the 1D spectrum
+
+If in 2D, plot the contour-plot, as displayed with the CDISP2D command.
+
+If in 3D, plot the currently selected plane, as displayed with the 
+  CDISP2D command.
+
+Will create a plot file named file_name, which can later be plotted 
+by the command    Gifa&gt; PAGE plot_file_name
+
+If your GIFA program is working in postscript (check with the CONFIG 
+command), and if you have a postscript previewer (IBM, Silicon 
+Graphics, some X-stations) then you can display the contents of your 
+plot-file before sending it to the plotter.
+The pseudo-filename *s will send the plot to the  screen rather than to
+a file or the plotter.
+The file pseudo-name *PL will create a temporary plot file that will be 
+deleted after plotting.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $CONFIG_PLOT $CX $CY
+
+
+ see also : <A HREF="Ccommands.html#CDISP2D">CDISP2D</A> <A HREF="Ccommands.html#CX">CX</A> <A HREF="Ccommands.html#CY">CY</A> <A HREF="Dcommands.html#DISP1D">DISP1D</A> <A HREF="Ecommands.html#easyplot">easyplot</A> <A HREF="Gcommands.html#GRID">GRID</A> <A HREF="Lcommands.html#LEVEL">LEVEL</A> <A HREF="Pcommands.html#PAGE">PAGE</A> <A HREF="Pcommands.html#PCOLOR">PCOLOR</A> <A HREF="Pcommands.html#PEN">PEN</A> <A HREF="Pcommands.html#PLOT3D">PLOT3D</A> <A HREF="Pcommands.html#PLOTAXIS">PLOTAXIS</A> <A HREF="Pcommands.html#PLOTAXIS?">PLOTAXIS?</A> <A HREF="Pcommands.html#plotcolordisp">plotcolordisp</A> <A HREF="Pcommands.html#PLOTLINE">PLOTLINE</A> <A HREF="Pcommands.html#PLOTLINES">PLOTLINES</A> <A HREF="Pcommands.html#plotn">plotn</A> <A HREF="Pcommands.html#PLOTOFFSET">PLOTOFFSET</A> <A HREF="Pcommands.html#PLOTPEAKS">PLOTPEAKS</A> <A HREF="Pcommands.html#PLOTTER">PLOTTER</A> <A HREF="Pcommands.html#PLOTTEXT">PLOTTEXT</A> <A HREF="Pcommands.html#PLOTTEXTS">PLOTTEXTS</A> <A HREF="Pcommands.html#plot_fit">plot_fit</A> <A HREF="Scommands.html#setfont">setfont</A> <A HREF="Scommands.html#STPL">STPL</A> <A HREF="Scommands.html#STPL?">STPL?</A> <A HREF="Tcommands.html#title">title</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="PLOT3D">
+<HR> <H3> PLOT3D </H3> 
+<BLOCKQUOTE>
+<pre>
+plot3d plot_file_name
+
+Equivalent to the PLOT command, will generate a 3D plot, equivalent 
+to the display obtained with the DISP3D command.
+
+
+ see also : <A HREF="Ccommands.html#CHECK3D">CHECK3D</A> <A HREF="Dcommands.html#DISP3D">DISP3D</A> <A HREF="Dcommands.html#disp3d_form">disp3d_form</A> <A HREF="Pcommands.html#PAGE">PAGE</A> <A HREF="Pcommands.html#PLOT">PLOT</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="plot?">
+<HR> <H3> plot? </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/plot?">Show macro</A>
+<pre>
+PLOT?
+ interactive
+ prompt for parameters for plotting
+
+ 
+ see also : <A HREF="Ecommands.html#easyplot">easyplot</A> <A HREF="Pcommands.html#PLOT">PLOT</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="PLOTAXIS">
+<HR> <H3> PLOTAXIS </H3> 
+<BLOCKQUOTE>
+<pre>
+PLOTAXIS direc output
+
+This command plots a set of axis on its output. 
+
+If direc=F1 a vertical axis is drawn
+If direc=F2 a horizontal axis is drawn
+If direc=F12 both axes are drawn
+PLOTAXIS uses the current SPECW and OFFSET for the axis calibration.
+
+It uses the unit and the tick space as defined by PLOTAXIS?
+ 
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $PLOTAXIS[1] $PLOTAXIS[2] $PLOTAXIS[3]
+
+
+ see also : <A HREF="Acommands.html#AXIS">AXIS</A> <A HREF="Gcommands.html#GRID">GRID</A> <A HREF="Pcommands.html#PAGE">PAGE</A> <A HREF="Pcommands.html#PLOT">PLOT</A> <A HREF="Pcommands.html#plotdamp_x">plotdamp_x</A> <A HREF="Pcommands.html#plotdamp_y">plotdamp_y</A> <A HREF="Pcommands.html#PLOTTEXT">PLOTTEXT</A> <A HREF="Scommands.html#setfont">setfont</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="PLOTAXIS?">
+<HR> <H3> PLOTAXIS? </H3> 
+<BLOCKQUOTE>
+<pre>
+PLOTAXIS? Unit X_separation Y_separation
+
+This command prompts you for different parameters that will be used 
+by PLOTAXIS : unit (may be different of the UNIT command) and 
+separations on x and y axes. The definition is also used for the 
+GRID command.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $PLOTAXIS[1] $PLOTAXIS[2] $PLOTAXIS[3]
+
+
+ see also : <A HREF="Gcommands.html#GRID">GRID</A> <A HREF="Pcommands.html#PLOT">PLOT</A> <A HREF="Pcommands.html#PLOTAXIS">PLOTAXIS</A> <A HREF="Pcommands.html#PLOTAXIS?">PLOTAXIS?</A> <A HREF="Tcommands.html#title">title</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="plotcolordisp">
+<HR> <H3> plotcolordisp </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/plotcolordisp">Show macro</A>
+<pre>
+ plotcolordisp &lt;Filename&gt;
+
+ Makes a color contour plot on plotter
+
+ 
+ see also : <A HREF="Ecommands.html#easyplot">easyplot</A> <A HREF="Pcommands.html#PLOT">PLOT</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="plotdamp_x">
+<HR> <H3> plotdamp_x </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/plotdamp_x">Show macro</A>
+<pre>
+ plotdamp_x step plot_file
+
+ draw along x axis labels for damping units.
+ 
+ 
+ see also : <A HREF="Ecommands.html#easyplot">easyplot</A> <A HREF="Pcommands.html#PLOTAXIS">PLOTAXIS</A> <A HREF="Pcommands.html#PLOTAXIS?">PLOTAXIS?</A> <A HREF="Pcommands.html#plotdamp_y">plotdamp_y</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="plotdamp_y">
+<HR> <H3> plotdamp_y </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/plotdamp_y">Show macro</A>
+<pre>
+ plotdamp_y step plot_file
+
+ draw along y axis labels for damping units.
+
+ 
+ see also : <A HREF="Ecommands.html#easyplot">easyplot</A> <A HREF="Pcommands.html#PLOTAXIS">PLOTAXIS</A> <A HREF="Pcommands.html#PLOTAXIS?">PLOTAXIS?</A> <A HREF="Pcommands.html#plotdamp_x">plotdamp_x</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="PLOTLINE">
+<HR> <H3> PLOTLINE </H3> 
+<BLOCKQUOTE>
+<pre>
+PLOTLINE X1 Y1 X2 Y2 plot_file
+Draws a line from the X1 Y1 point to the X2 Y2 point (in cm, 
+relative to PLOTOFFSET).
+
+
+ see also : <A HREF="Pcommands.html#PLOT">PLOT</A> <A HREF="Pcommands.html#PLOTLINES">PLOTLINES</A> <A HREF="Pcommands.html#PLOTTEXT">PLOTTEXT</A> <A HREF="Pcommands.html#PLOTTEXTS">PLOTTEXTS</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="PLOTLINES">
+<HR> <H3> PLOTLINES </H3> 
+<BLOCKQUOTE>
+<pre>
+PLOTLINES X1 Y1 X2 Y2 plot_file
+Draws a line from the X1 Y1 point to the X2 Y2 point (in index unit, 
+projected on the CX x CY area, as used by the PLOT command).
+
+
+ see also : <A HREF="Pcommands.html#PLOT">PLOT</A> <A HREF="Pcommands.html#PLOTLINE">PLOTLINE</A> <A HREF="Pcommands.html#PLOTPEAKS">PLOTPEAKS</A> <A HREF="Pcommands.html#PLOTTEXT">PLOTTEXT</A> <A HREF="Pcommands.html#PLOTTEXTS">PLOTTEXTS</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="plotn">
+<HR> <H3> plotn </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/plotn">Show macro</A>
+<pre>
+ plotn total_cx total_cy partial_cx partial_cy  y/n
+
+ plot on several pages to fit size
+ permits to build large composite plots on size limited plotters
+
+ 
+ see also : <A HREF="Ecommands.html#easyplot">easyplot</A> <A HREF="Pcommands.html#PLOT">PLOT</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="PLOTOFFSET">
+<HR> <H3> PLOTOFFSET </H3> 
+<BLOCKQUOTE>
+<pre>
+PLOTOFFSET x y
+
+Values are used to offset the (0,0) origin of the plot at (x,y). 
+Permits to draw several plots on the same page, or to leave room for 
+axes. Default values are 1 1 (in cm).
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $PLOTOFFSET[1] $PLOTOFFSET[2]
+
+
+ see also : <A HREF="Ccommands.html#CX">CX</A> <A HREF="Ccommands.html#CY">CY</A> <A HREF="Pcommands.html#PLOT">PLOT</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="PLOTPEAKS">
+<HR> <H3> PLOTPEAKS </H3> 
+<BLOCKQUOTE>
+<pre>
+will plot on the plot file, the contents of the internal peak table, 
+thus permitting to plot the result of the PEAK command.
+
+
+ see also : <A HREF="Pcommands.html#PEAK">PEAK</A> <A HREF="Pcommands.html#PLOT">PLOT</A> <A HREF="Pcommands.html#PLOTLINE">PLOTLINE</A> <A HREF="Pcommands.html#PLOTLINES">PLOTLINES</A> <A HREF="Pcommands.html#PLOTTEXT">PLOTTEXT</A> <A HREF="Pcommands.html#PLOTTEXTS">PLOTTEXTS</A> <A HREF="Scommands.html#SHOW">SHOW</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="PLOTTER">
+<HR> <H3> PLOTTER </H3> 
+<BLOCKQUOTE>
+<pre>
+PLOTTER H(P-GL) / p(ostscript)
+
+Permits to select which kind of output will be generated ans using 
+all the plot commands. HP-GL or postscript code can be selected. If 
+the gifaplot shell script has been correctly set-up, the correct 
+output should be sent to the correct plotter with no user 
+intervention.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $CONFIG_PLOT
+
+
+ see also : <A HREF="Ccommands.html#CONFIG">CONFIG</A> <A HREF="Pcommands.html#PAGE">PAGE</A> <A HREF="Pcommands.html#PLOT">PLOT</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="PLOTTEXT">
+<HR> <H3> PLOTTEXT </H3> 
+<BLOCKQUOTE>
+<pre>
+PLOTTEXT string X Y plot_file
+
+Sends the string "string" to the plot_file, at the X, Y position (in 
+cm, relative to PLOTOFFSET)
+
+
+ see also : <A HREF="Pcommands.html#PLOT">PLOT</A> <A HREF="Pcommands.html#PLOTLINE">PLOTLINE</A> <A HREF="Pcommands.html#PLOTLINES">PLOTLINES</A> <A HREF="Pcommands.html#PLOTTEXT">PLOTTEXT</A> <A HREF="Scommands.html#setfont">setfont</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="PLOTTEXTS">
+<HR> <H3> PLOTTEXTS </H3> 
+<BLOCKQUOTE>
+<pre>
+PLOTTEXTS string X Y plot_file
+
+Sends the string "string" to the plot_file, at the X, Y position (in 
+index unit, projected on the CX x CY area, as used by the PLOT 
+command)
+
+
+ see also : <A HREF="Pcommands.html#PLOT">PLOT</A> <A HREF="Pcommands.html#PLOTLINE">PLOTLINE</A> <A HREF="Pcommands.html#PLOTLINES">PLOTLINES</A> <A HREF="Pcommands.html#PLOTTEXTS">PLOTTEXTS</A> <A HREF="Scommands.html#setfont">setfont</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="PLOTTING">
+<HR> <H3> PLOTTING </H3> 
+<BLOCKQUOTE>
+<pre>
+Try Plot in the plot menu</pre>
+</BLOCKQUOTE>
+<A NAME="plot_att">
+<HR> <H3> plot_att </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/plot_att">Show macro</A>
+<pre>
+ plot_att $i $f
+
+ plot a peak.
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="plot_curr">
+<HR> <H3> plot_curr </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/plot_curr">Show macro</A>
+<pre>
+ Plot on file the peak current database
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="plot_fit">
+<HR> <H3> plot_fit </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/plot_fit">Show macro</A>
+<pre>
+ to make a nice multicolored plot out of the fitted line shapes
+
+ 
+ see also : <A HREF="Lcommands.html#LINEFIT">LINEFIT</A> <A HREF="Scommands.html#SHOW">SHOW</A> <A HREF="Scommands.html#show_fit">show_fit</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="plot_label">
+<HR> <H3> plot_label </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/plot_label">Show macro</A>
+<pre>
+ plot_label (interactive)
+
+ permits click on the data-set, high-light the closer
+ peak in the db, and plot its label on a postscript file
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="PLUS">
+<HR> <H3> PLUS </H3> 
+<BLOCKQUOTE>
+<pre>
+Sets to zero the negative part of the data set.
+
+
+ see also : <A HREF="Mcommands.html#MINUS">MINUS</A> <A HREF="Ocommands.html#ONE">ONE</A> <A HREF="Zcommands.html#ZERO">ZERO</A> <A HREF="Zcommands.html#ZEROING">ZEROING</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="point">
+<HR> <H3> point </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/point">Show macro</A>
+<pre>
+ interactive mode on screen
+
+ Permit to interactively inspect the content of the data-set,
+ using the mouse on the graphic-screen.  Exit when you click
+ the 3rd button of the mouse
+ Clicked point are stacked onto the POINT_STACK
+
+ 
+ see also : <A HREF="Mcommands.html#MONOPOINT">MONOPOINT</A> <A HREF="Pcommands.html#point_cross">point_cross</A> <A HREF="Pcommands.html#point_dump">point_dump</A> <A HREF="Pcommands.html#POINT_PUSH">POINT_PUSH</A> <A HREF="Zcommands.html#ZM">ZM</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="POINT-&gt;PK">
+<HR> <H3> POINT-&gt;PK </H3> 
+<BLOCKQUOTE>
+<pre>
+This command will add the point in the point stack (set by the user 
+with the last point or MONOPOINT command), into the current peak 
+table.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $POINTX[i] $POINTY[i] $NPOINT $PK1D_A[i] $PK1D_F[i]
+      $PK1D_P[i] $PK1D_W[i] $PK2D_A[i] $PK2D_ERR[i] $PK2D_F1F[i]
+      $PK2D_F1W[i] $PK2D_F2F[i] $PK2D_F2W[i]
+
+
+ see also : <A HREF="Mcommands.html#MONOPOINT">MONOPOINT</A> <A HREF="Pcommands.html#PEAK">PEAK</A> <A HREF="Pcommands.html#pklist">pklist</A> <A HREF="Pcommands.html#point">point</A> <A HREF="Pcommands.html#POINT_PUSH">POINT_PUSH</A> <A HREF="Scommands.html#SETPEAK">SETPEAK</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="pointf">
+<HR> <H3> pointf </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro/gm    <A HREF="/usr/local/gifa/macro/gm/pointf">Show macro</A>
+<pre>
+ pointf axis
+ same as point but draws only along one axis
+</pre>
+</BLOCKQUOTE>
+<A NAME="POINT_CLEAR">
+<HR> <H3> POINT_CLEAR </H3> 
+<BLOCKQUOTE>
+<pre>
+clears the point stack
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $POINTX[i] $POINTY[i] $NPOINT
+
+
+ see also : <A HREF="Pcommands.html#point">point</A> <A HREF="Pcommands.html#POINT_INPUT">POINT_INPUT</A> <A HREF="Pcommands.html#POINT_POP">POINT_POP</A> <A HREF="Pcommands.html#POINT_PUSH">POINT_PUSH</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="point_cross">
+<HR> <H3> point_cross </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/point_cross">Show macro</A>
+<pre>
+ interactive mode on screen
+
+ Permit to interactively inspect the content of the data-set,
+ using the mouse on the graphic-screen.  Exit when you click
+ the 3rd button of the mouse
+ Clicked point are stacked onto the POINT_STACK
+
+ that one draws a little cross
+
+ 
+ see also : <A HREF="Mcommands.html#MONOPOINT">MONOPOINT</A> <A HREF="Pcommands.html#point">point</A> <A HREF="Pcommands.html#point_dump">point_dump</A> <A HREF="Pcommands.html#POINT_PUSH">POINT_PUSH</A> <A HREF="Zcommands.html#ZM">ZM</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="point_dump">
+<HR> <H3> point_dump </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/point_dump">Show macro</A>
+<pre>
+ dumps the containt of the point stack
+
+ 
+ see also : <A HREF="Pcommands.html#point">point</A> <A HREF="Pcommands.html#POINT_PUSH">POINT_PUSH</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="POINT_INPUT">
+<HR> <H3> POINT_INPUT </H3> 
+<BLOCKQUOTE>
+<pre>
+POINT_INPUT F1 {F2}
+A point with coordinates F1 (in 1D, or F1,F2 (in 2D) is put on the 
+top of the point stack.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $POINTX[i] $POINTY[i] $NPOINT
+
+
+ see also : <A HREF="Mcommands.html#MONOPOINT">MONOPOINT</A> <A HREF="Pcommands.html#point">point</A> <A HREF="Pcommands.html#POINT_CLEAR">POINT_CLEAR</A> <A HREF="Pcommands.html#POINT_POP">POINT_POP</A> <A HREF="Pcommands.html#POINT_PUSH">POINT_PUSH</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="POINT_POP">
+<HR> <H3> POINT_POP </H3> 
+<BLOCKQUOTE>
+<pre>
+remove one entry from the point stack.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $POINTX[i] $POINTY[i] $NPOINT
+
+
+ see also : <A HREF="Pcommands.html#point">point</A> <A HREF="Pcommands.html#POINT_CLEAR">POINT_CLEAR</A> <A HREF="Pcommands.html#POINT_INPUT">POINT_INPUT</A> <A HREF="Pcommands.html#POINT_PUSH">POINT_PUSH</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="POINT_PUSH">
+<HR> <H3> POINT_PUSH </H3> 
+<BLOCKQUOTE>
+<pre>
+Add one entry into the point stack.
+
+The point stack contains spectral coordinates, which can be used 
+within macros, and are also used by certain commands (typically 
+BCORR).
+
+Whithin macros, the content of the point stack can be examined with 
+the context variables : $npoint; $pointx[i]; $pointy[i]
+
+The POINT_CLEAR command empties the stack.
+The MONOPOINT command sets the top entry on the stack.
+The POINT_PUSH command push the entry on the top, thus duplicating 
+the entry, and adding an entry in the stack.
+The POINT_INPUT command permits to enter a value with determined 
+values
+The POINT_POP command pops one entry in the stack.
+The macro point permits fill the stack by clicking on the spectra
+The macro point_dump permits to dump the content of the stack
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $POINTX[i] $POINTY[i] $NPOINT
+                   $ZONE[1] $ZONE[2] $ZONE[3] $ZONE[4]
+
+
+ see also : <A HREF="Bcommands.html#BCORR">BCORR</A> <A HREF="Bcommands.html#BCORRP?">BCORRP?</A> <A HREF="Mcommands.html#MONOPOINT">MONOPOINT</A> <A HREF="Pcommands.html#point">point</A> <A HREF="Pcommands.html#POINT-&gt;PK">POINT-&gt;PK</A> <A HREF="Pcommands.html#POINT_CLEAR">POINT_CLEAR</A> <A HREF="Pcommands.html#point_dump">point_dump</A> <A HREF="Pcommands.html#POINT_INPUT">POINT_INPUT</A> <A HREF="Pcommands.html#POINT_POP">POINT_POP</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="pp3d">
+<HR> <H3> pp3d </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro/3d    <A HREF="/usr/local/gifa/macro/3d/pp3d">Show macro</A>
+<pre>
+ peak_pick_3d
+
+ realizes a peak_picking of a 3D on file.
+</pre>
+</BLOCKQUOTE>
+<A NAME="PRIMER">
+<HR> <H3> PRIMER </H3> 
+<BLOCKQUOTE>
+<pre>
+  	The GIFA program is a multi-purpose NMR program. It is designed 
+for the processing, the display and the analysis of 1D
+and muti-dimensional NMR data-sets.
+
+	Gifa can be operated either form the menus or from the command 
+line. Both are strictly equivalent, since the menu buttons simply 
+internally call commands and macros.
+	If you are a novice user, you can swich to simplified
+menus (in the About menu). In this mode the actions defined in the menus
+correspond to the most basic actions, and you can switch back to
+complete menus at any time.
+
+You should also know that :
+o 1D, 2D and 3D processing can be selected
+o plots are available on postscript as well as HP-GL
+o there is a peak-picker in 1D, 2D and 3D, as well as a line-fitter 
+  (in 1D and 2D so far)
+o MaxEnt and Linear Prediction are available with a comprehensive 
+  set of commands
+o Inverse Laplace Transform is available for DOSY processing.
+o you can write your own commands with the command langage
+o you can even set-up your own graphic interface with the BUTTONBOX 
+  command.
+o macros are case-sensitive, but commands are not even though 
+  commands are always given in UPPERCASE in the documentation.
+o the command to get out of it is 'exit n'
+o the Documentation command, in the About menu should start an HTML
+  browser giving access to the whole Gifa manual.
+  If this fails, try adapting the /usr/local/gifa/macro/startup.g macro
+
+Try also :
+* help a_given_command      / for instance :  help ft
+* apropos a_given_topic     / for instance :  apropos hilbert
+* reading the manual        / try Documentation in the About menu.
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="PRINT">
+<HR> <H3> PRINT </H3> 
+<BLOCKQUOTE>
+<pre>
+PRINT string
+
+This command permits to issue a string to the user. Permits 
+interactivity in command file.
+
+
+ see also : <A HREF="Ecommands.html#ERROR">ERROR</A> <A HREF="Fcommands.html#FPRINT">FPRINT</A> <A HREF="Fcommands.html#fprintf">fprintf</A> <A HREF="Pcommands.html#PLOTTEXT">PLOTTEXT</A> <A HREF="Pcommands.html#printf">printf</A> <A HREF="Scommands.html#SHOWTEXT">SHOWTEXT</A> <A HREF="Scommands.html#sprintf">sprintf</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="printf">
+<HR> <H3> printf </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/printf">Show macro</A>
+<pre>
+ printf format_string arg1 arg2 ... *
+
+ realises the equivalent of a C  `printf'
+ all the remaining of the line  up to the star is taken as arguments 
+
+ 
+ see also : <A HREF="Fcommands.html#FPRINT">FPRINT</A> <A HREF="Fcommands.html#fprintf">fprintf</A> <A HREF="Pcommands.html#PRINT">PRINT</A> <A HREF="Scommands.html#sprintf">sprintf</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="proc1pk.g">
+<HR> <H3> proc1pk.g </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att/dyna    <A HREF="/usr/local/gifa/macro/att/dyna/proc1pk.g">Show macro</A>
+<pre>
+ proc1pk.g $data_typ $coef
+
+ Fit the integration curve of one peak using fitgene for R1 and R2 
+ or division for NOE
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="proc2d">
+<HR> <H3> proc2d </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/proc2d">Show macro</A>
+<pre>
+ proc2d sourcefile destinationfile axis_to_process commands
+
+ this macro processes a 2D file using the cache system (join, getc, putc)
+ it permits to handle very large files, which would not fit into memory.
+
+ sourcefile         : is the initial data-set
+ destinationfile    : is the result of the process
+ axis_to_process    : either F1 or F2 (NOT F12)
+ commands           : the commands to be applied to each row/column in 1D notation
+
+ the commands are the regular commands you would used to process a 1D data-set.
+ when called without parameters, 'commands' can be several line long, as typed
+ when proc2d is called with parameters on the line, then 'commands' should be a single
+ command line within quotes.
+
+ e.g.
+ proc2 my_ser_file my_F2_processed F2 'sin 0.2  ft_sim  phase 30 -40  real'
+ proc2 my_F2_processed my_F12_processed F1 'sin 0.2  revf ft  phase 0 30  real  bcorr 3'
+
+ would process a whole 2D in 2 steps.
+
+ if sourcefile and destinationfile are identical, assumes in_place 
+ processing (i.e. no size changes)
+
+ 
+ see also : <A HREF="Ecommands.html#easy2d">easy2d</A> <A HREF="Fcommands.html#FT">FT</A> <A HREF="Jcommands.html#JOIN">JOIN</A> <A HREF="Pcommands.html#proc3d">proc3d</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="proc2d_form">
+<HR> <H3> proc2d_form </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/proc2d_form">Show macro</A>
+<pre>
+ prepares a form for proc2d
+
+ 
+ see also : <A HREF="Pcommands.html#proc2d">proc2d</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="proc3d">
+<HR> <H3> proc3d </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro/3d    <A HREF="/usr/local/gifa/macro/3d/proc3d">Show macro</A>
+<pre>
+ proc3d sourcefile destinationfile plane_to_process commands
+
+ this macro processes a 3D file using the cache system (join, getc, putc)
+ it permits to handle very large files, which would not fit into memory.
+
+ sourcefile         : is the initial data-set
+ destinationfile    : is the result of the process
+ plane_to_process   : either F1, F2 or F3 (NOT F12 or F123)
+ commands           : the commands to be applied to each plane in 2D notation
+
+ the commands are the regular commands you would used to process a 2D data-set.
+ when called without parameters, 'commands' can be several line long, as typed
+ when proc3d is called with parameters on the line, then 'commands' should be a single
+ command line within quotes.
+
+ e.g.
+ proc3 ser_file F1_proc F1  'sin 0.2 f12 ft_sim  phase 30 -40 f2 real f12 ft_tppi '
+  process axes f3 and f2 as 2D
+ proc3 F1_proc full_proc F2 'sin 0.2 f1  ft_tppi real f1  bcorr 3 f1'
+  process axis f1
+
+ would process a whole 3D in 2 steps.
+
+ 
+ see also : <A HREF="Ecommands.html#easy3d">easy3d</A> <A HREF="Fcommands.html#FT">FT</A> <A HREF="Jcommands.html#JOIN">JOIN</A> <A HREF="Pcommands.html#proc2d">proc2d</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="proc3d_form">
+<HR> <H3> proc3d_form </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro/3d    <A HREF="/usr/local/gifa/macro/3d/proc3d_form">Show macro</A>
+<pre>
+ prepares a form for proc3d
+
+ 
+ see also : <A HREF="Pcommands.html#proc3d">proc3d</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="procalllst.g">
+<HR> <H3> procalllst.g </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att/dyna    <A HREF="/usr/local/gifa/macro/att/dyna/procalllst.g">Show macro</A>
+<pre>
+ procalllst.g $data_typ $datalst $noise_coef
+
+ quantify all the assignment entries on a list of data-sets
+
+ Data-sets list is the name of the file which describes the relaxation data-sets
+    it contains the name of the nmr data-sets, and the duration of the varying delay
+ 'Type of data' permits to choose the kind of processing to be performed
+     R1  : T1 relaxation data   A*exp(-t*R1) + B
+     T1  : T1 relaxation data   A*exp(-t/T1) + B
+     R2  : T2 relaxation data   A*exp(-t*R2)
+     T2  : T2 relaxation data   A*exp(-t/T2)
+     noe : (with saturation)/(without saturation) 
+     J 
+     note that R1 - R2 are MUCH faster than T1 - T2 fit !
+ 'error bar weight' permits to lobally modify the error bars of the peak integrals
+   by multiplying the with a scalar.
+</pre>
+</BLOCKQUOTE>
+<A NAME="PROCESSING">
+<HR> <H3> PROCESSING </H3> 
+<BLOCKQUOTE>
+<pre>
+	In contrast with most NMR programs, Gifa tends to do as much data 
+processing as possible in memory. Thus a typical processing session 
+consists in :
+* transfering the raw data-set from the spectrometer to the 
+  processing computer and converting it to a gifa-compatible format, ( 
+  ux2cach utility for the Bruker case, Varian can be read directly 
+  with READV).
+* using the easy1s / easy2d / easy3d form box to find a good set
+  of processing parameters.
+	- ft type
+	- apodisation window / zero-filling / linear-prediction
+	- phase correction
+	- eventually base line correction.
+* note that you can write in a file a macro corresponding to the action
+  you just defined with the form.
+* Eventually you can write the data set to a file (remember it is only
+  in memory so far)
+
+	The program includes sophisticated signal processing methods such 
+as Maximum Entropy processing, Linear prediction, line fitting, 
+complete control language, or 2D peak integrator as well as more 
+classical processing, displaying and plotting of NMR experiments. It 
+can handle the complete study of a set of NMR multidimensionnal 
+data-sets, from the raw data to plotting, visualisation, and finally 
+give some help to the assignment process.
+These actions are found only in the complete menu mode.
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="procMC.g">
+<HR> <H3> procMC.g </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att/dyna    <A HREF="/usr/local/gifa/macro/att/dyna/procMC.g">Show macro</A>
+<pre>
+ procMC.g $datalst $data_typ $nb_MC_iter  $meth $file_switch
+
+ quant1pklst.g 110 datalst Sumrec Baseline 8002 0.8 "57 774 168 956"
+ quantify all the assignment entries on a list of data-sets
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="proc_example">
+<HR> <H3> proc_example </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro/misc    <A HREF="/usr/local/gifa/macro/misc/proc_example">Show macro</A>
+<pre>
+ example of a macro processing a 3D on file
+ can be used as a starting point
+
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="profile">
+<HR> <H3> profile </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/profile">Show macro</A>
+<pre>
+ profile { command }
+
+ if called without argument, it analyses the profiler sats currently in memory
+ if called with a command name as argument, it sets the profiler to 1, 
+    launch the command, and analyse the result
+
+ lines are sorted in increasing duration order, and % to the total time are computed.
+ time spent in all called macros is allso reported
+
+ 
+ see also : <A HREF="Pcommands.html#PROFILER">PROFILER</A> <A HREF="Tcommands.html#TIMER">TIMER</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="PROFILER">
+<HR> <H3> PROFILER </H3> 
+<BLOCKQUOTE>
+<pre>
+PROFILER 0/1
+
+When this context is set to 1, each macro line execution is timed.
+Results are stored in a static user asociative array called $_P[],
+were the index in the array is the macro name concatenated with the line number.
+
+As an example, executing the macro conv_n+p will produce the following values :
+
+ $_P[CONV_N+P-15] : 290.00     ( line 15 of conv_n+p lasted 290 msec )
+ $_P[CONV_N+P-16] : 90.00     ( line 16 of conv_n+p lasted 90 msec )
+ ...
+ $_P[CONV_N+P-24] : 90.01       etc...   
+ ....
+
+line 15 of conv_n+p is     for i = 2 to ($si1_2d) STEP 2
+.... 16 ..............     set k = ($i-1)
+.... 24 ..............     adddata phase 90 0
+
+if a macro name is absent then its execution time was too short to be timed.
+
+Note that - arithmetic is not very fast in Gifa  - macro names are converted to uppercase,
+
+These values are analysed with the 'profile' macro.
+
+PROFILER and TIMER are incompatible.
+
+
+ see also : <A HREF="Pcommands.html#profile">profile</A> <A HREF="Tcommands.html#TIMER">TIMER</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="PROJ">
+<HR> <H3> PROJ </H3> 
+<BLOCKQUOTE>
+<pre>
+PROJ n a
+
+Permits to perform a projection of 2D data-set. Projections are 
+done either along F1 (n=1) or F2 (n=2) axes, with either skyline 
+(a=s) or mean (a=m) technic.
+ 
+
+ see also : <A HREF="Dcommands.html#DIAG">DIAG</A> <A HREF="Dcommands.html#DIM">DIM</A> <A HREF="Pcommands.html#proj3d">proj3d</A> <A HREF="Pcommands.html#proj_loc">proj_loc</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="proj2d">
+<HR> <H3> proj2d </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/proj2d">Show macro</A>
+<pre>
+ proj2d axis algo abs
+
+ axis is F1 or F2
+ algo is M or S
+ if abs is Y, absolute value is taken first
+
+ equivalent to proj in 2D, but on a 2D joined file
+
+ 
+ see also : <A HREF="Jcommands.html#JOIN">JOIN</A> <A HREF="Pcommands.html#proc2d">proc2d</A> <A HREF="Pcommands.html#PROJ">PROJ</A> <A HREF="Pcommands.html#proj3d">proj3d</A> <A HREF="Pcommands.html#proj_loc">proj_loc</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="proj3d">
+<HR> <H3> proj3d </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro/3d    <A HREF="/usr/local/gifa/macro/3d/proj3d">Show macro</A>
+<pre>
+ proj3d axis algo abs
+
+ axis is F1, F2 or F3
+ algo is M or S
+ if abs is Y, absolute value is taken first
+
+ equivalent to proj in 3D, but on joined file
+
+ 
+ see also : <A HREF="Jcommands.html#JOIN">JOIN</A> <A HREF="Pcommands.html#proc3d">proc3d</A> <A HREF="Pcommands.html#PROJ">PROJ</A> <A HREF="Pcommands.html#proj3d_all">proj3d_all</A> <A HREF="Pcommands.html#proj_loc">proj_loc</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="proj3d_all">
+<HR> <H3> proj3d_all </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro/3d    <A HREF="/usr/local/gifa/macro/3d/proj3d_all">Show macro</A>
+<pre>
+ proj3d_all  algo abs
+
+ algo is M or S
+ if abs is Y, absolute value is taken first
+
+
+ equivalent to proj3d, but all projections are computed,
+ and put as first planes in each direction
+
+ looses information located in the first planes !
+
+ 
+ see also : <A HREF="Jcommands.html#JOIN">JOIN</A> <A HREF="Pcommands.html#proc3d">proc3d</A> <A HREF="Pcommands.html#PROJ">PROJ</A> <A HREF="Pcommands.html#proj3d">proj3d</A> <A HREF="Pcommands.html#proj_loc">proj_loc</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="proj_loc">
+<HR> <H3> proj_loc </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/proj_loc">Show macro</A>
+<pre>
+ proj_loc axis algorithm start end 
+
+ Permits to perform a local projection of 2D data-set.
+ Projections are done either along F1 or F2 axes, 
+ with either skyline or mean algorithm.
+       
+
+ 
+ see also : <A HREF="Pcommands.html#PROJ">PROJ</A> <A HREF="Pcommands.html#proj3d">proj3d</A> <A HREF="Pcommands.html#proj3d_all">proj3d_all</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="promote">
+<HR> <H3> promote </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/promote">Show macro</A>
+<pre>
+ promote 'list  of peak id'
+
+ promotes all peaks in the list as a spin syst.
+
+ wrapper around mod_sys
+</pre>
+</BLOCKQUOTE>
+<A NAME="PULLDOWNMENU">
+<HR> <H3> PULLDOWNMENU </H3> 
+<BLOCKQUOTE>
+<pre>
+PULLDOWNMENU 0/1
+
+Permit to choose the aspect of the BUTTONBOX graphic interface.
+The user can choose between classic pulldown menu mode (1) and menus 
+as static boxes, remaining on screen (0).
+
+Set to 1 in the standard startup.g
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $CONFIG_GRAPH
+
+
+ see also : <A HREF="Bcommands.html#BUTTONBOX">BUTTONBOX</A> <A HREF="Scommands.html#startup.g">startup.g</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="PUT">
+<HR> <H3> PUT </H3> 
+<BLOCKQUOTE>
+<pre>
+PUT parameter {n}
+ 
+Moves the content of the current buffer to an other buffer
+With parameter equal to:
+
+DATA     load the data to be used for MaxEnt processing or
+         as a off-hand place for processing
+
+in 1D only
+FILTER   load the filter used for Deconvolution.  If NCHANNEL is 
+  greater than 1, then which channel you want to put.  eg.  PUT FILTER 
+  3.  PUT FILTER 0  will consider the current data set as the 
+  multichannel filter, and will load the whole filter. Useful when 
+  associated with GET FILTER to store filters as files.
+WINDOW   load the window to be used for MaxEnt processing
+TAB      load the TAB buffer, used for tabulated fit.
+
+in 2D only
+ROW n    load the 1D buffer in the ROW n
+COL n    load the 1D buffer in the COL n
+AMOEBA   the mask definition to be used by the next MSKINTEG command
+
+in 3D only
+PLANE Fx n   load the 2D buffer in the plane Fx n
+ 
+related context : $SI_TAB $TAB[]
+
+
+ see also : <A HREF="Acommands.html#APPLY">APPLY</A> <A HREF="Gcommands.html#GET">GET</A> <A HREF="Scommands.html#SHOW">SHOW</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="PUTC">
+<HR> <H3> PUTC </H3> 
+<BLOCKQUOTE>
+<pre>
+syntaxe depends on the dimentionnality of the currently joined data-
+set (to) and on the current context dim (from) :
+1D to 1D : PUTC left right
+1D to 2D : PUTC axis index left right
+1D to 3D : PUTC axis index1 index2 left right
+2D to 2D : PUTC left1 left2 right1 right2
+2D to 3D : PUTC axis index left1 left2 right1 right2
+3D to 3D : PUTC left1 left2 left3 right1 right2 right3
+
+Writes into the currently connected file, the area of data as 
+described.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $C_JOINED $C_NAME
+
+
+ see also : <A HREF="Dcommands.html#dataset">dataset</A> <A HREF="Gcommands.html#GETC">GETC</A> <A HREF="Jcommands.html#JOIN">JOIN</A> <A HREF="Lcommands.html#listfilec">listfilec</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="PUTHEADER">
+<HR> <H3> PUTHEADER </H3> 
+<BLOCKQUOTE>
+<pre>
+PUTHEADER param_name value
+Set the value of a parameter associated to the currently JOINed 
+data-set. If the parameter already exists, the value is changed, 
+otherwise it is created. Any parameters can be used. Gifa already 
+uses the following parameters (as listed with the dataset command) :
+Frequency, Freq1, Freq2, Freq3, Specw1, Specw2, Specw3, Offset1, 
+Offset2, Offset3, Type, Dim.
+But you can use any other parameter name if you wish.
+
+
+ see also : <A HREF="Dcommands.html#dataset">dataset</A> <A HREF="Gcommands.html#GETHEADER">GETHEADER</A> <A HREF="Jcommands.html#JOIN">JOIN</A> <A HREF="Ncommands.html#NEWFILEC">NEWFILEC</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="pwd">
+<HR> <H3> pwd </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/pwd">Show macro</A>
+<pre>
+as in unix
+
+ 
+ see also : <A HREF="Ccommands.html#CD">CD</A> <A HREF="Lcommands.html#ls">ls</A> <A HREF="Mcommands.html#more">more</A> <A HREF="Rcommands.html#rm">rm</A> <A HREF="Scommands.html#SH">SH</A> <A HREF="Vcommands.html#vi">vi</A> <A HREF="Vcommands.html#vim">vim</A> <A HREF="Vcommands.html#vip">vip</A> 
+</pre>
+</BLOCKQUOTE>
+
+ </body> 
+ 

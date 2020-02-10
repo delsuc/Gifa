@@ -1,0 +1,10 @@
+This command recompute peak intensities from the current data set 
+and the current peak table, giving results equivalent to PEAK. 
+Usefull when either the data-set or the peak table has changed. Note 
+that PKREAD reads in the whole peak table, including intensities, 
+thus PKRESET permits to recompute intensities form a stored table.
+
+related contexts : $PK1D_A[i] $PK2D_A[i] $PK3D_A[i]
+
+see also : PEAK PKREAD PKCLEAR pklist
+

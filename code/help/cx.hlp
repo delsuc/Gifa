@@ -1,0 +1,9 @@
+CX x
+
+Size in centimeters in the x-axis used for the graphic windows and 
+for the plot. Used by PLOT and STPL
+ 
+related contexts : $CX
+
+see also : CY CZ PLOT STPL
+

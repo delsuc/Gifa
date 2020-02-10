@@ -1,0 +1,11 @@
+SIGN -1 / 0 / 1
+	Tells the program how to display 2D data-sets. Used by DISP2D, 
+CDSIP2D and PLOT commands
+if  1, 2D program will display only positive levels,
+if -1, 2D program will display only negative levels,
+if  0, 2D program will display both positive and negative levels,
+ 
+related contexts : $SIGN
+
+see also : DISP2D CDISP2D PLUS MINUS
+

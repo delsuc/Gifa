@@ -1,0 +1,20 @@
+Here is a utility that J.M.Nuzillard sent me
+
+(I made some small changes to fit the last version of cache_mad)
+access easily Gifa files, as well a transform N+P to states mode.)
+
+An extract from his mail (translated )
+
+>Here is some work I did for interfacing the "cache"
+>library to help accessing Gifa files from C programs.
+>
+>I send you here the files nmri.h et nmri.c that realize
+>this interface, as well as a program that uses them and
+>which converts a 2D acquired in N+P mode to a file in States mode.
+>
+>I know, the name "nmri" is a wrong choice....
+>
+>Jean-Marc Nuzillard.
+
+M.A.Delsuc
+

@@ -1,0 +1,193 @@
+<HTML><HEAD>
+<!-- This document was created from RTF source by rtftohtml version 3.9.3 -->
+<TITLE>Assignment on-line Documentation - DYNAMIC</TITLE></HEAD>
+<BODY>
+<A HREF="assignment-INTEGRAT.html"><IMG SRC="leftg.gif" ALT="Prev " border=0></A>
+ <A HREF="assignment-TYPICAL.html"><IMG SRC="rightg.gif" ALT="Next " border=0></A>
+ <A HREF="assignment-Title.html"> </A>
+ <A HREF="assignment-Contents.html"><IMG SRC="contg.gif" ALT="Contents " border=0></A>
+<hr size=4>
+<H1>
+DYNAMIC</H1>
+<UL>
+<LI><A HREF="#Heading90">Dynamic menu</A>
+<UL>
+<LI><A HREF="#Heading91">Data-set list</A>
+<LI><A HREF="#Heading92">Integ/process one peak</A>
+<LI><A HREF="#Heading93">Show last processing</A>
+<LI><A HREF="#Heading94">Integrate in zoom region</A>
+<LI><A HREF="#Heading95">Process from file</A>
+<LI><A HREF="#Heading96">Do Monte-Carlo from file</A>
+</UL>
+</UL>
+<hr size=4>
+
+<h2>
+<A NAME="Heading90">Dynamic menu</A></h2>
+
+<p>
+This menu is optionnal, it can be added from the process menu. It contains a
+set of tools aimed toward the integration and the processing of a set of 2D
+containing a relaxation experiment. For instance as would be obtained from a
+heteronuclear relaxation experiment. It assumes that all the experiment are
+located is spectra of the current projet, and that one of these experiment has
+a completely assigned peak db. All commands should be applied from this
+assigned experiment, as the assignement db will be used.<br>
+	Some commands (one peak processing; integration) work from the current
+experiemnt while others (processing (fitting); Monte-Carlo analysis) do their
+processing from file.<br>
+All relative files are stored in the "processing" directory.<br>
+	The tools used here are all defined in the
+<tt>/usr/local/gifa/macro/att/dyna</tt> directory. There are all written in
+macro, and rely on the FITGENE command for the relaxation parameter estimation.</p>
+
+<h3>
+<A NAME="Heading91">Data-set list</A></h3>
+
+<p>This
+command permits to define the name of the list which should contain all the
+entries that will be used for integration and fitting, along with value of the
+time parameter which was varied. This file should reside in the "processing"
+directory of the current assignment project.<br>
+Here an example of such a file :</p>
+
+<pre>
+; list of T1 experiments
+0.018 01_T1 01_T1_bis 01_T1_tris
+0.054 02_T1
+0.102 03_T1
+0.150 04_T1 04_T1_bis 04_T1_tris
+0.210 05_T1
+0.258 06_T1
+0.306 07_T1
+0.402 08_T1
+0.498 09_T1
+0.606 10_T1
+0.810 11_T1
+1.002 12_T1
+1.506 13_T1
+2.010 14_T1
+2.502 15_T1
+3.006 16_T1
+</pre>
+<p>You
+can see that : comments are permitted. Each contain first the value of the
+parameter, and the name of the experiemnt, as it appears in the spectra
+directory. It is possible to have several experiment for the same delay, in
+which case the variation of the intensity of a given peak over the different
+experiments, corresponding to the same parameter, will be used for experimental
+noise estimate.</p>
+
+<h3>
+<A NAME="Heading92">Integ/process one peak</A></h3>
+
+<p><IMG SRC="assignment16.GIF"><br>
+This box permits to realize the complete processing : integration and parameter
+estimate for a given peak in the assignment database. You will have to
+determine the following parameters :<ul>
+<li>	the data-set list (as defined above)
+<li>	the kind of error evaluation, which can be either Baseline (the baseline
+noise, estimated on an empty spectral region for each dataset) or Multiexp
+(estimated from the standard deviation of peaks for the experiemnt which have
+been realized sevral time for the same time parameter)
+<li>	The integration method, which is either MaxinBox (the maximum value in the
+integration box) of Sumrec (the sum of the point in the integration box). The
+integration box is defined with the parameter command in the project menu.
+<li>	The data type, which determine the equation which will be fitted
+:</ul><tt>R1</tt> is for T<sub>1</sub> relaxation data, fitted in
+sec<sup>-1</sup>, equation which is fitted is<br>
+<center> <sub>
+<IMG SRC="assignment17.GIF"></sub><br>
+where <sub>
+<IMG SRC="assignment18.GIF"></sub>
+is the time parameter defined in the dataset list</center><ul>
+<li><tt></tt><sub></sub>R2 is for T2 relaxation data, fitted in sec-1, equation
+which is fitted is</ul><center>
+<IMG SRC="assignment19.GIF"></center><ul>
+<li><tt></tt><tt></tt><tt></tt>NOE is for NOE measurement. In this case, there
+is no time parameter defined in the dataset list, but the free parameter is
+replaced by the two keywords : with and without which define respectiveley the
+experiment performed with saturation and without saturation.
+<li><tt></tt><tt></tt>T1 and T2 are equivalent to R1 and R2 but the following
+equations are fitted :</ul><center><sub>
+<IMG SRC="assignment20.GIF"></sub></center><ul>
+<li>J corresponds to the following equation :</ul><center><sub>
+<IMG SRC="assignment21.GIF"></sub><br>
+which is found in J measurement experiment.</center><ul>
+<li><tt></tt><tt></tt><tt></tt>These equations are defined in the proc1pk.g
+macro which can be adapted to fit your needs. If you want to use all the tools
+with the newly defined equation, you will have to adapt also the procMC.g
+procalllst.g quant1pk.g showfit1pk.g and writproc.g macros as well.</ul>The
+processing will compute error bars for the fitted parameters, which are
+determined from the covariance matrix and the size of the intensity error as
+found from the noise evaluation.<br>
+Note that certain parameter combinations may not be meanningfull. For instance,
+choosing Sumrec integration technique along with the Baseline error estimate
+will lead to wrong error estimate.</p>
+
+<h3>
+<A NAME="Heading93">Show last processing</A></h3>
+
+<p>This
+command simply shows graphically the result of the last fit in the 1D window
+:</p>
+
+<pre>
+FITGENE Final Chi2 :  14.391778
+R2 1.63892 +/- .5887275E-01 I0 333448.6 +/- 4905.25
+</pre>
+<p><IMG SRC="assignment22.GIF"></p>
+
+<h3>
+<A NAME="Heading94">Integrate in zoom region</A></h3>
+
+<p>This
+command performs the first integration step when a complete set of peaks is
+processed. Start in a zoom window, all assigned peaks within this window will
+be processed. See <tt>Integ/process one peak</tt> for details on parameter
+set-. The processing will create a integration file, called as the dataset list
+file, with <tt>_integ</tt> concatenated at the end. Thus <tt>R1list</tt>
+becomes <tt>R1lst_integ</tt>. This file is located in the processing directory.</p>
+
+<h3>
+<A NAME="Heading95">Process from file</A></h3>
+
+<p>This
+command will take the result of the previous integration command, and will
+realize a fit for all the peak found in this file. See <tt>Integ/process one
+peak</tt> for details on parameter set-up. The processing will create a result
+file, called as the dataset list file, with <tt>_proc</tt> concatenated at the
+end. Thus <tt>R1list</tt> becomes <tt>R1lst_proc. </tt>This file is located in
+the processing directory.</p>
+
+<h3>
+<A NAME="Heading96">Do Monte-Carlo from file</A></h3>
+
+<p>This
+command takes the result found in the integration file and realize a
+Monte-Carlo (MC) error estimate on the dataset.<br>
+<IMG SRC="assignment23.GIF"><br>
+	Along with classic parameter you will have to determine the number of MC
+iterations and the MC method. The MC method can be either 'synthetic' or data.
+synthetic corresponds to the classical MC run where a first fit is realized on
+the experimental dataset, then a synthetic dataset is rebuilt from the fitted
+parameter, and a larg number of simulated experiment, correspomding to
+synthetic dataset added with noise will be fitted. The statistic on the
+parameters (mean and standard deviation) are them used as a precise estimate of
+the precision of the fit. The data method corresponds to a case where the
+actual experimental dataset are perturbed with additive noise. Results of the
+MC run will create a result file, called as the dataset list file, with
+<tt>_MC</tt> concatenated at the end. Thus <tt>R1list</tt> becomes
+<tt>R1lst_MC. </tt>This file is located in the processing directory.<br>
+	For MC run you have the option of creating a complete detailed file (called
+_stat) which permit to verify the chi2 statistic.<br>
+	As MC runs tend to be very long in the present implementation, you have the
+possibility of creating a standalone batch file which can then be started in
+batch.
+</p>
+<P><hr size=4>
+<A HREF="assignment-INTEGRAT.html"><IMG SRC="leftg.gif" ALT="Prev " border=0></A>
+ <A HREF="assignment-TYPICAL.html"><IMG SRC="rightg.gif" ALT="Next " border=0></A>
+ <A HREF="assignment-Title.html"> </A>
+ <A HREF="assignment-Contents.html"><IMG SRC="contg.gif" ALT="Contents " border=0></A>
+</body></html>

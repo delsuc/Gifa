@@ -1,0 +1,13 @@
+	Absolute factor to which scale refers to for displaying and 
+plotting. Usually ABSMAX holds the largest point of the data-set, 
+but you can set it by hand in order to do absolute plots. ABSMAX is 
+recomputed whenever the data is changed.
+	You can force the ABSMAX to be recomputed by setting it to zero. 
+You can also hampers the recomputation of absmax (which can be VERY 
+long (on 3D for instance)) by setting it to a standard value at the 
+end of the command line
+
+related contexts : $ABSMAX
+
+see also : MAX SCALE DISP1D DISP2D DISP3D
+

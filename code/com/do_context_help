@@ -1,0 +1,126 @@
+#!/usr/local/bin/perl
+
+# this prgm extract the context information from variable.for
+# and build the help file
+# version 1.0  05 - 1999 mad
+#
+#
+
+
+
+#process switches
+while	($ARGV[0]  =~ /^-/) {
+	shift;
+}
+
+
+$in = "/usr/local/gifa/source/variable.for";
+$out = "/usr/local/gifa/help/contexts.hlp";
+
+       
+
+
+open(OUT,">$out") || die "cannot open $out\n";
+
+# standard beginning
+print OUT <<ENT;
+Contexts are internal Gifa variables that can be easily
+accessed in macro programming. They appear as regular
+variables, and can be used in any computation just as
+regular variables.
+Just about all pertinent information (sizes, spectral widths,
+last clicked location, etc..) are available through contexts.
+
+Note that contexts should not be set, but usually are modified with
+regular Gifa commands.
+eg:      set absmax = 10        ; is wrong
+         absmax 10              ; is much better.
+
+Actually, Gifa search for variables in the following order :
+-first local user variables
+-then global user variables
+-CONTEXTS
+-finally, currently db bound arrays.
+
+So, if a local or global user variables hapens to have the same name than
+a context (if you do set absmax = 10 for instance, which creates
+a local variable called absmax), then this context is not available
+anymore.
+i.e. in the present example, the use of $absmax will not make any error
+but you will acces the local variable A$absmax just created, rather
+than the context you wish to access.
+
+
+List of the internal GIFA variables (contexts):
+
+\$_              value of the next parameter present on the calling line.  
+                 CANNOT BE USED WITHIN EVALUATED EXPRESSIONS.
+                 if the following command is used : 
+                 \@test 3 test.001 
+                 within the file test, \$_ will be 3 the first time and
+                 test.001 the second time.
+                 If no value is present on the calling line, the user will be 
+                 prompted for the value
+ENT
+
+#then grep definitions in $in file
+
+open(IN,$in) || die "cannot open $in\n";
+
+# search for entry point
+do 	{ 
+		$eof = !defined($_ = <IN>);
+	}
+	until (/^\s+subroutine\s+getvar/ || $eof);
+print "found getvar\n";
+	
+#get doc
+$larger = 0;
+while (<IN>) {
+	if ( /^\s.+if\s+\(vname\.eq\.\'\$(\w+)\'\)\s+then/ ) {
+		$var = $1;
+		print "$var\n";
+		$_ = <IN>;		# comment in next line
+		chop;
+		s/^C //;	# remove leading C
+		if (/context/) {
+			$_ = "current value of $var";
+			}
+		$tt{$var} = "$_";
+		$larger = max($larger,length($var));
+		}
+	if  ( /^\s.+if\s+\(table\(vname,\'\$(\w+)\',li\)\)\s+then/ ) {
+		$var = "$1\[i\]";
+		print "$var\n";
+		$_ = <IN>;		# comment in next line
+		chop;
+		s/^C //;	# remove leading C
+		$tt{$var} = "$_";
+		$larger = max($larger,length($var));
+		}
+	}
+foreach $key (sort by_upper_case (keys %tt)) {
+	print OUT "\$$key";
+	for ($i=length($key);$i<$larger;$i++) {
+		print OUT " ";
+		}
+	print OUT " $tt{$key}\n";
+	}
+close(OUT);
+
+
+sub by_upper_case {		# used to sort the entries
+    ($ua = $a) =~ tr/a-z/A-Z/ ;
+    ($ub = $b) =~ tr/a-z/A-Z/ ;
+    $ua cmp $ub;
+}
+
+sub max {
+	local($u,$v) = @_;
+	if ($u>$v) {
+		$r = $u;
+	} else {
+		$r = $v;
+	}
+	$r;
+}

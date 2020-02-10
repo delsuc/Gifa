@@ -1,0 +1,20 @@
+STPL output
+This command permits to draw stacked-plots of 2D data-sets. The plot 
+is determined by the value of the following parameters:
+CX : length in centimeters of a line.
+CY : maximum height of a peak in centimeters.
+SCALE : scaling applied to the data before plotting, if scale=1 then 
+the larger peak on the surface will be CY high, if scale>1 then 
+clipping will occur.
+STDY : each new line is offsetted by STDY centimeters in the Y axis.
+STSKIP : a line every STSKIP line will drawn.
+STSHIFT : each new line will shifted right by STSHIFT points, if 
+negative then the shift is done on the left. May be fractional.
+STSKEW : determine how the horizontal line are skewed during plot, 
+if negative skewed to the right, to the right if positive.
+
+output is either a file name or *s for on screen display.
+The command STPL? prompts you for all those parameters
+ 
+see also : STPL? STDY STSHIFT STSKEW STSKIP CX CY PLOT PAGE
+

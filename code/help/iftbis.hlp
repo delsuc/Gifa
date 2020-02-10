@@ -1,0 +1,22 @@
+IFTBIS { axis }
+
+Perform  inverse of complex-to-real Fourier Transform on data.
+This command is the basic step for Hilbert transform. The Hilbert 
+transform is the mathematical operation which transform the real 
+part of a causal spectrum (for instance an NMR spectrum) to its 
+imaginary part.
+The command sequence :
+IFTBIS PHASE 90 0 FTBIS
+realises this operation, thus permitting to regenerate the imaginary 
+part of the signal, when it is lost for some reasons.
+A more usefull operation consists in transforming a real 
+(unphasable) spectrum to a complex (phasable) spectrum.
+either on place (twice as less points in the real part) (1D syntax):
+IFTBIS FT
+or with a constant resolution (zerofilling once)
+IFTBIS CHSIZE (%*2) FT
+
+related contexts : $ITYPE_1D $ITYPE_2D $ITYPE_3D
+
+see also : FT 
+

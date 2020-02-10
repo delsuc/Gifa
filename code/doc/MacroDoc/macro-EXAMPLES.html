@@ -1,0 +1,1448 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=iso-8859-1">
+	<TITLE>Macro programming - EXAMPLES :</TITLE>
+	<META NAME="GENERATOR" CONTENT="StarOffice/5.2 (Win32)">
+	<META NAME="CREATED" CONTENT="20011127;18122662">
+	<META NAME="CHANGEDBY" CONTENT="Thierry Gostan">
+	<META NAME="CHANGED" CONTENT="20011127;18191134">
+	<!-- This document was created from RTF source by rtftohtml version 3.9.3 -->
+</HEAD>
+<BODY>
+<P ALIGN=CENTER STYLE="margin-bottom: 0cm"><A HREF="./macro-MISCELLA.html"><IMG SRC="./images/leftg.gif" NAME="Image1" ALT="Prev " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="./macro-Contents.html"><IMG SRC="./images/contg.gif" NAME="Image3" ALT="Contents " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+</P>
+<HR SIZE=4>
+<H1>EXAMPLES :</H1>
+<UL>
+	<LI><P STYLE="margin-bottom: 0cm"><A HREF="#Heading69"><FONT COLOR="#cc0000">Basic
+	examples</FONT></A><FONT COLOR="#cc0000"> </FONT>
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm"><A HREF="#Heading70"><FONT COLOR="#cc0000">comments,
+	automatic documentation</FONT></A><FONT COLOR="#cc0000"> </FONT>
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm"><A HREF="#Heading71"><FONT COLOR="#cc0000">$_
+	and argument passing</FONT></A><FONT COLOR="#cc0000"> </FONT>
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm"><A HREF="#Heading72"><FONT COLOR="#cc0000">alternative
+	cases - macro returning values to the callers</FONT></A><FONT COLOR="#cc0000">
+	</FONT>
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm"><A HREF="#Heading73"><FONT COLOR="#cc0000">Building
+	string - mixing ' and &quot;</FONT></A><FONT COLOR="#cc0000"> </FONT>
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm"><A HREF="#Heading74"><FONT COLOR="#cc0000">interaction
+	with the shell</FONT></A><FONT COLOR="#cc0000"> </FONT>
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm"><A HREF="#Heading75"><FONT COLOR="#cc0000">list
+	parsing with head() and tail()</FONT></A><FONT COLOR="#cc0000"> </FONT>
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm"><A HREF="#Heading76"><FONT COLOR="#cc0000">double
+	use macro - the (if (!$arg)) syntax</FONT></A><FONT COLOR="#cc0000">
+	</FONT>
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm"><A HREF="#Heading77"><FONT COLOR="#cc0000">related
+	commands; command parser</FONT></A><FONT COLOR="#cc0000"> </FONT>
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm"><A HREF="#Heading78"><FONT COLOR="#cc0000">using
+	text-files</FONT></A><FONT COLOR="#cc0000"> </FONT>
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm"><A HREF="#Heading79"><FONT COLOR="#cc0000">creating
+	a temporary file</FONT></A><FONT COLOR="#cc0000"> </FONT>
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm"><A HREF="#Heading80"><FONT COLOR="#cc0000">Building
+	interactive commands</FONT></A><FONT COLOR="#cc0000"> </FONT>
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm"><A HREF="#Heading81"><FONT COLOR="#cc0000">use
+	of internal Gifa configuration - use of blocking event to wait for
+	the user</FONT></A><FONT COLOR="#cc0000"> </FONT>
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm"><A HREF="#Heading82"><FONT COLOR="#cc0000">graphic
+	user interaction and clicking on the spectrum</FONT></A><FONT COLOR="#cc0000">
+	</FONT>
+	</P>
+	<LI><P><A HREF="#Heading83"><FONT COLOR="#cc0000">varying formbox
+	via file</FONT></A><FONT COLOR="#cc0000"> </FONT>
+	</P>
+</UL>
+<HR SIZE=4>
+<H2><A NAME="Heading69"></A>Basic examples</H2>
+<P STYLE="margin-bottom: 0cm">The <FONT FACE="Courier">PRINT</FONT>
+command permits to output to the user a string. If you want to show
+more than a single line you can always use sh :</P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>sh 'ty/page text_file'		; VMS	or</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>sh 'more text_file'			; UNIX</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm">As an example the 2D Fourier Transform
+could be written 
+</P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>; do the 2D FT in macro (specially
+silly),</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>if ($dim != 2) error 'Only in
+2D'			; do some checking</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>if ($itype_2d != 3) error 'Only on
+hypercomplex data-sets'</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>if ($si1_2d*$si2_2d) &gt; 1024k 
+error 'too big for 4 times z-f'</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<BR>
+</P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>print 'Processing in F2'</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>chsize % (2*power2(%))				;
+zero-filling in F2</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>initinprogress $si1_2d   			; set
+up in progress bar</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>for i = 1 to $si1_2d				; loop over
+rows</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>	row $i  dim 1			; get ith row in
+1D buffer</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>	ft				; process it</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>	dim 2  put row $i			; put it back</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>   inprogress $i         			;
+display in progress bar</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>endfor</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<BR>
+</P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>print 'Processing in F1'</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>chsize (2*power2(%)) %				;
+zero-filling in F1</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>initinprogress $si2_2d</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>for i = 1 to $si2_2d				; loop over
+cols</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>	col $i  dim 1			; get ith col in
+1D buffer</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>	ft				; process it</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>	dim 2  put col $i			; put it back</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>   inprogress $i</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>endfor</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>exit</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm">but don't try that one for real
+processing, it would be really slow!</P>
+<P STYLE="margin-bottom: 0cm">A more useful example :</P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>; do contour plotting in colours, 1
+colour per level</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>; using scale, level and loga</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>if ($level&gt;8) error 'Too many
+levels, should be &lt;= 8'</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>set loc_lev = $level   level 1</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>set loc_sca = $scale</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>for i = 1 to $level</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>	pen $i %  plot %</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>   if ($loga!=1) scale (%/$loga)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>   if ($loga==1) scale ( (%*$i) /
+($i+1))</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>endfor</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>pen 1 % page %</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>scale $loc_sca    level $loc_lev</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>exit</FONT></FONT></P>
+<P ALIGN=LEFT STYLE="margin-bottom: 0cm; line-height: 100%"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm">	Another example showing how you can
+build a special apodisation function in the window buffer and then
+use it :</P>
+<P ALIGN=LEFT STYLE="margin-bottom: 0cm; line-height: 100%"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>; this macro builds a cosine
+roll-off apodisation function</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>; and applies it to the current
+data set</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>; works in 1D !</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>; in 2D, build the WINDOW only once
+and loop APPLY WINDOW on the 2D</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>put data					; keep data aside</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>chsize (%/8) one sqsin 0</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>chsize (%*8) addbase 1  mult -1
+reverse		; build apodisation</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>put window</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>get data    apply window			; apply
+apodisation</FONT></FONT></P>
+<P ALIGN=LEFT STYLE="margin-bottom: 0cm; line-height: 100%"><BR>
+</P>
+<P ALIGN=LEFT STYLE="margin-bottom: 0cm; line-height: 100%"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm">Here is a small (silly) interactive
+example :</P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>; to compute the square root of a
+given number</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>sh 'more intro.txt'			; some
+greeting message'</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>set i = 1		; i should be set here
+for the following test to work!</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>while ($i &lt;&gt; 0)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>	print 'Enter your number (0 to
+end)'</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>	set i = 0			; pre-set the value
+and ask for it</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>	set i =</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>	if ($i&gt;0) then</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>			print ('Square root
+of';$i;'is';sqrt($i))</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>	elsif ($i&lt;0) then</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>			print 'No real square root !'</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>	endif</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>endwhile</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>exit</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<BR>
+</P>
+<P STYLE="margin-bottom: 0cm">	A more interesting example is found in
+the gif directory. The file GIFA$GIF:MENU.GIF (or
+/usr/local/gifa/gif/menu.gif on UNIX) is a working example (in
+French) of a menu interface put on the top of GIFA command interface.
+This program is used by the chemists in our lab. (who know nothing
+about GIFA (not even about NMR (I'm not sure about chemistry))) as an
+every day tool for processing NMR files off the spectrometer.</P>
+<P STYLE="margin-bottom: 0cm">	For speed consideration it is always
+better, when working on a large macro, to make a small file for a
+very repetitive piece of work and call it. The looping as well as the
+parsing may get slow on a large file. It is also slightly faster to
+call a macro with the @file syntax.</P>
+<H2 STYLE="page-break-before: always"><A NAME="Heading70"></A>comments,
+automatic documentation</H2>
+<P STYLE="margin-bottom: 0cm">	Comments are created with a
+semi-colon. The comment can be alone on the line, are can appear
+after some code.</P>
+<P STYLE="margin-bottom: 0cm">	One important feature is the 
+automatic documentation facility built in <I>Gifa</I>. All the leadig
+comments are used as an interntal help file. The help system uses
+this feature, so that, as soon as a macro is created, the <FONT FACE="Courier">help</FONT>
+command will describe this macro, using the leading comments. The
+<FONT FACE="Courier">apropos</FONT> command will also use this
+leading comment when searching for a given word in all the availabe
+macros.</P>
+<P STYLE="margin-bottom: 0cm">	You will find examples of this comment
+techniques throughout the examples given in this manual.</P>
+<H2 STYLE="page-break-before: always"><A NAME="Heading71"></A><SPAN STYLE="text-decoration: none">$_
+ </SPAN> and argument passing</H2>
+<P STYLE="margin-bottom: 0cm">Arguments can be passed to macros when
+calling them, and value can be returned from them. You will find many
+examples of this in all the macros in <I>Gifa</I>. The basic
+mechanism for passing argument is the context (pseudo variable) $_ .
+This one takes the value of the next entry present on the calling
+line.</P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P ALIGN=RIGHT STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2><U><B>file: simplest</B></U></FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>; this one print all the values
+present on the calling line.</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>while ($arg)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>	print $_</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>endwhile</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm">typing</P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>simplest 12 (3*3) $SI1_1D</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm">will produce</P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>12</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>9</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>256</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm">You see here how $_ takes successively
+the values on the calling line, and how variables and expressions are
+evaluated. Note how the <FONT FACE="Courier">$arg</FONT> variable is
+true as long as a value is available on the line.</P>
+<P STYLE="margin-bottom: 0cm">	For returning values from a macro, see
+next example.</P>
+<H2 STYLE="page-break-before: always"><A NAME="Heading72"></A>alternative
+cases - macro returning values to the callers</H2>
+<P STYLE="margin-bottom: 0cm">	There is no <FONT FACE="Courier">switch
+.. case</FONT> control structure in <I>Gifa</I>, however the <FONT FACE="Courier">elsif</FONT>
+structure can be used for the same purpose. We also see here how a
+static variable can be used to return values to the caller.</P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P ALIGN=RIGHT STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2><B><U>filename : percentile</U></B>
+</FONT></FONT>
+</P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>; percentile nb_degre_of_freedom</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>;</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>; gives the 95% confidence limit on
+Chi2</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<BR>
+</P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>set n = $_</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>if ( abs($n - int($n)) &gt; e-6 )
+error &quot;nb_degre_of_freedom should be integer&quot;</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>if ($n == 1) then</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>  set val = 3.84</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>elsif ($n == 2) then</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>  set val = 5.99</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>elsif ($n == 3) then</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>  set val = 7.81</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>elsif ($n == 4) then</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>  set val = 9.49</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>elsif ($n == 5) then</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>  set val = 11.1</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>elsif ($n == 6) then</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>  set val = 12.6</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>elsif ($n == 7) then</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>  set val = 14.1</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>elsif ($n == 8) then</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>  set val = 15.5</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>elsif ($n == 9) then</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>  set val = 16.9</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>elsif ($n == 10) then</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>  set val = 18.3</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>else</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>  set val =
+($n*(1-2/(9*$n)+1.6449*sqrt(2/(9*$n)))^3)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>endif</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>return $val</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm">	Here the percentile macro, which
+returns the 95% confidence limit on Khi2 given a number of degrees of
+freedom (used to check whether a given statistic actually follows the
+Khi2 law). The number of degrees of freedom n, is always an integer,
+and the law is a complex, non analytic expression, however, for n
+larger than 10, a good enough approximation exists, that we will use.
+The following structure :</P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>if ($n == 1) then</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>  set val = 3.84</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>elsif ($n == 2) then</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>  set val = 5.99</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>elsif ($n == 3) then</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>...</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm">is equivalent to using a a switch /
+case structure as we would do in C. There is actually no limit on the
+number of elsif that can be accumulated this way. Note that the
+correct spelling is <FONT FACE="Courier">elsif</FONT>, not <FONT FACE="Courier">else&nbsp;if</FONT>
+which works also, but requires an additionnal closing <FONT FACE="Courier">endif</FONT>,
+on the other hand <FONT FACE="Courier">elseif</FONT> (single word)
+has no meaning.</P>
+<P STYLE="margin-bottom: 0cm">	The macro returns the value by using
+the RETURN command, the value of which is found by the caller in a
+context call $RETURNED. Note that before version 4.4 another
+technique was used, using a global variable called $returned. This
+technique cannot be used anymore, as it clashes with the current
+RETURN technique which is used throughout the set of standard macros.</P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H2 STYLE="page-break-before: always"><A NAME="Heading73"></A>Building
+string - mixing ' and &quot;</H2>
+<P STYLE="margin-bottom: 0cm">	There are two different quotation
+marks in <I>Gifa</I> : &quot; (double quote) and ' (single quote).
+There are strictly equivalent, and induce NO difference whatsoever in
+the parsing. However it is quite usefull to have both, as you can mix
+them in complex expression. This replaces the escape mechanism (\&quot;)
+which is lacking in <I>Gifa</I>. For instance :</P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>	(&quot;I'm&quot;; '&quot;quite&quot;
+sure of what I am saying.')</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm">gives</P>
+<P STYLE="margin-bottom: 0cm"><I>	I'm &quot;quite&quot; sure of what
+I am saying.</I></P>
+<P STYLE="margin-bottom: 0cm">Thus mixing both quotes, and using the
+; which is the concatenation operator (inserting a blank).</P>
+<P STYLE="margin-bottom: 0cm">	This is something you have to play
+with quite heavily, when you're building strings that have to
+interperted latter on as a <I>Gifa</I> command.</P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H2 STYLE="page-break-before: always"><A NAME="Heading74"></A>interaction
+with the shell</H2>
+<P STYLE="margin-bottom: 0cm">	It is very easy to intact with the
+underlying POSIX unix shell. The <FONT FACE="Courier">sh</FONT>
+command and the sh() function call the (C) shell for you with the
+string argument given.</P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P ALIGN=RIGHT STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2><U><B>filename : readgz</B></U></FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>; readgz filename</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>;</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>; reads a compressed regular Gifa
+file</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>;</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>; see also : writegz WRITEZ ZEROING</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<BR>
+</P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>message 'Enter file name (without
+.gz extension)'</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>set f = $_</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>set i = (index($f,'.gz'))</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>if ($i != 0) set f =
+(subst($f,1,$i-1))</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>sh ('gunzip -c '; $f // '.gz &gt;';$f)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>read $f</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>sh ('/bin/rm';$f )</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>set compress_ratio = (sh(&quot;gzip
+-l &quot; // $f // &quot;.gz | awk '/%/ {print $3 ; }'&quot;) )</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>  ; this command extract the
+compress ratio as given by gzip -l</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>print (&quot;Compression :&quot;;
+$compress_ratio)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<BR>
+</P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm">	This example shows how the <FONT FACE="Courier">gzip
+/ gunzip</FONT> unix commands can be used to directly read from
+compressed files. The macro first removes the .gz if one was given by
+mistake, then call <FONT FACE="Courier">sh</FONT> by providing it
+with a string which calls gunzip to uncompress the file to another
+dummy file which is then read. If the file is data, <FONT FACE="Courier">sh</FONT>
+is called with the <FONT FACE="Courier">'gunzip -c data.gz &gt; data'</FONT>
+string. Note than we use here <FONT FACE="Courier">/bin/rm</FONT>
+rather that <FONT FACE="Courier">rm</FONT> to remove the uncompressed
+file; this is because many people have aliased rm to some expression
+which prompts the user to confirm the file removal, using /bin/rm
+insures that this alias is not used.</P>
+<P STYLE="margin-bottom: 0cm">	Finally, note how the sh() function
+can be used equivalently to call the shell and use the returned value
+in the macro itself.</P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H2 STYLE="page-break-before: always"><A NAME="Heading75"></A>list
+parsing with head() and tail()</H2>
+<P STYLE="margin-bottom: 0cm">	There is no list data structure <I>per
+se</I> in <I>Gifa</I>, However, strings can be used as simple lists,
+along with the <FONT FACE="Courier">head()</FONT> and <FONT FACE="Courier">tail()</FONT>
+function. 
+</P>
+<P STYLE="margin-bottom: 0cm">	The idea is to cut the string into
+pieces. <FONT FACE="Courier">head()</FONT> takes the first entry,
+<FONT FACE="Courier">tail()</FONT> gives you the remaining (this is
+reminiscent with <FONT FACE="Courier">cdr</FONT> and <FONT FACE="Courier">car</FONT>
+in LISP).</P>
+<P STYLE="margin-bottom: 0cm">	Here is an example extracted from the
+assignment module. At this stage, the list of spin Id is in a (blank
+separated) string called <FONT FACE="Courier">$ll_res</FONT>; the
+purpose of this piece of code is to build the list of all the
+chemical shifts (will grow in <FONT FACE="Courier">ppmlist</FONT>).</P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P ALIGN=RIGHT STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2><U><B>taken from att/mod_sys</B></U></FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>...		<I>some code before</I></FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>; build list of spins</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>set p = (head($ll_res))  set ll =
+(tail($ll_res))</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>set ppmlist = &quot; &quot;</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>while ($p s! &quot; &quot;)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>  set ppm = (head($spin[$p]))		;
+extract ppm value</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>  set ppm =
+(int(1000*$ppm)/1000)		; truncated to 3 digits after the dot</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>  set ppmlist =
+($ppmlist//':'//$ppm)	; push onto the growing list, &quot;:&quot;
+separated</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>  ...  	<I>some code removed here</I></FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>  set p = (head($ll))  set ll =
+(tail($ll))</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>endwhile</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>...		<I>some code after</I></FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm">$p contains the current head of the
+list (thus the spin id to process), the next entry is taken with the
+head($ll) command. The end of the iteration is obtained when the
+entry is empty. There several ways for implementing this iteration,
+notice how initiated the iteration by taking the first entry before
+entering the <FONT FACE="Courier">while</FONT> loop, permits to
+simplify the loop control.</P>
+<P STYLE="margin-bottom: 0cm">	This will sound familiar to people
+used to LISP, note however that <I>Gifa</I> does not permits
+recursive calls, so the while loop.</P>
+<H2 STYLE="page-break-before: always"><A NAME="Heading76"></A>double
+use macro - the (if (!$arg)) syntax</H2>
+<P STYLE="margin-bottom: 0cm">	When creating a graphic user
+interface, one has usually to realize two independent things :
+-design the graphic user interface (GUI) -makes the needed action(s).
+Of course, this two things are linked, and the callback in the
+graphic interface are there to call the actions. However, it is not
+optimum to have 2 different files, one for the GUI and one for the
+actions itself. Moreover, quite often the same piece of information
+have to be used in both phases, and it is a kind of waste to have
+them twice in two files.</P>
+<P STYLE="margin-bottom: 0cm">	A simple set-up is used in most <I>Gifa</I>
+macro to solve this problem. Many interactive macros have two
+different behaviors depending whether an argument is available on the
+calling line or not. If no argument is available, then a GUI is
+built. On the other hand, if arguments are present, there are taken
+to be parameters for the actions, as defined from the GUI itself, and
+the action is performed. Thus we end-up with a syntax like :</P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>if (!$arg) then    ; literally, if
+there is no arg available</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>	formbox ....</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>	....</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>else</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>	set param = $_</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>	....do some work depending on
+$param</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>endif</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm">see an example of this in the next
+example.</P>
+<H2 STYLE="page-break-before: always"><A NAME="Heading77"></A>related
+commands; command parser</H2>
+<P STYLE="margin-bottom: 0cm">	In some cases, you want to handle
+several related commands. Examples of this are the easy1d or easy2d
+tools, which perform all the needed processing commands, the mutizoom
+or integrate tools which are able of displaying, storing, defining,
+etc.</P>
+<P STYLE="margin-bottom: 0cm">	You could do this by writting a set of
+macros realizing each one of the elementary actions (display,
+definition, etc...), with the inconvenience of cluttering the macro
+directory with many related files. <I>Gifa</I> does not provide a way
+of putting several macros in a single files, however it is quite
+simple to write a unique macro, with one argument being the action to
+take, and writing a small command parser. Here is one example taken
+from multi_zoom ( a bit simplified)</P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P ALIGN=RIGHT STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2> <B><U>filename : multi_zoom</U></B></FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>; creates a tool which permits to
+handle several zoom box on a data-set.</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>;</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>; you can define zoom regions</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>;         jump to a given window</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>;         store and load a set of
+zoom definitions (stored as macro commands)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>;         draw the zoom definitions
+on screen</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>;</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>; when loaded, the zoom definition
+are stored in an associative array called</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>; zmem[]</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<BR>
+</P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>set fnm = &quot;zoom_window&quot;		;
+the name of the storage file, if any</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<BR>
+</P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>if ($arg == 0) then</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>=redo</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>; =redo is used by the &quot;define&quot;
+action</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>     ; first prepare every thing
+for form.</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>	set zoom_list = &quot; &quot;</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>	if (exist(&quot;zmem[]&quot;))
+then</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>	  set i = (nextlm(&quot;zmem&quot;,&quot;
+&quot;))</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>	  while ($i s! &quot; &quot;)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>		set zoom_list = ($i // ',' // %)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>		set i = (nextlm(&quot;zmem&quot;,$i))</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>	  endwhile</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>	endif</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>	if ($zoom_list s= &quot;&quot;)
+set zoom_list = &quot;Empty!&quot;</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>	formbox &quot;multi_zoom&quot; \</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>		&quot;multi_zoom Jump $area&quot;
+\</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>		&quot;Zoom region :&quot; enum
+$zoom_list area % \</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>		noreturn Rzoom action rzoom \</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>		Jump action &quot;multi_zoom Jump
+$area&quot; \</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>		noreturn Define action
+&quot;multi_zoom Define closeform $widget&quot; \</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>		noreturn Draw action &quot;multi_zoom
+Draw&quot; \</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>		noreturn Load action &quot;multi_zoom
+Load closeform $widget&quot; \</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>		noreturn Store action &quot;multi_zoom
+Store&quot; \</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>		*</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>else</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>	set action = $_</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>	if ($action s= &quot;Jump&quot;)
+then</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>		set area = $_</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>		set d = (head($zmem[$area]))</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>		set z1 =
+(head(tail($zmem[$area])))</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>		set z2 =
+(head(tail(tail($zmem[$area]))))</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>		set z =
+(tail(tail(tail($zmem[$area]))))</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>		if ($d s= &quot;1D&quot;) then</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>			dim 1 zoom 1 $z1 $z2</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>		elsif ($d s= &quot;2D&quot;) then</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>			set z3 = (head($z))</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>			set z4 = (head(tail($z)))</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>			dim 2 zoom 1 $z1 $z2 $z3 $z4</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>		endif</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>	elsif ($action s= &quot;Define&quot;)
+then</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>		if ($zoom == 0) error &quot;Should
+be in zoom mode&quot;</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>		dialogbox &quot;Define name&quot;
+\</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>		  &quot;Give a name (no blank) to
+the current region&quot; message \</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>		  &quot;Area name :&quot; string
+nm &quot;new-name&quot; *</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>		; to define zoom regions, use ppm</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>		if ($dim == 1) then</FONT></FONT></P>
+<P ALIGN=LEFT STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>		  set zmem[$nm] :=
+(&quot;1D&quot;;itop($zoom_1d[1],1,1)//'p';itop($zoom_1d[2],1,1)//'p')</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>		elsif ($dim == 2) then</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>		  set zmem[$nm] :=</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>			(&quot;2D&quot;;itop($zoom_2d[1],2,1)//'p';itop($zoom_2d[2],2,2)//'p';</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>			itop($zoom_2d[3],2,1)//'p';itop($zoom_2d[4],2,2)//'p')</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>		endif</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>		goto redo</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>	elsif ($action s= &quot;Draw&quot;)
+then</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>	   set i = (nextlm(&quot;zmem&quot;,&quot;
+&quot;))</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>	   while ($i s! &quot; &quot;)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>		set d = (head($zmem[$i]))</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>		set z1 = (head(tail($zmem[$i])))</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>		set z2 =
+(head(tail(tail($zmem[$i]))))</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>		set z =
+(tail(tail(tail($zmem[$i]))))</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>		if (($d s= &quot;1D&quot;) &amp;
+($dim == 1)) then</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>			set y = ($random*40+50)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>			showline $z1 0 $z1 $y</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>			showline $z1 $y $z2 $y</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>			showline $z2 0 $z2 $y</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>			showtext $i $z1 $y</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>		elsif (($d s= &quot;2D&quot;) &amp;
+($dim == 2)) then</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>			set z3 = (head($z))</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>			set z4 = (head(tail($z)))</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>			showline $z2 $z1 $z2 $z3</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>			showline $z2 $z3 $z4 $z3</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>			showline $z4 $z3 $z4 $z1</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>			showline $z4 $z1 $z2 $z1</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>			showtext $i $z2 $z1</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>		endif</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>		set i = (nextlm(&quot;zmem&quot;,$i))</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>	   endwhile</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>... <I>see below</I></FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>	endif		; $action</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: auto">
+<FONT FACE="Courier"><FONT SIZE=2>endif			; $arg</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm">In this long example you can see many
+programation techniques</P>
+<P STYLE="margin-bottom: 0cm">	First the double use  macro, with the
+<FONT FACE="Courier">if (!$arg)</FONT> technique ( here used in the
+opposite : <FONT FACE="Courier">if ($arg == 0)</FONT> ), which
+permits to use the macro without arguments, to build the graphic user
+interface, and with arguments for realizing the several actions.</P>
+<P STYLE="margin-bottom: 0cm">	Then the command parser itself; when
+the macro is called with arguments, the first one is the name of the
+action, (the <FONT FACE="Courier">set action = $_</FONT> line), then
+we enter a large test structure testing the name of the action : <FONT FACE="Courier">Jump
+Define Remove Draw Store and Load</FONT> (the last 2 are in the next
+example), and realizing the desired action. Notice also how the
+number of argument is varying with the kind of action, as for
+instance Jump, which requires the name of the zone where to jump, but
+the other actions do not require additional arguments.</P>
+<P STYLE="margin-bottom: 0cm">	This is riskless, as the only way of
+calling the macro with arguments is to from the formbox itself, the
+lines :</P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>		Jump action &quot;multi_zoom Jump
+$area&quot; \</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>		noreturn Define action
+&quot;multi_zoom Define closeform $widget&quot; \</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>		noreturn Draw action &quot;multi_zoom
+Draw&quot; \</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>		noreturn Load action &quot;multi_zoom
+Load closeform $widget&quot; \</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>		noreturn Store action &quot;multi_zoom
+Store&quot; \</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm">	Notice also the goto structure (with
+the <FONT FACE="Courier">=redo</FONT> label), permit to jump in the
+code used for drawing the formbox, and needed to redraw the box when
+some changes have been made (defining a new zone or load previously
+defined zones).</P>
+<H2 STYLE="page-break-before: always"><A NAME="Heading78"></A>using
+text-files</H2>
+<P STYLE="margin-bottom: 0cm">	<I>Gifa</I> as the full capability of
+writing and reading in text files. Here is another example is taken
+from the same file as the previous one. 
+</P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2><I>... part extracted from the
+previous example</I></FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>	elsif ($action s= &quot;Store&quot;)
+then</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>		open $fnm</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>	   	set i = (nextlm(&quot;zmem&quot;,&quot;
+&quot;))</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>	   	while ($i s! &quot; &quot;)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>				fprint $fnm (&quot;set zmem['&quot;
+// $i // &quot;'] := '&quot; // $zmem[$i] // &quot;'&quot;)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>				set i = (nextlm(&quot;zmem&quot;,$i))</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>		endwhile</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>		close $fnm</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>		alert (&quot;Written to a file
+called :&quot;; $fnm)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>	elsif ($action s= &quot;Load&quot;)
+then</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>		print (&quot;Loading from file
+'&quot;; $fnm; &quot;'&quot;)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>		@($fnm)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>		goto redo</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>... </FONT></FONT>
+</P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm">	Writing consists simply in opening the
+file, and using <FONT FACE="Courier">fprint</FONT> to write into it
+(<FONT FACE="Courier">$fnm</FONT> is defined in the header of the
+macro). In this case, <I>Gifa</I> code is directly written into the
+file, so reading the file consists simply in interpreting it as
+macro. Try to use this trick as often as possible, as it is much
+simpler to handle.</P>
+<P STYLE="margin-bottom: 0cm">	In other case, you want to read the
+file directly. The following example is taken from the macro which is
+used to read and interpret (as much as possible) the Varian parameter
+files.</P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P ALIGN=RIGHT STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2><B>filename : varian_param </B></FONT></FONT>
+</P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>; varian_param procpar_file_name</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>;</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>; this macro reads-in the procpar
+Varian file and sets</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>; the Gifa relevant parameters from
+the values found in the file.</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>; The parameters which are sets are
+:</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>; FREQ - SPECW</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>;</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<BR>
+</P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>set f = 'procpar'</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>message 'Varian parameter file'</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>set f = $_</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>open $f</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>set l = &lt;$f</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>print &quot;Scanning the param file
+...&quot;</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>while (!eof($f))</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>   if (index($l,'sw1') == 1) then</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>     set l = &lt;$f</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>     set sw1 = (tail($l))</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>   elsif (index($l,'sw2') == 1)
+then</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>     set l = &lt;$f</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>     set sw2 = (tail($l))</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>   elsif (index($l,'sw') == 1) then</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>     set l = &lt;$f</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>     set sw = (tail($l))</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>   elsif (index($l,'sfrq') == 1)
+then</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>     set l = &lt;$f</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>     if (tail($l)!= 0) set sf =
+(tail($l))</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>   elsif (index($l,'dfrq2') == 1)
+then</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>     set l = &lt;$f</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>     if (tail($l)!= 0) set df2 =
+(tail($l))</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>   elsif (index($l,'dfrq') == 1)
+then</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>     set l = &lt;$f</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>     if (tail($l)!= 0) set df =
+(tail($l))</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>   endif</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>   set l = &lt;$f</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>endwhile</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>close $f</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>if ($dim == 1) then </FONT></FONT>
+</P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>  specw $sw</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>  freq $sf $sf</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>elsif ($dim == 2) then</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>  if (!exist('sw1')) set sw1 = $sw 
+  ; happens if it is not a 'true' 2D</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>  specw $sw1 $sw</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>  freq $sf $df $sf</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>endif</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm">	In a nut-shell, Varian parameter files
+re text files, with the name of the parameter on one line, and the
+value on the next line.</P>
+<P STYLE="margin-bottom: 0cm">	Without going into the logic of the
+parsing, note how the file is first opened, and how we go through the
+file with the  <FONT FACE="Courier">while (!eof($f))</FONT> (while we
+have not reached the end of the file) technique.</P>
+<P STYLE="margin-bottom: 0cm">	Notice that file handling is somewhat
+simplified in <I>Gifa</I> compared to more complete langage : i) the
+file is handled by its filename only, so be VERY careful when opening
+a file in the current directory and then changing of working
+directory, ii) the open command has no switch for telling whether it
+is opening a file for reading or writing, if the file exists, it is
+opened for reading, if it does not exists it is opened for writing.</P>
+<H2 STYLE="page-break-before: always"><A NAME="Heading79"></A>creating
+a temporary file</H2>
+<P STYLE="margin-bottom: 0cm">In many cases, you want to create a
+temporary file. The way to do in <I>Gifa</I> is to create a regular
+file, with a strange dummy name which minimize the risks of being the
+name of an important file. This is typically done in <I>Gifa</I> with
+the following code :</P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>code for dummy file name</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>set file =
+(&quot;Gifatmp&quot;//int(100000*$random))   ; gives a file name like
+Gifatemp234532</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<BR>
+</P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>; or eventually</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>set file =
+(&quot;/tmp/Gifatmp&quot;//int(100000*$random))   ; gives a file name
+like /tmp/Gifatemp234532</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<BR>
+</P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>;use it, and remove it with :</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>sh ('/bin/rm';$file )</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm">This technique is not perfect, as it
+may create twice the same filename, but is good enough for most NMR
+work. Note that the first technique will clutter the working
+directory, with the advantage of being probably a place reserved to
+the current user, but which might be a slow access file (if you use
+NFS as we do in our lab); whereas the second will clutter the /tmp
+directory (you may prefer to use /usr/tmp) which is local to the
+machine, and thus corresponds always to a fast access, but where all
+the users have to share the place. Take care to choose a filename
+explicitly dummy, so that the user will be able to recognize it as
+dummy, and may remove it by hand if for reasons the processing was
+stopped before the completion of the rm line.</P>
+<P STYLE="margin-bottom: 0cm">This technique is used through out the
+set of standard macro files, for data files as well as text file.</P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H2 STYLE="page-break-before: always"><A NAME="Heading80"></A>Building
+interactive commands</H2>
+<P STYLE="margin-bottom: 0cm">	One easy way to interact with the user
+during macro execution, is to block the user with any blocking event
+(in the following example, alert is used, which calls DIALOGBOX). The
+following example is used to measure the noise level in a given
+spectral zone. It uses the EVALN command which does the work, and
+simply build the graphic user interface around the EVALN command.</P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P ALIGN=RIGHT STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2><U><B>filename : evaln.g</B></U></FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>; graphic interface for the EVALN
+command.</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>;</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<BR>
+</P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>... <I>removed some irrelevant code</I></FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<BR>
+</P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>alert 'Select an empty area of the
+data-set THEN click on Ok'</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>if ($dim == 1) then</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>  print ($zone[1] ; $zone[2] ;
+$zone[3] ; $zone[4])</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>  evaln $zone[2] $zone[4]</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>else</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>  evaln $zone[1] $zone[2] $zone[3]
+$zone[4]</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>endif</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm">	This macro calls the macro <FONT FACE="Courier">alert</FONT>,
+which creates a window on screen with the text as an argument, and
+blocks the macro at this level, the macro continues when the user
+clicks on Ok. However it is possible to change the display and to
+zoom while the user interface is blocker, this is used to ask the
+user to select the spectral zone on which the noise is going to be
+computed. Finally the noise is computed on the zone defined by the
+$zone[...] context, which hold the last zone drawn on the spectrum
+with the mouse.</P>
+<P STYLE="margin-bottom: 0cm">	Note that <FONT FACE="Courier">alert</FONT>
+is given in the next example.</P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H2 STYLE="page-break-before: always"><A NAME="Heading81"></A>use of
+internal Gifa configuration - use of blocking event to wait for the
+user</H2>
+<P STYLE="margin-bottom: 0cm">	You have here a very simple example of
+using the <FONT FACE="Courier">$CONFIG_XXX</FONT> contexts. All
+aspects of the internal program state are described with such
+contexts.</P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P ALIGN=RIGHT STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2><U><B>filename : alert</B></U></FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>; alert &quot;text to display&quot;</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>;Creates a graphic alert box
+displaying the text. User must click in</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>;the alert box to continue.</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>;</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>;see also : PRINT ERROR DIALOGBOX</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<BR>
+</P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>if ($CONFIG_GRAPH) then</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>  refmacro 1</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>  dialogbox &quot;alert&quot; $_
+message *</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>  refmacro 0</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>else</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>  print $_</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>  message &quot;Type on return to
+continue&quot;</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>  set a =</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>endif</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm">	Here we see the <FONT FACE="Courier">alert</FONT>
+macro, used in other macro to give a blocking alert text, the user as
+then to click on Ok (in graphic mode) or to type return (on batch
+mode). The user can also abort the processing, clicking on Cancel, or
+by typing ^C. There is actually 2 different programs here. First we
+check whether the program is running in graphic mode <FONT FACE="Courier">($CONFIG_GRAPH</FONT>
+is true) or if it is running in batch mode. In graphic mode,
+dialogbox does the whole work, with $_ displayed as a message in the
+box, in batch mode, we first print $_, then wait for the value of a
+dummy variable to be set.</P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H2 STYLE="page-break-before: always"><A NAME="Heading82"></A>graphic
+user interaction and clicking on the spectrum</H2>
+<P STYLE="margin-bottom: 0cm">	It is perfectly possible (and often
+very useful) to have fully interactive macros, during which the
+spectral display is modified, and the user can take actions depending
+on the results.</P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P ALIGN=RIGHT STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2><U><B>filename : rowint</B></U></FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>; interactive</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>; permits to choose rows
+interactively on a 2D by clicking on the data-set</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>;</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>;see also : colint vertint planeint
+ph2dc ROW COL</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<BR>
+</P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>if ($dim==1) error 'Works only in
+2D'</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>refmacro 1</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>print &quot;click on the data set,
+finish by pressing the third button of the mouse&quot;</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>=loop</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>   monopoint</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>   if ($button==3) goto end</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>   set x   = (round($pointy[1]))</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>   if ($itype_2d == 2 | $itype_2d
+== 3)  set x = (2*int($x/2)+1)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>   print ('row :';$x)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>   row  $x</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>   goto loop</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>=end</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>refmacro 0 exit</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm">You see an example of several
+techniques. First, the <FONT FACE="Courier">refmacro</FONT> context,
+determines if the spectral display will be refreshed during macro
+execution. Depending on what you are doing (interactivity or Fourier
+transform) you want or you do not want the display to show what is
+happening. The <FONT FACE="Courier">refmacro</FONT>, when set to 1,
+determines that the display will be refreshed, and when set to 0 that
+the display will not refresh until returning to the prompt level. So
+here we set it to 1 when entering, and set it to 0 when exiting.
+Then, the execution is blocked by the MONOPOINT command, which wait
+for user to click in the active window. After the click, the
+following contexts are set : <FONT FACE="Courier">$pointx[1]
+$pointy[1]</FONT> and <FONT FACE="Courier">$button</FONT>, which
+contains respectively the (spectral) coordinates of the point which
+was clicked, and the number of the button used (1 is the left most
+one).</P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H2 STYLE="page-break-before: always"><A NAME="Heading83"></A>varying
+formbox via file</H2>
+<P STYLE="margin-bottom: 0cm">In some cases, you may want to build a
+form with a variable number of entries. This is a problem as the
+FORMBOX command has to be called all at once in order to design a
+given form; you cannot use IF controls in the design of forms. One
+way to go is to write a temporary file, containing the code for the
+form. Here is an example taken from the assignment module (which
+heavily uses this trick).</P>
+<P STYLE="margin-bottom: 0cm">	This macro builds a long formbox, with
+one line per residue in the primary sequence of the protein under
+study. Assigned residues are clickable.</P>
+<P STYLE="margin-bottom: 0cm"> 
+</P>
+<P ALIGN=RIGHT STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2><U><B>filename : show_prim_seq</B></U></FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<BR>
+</P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>; first search for assigned sys</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<BR>
+</P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>;scan prim seq</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>open db/primary</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>set l = &lt;db/primary</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>set i = 1</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>while (!eof('db/primary'))</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>   set seq[$i] = $l</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>   set i = (%+1)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>   set l = &lt;db/primary</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>endwhile</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>close db/primary</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>   </FONT></FONT>
+</P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>; open temp file</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>set tmp = ('tmp' //
+int(1000000*$random))</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>open $tmp</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>fprint $tmp 'formbox primary
+DO_NOTHING \'</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<BR>
+</P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>; for all residues</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>for j = 1 to ($i-1)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>  fprint $tmp (&quot;'&quot; // $j;
+$seq[$j] //&quot;'&quot; ; 'message \')</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>  foreach p in sys within 1
+($j-0.1) ($j+0.1)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>      set ss =
+(head(tail($sys[$p])))</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>      if ($p s! 'LARGEST' ) then</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>        fprint $tmp (&quot;noreturn
+'&quot;; $ss; &quot;#&quot;; $p; &quot;' action 'show_sys&quot;; $p;
+&quot;' \&quot;)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>        fprint $tmp ('noreturn Edit
+action &quot;mod_sys'; $p; '&quot; \')</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>      endif</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>  endfor</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>endfor</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>fprint $tmp &quot;*&quot;</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>close $tmp</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<BR>
+</P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>@($tmp)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<BR>
+</P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>sh (&quot;/bin/rm&quot;; $tmp)</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; border-top: 1.00pt solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: none; padding: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>;dump</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm">	In this one example you can find many
+examples of the techniques described above : temporary files; writing
+<I>Gifa</I> code to a file; etc...</P>
+<P STYLE="margin-bottom: 0cm">	Additionally, note how the file is
+called : <FONT FACE="Courier">@($tmp)</FONT> which is the syntax for
+calling a macro the name of which is help into a variable.</P>
+<HR SIZE=4>
+<P ALIGN=CENTER><A HREF="./macro-MISCELLA.html"><IMG SRC="./images/leftg.gif" NAME="Image4" ALT="Prev " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="./macro-Contents.html"><IMG SRC="./images/contg.gif" NAME="Image6" ALT="Contents " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+</P>
+</BODY>
+</HTML>

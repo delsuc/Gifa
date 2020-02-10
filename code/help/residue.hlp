@@ -1,0 +1,7 @@
+Returns into the current buffer the result of the substraction of 
+the DATA buffer, with the reconstruction of the mock data from the 
+spectrum held into the current buffer. To be used after a MaxEnt run 
+to see that part of the signal not analysed by the MaxEnt process.
+
+see also : SHOW GET MAXENT
+

@@ -1,0 +1,238 @@
+<HTML><HEAD>
+<!-- This document was created from RTF source by rtftohtml version 3.9.3 -->
+<TITLE>Build-up curve processing. - THEORY</TITLE></HEAD>
+<BODY>
+<A HREF="redfield-THE.html"><IMG SRC="leftg.gif" ALT="Prev " border=0></A>
+ <A HREF="redfield-PRACTISI.html"><IMG SRC="rightg.gif" ALT="Next " border=0></A>
+ <A HREF="redfield-Title.html"> </A>
+ <A HREF="redfield-Contents.html"><IMG SRC="contg.gif" ALT="Contents " border=0></A>
+<hr size=4>
+<H1>
+THEORY</H1>
+<UL>
+<LI><A HREF="#Heading3">The multi-exponential expression of the NOE intensities</A>
+<LI><A HREF="#Heading4">Processing the complexe conjugate roots</A>
+<LI><A HREF="#Heading5">Checking the quality of the analysis</A>
+<LI><A HREF="#Heading6">Calculating the distances from the relaxation rates</A>
+</UL>
+<hr size=4>
+<p></p>
+
+<h2>
+<A NAME="Heading3">The multi-exponential expression of the NOE intensities</A></h2>
+
+<p><br>
+	One can express the nOe intensities obtained from a NOESY experiment, as a
+series of symmetric matrices <sub>
+<IMG SRC="redfield01.gif"></sub>,
+where <sub>
+<IMG SRC="redfield02.gif"></sub>
+holds the intensity of the cross peak between atoms i and j, for a NOESY mixing
+time of <sub>
+<IMG SRC="redfield03.gif"></sub>.
+The relaxation parameters for each pair of spins can be presented as the
+relaxation matrix <sub>
+<IMG SRC="redfield04.gif"></sub>.
+<sub>
+<IMG SRC="redfield05.gif"></sub>is
+bound to the nOe intensity matrix <sub>
+<IMG SRC="redfield06.gif"></sub>
+by the relation :<br>
+	<sub>
+<IMG SRC="redfield07.gif"></sub>
+					(1)<br>
+where I<sub>o</sub> is a diagonal matrix with elements equal to the equilibrium
+magnetizations of each respective spin. <br>
+	If the complete experimental determination of the <sub>
+<IMG SRC="redfield08.gif"></sub>
+matrix can be performed at a given <sub>
+<IMG SRC="redfield09.gif"></sub>,
+then the determination of <sub>
+<IMG SRC="redfield10.gif"></sub>
+is straightforward. However this is seldom the case, due to overlaps in the 2D
+NOESY spectra.<br>
+	The problem is then one of incompleteness of <sub>
+<IMG SRC="redfield11.gif"></sub>
+and several procedures have been proposed to interpret quantitative NOESY
+information in terms of the  relaxation matrix <sub>
+<IMG SRC="redfield12.gif"></sub>.
+We will show here, that this incompleteness can be avoided if one takes a
+different approach to the problem.<br>
+	The relaxation matrix is symmetric, provided we use the construction proposed
+by Olejniczak (Olejniczak, E. T. (1989) <i>J. Magn. Res.</i> <b>81</b>,
+392-394). It can be diagonalized :<br>
+	<sub>
+<IMG SRC="redfield13.gif"></sub>
+									(2)<br>
+where <sub>
+<IMG SRC="redfield14.gif"></sub>
+is a diagonal matrix, and I is thus computed by :<br>
+	<sub>
+<IMG SRC="redfield15.gif"></sub>
+								(3)<br>
+From Eq. (2) we can rewrite each element of matrix <sub>
+<IMG SRC="redfield16.gif"></sub>
+in the following way :<br>
+	<sub>
+<IMG SRC="redfield17.gif"></sub>
+									(4)<br>
+so that each element of matrix I becomes :<br>
+	<sub>
+<IMG SRC="redfield18.gif"></sub>
+							(5)<br>
+where the <sub>
+<IMG SRC="redfield19.gif"></sub>
+is the (i,k) element of the matrix L, and <sub>
+<IMG SRC="redfield20.gif"></sub>
+is the <sub>
+<IMG SRC="redfield21.gif"></sub>
+element of the diagonal matrix <sub>
+<IMG SRC="redfield22.gif"></sub>.
+We can rewrite Eqs. (4) and (5) as follows :<br>
+	<sub>
+<IMG SRC="redfield23.gif"></sub>
+							(6)<br>
+and : 	<sub>
+<IMG SRC="redfield24.gif"></sub>
+								(7)<br>
+where : 	 <sub>
+<IMG SRC="redfield25.gif">
+								(8)</sub><br>
+	The form of Eq. (6) proves that NOESY build-up curves are sums of
+exponentials. Eqs. (6) and (7) show that we can deduce the value of the
+relaxation matrix elements from the analytical form of the build-up curve.<br>
+	The process we propose for computing the relaxation matrix elements from the
+NOESY experimental intensities is then, given an experimental nOe build-up
+curve  <sub>
+<IMG SRC="redfield26.gif"></sub>
+measured between atoms i and j, to extract the parameters <sub>
+<IMG SRC="redfield27.gif"></sub>
+ and <sub>
+<IMG SRC="redfield28.gif"></sub>
+of the multi-exponential decay.<br>
+	From the parameters <sub>
+<IMG SRC="redfield29.gif"></sub>
+and <sub>
+<IMG SRC="redfield30.gif"></sub>
+it is then easy to obtain the values of the relaxation parameter <sub>
+<IMG SRC="redfield31.gif"></sub>.
+Subsequently, it is possible to extract distance information, by assuming a
+dynamic model for the molecule (for instance rigid spherical tumbling).<br>
+	In Gifa, the LP-SVD method is used for multiexponential analysis of the
+curves, because it permits the separation of the signal parameters from
+additional parameters arising from the noise.</p>
+
+<h2>
+<A NAME="Heading4">Processing the complexe conjugate roots</A></h2>
+
+<p><br>
+	When the noise level is high, however, instability in the polynomial rooting
+may generate complex roots outside the unit-circle. In this case, these roots
+are found as complex conjugated doublets called "Froissard doublets". Such
+doublets lead to very inaccurate reconstruction of the respective relaxation
+matrix elements. To circumvent this problem, we propose the rotation of such
+doublets around the median point, before the amplitude estimate, in order to
+bring the roots back to the real axis.<br>
+	A Froissard doublet is characterized by two related roots, located within the
+unit-circle, with opposite frequencies, opposite imaginary phases and the same
+amplitudes and damping factors:<br>
+		<sub>
+<IMG SRC="redfield32.gif"></sub>
+	<sub>
+<IMG SRC="redfield33.gif"></sub>
+					(A1)<br>
+time dependence generated by such a pattern is:<br>
+	<sub>
+<IMG SRC="redfield34.gif"></sub>
+				(A2)<br>
+				<sub>
+<IMG SRC="redfield35.gif"></sub>
+	if  <sub>
+<IMG SRC="redfield36.gif"></sub>
+<br>
+the rotation leads to:<br>
+	<sub>
+<IMG SRC="redfield37.gif"></sub>
+	<sub>
+<IMG SRC="redfield38.gif"></sub>
+						(A3)<br>
+which gives:<br>
+	<sub>
+<IMG SRC="redfield39.gif"></sub>
+					(A4)<br>
+			<sub>
+<IMG SRC="redfield40.gif"></sub>
+	if  <sub>
+<IMG SRC="redfield41.gif"></sub>
+ and <sub>
+<IMG SRC="redfield42.gif"></sub>
+<br>
+The developments of the two expressions are very similar and equivalent for
+small values of bt. The operation permitting the replacement of Eq. (A2) by
+(A4) is equivalent to pivoting the root doublet by <sub>
+<IMG SRC="redfield43.gif"></sub>
+about the center of the doublet, bringing the roots back onto the real axis.<br>
+	This operation does not modify the first order of the build-up curve
+reconstruction and can be safely used when the imaginary part of the complex
+root is small compared to the real part. This condition can be translated into
+geometric terms, by enforcing that the complex roots must lie within a cone of
+angular extent <sub>
+<IMG SRC="redfield44.gif"></sub>.<br>
+	In some cases however, particularly when the signal to noise ratio is very
+low, the LP-SVD analysis produces complex root doublets corresponding to higher
+frequencies for which the equations A2) and (A4) are no longer equivalent. In
+this case the fast frequencies detected in the signal are probably associated
+to the noise. We thus chose to ignore the related roots altogether for the
+amplitude reconstruction step. This decision was supported by the fact that the
+corresponding amplitudes, when computed, often appear to be at least one order
+of magnitude smaller than the other amplitudes.</p>
+
+<h2>
+<A NAME="Heading5">Checking the quality of the analysis</A></h2>
+
+<p><br>
+	From the multi-exponential analysis performed on the build-up curve as
+described, the relaxation parameter <sub>
+<IMG SRC="redfield45.gif"></sub>
+is computed as shown in Eq. (7). It is obvious that the accuracy of the
+determination of the relaxation parameter is critically related to the accuracy
+of the multi-exponential analysis. In order to check the quality of this
+analysis, for each build-up curve processed, an "R factor" can be
+computed,.much in the way X-ray crystallographers do.<br>
+		<sub>
+<IMG SRC="redfield46.gif"></sub><sup>
+	</sup>					(10)<br>
+Here <sub>
+<IMG SRC="redfield47.gif"></sub>
+is the value of the calculated build-up curve reconstructed from the
+multi-exponential parameters, and <sub>
+<IMG SRC="redfield48.gif"></sub>
+is the "experimental" data, for k running on the different values of <sub>
+<IMG SRC="redfield49.gif"></sub>.
+We found the R factor to be more discriminant when computed only for small
+values of <sub>
+<IMG SRC="redfield50.gif"></sub>.</p>
+
+<h2>
+<A NAME="Heading6">Calculating the distances from the relaxation rates</A></h2>
+
+<p><br>
+	From the rates, the distances can be calculated, by assuming a dynamic model
+for the molecule. In Gifa, the rigid spherical tumbling model is available and
+permits to calculate the distances from the relaxation rates, in the following
+way. Having chosen a calibration rate <sub>
+<IMG SRC="redfield51.gif"></sub>,
+corresponding to the known distance d<sub>o</sub>, all other distances
+d<sub>ij</sub> are obtained from the rates <sub>
+<IMG SRC="redfield52.gif"></sub>
+:<br>
+	<sub>
+<IMG SRC="redfield53.gif"></sub><sup>
+									(11)
+</sup></p>
+<P><hr size=4>
+<A HREF="redfield-THE.html"><IMG SRC="leftg.gif" ALT="Prev " border=0></A>
+ <A HREF="redfield-PRACTISI.html"><IMG SRC="rightg.gif" ALT="Next " border=0></A>
+ <A HREF="redfield-Title.html"> </A>
+ <A HREF="redfield-Contents.html"><IMG SRC="contg.gif" ALT="Contents " border=0></A>
+</body></html>

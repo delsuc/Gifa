@@ -1,0 +1,3 @@
+cc -c cio_lib.c 
+# f77 -o nmrlink nmrlink.f cio_lib.o
+f77 -o nmrlink nmrlink_2.f cio_lib.o

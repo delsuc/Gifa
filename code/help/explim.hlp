@@ -1,0 +1,9 @@
+This context holds the limit for the exponential function used in 
+the Gull & Daniel algorithm, as well as in the GIFA algorithm.
+A function exp2(x) is used which is
+	- equal to exp(x)				if x <= explim
+	- equal to exp(explim)*(x+1.0-explim)	if x >  explim
+i.e. a linear extension of the exponential function is used fo x > 
+explim.
+see also MAXENT 
+

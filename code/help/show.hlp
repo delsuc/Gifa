@@ -1,0 +1,25 @@
+SHOW parameter
+Displays graphically extra information without disturbing the 
+content of the working buffer. Uses the current definition of SCOLOR 
+for drawing.
+
+With parameter equal to:
+DATA      display the content of the Data buffer
+WINDOW    display actual window used to compute the chisquare
+TAB       display the values of the buffer used for tabulated fit
+FILTER    display filter used for Deconvolution
+LAMB      display evolution of Lambda  during MaxEnt iteration
+ENT       display evolution of Lambda  during MaxEnt iteration
+CHI       display evolution of Lambda  during MaxEnt iteration
+STEP      display evolution of Lambda  during MaxEnt iteration
+SUM       display evolution of Lambda  during MaxEnt iteration
+CONV      display evolution of Lambda  during MaxEnt iteration
+FT        display evolution of Lambda  during MaxEnt iteration
+RESIDUE   displqy the residue of the spectrum after a MaxEnt run
+CURRENT   moves the current displayed image to the other window
+LINEFIT   the result of the last line-fitting computation
+AMOEBA    the mask used by the last INTEG command
+ 
+see also : GET PUT APPLY SHOWTEXT SHOWLINE SHOWPEAKS SHOWPEAK
+           SCOLOR SHOWC showtab
+

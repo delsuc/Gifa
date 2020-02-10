@@ -1,0 +1,10 @@
+CDISP2D 0/1
+When CDISP2D is 1 the window displaying the contour plot of the 2D 
+buffer is activated on the graphic screen in 2D.
+
+related contexts : $CDISP2D $ABSMAX $BCOLOR $CCOLOR $COLOR $LEVEL $LOGA 
+    $SCALE $SIGN $AXIS $ZOOM ZOOM_2D[1] ZOOM_2D[2] ZOOM_2D[3] ZOOM_2D[4]
+
+see also : DISP1D DISP2D DISP3D AXIS STPL COLOR BCOLOR CCOLOR SCALE LEVEL 
+LOGA CLEAR SHOWC dispcont disp? super2d
+

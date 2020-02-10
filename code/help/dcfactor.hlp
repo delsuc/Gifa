@@ -1,0 +1,5 @@
+Selects the scaling that will be used for the first segmentation 
+step of BCORR 3 when Dynamic clustering is used.
+
+see also : BCORR
+

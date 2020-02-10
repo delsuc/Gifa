@@ -1,0 +1,27 @@
+	In contrast with most NMR programs, Gifa tends to do as much data 
+processing as possible in memory. Thus a typical processing session 
+consists in :
+* transfering the raw data-set from the spectrometer to the 
+  processing computer and converting it to a gifa-compatible format, ( 
+  ux2cach utility for the Bruker case, Varian can be read directly 
+  with READV).
+* using the easy1s / easy2d / easy3d form box to find a good set
+  of processing parameters.
+	- ft type
+	- apodisation window / zero-filling / linear-prediction
+	- phase correction
+	- eventually base line correction.
+* note that you can write in a file a macro corresponding to the action
+  you just defined with the form.
+* Eventually you can write the data set to a file (remember it is only
+  in memory so far)
+
+	The program includes sophisticated signal processing methods such 
+as Maximum Entropy processing, Linear prediction, line fitting, 
+complete control language, or 2D peak integrator as well as more 
+classical processing, displaying and plotting of NMR experiments. It 
+can handle the complete study of a set of NMR multidimensionnal 
+data-sets, from the raw data to plotting, visualisation, and finally 
+give some help to the assignment process.
+These actions are found only in the complete menu mode.
+

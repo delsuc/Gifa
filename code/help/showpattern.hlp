@@ -1,0 +1,15 @@
+ SHOWPATTERN x sizex y sizey pat_type
+
+ draws a pattern on screen, at location 'x y' (in spectral coordinate)
+     and of sizex , sizey  (in spectral coordinate)
+ The pattern can be chosen with pat_type :
+             x  cross
+             +  cross
+             *  star
+             s  square
+             d  diamond
+             c  circle
+             b  box ( + and square )
+Color is SCOLOR
+
+see also : SHOWLINE SCOLOR point_cross

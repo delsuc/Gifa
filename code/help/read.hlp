@@ -1,0 +1,10 @@
+READ file_name
+
+Reads the file as the new data set in standard format .
+Same as READC
+
+related contexts : $NAME
+
+see also : WRITE READH READL READM READS READT READV READZ 
+  readgz load build2d build3d 
+

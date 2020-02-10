@@ -1,0 +1,12 @@
+The processing of DOSY spectra is fully implemented in Gifa.
+  
+Two main techniques are available to process DOSY experiment, and, more 
+generally, to process sums of damped exponentials: the fit of different 
+components, based on the general fitter available in Gifa; and the inverse 
+Laplace transform approach, performed here by Maximum Entropy.
+
+The first method is simple and rapid, but inadequate when there is more
+than a simgle decay, or if non exponential decays are taking place. The
+MaxEnt method is fully general, and much more powerfull.
+
+Try Dosy processing in the Mode menu.

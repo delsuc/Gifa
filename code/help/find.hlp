@@ -1,0 +1,18 @@
+FIND array_name nD (coordinate set)
+
+FIND permits to locate in arrays coded with a set of coordinates, 
+the entry closest to a given location.
+array_name is the name of the searched array, nD (1, 2 or 3) is the 
+number of coordinates used for the search, (coordinate set) is the 
+coordinates of the target for the search.
+FIND returns the information in the contexts $PK_FND which gives the 
+index of the found entry, and in $PK_FND_DST which gives the 
+distance between the target and the found entry.
+The coordinates in the array have to be the first values in the 
+field.
+The array can be user internal array, as well as a dbm bound array.
+
+related contexts : $PK_FND $PK_FND_DST
+
+see also : FOREACH VARIABLES 
+

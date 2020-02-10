@@ -1,0 +1,8 @@
+PRINT string
+
+This command permits to issue a string to the user. Permits 
+interactivity in command file.
+
+see also : FPRINT ERROR ALERT SHOWTEXT PLOTTEXT
+    printf sprintf fprintf
+

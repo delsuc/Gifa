@@ -1,0 +1,5 @@
+Replaces the 2D buffer by the product of the current 2D buffer by 
+the transpose of it
+
+see also : DIAGONALIZE
+

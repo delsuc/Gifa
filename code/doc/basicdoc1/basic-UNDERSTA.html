@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=iso-8859-1">
+	<TITLE>UNDERSTANDING THE MEMORY SET-UP</TITLE>
+	<META NAME="GENERATOR" CONTENT="StarOffice/5.2 (Linux)">
+	<META NAME="CREATED" CONTENT="20010412;19491000">
+	<META NAME="CHANGEDBY" CONTENT="Thierry Gostan">
+	<META NAME="CHANGED" CONTENT="20010412;19501300">
+	<!-- This document was converted from RTF source: 
+By r2net 5.2.4 r2netcmd Unix 
+Translation:html.trn  $Revision: 1.55 $ $Revision: 1.34 $
+See http://www.logictran.com
+Filename:basic.rtf
+OutFileName:basic.html
+Application Directory:/home/gostan/r2net
+Subject:
+Author:
+Operator:
+Document Comments:
+Version Comments:
+Comments:StarWriter
+Keywords:
+Translation Date:04/12/2001
+Translation Time:15:05:53
+Translation Platform:Unix
+Number of Output files:50
+This File:basic-UNDERSTA.html
+SplitDepth=2
+SkipNavPanel=0
+SkipLeadingToc=0
+SkipTrailingToc=1
+GenContents=1
+GenFrames=1
+GenIndex=0
+ -->
+	<STYLE>
+	<!--
+		A:visited { color: #808080 }
+		A:link { color: #cc0000 }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LINK="#cc0000" VLINK="#808080" BGCOLOR="#ffffff">
+<P ALIGN=CENTER STYLE="margin-bottom: 0cm"><A HREF="basic-Commands-2.html"><IMG SRC="images/prev.gif" NAME="Image1" ALT="Previous " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <a href="basic-SIMULATI.html"><img src="images/next.gif" name="Image2" alt="Next " align=BOTTOM width=30 height=29 border=0></a> 
+  <A HREF="basic-Title.html"><IMG SRC="images/first.gif" NAME="Image3" ALT="Title Page " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Contents.html"><IMG SRC="images/contents.gif" NAME="Image4" ALT="Contents " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+</P>
+<HR>
+<H1><A NAME="Heading1470"></A><FONT SIZE=4><I><U>UNDERSTANDING THE
+MEMORY SET-UP</U></I></FONT></H1>
+<P STYLE="margin-bottom: 0cm">The Gifa program holds all the data in
+one single large memory buffer. This buffer is used for several
+purposes, and may be divided into smaller pieces. The size of this
+buffer is displayed when entering the program, or with the <TT><FONT FACE="Courier">CONFIG</FONT></TT>
+command. There is no way to use a larger data-set than this memory
+size but recompiling. This buffer is used for 1D as well as 2D and 3D
+operations. In all cases the whole buffer is available. However, when
+moving back and forth between 1D, 2D or 3D mode, or when using memory
+intensive commands, only partial regions of the buffers are
+protected. The size of these protected regions are given with <TT><FONT FACE="Courier">CONFIG</FONT></TT>
+command. The idea is that you can eat-up all the available memory for
+a single data-set if you wish, but that certain operations will be
+forbidden on it. 
+</P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm">For instance, you can handle a full
+memory 2D data-set if you do not wish to do 3D. However, when working
+in 3D, if you zero-fill a 2D plane extracted from the 3D, over the
+protected area size for 2D, you will destroy a part of the 3D buffer.
+You will sometime get the question : 'This will overflow the xx
+buffer, Ok?' when there is any risk of destroying one of the buffer.
+This question is not asked during macro execution, where you are
+supposed to know what you are doing. <BR>With the current set-up, the
+size of the protected 3D area is typically 1/2 of the size of the
+main buffer, the larger protected 2D is 1/4 of the larger 3D, and the
+protected 1D is 1/4 of the larger 2D. 
+</P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm">On another hand, certain operations in
+Gifa need large work storage, and will use the top of the main buffer
+for this; thus being incompatible with a large data-set. These
+commands are : Maximum Entropy, the linear prediction package, the
+automatic baseline correction <TT><FONT FACE="Courier">BCORR 3</FONT></TT>
+and the <TT><FONT FACE="Courier">PUT</FONT></TT> <TT><FONT FACE="Courier">DATA</FONT></TT>
+and <TT><FONT FACE="Courier">GET DATA</FONT></TT> operations. However
+the amount of memory used depends on the command. The Maximum Entropy
+and Linear Prediction (but not the <TT><FONT FACE="Courier">BURG,
+READC</FONT></TT> and <TT><FONT FACE="Courier">WRITEC</FONT></TT>
+commands which are in-place) will use the 3/4 of the main buffer so
+only 1/4 will be left for regular processing; this limitation is
+independent from the size of the larger data-set to be processed by
+MaxEnt which is 1/8 of the main buffer. The <TT><FONT FACE="Courier">PUT
+DATA</FONT></TT> and <TT><FONT FACE="Courier">GET DATA</FONT></TT>
+command will use 1/2 of the main buffer. The <TT><FONT FACE="Courier">BCOR
+3</FONT></TT> command will need only 1/8 on the top of the main
+buffer. With all these commands the remaining of the main buffer can
+be safely used. If you try one of these command with a too large
+data-set in the buffer, the data-set will be corrupted on the
+overlapping region.</P>
+<P STYLE="margin-bottom: 0cm"><IMG SRC="images/Mem.gif" NAME="Image9" ALIGN=LEFT HSPACE=8 VSPACE=8 WIDTH=428 HEIGHT=171 BORDER=0><BR>
+</P>
+<P STYLE="margin-bottom: 0cm">If you feel that the program is too
+small for your needs, contact the person who installed the program on
+your machine, and ask him to install a larger definition of the
+program . Definitions for 1 Mega, 4 Mega and 16 Mega are in the
+distribution. 
+</P>
+<HR>
+<P ALIGN=CENTER STYLE="margin-bottom: 0cm"><A HREF="basic-Commands-2.html"><IMG SRC="images/prev.gif" NAME="Image5" ALT="Previous " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-SIMULATI.html"><IMG SRC="images/next.gif" NAME="Image6" ALT="Next " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Title.html"><IMG SRC="images/first.gif" NAME="Image7" ALT="Title Page " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Contents.html"><IMG SRC="images/contents.gif" NAME="Image8" ALT="Contents " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+</P>
+</BODY>
+</HTML>

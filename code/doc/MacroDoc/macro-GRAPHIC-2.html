@@ -1,0 +1,296 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=iso-8859-1">
+	<TITLE>Macro programming - GRAPHIC USER INTERFACE</TITLE>
+	<META NAME="GENERATOR" CONTENT="StarOffice/5.2 (Win32)">
+	<META NAME="CREATED" CONTENT="20011127;17365340">
+	<META NAME="CHANGEDBY" CONTENT="Thierry Gostan">
+	<META NAME="CHANGED" CONTENT="20011127;17575265">
+	<!-- This document was created from RTF source by rtftohtml version 3.9.3 -->
+</HEAD>
+<BODY>
+<P ALIGN=CENTER STYLE="margin-bottom: 0cm"><A HREF="./macro-GRAPHIC.html"><IMG SRC="./images/leftg.gif" NAME="Image1" ALT="Prev " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="./macro-CUSTOMIZ.html"><IMG SRC="./images/rightg.gif" NAME="Image2" ALT="Next " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="./macro-Contents.html"><IMG SRC="./images/contg.gif" NAME="Image3" ALT="Contents " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+</P>
+<HR SIZE=4>
+<H1>GRAPHIC USER INTERFACE</H1>
+<UL>
+	<LI><P STYLE="margin-bottom: 0cm"><A HREF="#Heading52"><FONT COLOR="#cc0000">BUTTONBOX,
+	PULLDOWNMENU, CLOSEBUTTON, </FONT></A>
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm"><A HREF="#Heading53"><FONT COLOR="#cc0000">FORMBOX,
+	DIALOGBOX, CLOSEWIDGET</FONT></A><FONT COLOR="#cc0000"> </FONT>
+	</P>
+	<LI><P><A HREF="#Heading54"><FONT COLOR="#cc0000">INITINPROGRESS,
+	INPROGRESS</FONT></A><FONT COLOR="#cc0000"> </FONT>
+	</P>
+</UL>
+<HR SIZE=4>
+<P STYLE="margin-bottom: 0cm">It is possible to modify and adapt the
+user interface within the <I>Gifa</I> program. Actually, the graphic
+user interface (GUI) you are used to when using <I>Gifa</I> is
+completely built in the macro langage. Everything is built from a
+simple set of basic commands which permits to build menus, dialogue
+boxes, etc...</P>
+<P STYLE="margin-bottom: 0cm">To write your own user interface, you
+should understand first some standard concepts commun to all GUI
+environment. There is a quite small number of primitive command for
+building GUI element, each refer to quite different type of graphic.
+However, each of these command accept a very large range of
+parameters. The basic commands are : BUTTONBOX for building menu
+bars, DIALOGBOC and FORMBOX for building forms to be filled. All
+theese GUI commands handle several piece of data which have to be
+differenciated.</P>
+<P STYLE="margin-bottom: 0cm">1) Each graphic element (a menu, a
+dialog box) has a name, this name is a character string, it usually
+appears as the name of the window in which it is displayed. 2) The
+GUI elements are designed to create actions from a user generated
+event (typically a click), this action is here simply a <I>Gifa</I>
+command (what else could it be). This action is called the 'callback'
+of the GUI element. 3) The GUI elements are built from a library of
+standard widjets. A widjet is that kind of graphic element every user
+understand its use when seeing it (an entry in a menu, a pop-up menu,
+an entry field, etc...) The kind of widjet available depends on the
+kind of GUI comman you are using. 4) The GUI is built by the
+execution of a macro, but the callback of the GUI will also execute a
+macro. This is knd of confusing the first time, even more if you
+thank that tha callback macro can very well build a new GUI
+element.... To clear this up a little, we will refer to buildtime
+(when interpreting the macro that build the GUI) and to runtime (when
+the built GUI calls a macro through the callback technique for
+further action)</P>
+<H3><A NAME="Heading52"></A>BUTTONBOX, PULLDOWNMENU, CLOSEBUTTON, 
+</H3>
+<P STYLE="margin-bottom: 0cm">The command <FONT FACE="Courier">BUTTONBOX</FONT>
+creates a new entry in the menu bar. It creates the menu bar if
+called for the first time. Parameters of the command are the name of
+the menu as it appears in the menu bar, then a list of entries
+consisting of the name of the button and the <I>Gifa</I> command
+associated to it. The lists end with a *. The special entry <I>separator</I>
+does not set a button but a separator in the box.</P>
+<P>Any legal command can be used to be associated with a given
+button, a built-in command as well as a macro, and will be executed
+as if entered form the terminal. So the <FONT FACE="Courier">WHILE,
+FOR, IF .. THEN, GOTO</FONT> commands are not available but the <FONT FACE="Courier">IF</FONT>
+.. <I>any_command</I> syntax is valid. The action of the command in
+independent from the way it is called, except for the user prompting
+for values, which is performed with dialogue boxes in the case of a
+command called from a button.<BR>Example given :</P>
+<HR>
+<PRE STYLE="margin-left: 1cm; margin-right: 1cm">BUTTONBOX &quot;my first menu&quot; \
+        Hello  &quot;print 'Hello World'&quot; \
+        separator \
+        Dim dim \
+        &quot;Test Dim&quot; &quot;if ($dim == 2) print 'We are in 2D'&quot; \
+        Back (&quot;read&quot; ; $name) \
+        Reread  &quot;read $name&quot; \
+        *</PRE>
+<HR>
+<P><IMG SRC="./images/macro01.GIF" NAME="Image4" ALIGN=LEFT WIDTH=146 HEIGHT=330 BORDER=0>Which 
+  gives :</P>
+<P><BR><BR>Note :</P>
+<UL>
+	<LI><P STYLE="margin-bottom: 0cm"><B>How the command should be on a
+	single line, but how the continuation sign (\) can be used to make a
+	very long command</B> 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm"><B>How the quotes are needed only
+	to isolate field with blanks in it, for button names as well as
+	commands (<TT>Hello Dim</TT>)</B> 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm"><B>How single and double quotes
+	can be mixed to build composite commands (<TT>Hello</TT>)</B> 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm"><B>How the on-line IF can be used
+	(<TT>Test Dim</TT>)</B> 
+	</P>
+	<LI><P><B>How evaluated expression are evaluated when building the
+	menu if not within quotes : <TT>Back</TT> reads the file which was
+	last read when building the menu (the expression is evaluated when
+	building the menu), <TT>Reread</TT> reads the file which is last
+	read at the time the command is executed (<TT>Back Reread</TT>)</B></P>
+</UL>
+<P><BR>Depending o the state of <TT>PULLDOWNMENU</TT>, the menus that
+are created will appear as static button boxes (as shown above) or as
+regular pull down menus. The choice cannot be changed while there is
+a menu bar already opened, but it is possible to close the current
+menu bar, to change mode, and to rebuild a new menu bar. <BR>The
+command <TT>CLOSEBUTTON</TT> closes the menu bar and all the
+associated menus. It is equivalent to closing the menu bar from the
+close box.</P>
+<P><BR><BR>
+</P>
+<H3><A NAME="Heading53"></A>FORMBOX, DIALOGBOX, CLOSEWIDGET</H3>
+<P STYLE="margin-bottom: 0cm">The first two commands are closely
+related.</P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Courier">DIALOGBOX</FONT>
+permits to build sophisticated dialogue boxes, several fields can be
+built into the dialogue box, that the user has to fill-up. Each filed
+is internally associated to a <I>Gifa</I> variable, that the remain
+of the macro processes. The command appears as follow :</P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Courier">DIALOGBOX [series
+of entry] *</FONT></P>
+<P STYLE="margin-bottom: 0cm">Each entry consists of a name, that
+appears as such in the dialogue box, and of a type for the field.
+Types can be : <B>message, text, string, int, real, file, enum,
+multienum, cursor</B>.</P>
+<P STYLE="margin-bottom: 0cm"><B>message </B>type consists of a
+string that is displayed on the form and permits to put text in it.
+<B>text</B> permits to display the content of a text file, in a
+scrollable sub-window.</P>
+<P STYLE="margin-bottom: 0cm">The others type of field are associated
+to a variable which can be modified by the user, and can be used in
+the following of the macro.</P>
+<P STYLE="margin-bottom: 0cm"><B>string, int, real </B>and<B> file
+</B>have two other entries which give the name of the associated
+variable and its default value. These types correspond to editable
+fields that the user has to fill-up. <B>string, int, real</B>
+correspond to string, real values or integer values respectively;
+<B>file</B> corresponds to a file-name entry, and presents a small
+additional button in the dialogue box, which permits to pop-up a
+standard Motif file selection box.</P>
+<P STYLE="margin-bottom: 0cm"><B>enum </B>realises a pop-up menu, for
+an enumerated choice. It needs an additional entry which described
+the list of choice.</P>
+<P STYLE="margin-bottom: 0cm"><B>multienum</B> uses the same syntax
+than enum, but permits a selection within the list of several
+entries.</P>
+<P STYLE="margin-bottom: 0cm">The last type <B>cursor</B> realises a
+sliding cursor, permitting to enter a numeric variable. Compared with
+other entries, it has 3 additional field : number of decimal points,
+starting value, end value.</P>
+<P>The special entries <B>separator</B> and <B>noreturn</B> are meant
+for formatting the Dialogbox. <B>separator</B> draw a thin horizontal
+line in the box, <B>noreturn</B> indicates that the previous and the
+following field will be on the same line.<BR>Example given :</P>
+<HR>
+<PRE STYLE="margin-left: 1cm; margin-right: 1cm">Dialogbox &quot;my first dialogue&quot; \
+        &quot;Enter below the file name to work on&quot; message \
+        &quot;Enter file name&quot; file var_file $name \
+        separator \
+        &quot;Action to apply&quot; enum &quot;Read,Write&quot; var_act % \
+        *
+$var_act $var_file</PRE>
+<HR>
+<P><IMG SRC="./images/macro02.GIF" NAME="Image5" ALIGN=LEFT WIDTH=401 HEIGHT=229 BORDER=0>This 
+  macro will build a dialogue box with 2 editable entries : (filename and action) 
+  and will apply the action to the selected file if the user clicks on Ok <BR>
+  <BR>Note :</P>
+<UL>
+	<LI><P STYLE="margin-bottom: 0cm"><B>How the command should be on a
+	single line, but how the continuation sign (\) can be used</B> 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm"><B>The separator special field
+	which builds a thin line in the dialogue box</B> 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm"><B>How the enumerated list is
+	comma separated</B> 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm"><B>How the default value can be
+	anything, here a <I>Gifa</I> internal variable ($name), and the
+	default prompted value (%). In this last case, the default prompted
+	value will be the value of the variable itself if the variable
+	exists before the dialogue is built. If this is not the case, it
+	will be the first entry for </B>enum<B>, 0 or </B>real<B> and </B>int<B>
+	and the empty string for </B>string<B> and </B>file. 
+	</P>
+	<LI><P><B>How the returned values are usual variables, and can be
+	used for anything (here even as <I>Gifa</I> commands)</B></P>
+</UL>
+<P><BR><FONT FACE="Courier">FORMBOX</FONT> is the static version of
+<FONT FACE="Courier">DIALOGBOX</FONT>. It builds a form that will
+remain after the completion of the command (as <FONT FACE="Courier">BUTTONBOX</FONT>
+does) and will survive as long as the user does not explicitly closes
+it. <FONT FACE="Courier">FORMBOX</FONT> need an additional field (the
+callback) which describes the <I>Gifa</I> command to be executed when
+the user clicks on the <FONT FACE="Courier">Ok</FONT> or <FONT FACE="Courier">Apply</FONT>
+buttons. Another difference is that <FONT FACE="Courier">FORMBOX</FONT>
+can accept an additional field type : <B>action</B> which takes its
+following argument as a <I>Gifa</I> command, and binds it to a new
+button.</P>
+<P>Apart from this, the definition of <FONT FACE="Courier">FORMBOX</FONT>
+is strictly equivalent to that of <FONT FACE="Courier">DIALOGBOX</FONT>.
+If not global, a variable associated to a field in a <FONT FACE="Courier">FORMBOX</FONT>
+is local to the <FONT FACE="Courier">FORMBOX</FONT>, and cannot be
+accessed in any other macros but the in callback line.</P>
+<P>Example given :</P>
+<HR>
+<PRE STYLE="margin-left: 1cm; margin-right: 1cm">Formbox &quot;my first Form&quot; \
+        &quot;print ('today it is';$the_wet;', but I am';$myself) &quot; \
+        &quot;Enter information below&quot; message \
+        &quot;The weather today :&quot; \
+        enum &quot;Sunny,Rainy,Cold,Stormy,Terrible&quot; the_wet % \
+        noreturn \
+        &quot;Check weather&quot; action &quot;if ($the_wet s! 'Sunny') print 'BAD !'&quot; \
+        &quot;I am myself :&quot; string myself &quot;fine&quot; \
+        *</PRE>
+<HR>
+<P><IMG SRC="./images/macro03.GIF" NAME="Image6" ALIGN=LEFT WIDTH=441 HEIGHT=220 BORDER=0>Which 
+  builds the following form :<BR>
+  <BR>Clicking on <I>Check weather</I>
+produces : <TT>BAD !</TT><BR>Clicking on <I>Apply</I> or <I>Ok</I>,
+produces : <TT>today it is Cold , but I am fine</TT><BR>Note :</P>
+<UL>
+	<LI><P STYLE="margin-bottom: 0cm"><B>How the form variables can be
+	used in the callback, in expression, as parameters for other
+	commands</B> 
+	</P>
+	<LI><P><B>the use of the </B>noreturn<B> field and of the </B>action<B>
+	field type</B></P>
+</UL>
+<P><BR>Some time you want to close a Formbox from within a macro
+executing within the Formbox! The <TT>CLOSEWIDGET</TT> command is
+here for you. From within a from, the id of the form can be accessed
+with the <TT>$WIDGET</TT> context. It is then used as argument by
+<TT>CLOSEWIDGET</TT> to close the form.<BR>Example given :</P>
+<HR>
+<PRE STYLE="margin-left: 1cm; margin-right: 1cm">filename : do_count
+; $nct is global variable holding some value
+; this text is in a file called do_count
+Formbox counter \
+  DO_NOTHING \                                          ; this is a dummy macro
+  ('Current value is'; $nct) message \
+  'Increment' action  'set nct := (%+1) closewidget $widget do_count' \
+  noreturn \
+  'Decrement' action  'set nct := (%-1) closewidget $widget do_count' \
+  *</PRE>
+<HR>
+<P><IMG SRC="./images/macro04.GIF" NAME="Image7" ALIGN=LEFT WIDTH=240 HEIGHT=166 BORDER=0>Then 
+  this macro builds a form like this :<BR>
+  <BR>Clicking on Increment
+increments the global variable, and closes the old form and creates a
+new one with the updated value.<BR>Note :</P>
+<UL>
+	<LI><P STYLE="margin-bottom: 0cm"><B>How a composite action can be
+	built within quotes</B> 
+	</P>
+	<LI><P><B>That in this case, no action is associated to the <TT>Ok /
+	Apply</TT> buttons (which cannot be removed, unfortunately.</B></P>
+</UL>
+<H3><A NAME="Heading54"></A>INITINPROGRESS, INPROGRESS</H3>
+<P><IMG SRC="./images/macro05.GIF" NAME="Image8" ALIGN=LEFT WIDTH=335 HEIGHT=66 BORDER=0>These 
+  2 commands permits to build a bar showing the progress of the current command:<BR>
+  <BR>or as a text bar of the form:</P>
+<PRE STYLE="margin-bottom: 0.5cm">In Progress : 0%....25%....50%....75%....100%</PRE><P>
+with a dot every 1/2O<SUP>th</SUP> of the process, if the program is
+used in a non-graphic mode.<BR><TT>INITINPROGRESS</TT> tells <I>Gifa</I>
+how many iterations are to go, <TT>INPROGRESS</TT> actually does the
+display. <TT>INPROGRESS</TT> can be called at any rate, there is no
+need to do arithmetic to call <TT>INPROGRESS</TT>.<BR>Example :</P>
+<HR>
+<PRE STYLE="margin-left: 1cm; margin-right: 1cm">set max = 1000
+initinprogress $max
+for i = 1 to $max
+   ... do something
+   inprogress $i 
+endfor</PRE>
+<HR>
+<HR SIZE=4>
+<P ALIGN=CENTER><A HREF="./macro-GRAPHIC.html"><IMG SRC="./images/leftg.gif" NAME="Image9" ALT="Prev " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="./macro-CUSTOMIZ.html"><IMG SRC="./images/rightg.gif" NAME="Image10" ALT="Next " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="./macro-Contents.html"><IMG SRC="./images/contg.gif" NAME="Image11" ALT="Contents " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+</P>
+</BODY>
+</HTML>

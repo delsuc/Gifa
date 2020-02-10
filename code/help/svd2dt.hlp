@@ -1,0 +1,7 @@
+Compute back a new data-set from a truncated set (cf SVDCLEAN1) of 
+singular values.
+
+related contexts : $NSVD
+
+see also : SVDLIST SVDCLEAN1 SVDLIST SVD->AR ORDER DT->SVD
+

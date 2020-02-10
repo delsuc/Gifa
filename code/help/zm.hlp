@@ -1,0 +1,22 @@
+ZM 1 / 0
+
+Creates / closes  (1 / 0) the graphic box that permits to control interactively
+the value of SCALE and the zoom state.
+
+The ZM 1 command will recompute the display in the vignette if the zoom box is
+already opened.
+
+The zoom box contains several controls which permits to
+-move the zoom area (arrows and by moving the square in the vignette area)
+-zoom in and out
+-REFRESH button redraws the spectrum
+-RESET resets all graphic controls to default values
+-switch between the 1D / 2D and 3D working buffers
+
+The ZM box also displays the coordinate of the cursor when a 
+button is depressed, the unit used for display depends on UNIT
+
+related contexts : $UNIT
+
+see also : ZOOM_INTERACTIVE ZOOM SCALE MONOPOINT UNIT point
+

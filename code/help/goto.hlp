@@ -1,0 +1,8 @@
+GOTO label
+Will branch the flow a macro to the label. Labels are alphanumeric 
+strings, and appear preceded by an = sign in macro text. Labels 
+should be alone on the line. GOTO cannot be used in interactive 
+mode, but only in macros.
+
+see also : IF ONERRORGOTO CONTROLS
+

@@ -1,0 +1,7 @@
+A complete peak-picker is implemented in Gifa, in 1D, 2D and 3D.  peak 
+table can be displayed, edited, and stored.
+
+Peaks thus obtained can be fitted to lorentzian and Gaussian shapes in 1D 
+as well as in 2D.
+
+Try Peak in the Mode menu.

@@ -1,0 +1,12 @@
+BCOLOR index window
+Defines the current background color used for display. The chosen 
+color remains until the next
+BCOLOR command.
+index is :	1:white  2:red  3:yellow  4:green
+		5:cian  6:blue  7:purple  8:black
+Window is :   1:1D 2:disp 3:contour 4:3D
+
+related contexts : $BCOLOR
+
+see also : DISP1D, DISP2D, DISP3D, CDISP2D, COLOR, CCOLOR, SCOLOR
+

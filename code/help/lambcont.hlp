@@ -1,0 +1,15 @@
+LAMBCONT 0/1/2
+
+Tells the Maximum Entropy minimizer which lambda controlling should 
+be used.
+If LAMBCONT is 0 no controlling is done and Lambda is kept at its 
+initial value may be used for hand made lambda control.
+If LAMBCONT is 1  lambda is computed such as dQ.dS = 0.0  if conv<1  
+(dC dS angle larger than pi/2)
+If LAMBCONT is 2  lambda is computed such as cos(dQ,-dC) = 
+cos(dQ.dS) if lambcont.eq.2
+
+related contexts : $LAMBCONT
+
+see also : LAMBDA LAMBSP ALGO MAXENT
+

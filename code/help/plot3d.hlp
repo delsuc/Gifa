@@ -1,0 +1,7 @@
+plot3d plot_file_name
+
+Equivalent to the PLOT command, will generate a 3D plot, equivalent 
+to the display obtained with the DISP3D command.
+
+see also : PAGE PLOT DISP3D CHECK3D disp3d_form
+

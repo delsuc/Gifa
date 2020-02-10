@@ -1,0 +1,7 @@
+MSKZERO 
+
+Put the value zero (0.0) in the current amoeba buffer. Quite a destructive 
+command !
+ 
+see also : ZERO MSKMODIF MSKCONC
+

@@ -1,0 +1,14 @@
+SHOWLINETAB unit number_of_point offset_in_X offset_in_Y
+
+uses the content of the TAB[] buffer as X coordinates and the
+working 1D buffer as Y coordinates and draw the corresponding set of vectors.
+
+the parameters are :
+unit : the unit in which the content of TAB[] will be interpreted
+number_of_point : the number of point to draw
+offset_in_X , offset_in_Y the location of the drawing
+
+Will work only in the 1D window
+
+see also : SHOWLINE integrate
+

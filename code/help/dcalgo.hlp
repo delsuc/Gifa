@@ -1,0 +1,10 @@
+DCALGO n
+
+Selects the which kind of data will be used for the first 
+segmentation step of BCORR 3 when Dynamic clustering is used.
++1 : the algorithm runs on the data set.
++10 : the algorithm runs on the first derivative of the data set.
++100 : the algorithm runs on the second derivative of the data set.
+
+see also : BCORR
+

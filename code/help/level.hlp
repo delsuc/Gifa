@@ -1,0 +1,10 @@
+LEVEL n
+
+number of levels to be plotted by the plot command in 2D and in  the 
+contour plot graphic window, and in 3D contour. Default is 8; 
+maximum is 64.
+
+related contexts : $LEVEL
+
+see also : CDISP2D CDISP3D PLOT PLOT3D
+

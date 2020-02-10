@@ -1,0 +1,17 @@
+This directory contains several utilities for Gifa.
+
+README		This file
+XMgifa		The default graphic set-up,
+		Copied to /usr/lib/X11/app-defaults during installation
+apropos.sh	A shell script used by the 'apropos' command in Gifa
+bug_form	The file to fill for bug reports
+bug_report.sh	The shell script used by Gifa to report bugs
+create_apropos_macro.sh	A shell script used by the 'apropos' command in Gifa
+do_list		A Shell script that produces the alphabetical list of
+		commands and macro, ASCII form
+do_list_html	A Shell script that produces the alphabetical list of
+		commands and macro, as used in the interactive manual
+gifaplot	A small shell script, used by Gifa to plot
+		To be adapted to your own set-up
+gifaprint	A small shell script, used by Gifa to print
+		To be adapted to your own set-up

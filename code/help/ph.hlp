@@ -1,0 +1,12 @@
+PH is an interactive 1D phasing module. A button window pops-up 
+which permits the user to adjust the 0th and 1st order phase. The 
+1st order pivot point is set by clicking in the 1D Spectrum window.
+	If you exit by clicking in Ok the phase correction is applied, 
+and the phase values becomes then the default values for the PHASE 
+command. If you exit with Cancel, no phase correction is applied and 
+the original data is restored.
+ 
+related contexts : $PH0 $PH1
+
+see also : PHASE HPHASE ZM apsl ph2dc ph2dr
+

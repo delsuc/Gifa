@@ -1,0 +1,13 @@
+	This program "nmrlink" will read Bruker file which have accessed 
+to the UNIX or VMS machines and through networks with the following path :
+from AM machines to PC/MS-DOS through the NMR-link package
+and from PC to "normal UNIX machines" through FTP in BINARY mode.
+
+it will then create a H format file for GIFA.
+
+This program has been adapted from the tape program.
+This program is being used successfully on SUN, Risc6000 and VMS machines.
+No attempt was made to make it fully portable, you may have to play around
+to adapt it to your machine!
+
+(hint : Check in the convert subroutine and play around with the bytes.)

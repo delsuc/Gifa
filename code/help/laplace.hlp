@@ -1,0 +1,10 @@
+LAPLACE size
+
+Computes the Laplace transform of the current data-set, considered as 
+spanning the range DMIN-DMAX in a logarithmic manner.  Result consists in 
+'size' points regularly sampling the time domain with a sampling rate 
+SPECW.
+
+related contexts : $DMIN $DMAX $SPECW_1D
+
+see also : DMIN DMAX TLAPLACE SPECW INVLAP TRANSLAP env_dosy.g

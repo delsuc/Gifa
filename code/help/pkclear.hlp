@@ -1,0 +1,6 @@
+This command remove all entry from the current peak table.
+
+related contexts : $NPK1D $NPK2D $NPK3D
+
+see also : PKSELECT PKRM PKCLAN PEAK PKRESET
+

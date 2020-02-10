@@ -1,0 +1,7 @@
+SCALE3D x
+This context is used to reduce / expand the drawing during a 3D 
+display, usually a value smaller than 1 is needed to fit the whole 
+cube within the graphic window.
+
+see also : DISP3D PLOT3D
+

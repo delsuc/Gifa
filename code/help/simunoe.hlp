@@ -1,0 +1,14 @@
+This command is now obsolete, it has been superseded by the 
+SimSpect2D macro which realizes the same action.
+	This command permits to simulate a 2D data set from the result of 
+a program computing NOESY intensities (such as CORMA).
+	It will prompt you for the filename of the Corma output file,  
+the filename of the chemical shift file (generated with the command 
+CHEMS), the name of the output file, holding information on 
+simulated peaks and for number of data points and spectral windows 
+you wish to simulate.
+	It generates a time domain data-set which can be subsequently 
+processed as a regular FID.
+
+see also : SimSpect2D CHEMS SIMU
+

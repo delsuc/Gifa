@@ -1,0 +1,7 @@
+Flushes the modified blocks of the cache memory system associated to 
+the currently connected file onto the disk.
+
+related contexts : $C_JOINED
+
+see also : JOIN listfilec dataset FLUSHCACHE
+

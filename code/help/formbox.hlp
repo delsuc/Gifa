@@ -1,0 +1,101 @@
+FORMBOX form_name gifa_command 
+      - [field_name field_param ]       | 
+      - noreturn                        |  (n times)
+      - separator                       |
+      *
+
+Permits to construct a form ( dialog box with editable fields). The 
+box will appear in a window called form_name . The program continues 
+after having created the form, whitch will stay on screen as long as 
+the user dos not close it exolicitely. It will have three buttons at 
+the button :
+
+Apply    executes the command gifa_command  and the form will remain 
+         on screen
+Ok       executes the command gifa_command  and closes the form
+Cancel   does not execute any command and closes the form
+
+The command will be executed exactly as if the user had typed it 
+as the prompt level, thus the command can be a simple command, 
+several commands on a line, of a macro name. However the WHILE, FOR, 
+FOREACH, IF .. THEN, GOTO commands are not available; the IF .. 
+any_command syntaxe is available. If a parameter is missing for the 
+command, the user will be prompted in the text window.
+
+The form is also composed en fields which appear one on each line 
+in the window. A form can hold as many field as needed. Each field 
+has the following general format :
+
+	field_name field_type eventual list of parameters...
+
+field_name 	 is displayed on the left side of the field
+field_type   determines the kind of field,
+
+field_type is chosen in the following list :
+message, text, action, string, int, real, file, cursor, enum, multienum
+
+Field types are as follow:
+
+message type of field have no other field, this kind of entries 
+        serves to put plain text in the form
+text interprets field_name  as a file name which is presented in a 
+     scrollable window.
+action gifa_command_2 will create an active button, bound to 
+    gifa_command_2; field_name  will be used as the name of the button.
+
+All following type have a field_var entry which determines the 
+name of the Gifa variable in which the user input will be stored, 
+and the default_value entry which determines the value of that 
+variable when creating the form :
+
+field_name field_type (eventual parameters) var_name default_value
+
+string int real and file types of field have no additionnal parameters. 
+  They appear in the window as editable string.  When the user hits return 
+  there, the content of the string is copied to the Gifa variable var_name.
+
+file entries will have a small arrow which permits to open a 
+     standard file dialog window.
+
+field_name cursor starting_val ending_val numb_of_digit var_name default_value
+
+cursor permits to create a sliding cursors.  It has 3 additionnal 
+  parameters : starting_val ending_val numb_of_digit.  starting_val and 
+  ending_val determines the edge of the slider zone.  numb_of_digit 
+  determines the resolution of the slider, if 0 -> will be integer,
+  if larger -> will be real.
+
+field_name enum/multienum enul_list var_name default_value
+
+enum and multienum permit to choose an entry into a list.
+enum will appear as a pop up menu permitting to choose between the entries 
+  defined in the list : enum_list.
+multienum will appear as a scrollable list, and several entries can be 
+  chosen from the list
+These field have an additional entry : enum_list. This list is a single blank 
+separated word, each item being separated with commas.
+
+Two special entries are also available, and not associated to 
+fields but rather to formatting the box.
+
+separator permits to enter a separator in the form,
+noreturn implies that the following field will be presented on the same 
+line than the previous entry.
+
+The variables used by the editable entries can be global variables, in 
+which case they should have been created as global before calling the 
+FORMBOX command.  If this is not the case, they are created in a special 
+context, available only to the command gifa_command when executed with the 
+Apply or Ok buttons or from the actions buutons.  This special context is 
+completely local to the form.  This permits to have several forms, using 
+the same variables syntax, without interaction.
+
+The list is terminated with a star.
+
+Within the form the context $WIDGET is the id of the current 
+FORMBOX, and can be used by the CLOSEFORM command.
+
+related contexts : $WIDGET $CONFIG_GRAPH
+
+see also : CLOSEFORM DIALOGBOX BUTTONBOX CLOSEBUTTON MACRO
+

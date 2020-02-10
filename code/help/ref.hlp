@@ -1,0 +1,9 @@
+This command will force a new computing of the display, as if a 
+display command had been issued. This is useful for cleaning the 
+spectrum after any command that draw on the spectrum, such as POINT, 
+SHOWLINE, etc...
+Note that, during macro execution, REFMACRO should be set to 1
+for REF to be effective.
+
+see also : UNREF DISP1D DISP2D CDISP2D REF3D REFMACRO
+

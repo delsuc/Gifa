@@ -1,0 +1,17 @@
+#!/bin/sh
+# gifaplot file1 type_of_plotter
+#
+# send file1 to the plotter
+# used by gifa for spooling plotter files
+# you should adapt it to your local set-up
+#
+case $2 in
+	postscript) if test $1 = Gifa_Temp.Plot
+                     then lpr -s  -r -Ppost $1
+                     else lpr -s  -Ppost $1
+                    fi;;
+	HPGL)	    if test $1 = Gifa_Temp.Plot
+                     then lpr -s  -r -Phpgl $1
+                     else lpr -s  -Phpgl $1
+                    fi;;
+esac

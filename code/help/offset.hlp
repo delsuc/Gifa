@@ -1,0 +1,9 @@
+Permits to specify the offset of the right-most (upper right most in 
+2D) point of the data set. The value for offset are changed by 
+EXTRACT
+
+related contexts : $OFFSET_1D $OFFSET_1_2D $OFFSET_1_3D $OFFSET_2_2D
+                   $OFFSET_2_3D $OFFSET_3_3D
+
+see also : SPECW size calib
+

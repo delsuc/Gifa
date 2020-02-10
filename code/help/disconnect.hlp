@@ -1,0 +1,5 @@
+Journaling is resumed to the standard gifa.log files when previously 
+redirected with the CONNECT command.
+
+see also : CONNECT LOG OPEN CLOSE
+

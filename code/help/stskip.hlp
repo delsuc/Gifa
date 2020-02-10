@@ -1,0 +1,5 @@
+Parameter for STPL.
+STPL will skip stskip lines during the plot. Default is 1.
+ 
+see also : STPL STPL?
+

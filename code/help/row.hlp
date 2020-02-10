@@ -1,0 +1,10 @@
+ROW n
+
+Extract the nth 1D row (along F2 axis) from the 2D data-set, and put 
+it in the 1D buffer. The row will be available as a 1D data set when 
+going from 2D to 1D
+ 
+related contexts : $ROW
+
+see also : COL PLANE VERT DIM rowint colint
+

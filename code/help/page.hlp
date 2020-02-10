@@ -1,0 +1,6 @@
+PAGE plot_file_name
+	This command appends code at the end of plot_file_name for page 
+ejection; closes the plot file; and send it to the plotter.
+ 
+see also : PLOT PLOTTER FORGET gifaplot
+

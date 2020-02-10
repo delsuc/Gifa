@@ -1,0 +1,8 @@
+AR->RT2 n
+Equivalent to AR->RT, but seems to be more stable for very large 
+polynomial.
+
+related contexts : $NRT $SI1_1D
+
+see also : ARLIST RT->AR ORDER SVD->AR
+

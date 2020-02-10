@@ -1,0 +1,7 @@
+WRITE file_name
+Writes the current data set to a file in standard format.
+
+related contexts : $NAME
+
+see also : READ WRITEC WRITEH WRITEL WRITEM WRITES WRITEZ ZEROING writegz
+

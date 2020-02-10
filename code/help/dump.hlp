@@ -1,0 +1,6 @@
+Lists the values of all the variables presently defined within GIFA.
+Each value is shown with its associated context level : level 20 is the 
+global context, higher context are associated to higher call levels.
+
+see also : SET
+

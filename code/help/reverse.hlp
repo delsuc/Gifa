@@ -1,0 +1,8 @@
+REVERSE {Fx} 
+reverse the order of the current data-set (i.e. first points are 
+last, last points are first).
+If dataset is complex, REVERSE will reverse the complex  vector (2 
+by 2).
+
+see also : TRANSPOSE REVF INVF
+

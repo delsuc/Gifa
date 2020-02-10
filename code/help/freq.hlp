@@ -1,0 +1,13 @@
+FREQ freq_H1 freq1 { freq2 { freq3 } }
+
+The context FREQ holds the basic frequency of the spectrometer (in 
+MHz). freq_H1 is meant to be the basic  frequency of the 
+spectrometer (1H freq) and is not used in the program. freq2 (and 
+freq1 in 2D) are the freq associated to each dimension (different if 
+in heteronuclear mode). Values are in MHz.
+
+related contexts : $FREQ $FREQ_1D $FREQ_1_2D $FREQ_1_3D $FREQ_2_2D
+                   $FREQ_2_3D $FREQ_3_3D
+
+see also : SPECW OFFSET calib
+

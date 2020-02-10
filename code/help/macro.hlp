@@ -1,0 +1,26 @@
+One of the strength of the Gifa program is its macro language.  Many 
+features of the standard program are actually developed as macros.
+
+For the lay user, this insures that the program will react exactly the same 
+on all the computer platforms for which Gifa is designed; and warrants a 
+fast development of high level features.
+
+For advanced users, the benefit is much larger of course, as you can adapt 
+the distributed macros to more finely fit your needs, or you can write your 
+own macros to realises specific features.
+
+The macro language is rich enough to permit to create easily sophisticate 
+mathematical processing or high level control structures with a full 
+graphical user interface.  The purpose of this chapter is to help you in 
+writing such macros.
+
+Macros are simply files that contains commands as they could have been 
+typed at the Gifa prompt.  Any command that can be used in-line can be used 
+in a macro, and nearly every command and syntax that is used in a macro can 
+be used in-line.  Of course there is more than that, you can define 
+variables, use control structures, access contexts, use functions, build 
+graphic interfaces, macros can be called from within macros.
+
+All internal states of Gifa can be accessed through environment variables 
+called 'contexts'.  Many functions are available : string, mathematics, 
+spectral coordinates, etc...

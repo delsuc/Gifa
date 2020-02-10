@@ -1,0 +1,17 @@
+PKSYM param tolerance
+
+Symmetrize in the 2D peak-table by either removing (param=0) entries 
+in the peak table that do not have a symmetrical counterpart, or by 
+adding (param=1) a symmetrical peak in the table. The presence or 
+absence of a symmetrical peak is checked within a window of 
+tolerance (in Hz) around the peak.
+PKSYM does not modify the spectral parameters (spectral width, 
+frequences and offsets), so, if they significally different on the 
+both axis, strange results can be obtained.
+
+related contexts : $PK2D_A[i] $PK2D_ERR[i] $PK2D_F1F[i] $PK2D_F1W[i] 
+                   $PK2D_F2F[i] $PK2D_F2W[i]
+
+see also: PEAK PKPROJ
+
+

@@ -1,0 +1,12 @@
+freeze { p }
+
+FREEZE will freeze the specified graphic window in its current 
+state, and will open a new window which will become the active 
+window. There is no way to kill the frozen window, but to exit GIFA. 
+Useful for comparing many graphics.
+Depending on which display mode are active, no parameters may be 
+needed, or the user may have to choose which window to freeze : D 
+(density) C (contour) 3 (3D)
+
+see also : DISP1D, DISP2D, DISP3D, CDISP2D
+

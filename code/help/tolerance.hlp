@@ -1,0 +1,9 @@
+TOLERANCE x
+This context holds the value used by all minimisation routines 
+within GIFA as
+stopping criterium : line fitting, LineMinimisation in MaxEnt, 
+etc...
+Typically a small value (1e-2 .. 1e-4)
+
+see also : ITER MINITER
+

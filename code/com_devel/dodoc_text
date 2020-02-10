@@ -1,0 +1,40 @@
+#!/usr/local/bin/perl
+
+#process switches
+while	($ARGV[0]  =~ /^-/) {
+	shift;
+}
+
+# loop on file-names
+open (LS,"ls *.for|");
+open (SORT,"| sort >sort");
+while(<LS>) {
+
+    $fls = $_;
+    open(FILE,$fls);
+    $on = 0;	#marque que l'on cherche une entree
+    while(<FILE>) {
+
+	if ($on == 0) {
+#detect entry points
+	   if ( /^( +|\t)(subroutine|function|program)\s+(\w*)\W/ ) {
+		$entry = $+;
+		$on = 1;
+		printf "=============================================================\n";
+		printf "ENTRY = %s   FILE = %s \n",$entry,$fls;
+		printf SORT "%s \tdans %s\n",$entry,$fls;
+		print $_;
+		next;
+		}
+           }
+	if ($on == 1) {
+	   if (/^( +|\t)(real|integer|logical|charac|double|implicit)/i  ) {
+		$on = 0;		# on entre dans les declarations
+		next; }
+	   if (/^c/i) {
+		$_ = $';
+		}
+	   print $_;
+	   }
+	}
+    }

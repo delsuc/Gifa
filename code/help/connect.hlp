@@ -1,0 +1,8 @@
+CONNECT file_name
+
+The journaling of all the actions, performed by GIFA is directed to 
+the file_name. Journaling is resumed to the standard gifa.log files 
+with DISCONNECT.
+
+see also : DISCONNECT LOG OPEN CLOSE
+

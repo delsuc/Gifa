@@ -1,0 +1,5 @@
+EXIT yes/no
+Exit this program. You can choose to keep or to remove the log file
+QUIT and BYE are also equivalent. As well as ^Z (F10) on VMS 
+systems.
+ 

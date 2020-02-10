@@ -1,0 +1,9 @@
+SETPEAKID peakindex 'Id string'
+
+this commands sets the PEAK_ID field in the current peak table (1D, 2D or 3D)
+the peak_id field is a string with pkidmax (32) char max
+
+related context : $PK1D_ID[] $PK2D_ID[] $PK3D_ID[]
+
+see also : PEAK SETPEAK pklist
+

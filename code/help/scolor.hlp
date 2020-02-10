@@ -1,0 +1,10 @@
+scolor index
+
+Determines the color used by the SHOW command
+index is :	1:white  2:red  3:yellow  4:green
+    	    5:cian  6:blue  7:purple  8:black
+
+related contexts : $SCOLOR
+
+see also : COLOR SHOW SHOPEAK
+

@@ -1,0 +1,6 @@
+unset variable_name
+Remove the variable variable_name  from the variable table. Note 
+that no $ sign are needed.
+
+see also : MUNSET SET tunset
+

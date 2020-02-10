@@ -1,0 +1,6 @@
+FTBIS { axis }
+
+Performs complex-to-real Fourier Transform on data
+
+see also : IFTBIS FT 
+

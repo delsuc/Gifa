@@ -1,0 +1,1088 @@
+#!/usr/bin/perl
+#=================================================
+#               RESCUE
+# "RES.idus predi.C.tion by ne.U.ral n.E.twork"
+#=================================================
+#
+#     Author :        Jean_Luc PONS
+#		      Marc Andre Delsuc
+#                     Centre de Biochimie Structurale
+#                     - CNRS -
+#                     Faculte de Pharmacie
+#                     15 Av. C. Flafault
+#                     34060 MONTPELLIER FRANCE
+#
+#
+# This software cannot be used unless the users have been fully 
+# licensed to do so from the above laboratory.
+# This file cannot be copied, duplicated or used in any other program,
+# without written permission from the authors.
+#=================================================
+
+#=================================================
+# DEFINITION FUZZY LOGIC:
+$MAX_DEP = 16;  # plage de deplacement chimique
+$INIT_DEP = -2; # debut de plage
+$SIZE = 0.5;    # taille des cases de la grille d'echantillonnage
+
+#=================================================
+# NOMBRE DE VALEURS MAXIMUM PAR SYSTEME DE SPIN
+
+%nb_shift_max = ('A',3,'G',3,'P',7,'T',4,'V',5,'I',7,'L',7,'K',11,'R',10,'AROM',10,'DN',6,'S',4,'EQ',8,'M',7);
+
+#=================================================
+# MATRICES DE POID ET DE BIAIS DES RESULTANTS DE L'APPRENTISSAGE DES RESEAUX
+# DE NEURONES
+
+
+# DEFINITION:
+
+# Groupe general 1er aiguillage
+#Mat_All_W1 =  matrice de poid pour la couche interne
+#Mat_All_W2 =  matrice de poid pour la couche de sortie
+#Mat_All_B1 =  matrice de biais pour la couche interne
+#Mat_All_B2 =  matrice de biais pour la couche de sortie
+
+# GROUPE 1_IL
+#Mat_IL_W1 =  matrice de poid pour la couche interne
+#Mat_IL_W2 =  matrice de poid pour la couche de sortie
+#Mat_IL_B1 =  matrice de biais pour la couche interne
+#Mat_IL_B2 =  matrice de biais pour la couche de sortie
+
+# GROUPE 7_KR
+#Mat_KR_W1 =  matrice de poid pour la couche interne 
+#Mat_KR_W2 =  matrice de poid pour la couche de sortie
+#Mat_KR_B1 =  matrice de biais pour la couche interne
+#Mat_KR_B2 =  matrice de biais pour la couche de sortie
+
+# GROUPE 8_AMX
+#Mat_AMX_W1 =  matrice de poid pour la couche interne 
+#Mat_AMX_W2 =  matrice de poid pour la couche de sortie
+#Mat_AMX_B1 =  matrice de biais pour la couche interne
+#Mat_AMX_B2 =  matrice de biais pour la couche de sortie
+
+# GROUPE 9_AMPTX
+#Mat_AMPTX_W1 =  matrice de poid pour la couche interne
+#Mat_AMPTX_W2 =  matrice de poid pour la couche de sortie
+#Mat_AMPTX_B1 =  matrice de biais pour la couche interne
+#Mat_AMPTX_B2 =  matrice de biais pour la couche de sortie
+
+# MATRIX
+
+# GROUPE ALL
+
+@Mat_All_W1 = (
+[  0.90025857,  -0.53772297,   0.21368517,  -0.02803506,   0.78259793,   0.52419367 ],
+[ -0.08706467,  -0.96299271,   0.64281433,  -0.11059327,   0.23086470,   0.58387407 ],
+[  0.84362594,   0.47641449,  -0.64746771,  -0.18858757,   0.87093940,   0.83380888 ],
+[ -0.17945959,   0.78729906,  -0.88421739,  -0.29426374,   0.62633299,  -0.98027740 ],
+[ -0.74645062,  -0.80686229,  -0.44671761,   1.59400136,   0.34819322,  -0.21017302 ],
+[  0.28076754,  -1.77613873,   0.44740022,   1.40441289,   3.58765693,   0.16224069 ],
+[  5.41126954,  -4.20285583,  -2.73923472,   0.90372691,   2.90432851,   0.20334571 ],
+[  0.96141894,  -3.76254532,   2.03313960,   1.19431062,  -0.15433104,   0.34768894 ],
+[ -0.91133792,  -3.22244928,   0.87850717,   2.95562718,   2.24937771,   2.25985624 ],
+[ -4.19930809,   1.35437875,  -1.53565269,   2.52961797,   6.38332421,   0.37272239 ],
+[  1.38969072,   1.24631586,   2.56229159,   2.91357666,   4.90585606,  -0.40737544 ],
+[  3.62643656,  -0.63854119,   3.03950179,   2.84753382,   3.27136929,  -4.33008842 ],
+[  0.75940739,  -1.27918595,   1.36396284,   2.80002155,   1.75617641,  -5.45028412 ],
+[  0.91271603,  -0.75230632,  -0.78525218,   3.21304325,   2.10891164,  -4.03415625 ],
+[  3.81770559,  -0.80756899,  -0.73923067,   2.68045414,   1.91203340,  -3.79803734 ],
+[  0.92453335,   0.14037699,   1.62834671,   1.76624893,   1.63125722,  -4.00578898 ],
+[  1.92454505,  -1.08881580,   3.10726606,   2.63994599,   2.14650565,  -2.94036043 ],
+[  0.35455188,  -0.31544619,  -0.91144499,  -0.50723542,   0.42156007,   0.88043675 ],
+[ -0.16618899,  -0.64457651,  -1.43539716,   1.70186617,  -2.07702940,   1.09450475 ],
+[  1.92150111,  -0.82667053,   0.72464953,   0.69316948,   0.63486527,   3.29724672 ],
+[  0.23333827,   0.09173669,  -0.13773218,   0.99538273,   2.02309379,   2.54109746 ],
+[ -0.69645676,   0.05005428,  -0.40691436,   1.26409112,   0.54274220,   2.18531349 ],
+[ -0.93214950,  -0.27054065,  -1.40072413,   0.87968166,   0.75081335,   1.96322902 ],
+[  0.14118757,  -0.34698293,  -0.27464392,   0.64840708,   1.65418094,   2.46435425 ],
+[ -2.52917800,  -0.91941413,  -0.24265265,  -0.71642554,  -0.75822510,   1.06637913 ],
+[ -0.09559978,  -0.02749794,  -1.02124861,  -0.42543123,  -0.12914441,  -0.22747246 ],
+[  0.35443357,  -0.64574363,  -0.93279412,   0.19918324,   0.27965972,  -0.96985772 ],
+[ -0.96729013,  -0.61985082,   0.17383694,  -0.88483782,  -0.26486392,   0.26290233 ],
+[  0.43526884,   0.38533879,  -0.83184188,  -0.09128970,  -0.11634341,  -0.29349909 ],
+[ -0.69278727,   0.35128930,   0.39842666,   0.45501826,  -0.04323124,   0.10968397 ],
+[ -0.75790577,  -0.09849212,   0.43176590,   0.78568322,  -0.45379506,  -0.49046141 ],
+[  0.73120696,  -0.53529926,   0.60974349,   0.81679509,  -0.53621136,  -0.52137487 ]
+);
+
+
+
+@Mat_All_W2 = (
+[  3.50494671,  -1.36544128,  -2.52944757,  -4.01782378,   0.02271937,   1.28271087,   0.21205789,   3.44927681,  -3.98586196,  -0.42508682 ],
+[ -1.79667541,  -0.10817714,   3.31326172,  -3.08381992,  -5.57189951,  -3.91346815,  -3.20654471,   5.65425882,   1.25313910,   3.92589073 ],
+[ -2.88864406,   1.35334893,  -3.28796945,   1.53727151,  -0.02484934,   0.20878170,   5.03937195,  -0.99397303,  -2.35624283,   3.82904666 ], 
+[  7.18049571,  -6.21494500,  -6.94881555,   3.09380561,  -0.99739920,  -7.06112806,   1.72065184,  -3.03956494,   5.15696178,   6.96334992 ],
+[ -1.18742430,  -5.35819441,  -0.49347756,   0.20880886,  -3.97670943,   6.45261895,  -1.05950191,   6.53632731,  -4.65169005,  -8.56190316 ],
+[  2.35652007,   3.06908973,  -3.71240794,  -6.91264731,  -4.75544152,   3.30473908,   5.74744673,  -0.38645315,   4.31088523,  -1.44470748 ]
+);
+
+@Mat_All_B1 = (
+[  0.50082366,   4.14881426,  -4.60362349,  -8.82931345,  -8.00106598,   3.84779946 ]
+);
+
+@Mat_All_B2 = (
+[-12.75731195,  -8.32935408, -10.85019454,  -5.90893864,  -7.34100922, -10.30855973,  -7.22206541,  -9.76428453,  -6.22188327,  -4.95703373 ]
+);
+
+# GROUPE 1_IL
+
+@Mat_IL_W1 = (
+[  0.90025857,  -0.53772297,   0.21368517 ],
+[ -0.02803506,   0.78259793,   0.52419367 ],
+[ -0.08706467,  -0.96299271,   0.64281433 ],
+[ -0.11059327,   0.23086470,   0.58387407 ],
+[  4.24060295,   0.64352665,  -0.64723239 ],
+[ -0.84444118,   2.47250304,   0.84228790 ],
+[  0.43107159,   1.61050428,  -0.85339588 ],
+[ -0.29775943,   2.46176474,  -0.96824308 ],
+[ -0.14620856,  -5.39023564,  -0.57523058 ],
+[  0.41737322,   1.61268531,  -0.59693594 ],
+[ -0.96945215,   0.49357135,  -0.10980714 ],
+[  4.98235314,   0.39332328,  -0.16030272 ],
+[  0.00518214,   1.51040851,  -0.59437680 ],
+[ -0.57201762,  -1.37984383,  -0.96285416 ],
+[ -0.16666417,   1.30469954,   0.67900001 ],
+[  0.11882778,   0.59951453,  -0.14117139 ],
+[ -1.45653762,  -1.84882086,  -0.61312755 ],
+[  0.47211590,  -0.39240325,   0.08334849 ],
+[  0.73514448,   1.03433435,  -0.24012857 ],
+[  0.34015554,  -0.55958307,   0.19017612 ],
+[  0.00249192,   5.09649875,   0.64320732 ],
+[  0.28010540,   0.09094896,   0.32250896 ],
+[ -0.31381546,  -0.11197222,  -0.30753869 ],
+[ -1.15064117,   0.87807867,  -0.38318856 ],
+[  2.44676406,   1.19854059,  -0.25813866 ],
+[  0.40547983,   0.09314230,  -0.11023959 ],
+[  0.38913448,   0.24262026,   0.58964216 ],
+[  0.91368690,   0.04518070,   0.76028441 ],
+[ -0.65408772,   0.95949379,  -0.45710548 ],
+[ -0.49534131,   0.75148380,   0.47461198 ],
+[ -0.72696252,  -0.97648663,   0.78779593 ],
+[ -0.60172387,  -0.40255398,   0.32288515 ]
+);
+
+
+@Mat_IL_W2 = (
+[  9.25268284,  -8.77201413 ],
+[  5.67899725,  -5.41127874 ],
+[ -0.07213835,  -0.42869367 ]
+);
+
+@Mat_IL_B1 = (
+[  0.34674401,   0.26440052,  -0.85338468 ]
+);
+
+@Mat_IL_B2 = (
+[ -0.79400368,   0.43773366 ]
+);
+
+# GROUPE 7_KR
+
+
+@Mat_KR_W1 = (
+[  0.90025857,  -0.53772297 ],
+[  0.21368517,  -0.02803506 ],
+[  0.78259793,   0.52419367 ],
+[ -0.08706467,  -0.96299271 ],
+[  0.68566865,  -0.11692086 ],
+[ -0.02799971,   0.55303106 ],
+[ -1.57990630,   1.19958761 ],
+[ -0.51475854,  -0.01064007 ],
+[ -1.74213102,   1.56914930 ],
+[ -1.60228290,   0.43904377 ],
+[ -0.31383967,  -0.75653035 ],
+[  3.14454381,  -0.81372297 ],
+[  1.35965748,  -0.57356764 ],
+[  1.29964099,  -0.07626059 ],
+[ -1.31282572,  -1.32182574 ],
+[  0.34532194,   0.29180532 ],
+[  0.21094853,   0.81035978 ],
+[  0.34185559,  -0.19611073 ],
+[  1.69793030,  -0.39013709 ],
+[  1.05326438,   0.05748171 ],
+[  0.91699520,  -1.08836900 ],
+[ -1.31017690,   0.24968241 ],
+[  0.17402293,  -0.23031189 ],
+[  1.45524665,  -0.22398760 ],
+[ -0.07869392,  -0.64420823 ],
+[ -0.62244462,   0.36602632 ],
+[ -0.39447120,   0.08334771 ],
+[ -0.69825405,   0.39579696 ],
+[ -0.24325400,   0.72002321 ],
+[  0.70731026,   0.18712583 ],
+[ -0.00689510,   0.79953835 ],
+[  0.64325832,   0.28982077 ]
+);
+
+@Mat_KR_W2 = (
+[ -4.56609208,   4.64804830 ],
+[  1.53676092,  -1.41410052 ]
+);
+
+@Mat_KR_B1 = (
+[  2.66038390,  -0.03430645 ]
+);
+
+@Mat_KR_B2 = (
+[ -1.03933542,   1.25177260 ]
+);
+
+# GROUPE 8_AMX
+
+@Mat_AMX_W1 = (
+[  0.90025857,  -0.53772297,   0.21368517 ],
+[ -0.02803506,   0.78259793,   0.52419367 ],
+[ -0.08706467,  -0.96299271,   0.64281433 ],
+[ -0.11059327,   0.23086470,   0.58387407 ],
+[  0.84362594,   0.47641449,  -0.64746771 ],
+[ -0.18858757,   0.87093940,   0.83380888 ],
+[ -0.59305319,   3.52227948,  -0.80067901 ],
+[ -2.43548902,   5.82851619,  -0.47491660 ],
+[ -1.88981338,  -1.70658029,  -4.14434856 ],
+[  3.44282730,  -1.17354098,   4.77735207 ],
+[ -2.02762133,   7.95933339,  -4.46856404 ],
+[ 17.31974439,  -6.49523547,   3.60473125 ],
+[  2.91919738,   1.14486626,  -9.67280497 ],
+[ -4.24179775,  -1.53863638,  -1.51587022 ],
+[ -2.96555354,  -0.99510925,   2.14450015 ],
+[  3.70791636,  -2.34066170,   4.74331929 ],
+[  2.26174365,  -5.30561871,  -5.91737306 ],
+[  0.40613527,  -0.41138767,   0.07889812 ],
+[  0.21573902,  -0.28232860,  -1.98653294 ],
+[  6.06098305,   0.75104321,   0.74762463 ],
+[ -8.04628874,  -0.49616497,   6.45209489 ],
+[ -8.38351156,  11.83328526,  -4.39962109 ],
+[ -8.00666672,  -5.14512267,   8.99469877 ],
+[  0.04735677,   5.06536775,  -3.29166700 ],
+[ -3.30233043,   1.29735523,   5.31290202 ],
+[  0.05138161,   2.99599418,   1.54831473 ],
+[  0.38913448,   0.24262026,   0.58964216 ],
+[ -0.56548097,   0.11305484,   1.38904489 ],
+[ -0.71571971,   0.96232188,  -0.43090713 ],
+[ -0.49534131,   0.75148380,   0.47461198 ],
+[ -0.72696252,  -0.97648663,   0.78779593 ],
+[ -0.60172387,  -0.40255398,   0.32288515 ]
+);
+
+
+@Mat_AMX_W2 = (
+[  3.68087282,  -4.49085566 ],
+[-10.68778703,   9.98787428 ],
+[ -9.64764769,   9.20653467 ]
+);
+
+@Mat_AMX_B1 = (
+[  4.77542941,  -0.79160360,  -3.11709947 ]
+);
+
+@Mat_AMX_B2 = (
+[ -1.70787699,   2.85820565 ]
+);
+
+# GROUPE 9_AMPTX
+
+@Mat_AMPTX_W1 = (
+[  0.90025857,  -0.53772297,   0.21368517 ],
+[ -0.02803506,   0.78259793,   0.52419367 ],
+[ -0.08706467,  -0.96299271,   0.64281433 ],
+[ -0.11059327,   0.23086470,   0.58387407 ],
+[  0.84362594,   0.47641449,  -0.64746771 ],
+[ -0.26057234,   0.77557740,   0.83479081 ],
+[ -0.33146072,   1.71123348,  -0.88725892 ],
+[  1.99430638,   0.04249910,  -1.38354799 ],
+[ -0.92883918,  -1.37470645,   1.15480534 ],
+[  1.40507122,  -1.67630923,   0.89900411 ],
+[ -1.51320247,   0.74263549,   0.41739015 ],
+[  1.88692615,  -0.89390206,  -0.39562952 ],
+[  1.26873391,  -4.48579095,  -4.53637055 ],
+[ -0.08047845,   2.13975954,   0.04616907 ],
+[ -1.14519914,   2.90758846,   0.04184370 ],
+[ -3.12032950,   2.57333742,  -0.24470430 ],
+[ -0.28759087,  -0.58521783,  -0.62294959 ],
+[  0.36444645,  -0.39447120,   0.08334771 ],
+[ -0.80627495,   0.39727830,  -0.24288344 ],
+[ -1.04018605,   1.31401468,   0.18228010 ],
+[  1.38084268,  -4.37036406,  -6.13741269 ],
+[  1.58135854,   6.14575813,   3.75166410 ],
+[  4.15286013,  -0.63544081,  -0.68874649 ],
+[  2.90789962,   0.26906345,  -0.27785938 ],
+[  1.81353752,   0.56247287,  -0.22516703 ],
+[  4.26369286,  -0.70380305,   0.02103616 ],
+[  0.38913448,   0.24262026,   0.58964216 ],
+[  0.91368690,   0.04518070,   0.76028441 ],
+[ -0.65408772,   0.95949379,  -0.45710548 ],
+[ -0.49534131,   0.75148380,   0.47461198 ],
+[ -0.72696252,  -0.97648663,   0.78779593 ],
+[ -0.60172387,  -0.40255398,   0.32288515 ]
+);
+
+@Mat_AMPTX_W2 = (
+[  6.88902465,  -7.20582308 ],
+[ -5.92395878,   6.36600994 ],
+[  5.20318888,  -5.94589907 ]
+);
+
+@Mat_AMPTX_B1 = (
+[ -1.98667826,   0.67735114,  -4.46829737 ]
+);
+
+@Mat_AMPTX_B2 = (
+[  0.01546663,   0.28156143 ]
+);
+
+#=================================================
+# Vecteurs des distances entre tests (bonnes reponses) de la
+# BMRB et vecteur ideal
+
+
+@Dist_tst_ideal_GRPAll_1 = (0.0524, 0.01, 0.01, 0.01, 0.01, 0.057, 0.0592, 0.01, 0.0783, 0.028, );
+@Dist_tst_ideal_GRPAll_2 = (0.01, 0.0573, 0.0748, 0.01, 0.079, 0.01, 0.0123, 0.01, 0.1312, 0.01, );
+@Dist_tst_ideal_GRPAll_3 = (0.01, 0.0274, 0.0474, 0.01, 0.01, 0.01, 0.01, 0.029, 0.01, 0.0603, );
+@Dist_tst_ideal_GRPAll_4 = (0.0342, 0.01, 0.01, 0.0438, 0.01, 0.01, 0.0268, 0.01, 0.0457, 0.0424, );
+@Dist_tst_ideal_GRPAll_5 = (0.0203, 0.0373, 0.056, 0.0386, 0.0759, 0.0215, 0.01, 0.01, 0.01, 0.0354, );
+@Dist_tst_ideal_GRPAll_6 = (0.0643, 0.0161, 0.01, 0.01, 0.01, 0.0761, 0.023, 0.0272, 0.01, 0.01, );
+@Dist_tst_ideal_GRPAll_7 = (0.0572, 0.01, 0.01, 0.0615, 0.01, 0.01, 0.0523, 0.01, 0.0598, 0.01, );
+@Dist_tst_ideal_GRPAll_8 = (0.01, 0.01, 0.1129, 0.0173, 0.01, 0.1224, 0.0288, 0.0791, 0.0456, 0.1071, );
+@Dist_tst_ideal_GRPAll_9 = (0.042, 0.01, 0.01, 0.01, 0.01, 0.0152, 0.0113, 0.0676, 0.0803, 0.01, );
+@Dist_tst_ideal_GRPAll_10 = (0.01, 0.01, 0.0684, 0.01, 0.0585, 0.01, 0.01, 0.038, 0.01, 0.084, );
+
+@Dist_tst_ideal_GRPIL_1 = (0.0978, 0.1025, );
+@Dist_tst_ideal_GRPIL_2 = (0.0916, 0.0945, );
+
+@Dist_tst_ideal_GRPKR_1 = (0.0482, 0.0504, );
+@Dist_tst_ideal_GRPKR_2 = (0.05, 0.0482, );
+
+@Dist_tst_ideal_GRPAMX_1 = (0.1765, 0.1845, );
+@Dist_tst_ideal_GRPAMX_2 = (0.1151, 0.1009, );
+
+@Dist_tst_ideal_GRPAMPTX_1 = (0.0785, 0.094, );
+@Dist_tst_ideal_GRPAMPTX_2 = (0.0801, 0.0651, );
+
+$scoremax_All_1  =93.38;
+$scoremax_All_2  =94.53;
+$scoremax_All_3  =94.42;
+$scoremax_All_4  =96.48;
+$scoremax_All_5  =90.79;
+$scoremax_All_6  =93.94;
+$scoremax_All_7  =91.68;
+$scoremax_All_8  =89.09;
+$scoremax_All_9  =93.47;
+$scoremax_All_10 =88.13;
+$scoremax_IL_1   =74.44;
+$scoremax_IL_2   =70.84;
+$scoremax_KR_1   =91.06;
+$scoremax_KR_2   =80.52;
+$scoremax_AMX_1  =67.87;
+$scoremax_AMX_2  =59.17;
+$scoremax_AMPTX_1=71.64;
+$scoremax_AMPTX_2=67,81;
+
+#=================================================
+# RECUPERATION DES VALEURS D'ENTREE
+
+if ($ARGV[0])
+{
+    $input = $ARGV[0];
+}
+else
+{
+    print "Entrez le nom du fichier contenant le(s) vecteur(s) de deplacements chimiques\n";
+    print "[Syntaxe dans le fichier d'entree : xx.xx yy.yy ... zz.zz]\n";
+    print "ou directement le vecteur d'entree ::xx.xx:yy.yy:...:zz.zz:\n"; 
+    $input = <STDIN>; 
+    chop( $input );
+}
+
+$input_tmp = $input;
+$last_char = chop($input);
+
+if ($last_char eq ":") { 
+	$_ = $input;
+	s/\://;
+	#print $_,"\n";
+	@shifts = split(":",$_);
+        print "\nChemical Shift Input:  ",$_,"\n";
+        print "\nR.E.S.C.U.E. Software Result:\n";
+	&global_function(@shifts);
+}
+else { 
+	$input = $input_tmp;
+	#print "file_name : ",$input,"\n";
+	open(FILE_IN,$input);
+	while(<FILE_IN>)
+	{
+		@shifts = split(" ",$_);
+		# Affichage
+		print "\nChemical Shift Input:  ",$_,"\n";
+		print "\nR.E.S.C.U.E. Software Result:\n";
+		&global_function(@shifts);
+	}
+	close FILE_IN;
+}
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# SWITCH GENERAL 
+
+sub global_function
+{
+	local(@shift)=@_;
+	
+	$rep = 0;
+	$nb_shift = @shift;
+
+        @fuzzy_logic_vector = &make_input_vector(@shifts);
+
+
+	$flvect = join(" ",@fuzzy_logic_vector);
+	#print $flvect," - \n";
+
+
+		# GENERAL SWITCH
+	$learn_mat = 'All';
+	$grp = 0;
+        ($surete_grp,$grp,@tabres) = &check_net($learn_mat,$flvect);
+
+		# Stockage des scores de la premiere couche
+	$first_score = join(" ",@tabres);
+
+		
+		# Aiguillage en fonction des resultats:
+
+
+			# ************ GROUPE 1 IL
+	if($grp == 1){
+		$learn_mat = 'IL';
+		$grp2 = 0;
+		($surete,$grp2,@tabres) = &check_net($learn_mat,$flvect);
+
+		# On ramene la surete 2 sur la base de la surete 1 : calcul eff1/100*eff2 
+		$surete = ($surete_grp/100) * $surete;
+
+        	&affiche_score($first_score,'IL',@tabres);
+		if($grp2 == 1){ 
+			printf("Result      GROUP : IL          RESIDU : I \n"); 
+                        printf("Reliability  (%%)  : %d                  : %d\n",$surete_grp,$surete);
+			$rep = &check_max_shift_val("I",$nb_shift);
+		}
+		elsif($grp2 == 2){ 
+			printf("Result      GROUP : IL          RESIDU : L \n");
+                        printf("Reliability  (%%)  : %d                  : %d\n",$surete_grp,$surete);
+			$rep = &check_max_shift_val("L",$nb_shift);
+		}
+		else { print "ERROR\n"; }
+
+	}
+
+
+			# ************ GROUPE 2
+	elsif($grp == 2){
+		$rep = &check_max_shift_val("A",$nb_shift);
+		&affiche_score($first_score,'A',@tabres);
+		printf("Result                        RESIDU : A \n");
+		printf("Reliability  (%%)                     : %d\n",$surete_grp);
+	}
+
+
+
+			# ************ GROUPE 3
+	elsif($grp == 3){
+		$rep = &check_max_shift_val("G",$nb_shift);
+		&affiche_score($first_score,'G',@tabres);
+		printf("Result                        RESIDU : G \n");
+		printf("Reliability  (%%)                     : %d\n",$surete_grp);
+        }
+
+
+
+			# ************ GROUPE 4
+        elsif($grp == 4){
+		$rep = &check_max_shift_val("P",$nb_shift);
+		&affiche_score($first_score,'P',@tabres);
+		printf("Result                        RESIDU : P \n");
+		printf("Reliability  (%%)                     : %d\n",$surete_grp);
+        }
+
+
+
+			# ************ GROUPE 5
+        elsif($grp == 5){
+		$rep = &check_max_shift_val("T",$nb_shift);
+		&affiche_score($first_score,'T',@tabres);
+		printf("Result                        RESIDU : T \n");
+		printf("Reliability  (%%)                     : %d\n",$surete_grp);
+        }
+
+
+
+
+			# ************ GROUPE 6
+        elsif($grp == 6){
+		$rep = &check_max_shift_val("V",$nb_shift);
+		&affiche_score($first_score,'V',@tabres);
+		printf("Result                        RESIDU : V \n");
+		printf("Reliability  (%%)                     : %d\n",$surete_grp);
+        }
+
+
+
+
+			# ************ GROUPE 7
+        elsif($grp == 7){
+                $learn_mat = 'KR';
+                $grp2 = 0;
+                ($surete,$grp2,@tabres) = &check_net($learn_mat,$flvect);
+                # On ramene la surete 2 sur la base de la surete 1 : calcul eff1/100)*eff2
+		$surete = ($surete_grp/100) * $surete;
+		&affiche_score($first_score,'KR',@tabres);
+                if($grp2 == 1){ 
+			printf("Result      GROUP : KR          RESIDU : K \n");
+                        printf("Reliability  (%%)  : %d                  : %d\n",$surete_grp,$surete);
+			$rep = &check_max_shift_val("K",$nb_shift);	
+		}
+                elsif($grp2 == 2){ 
+			printf("Result      GROUP : KR          RESIDU : R \n");
+                        printf("Reliability  (%%)  : %d                  : %d\n",$surete_grp,$surete);
+			$rep = &check_max_shift_val("K",$nb_shift);
+		}
+                else { print "ERROR\n"; }
+
+        }
+
+
+
+
+			# ************ GROUPE 8
+        elsif($grp == 8){
+		$learn_mat = 'AMX';
+                $grp2 = 0;
+                ($surete,$grp2,@tabres) = &check_net($learn_mat,$flvect);
+                # On ramene la surete 2 sur la base de la surete 1 : calcul eff1/100)*eff2
+		$surete = ($surete_grp/100) * $surete;
+		&affiche_score($first_score,'AMX',@tabres);
+                if($grp2 == 1){ 
+			printf("Result      GROUP : AMX         RESIDU : F,Y,W,H,C \n");
+                        printf("Reliability  (%%)  : %d                  : %d\n",$surete_grp,$surete);
+			$rep = &check_max_shift_val("AROM",$nb_shift);
+		}
+                elsif($grp2 == 2){ 
+			printf("Result      GROUP : AMX         RESIDU : D,N \n");
+			printf("Reliability  (%%)  : %d                  : %d\n",$surete_grp,$surete);
+			$rep = &check_max_shift_val("DN",$nb_shift);
+		}
+                else { print "ERROR\n"; }
+
+        }
+
+
+
+
+			# ************ GROUPE 9
+        elsif($grp == 9){
+		printf("====>        GROUP : AMPTX \n");
+                $learn_mat = 'AMPTX';
+                $grp2 = 0;
+                ($surete,$grp2,@tabres) = &check_net($learn_mat,$flvect);
+                # On ramene la surete 2 sur la base de la surete 1 : calcul eff1/100)*eff2
+		$surete = ($surete_grp/100) * $surete;
+		&affiche_score($first_score,'AMPTX',@tabres);
+                if($grp2 == 1){ 
+			printf("Result      GROUP : AMPTX       RESIDU : E,Q \n");
+			printf("Reliability  (%%)  : %d                  : %d\n",$surete_grp,$surete);
+			$rep = &check_max_shift_val("EQ",$nb_shift);
+		}
+                elsif($grp2 == 2){ 
+			printf("Result      GROUP : AMPTX       RESIDU : M \n");
+			printf("Reliability  (%%)  : %d                  : %d\n",$surete_grp,$surete);
+			$rep = &check_max_shift_val("M",$nb_shift);
+		}
+                else { print "ERROR\n"; }
+        }
+
+                        # ************ GROUPE 10
+        elsif($grp == 10){
+                $rep = &check_max_shift_val("S",$nb_shift);
+                &affiche_score($first_score,'S',@tabres);
+                printf("Result                        RESIDU : S \n");
+                printf("Reliability  (%%)                     : %d\n",$surete_grp);
+        }
+
+
+			# ************ ERROR
+
+	else { print "ERROR\n"; }
+	if ($rep != 0 ) 
+		{ print " ERROR :To many data input for the selected residu !! \n"; }
+
+	printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n");
+
+}
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# CREATION DU VECTEUR D'ENTREE AVEC LOGIQUE FLOUE
+sub make_input_vector
+{
+
+	local(@shift)=@_;
+	local(@matrix,$i,$k,$l,$val1,$val2);
+	
+                        # Creation d'une matrice = au nombre total de
+                        # cases de la grille d'echantillonnage
+
+	for($i = 0; $i<($MAX_DEP/$SIZE); $i++) { $matrix[$i] = 0; }
+	foreach (@shift) {
+			#print $_,"\n";
+
+			# Fuzzy logic
+			($k,$l,$val1,$val2) = &fuzz($_,$SIZE,$MAX_DEP,$INIT_DEP);
+                	$matrix[$k] += $val1;
+                	$matrix[$l] += $val2;
+	}
+	return(@matrix);
+}
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# APPEL GENERAL AUX FONCTIONS DE TRANSFERT
+sub check_net
+{
+
+	local($learn_mat,$flvect)=@_;
+
+
+	# multiplication des synapses par les poids
+	$couche = 1;
+	@input = split(" ",$flvect);
+	@vect1_pond = &pondere($learn_mat,$couche,@input);
+
+	# premiere fonction de transfert:
+	@result1 = &tansig($learn_mat,$couche,@vect1_pond);
+
+
+	# multiplication des synapses par les poids
+	$couche = 2;
+        @vect2_pond = &pondere($learn_mat,$couche,@result1);
+
+	# seconde fonction de transfert:
+	@result2 = &fct5($learn_mat,$couche,@vect2_pond);
+
+	#Calcul meilleur score
+	$ok_indice = &calc_max(@result2);
+
+	#Calcul surete
+	$reliability = &calc_reliability($learn_mat,$ok_indice,@result2);
+
+	return($reliability,$ok_indice,@result2);
+
+}
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# CALCUL SURETE PAR REPONSE
+#
+# la surete est R = exp(- ((Vout - Videal)*(Vout - Videal)) / Dist***))
+#
+# Avec          Dist*** = sqrt(somme( ((VoutBMRB - Videal)*(VoutBMRB - Videal)) /n-1 ) )
+
+sub calc_reliability
+{
+        local($grp,$max,@matscore)=@_;
+
+        $size_mat = @matscore;
+
+        #$maxsc = pourcentage maximum pour le res
+        $varname = "scoremax_".$grp."_".$max;
+        $maxsc = ${$varname};
+
+        #recuperation matrice: @Dist_tst_ideal_GRPX_X
+        $matname = "Dist_tst_ideal_GRP".$grp."_".$max;
+        @matdist = @{$matname};
+
+        $max = $max - 1;
+
+        #calcul distance : dist(vect d'entree et vect ideal) / dist(test_BRMB et vect ideal)
+
+        for ( $i = 0;$i<$size_mat;$i++){ $ideal[$i] = 0;}
+        $ideal[$max] = 1;
+
+        $vdist = 0;
+        for ( $i = 0;$i<$size_mat;$i++){
+                $dv = (($matscore[$i] - $ideal[$i]) * ($matscore[$i] - $ideal[$i])) / $matdist[$i];
+                $vdist = $vdist + $dv;
+        }
+        $vdist = exp(- $vdist);
+
+        $vdistok = int($vdist*$maxsc);
+        return($vdistok);
+}
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# AFFFICHAGE FORMATES DES SCORES
+sub affiche_score
+{
+
+	local($gen_score,$mat,@score)=@_;
+
+	# = zero si negatif:
+	$size_score = @score;
+	for ( $i = 0;$i<$size_score;$i++){ 
+		if($score[$i] < 0) {$score[$i] = 0;}
+	}
+
+	# Recup score premiere couche
+	@Score_couche1 = split(" ",$gen_score);
+	$size_gen_score = @Score_couche1;
+	for ( $i = 0;$i<$size_gen_score;$i++){
+		if($Score_couche1[$i] < 0) {$Score_couche1[$i] = 0;}
+	}
+
+
+	if(($mat eq 'A') || ($mat eq 'G') || ($mat eq 'P') || ($mat eq 'T') || ($mat eq 'V') || ($mat eq 'S')){
+		printf("\n");
+		printf("GROUP	:   SCORE \n");
+		printf("-------------------\n");
+		printf("IL      : %8.4f \n",$score[0]);
+                printf("A       : %8.4f \n",$score[1]);
+                printf("G       : %8.4f \n",$score[2]);
+                printf("P       : %8.4f \n",$score[3]);
+                printf("T       : %8.4f \n",$score[4]);
+                printf("V       : %8.4f \n",$score[5]);
+                printf("KR      : %8.4f \n",$score[6]);
+                printf("AMX     : %8.4f \n",$score[7]);
+                printf("AMPTX   : %8.4f \n",$score[8]);
+		printf("S       : %8.4f \n\n",$score[9]);
+	}
+	elsif($mat eq 'IL'){
+		printf("\n");
+		printf(" --First Switch--          --Second Switch--\n");
+                printf("GROUP   :   SCORE     |    RESIDU   :   SCORE \n");
+		printf("----------------------------------------------\n");
+                printf("IL      : %8.4f    |    I        : %8.4f \n",$Score_couche1[0],$score[0]);
+                printf("A       : %8.4f    |    L        : %8.4f \n",$Score_couche1[1],$score[1]);
+                printf("G       : %8.4f    | \n",$Score_couche1[2]);
+                printf("P       : %8.4f    |\n",$Score_couche1[3]);
+                printf("T       : %8.4f    |\n",$Score_couche1[4]);
+                printf("V       : %8.4f    |\n",$Score_couche1[5]);
+                printf("KR      : %8.4f    |\n",$Score_couche1[6]);
+                printf("AMX     : %8.4f    |\n",$Score_couche1[7]);
+                printf("AMPTX   : %8.4f    |\n",$Score_couche1[8]);
+		printf("S       : %8.4f    |\n\n",$Score_couche1[9]);
+ 
+	}
+        elsif($mat eq 'KR'){
+                printf("\n");
+		printf(" --First Switch--         --Second Switch--\n");
+                printf("GROUP   :   SCORE     |   RESIDU   :   SCORE \n");
+		printf("----------------------------------------------\n");
+                printf("IL      : %8.4f    |     K      : %8.4f \n",$Score_couche1[0],$score[0]);
+                printf("A       : %8.4f    |     R      : %8.4f \n",$Score_couche1[1],$score[1]);
+                printf("G       : %8.4f    |\n",$Score_couche1[2]);
+                printf("P       : %8.4f    |\n",$Score_couche1[3]);
+                printf("T       : %8.4f    |\n",$Score_couche1[4]);
+                printf("V       : %8.4f    |\n",$Score_couche1[5]);
+                printf("KR      : %8.4f    |\n",$Score_couche1[6]);
+                printf("AMX     : %8.4f    |\n",$Score_couche1[7]);
+                printf("AMPTX   : %8.4f    |\n",$Score_couche1[8]);
+		printf("S       : %8.4f    |\n\n",$Score_couche1[9]);
+
+        }
+        elsif($mat eq 'AMX'){
+                printf("\n");
+		printf(" --First Switch--         --Second Switch--\n");
+                printf("GROUP   :   SCORE     |   RESIDU   :   SCORE \n");
+		printf("----------------------------------------------\n");
+                printf("IL      : %8.4f    |     FYWHC  : %8.4f \n",$Score_couche1[0],$score[0]);
+                printf("A       : %8.4f    |     DN     : %8.4f \n",$Score_couche1[1],$score[1]);
+                printf("G       : %8.4f    |\n",$Score_couche1[2]);
+                printf("P       : %8.4f    |\n",$Score_couche1[3]);
+                printf("T       : %8.4f    |\n",$Score_couche1[4]);
+                printf("V       : %8.4f    |\n",$Score_couche1[5]);
+                printf("KR      : %8.4f    |\n",$Score_couche1[6]);
+                printf("AMX     : %8.4f    |\n",$Score_couche1[7]);
+                printf("AMPTX   : %8.4f    |\n",$Score_couche1[8]);
+		printf("S       : %8.4f    |\n\n",$Score_couche1[9]);
+
+
+        }
+        elsif($mat eq 'AMPTX'){
+                printf("\n");
+		printf(" --First Switch--         --Second Switch--\n");
+                printf("GROUP   :   SCORE     |   RESIDU   :   SCORE \n");
+		printf("----------------------------------------------\n");
+                printf("IL      : %8.4f    |     EQ     : %8.4f \n",$Score_couche1[0],$score[0]);
+                printf("A       : %8.4f    |     M      : %8.4f \n",$Score_couche1[1],$score[1]);
+                printf("G       : %8.4f    |\n",$Score_couche1[2]);
+                printf("P       : %8.4f    |\n",$Score_couche1[3]);
+                printf("T       : %8.4f    |\n",$Score_couche1[4]);
+                printf("V       : %8.4f    |\n",$Score_couche1[5]);
+                printf("KR      : %8.4f    |\n",$Score_couche1[6]);
+                printf("AMX     : %8.4f    |\n",$Score_couche1[7]);
+                printf("AMPTX   : %8.4f    |\n",$Score_couche1[8]);
+		printf("S       : %8.4f    |\n\n",$Score_couche1[9]);
+
+
+        }
+	else{print " ERROR OUTPUT SCORE \n";}
+
+
+}
+
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#  DETECTE LES INCOHERENCES ENTRE NBRE DE VALEUR ET SYST DE SPIN
+sub check_max_shift_val
+{
+
+	local($res,$nbshift)=@_;
+	$ok = 0;
+	if ( $nb_shift_max{$res} < $nbshift ){ $ok = 1; }
+	#print $res," -- ",$nb_shift_max{$res}," -- ",$nbshift," -- ",$ok,"\n";
+	return($ok);
+
+}
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#  RECHERCHE DU RESIDU AYANT LE MEILLEUR SCORE
+sub calc_max
+{
+
+	local(@res)=@_;
+
+	$res_size = @res;
+	$max = -10;
+	$indice_max = -1;
+	for ($i = 0;$i<$res_size;$i++){
+		#print $res[$i],"\n";
+		if ($max < $res[$i]){ 
+			$indice_max = $i+1;
+			$max = $res[$i];
+		}
+	}
+	#print $indice_max," max \n";
+	return($indice_max);
+}
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# MULTIPLIE LE VECTEUR D'ENTREE AVEC LA MATRICE DE POID
+sub pondere
+{
+
+	local($learn_mat,$couche,@input)=@_;
+	local(@output);
+	local(@weight);
+
+	#recuperation matrice: weight[col][row] eg:Mat_All_W1[32][17]
+	$matname = "Mat_".$learn_mat."_W".$couche;
+	@weight = @{$matname};
+
+	# Calcul des tailles de matrices:
+
+	$input_size = @input;
+	#print $input_size," en entree \n";
+	$layer_size = @{$weight[0]};
+	#print $layer_size," ponderes\n";
+
+
+	for($i = 0; $i<$layer_size; $i++) { $output[$i] = 0; }
+	for($i = 0; $i<$layer_size; $i++) {
+		for($j = 0; $j<$input_size; $j++) { 
+			 $output[$i] =  $output[$i] + ($input[$j]*$weight[$j][$i]); 
+		}
+	}
+
+	#for($i = 0; $i<$layer_size; $i++) { print $output[$i],"\n"; }
+	return(@output);
+}
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# FONCTION DE TRANSFERT TANSIG 
+sub tansig
+{
+
+        local($learn_mat,$couche,@vect_pond)=@_;
+	local(@output);
+	local(@bias);
+
+	# Detrmination de la matrice de biais.
+
+        $matname = "Mat_".$learn_mat."_B".$couche;
+	@bias = @{$matname};
+
+	# Calcul des tailles
+
+	$layer_size = @vect_pond;
+	#print $layer_size," vect ponderes ne tansig\n";
+	$size_biais = @{$bias[0]};
+	#print $size_biais," - bias en tansig \n";
+	if ( $layer_size != $size_biais) {print "ERROR BIAS MATRIX (function tansig)\n";}
+
+
+	# Addition Input+Biais
+	
+        for($i = 0; $i<$layer_size; $i++) { $output[$i] = 0; }
+	for ($i = 0; $i<$layer_size; $i++) {
+		$vect_pond[$i] = $vect_pond[$i] + $bias[0][$i];
+	}
+
+
+	#for($i = 0; $i<$layer_size; $i++) { print $vect_pond[$i],"\n"; }
+
+	# Calcul tansig
+
+	#print "TANSIG : \n";
+	for ($i = 0; $i<$layer_size; $i++) {
+		$output[$i] = 2 / (1 + exp(-2*$vect_pond[$i])) -1;
+		#print $output[$i],"\n";
+		# pour eviter les infinis:
+		if($output[$i]>1000){$output[$i]=1000;}
+		if($output[$i]<-1000){$output[$i]=-1000;}
+	}
+	return(@output);
+
+}
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#  FONCTION DE TRANSFERT FCT5
+sub  fct5
+{
+
+        local($learn_mat,$couche,@vect_pond)=@_;
+	local(@output);
+	local(@bias);
+
+        # Detrmination de la matrice de biais.
+
+        $matname = "Mat_".$learn_mat."_B".$couche;
+        @bias = @{$matname};
+
+        # Calcul des tailles
+
+        $layer_size = @vect_pond;
+        $size_biais = @{$bias[0]};
+        if ( $layer_size != $size_biais) {print "ERROR BIAS MATRIX (function logsig)\n";}
+
+
+        # Addition Input+Biais
+
+        for($i = 0; $i<$layer_size; $i++) { $output[$i] = 0; }
+        for ($i = 0; $i<$layer_size; $i++) {
+                $vect_pond[$i] = $vect_pond[$i] + $bias[0][$i];
+        }
+
+
+        # Calcul fct5
+
+        for ($i = 0; $i<$layer_size; $i++) {
+
+		$tt = 0;
+		if($vect_pond[$i] < 0){$tt = 1;}
+		$max = -2; if($vect_pond[$i]>-2){$max = $vect_pond[$i];}
+                $output[$i] =  $tt * (0.25*$max + 0.5) + (1-$tt) * (1 / (1 + exp(-$vect_pond[$i])));
+        }
+        return(@output);
+}
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# FONCTION DE TRANSFERT PURELIN 
+sub purelin 
+{
+
+	local($learn_mat,$couche,@vect_pond)=@_;
+        local(@output);
+        local(@bias);
+
+        # Detrmination de la matrice de biais.
+
+        $matname = "Mat_".$learn_mat."_B".$couche;
+        @bias = @{$matname};
+
+        # Calcul des tailles
+        $layer_size = @vect_pond;
+        #print $layer_size,"vect pond en purelin\n";
+        $size_biais = @{$bias[0]};
+        #print $size_biais," bias en purelin \n";
+        if ( $layer_size != $size_biais) {print "ERROR BIAS MATRIX (function purelin)\n";}
+
+
+        # Addition y = Input+Biais
+
+        for($i = 0; $i<$layer_size; $i++) { $output[$i] = 0; }
+        for ($i = 0; $i<$layer_size; $i++) {
+                $output[$i] = $vect_pond[$i] + $bias[0][$i];
+        }
+
+	#print "PURELIN : \n";
+        #for($i = 0; $i<$layer_size; $i++) { print $output[$i],"\n"; }
+        return(@output);
+}
+
+
+
+
+#==================================================================
+# Fonction utilisee pour donner l'indice des cases du tableau
+# utilise par le reseau neuronal
+# ainsi que les valeurs a y mettre
+#==================================================================
+#******************************************************************
+#Fuzzy logic allant de ($INIT_DEP + $SIZE/2) a ($MAX_DEP - $SIZE/2)
+
+sub fuzz
+{
+
+        local($val,$size,$max,$init_dep) = @_;
+        local($val1,$val2);
+        if($init_dep < 0){ $val = $val+abs($init_dep);} # shifte pour tout passer en positif
+
+    if ( ($val >= ($size/2) && ($val <= ($max-$size/2) ) ) )
+    {
+                                                # numero des cases:  ...|_k_|_l_|...
+        $k = &vrai_int($val/$size)+1;           # +1 : car la premiere case sert a l'identification
+        $vir = $size*(&vrai_int($val/$size));   # val exacte en debut de case
+        $dec =  abs( $val - $vir );             # deplacement dans la case
+
+        if ($dec < ($size/2)){
+                $k = $k-1;
+                $val1 = 1- &val_case($dec,$size);
+        }
+        else{
+                 $val1 = &val_case($dec,$size);
+        }
+        $l = $k+1;
+        $val2 = 1 - $val1;
+    }
+
+    else {
+        $k=0;$l=1;
+        $val1 = 0 ;
+        $val2 = 0 ;
+    }
+    return($k,$l,$val1,$val2);
+
+}
+
+
+sub val_case
+{
+    local($x,$siz) = @_ ;
+
+    if($x < ($siz/2)){ $y = ((1/$size)*$x) + 0.5; }
+    if($x >= ($siz/2)){ $y =(1.5 - (1/$size)*$x); }
+    if(($x < 0) || ($x > $siz)){print "erreur dans fuzz: x = ",$x,"\n"; $y = 0;}
+    return $y;
+}
+
+
+sub vrai_int
+{
+    local($x) = @_ ;
+
+    return (int $x) if ( ($x>=0) || ( int($x) == $x ) );
+    return (int($x) - 1);
+}
+
+

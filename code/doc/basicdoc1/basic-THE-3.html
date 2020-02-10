@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=iso-8859-1">
+	<TITLE>THE GENERAL FITTER</TITLE>
+	<META NAME="GENERATOR" CONTENT="StarOffice/5.2 (Linux)">
+	<META NAME="CREATED" CONTENT="20010412;19475300">
+	<META NAME="CHANGEDBY" CONTENT="Thierry Gostan">
+	<META NAME="CHANGED" CONTENT="20010412;19484500">
+	<!-- This document was converted from RTF source: 
+By r2net 5.2.4 r2netcmd Unix 
+Translation:html.trn  $Revision: 1.55 $ $Revision: 1.34 $
+See http://www.logictran.com
+Filename:basic.rtf
+OutFileName:basic.html
+Application Directory:/home/gostan/r2net
+Subject:
+Author:
+Operator:
+Document Comments:
+Version Comments:
+Comments:StarWriter
+Keywords:
+Translation Date:04/12/2001
+Translation Time:15:05:54
+Translation Platform:Unix
+Number of Output files:50
+This File:basic-THE-3.html
+SplitDepth=2
+SkipNavPanel=0
+SkipLeadingToc=0
+SkipTrailingToc=1
+GenContents=1
+GenFrames=1
+GenIndex=0
+ -->
+	<STYLE>
+	<!--
+		A:visited { color: #808080 }
+		A:link { color: #cc0000 }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LINK="#cc0000" VLINK="#808080" BGCOLOR="#ffffff">
+<P ALIGN=CENTER STYLE="margin-bottom: 0cm"><A HREF="basic-PEAK_TAB.html"><IMG SRC="images/prev.gif" NAME="Image1" ALT="Previous " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-SPECIAL-2.html"><IMG SRC="images/next.gif" NAME="Image2" ALT="Next " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Title.html"><IMG SRC="images/first.gif" NAME="Image3" ALT="Title Page " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Contents.html"><IMG SRC="images/contents.gif" NAME="Image4" ALT="Contents " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+</P>
+<HR>
+<UL>
+	<LI><P STYLE="margin-bottom: 0cm"><A HREF="basic-THE-3.html#Heading1551">MINIMIZE</A>
+		</P>
+	<LI><P><A HREF="basic-THE-3.html#Heading1562">FITGENE, showexp</A> 
+	</P>
+</UL>
+<HR>
+<H1><A NAME="Heading1547"></A><FONT SIZE=4><I><U>THE GENERAL FITTER</U></I></FONT></H1>
+<P>In addition to the line-fitting module presented in the previous
+chapter, Gifa contains a generic, multipurpose, general minimiser.
+This module is able to minimise any function on a set of parameters.
+The minimiser works with the Powell method, which does not require
+derivative expression. It relies on a two steps minimisation which
+are controlled with ITER (Number of iteration in the outer loop) and
+MINITER (Number of iteration in the inner loop, execute for each
+axis, and for each outer iteration). Values of 10 for both control
+seems to be Ok. note that if only 1 parameter is to be optimised,
+only one outer loop is needed, then ITER is not used, MINITER is then
+the only relevant control. This explains also why the minimisation is
+much faster when only one parameter is to be minimised.<BR>Functions
+to be minimised are written in the Gifa language and should simply be
+a regular Gifa expression.<BR>The general minimiser comes in two
+flavours: MINIMIZE and FITGENE. MINIMIZE is a general minimiser,
+FITGENE is a general Fitter,.</P>
+<H3><A NAME="Heading1551"></A><B>MINIMIZE</B></H3>
+<P>This command takes a given expression and try to minimise it's
+value by varying some free parameters in it. The expression is given
+in Gifa syntax, and the free parameters are the global user variables
+$P1, $P2, etc...<BR>You give to the command i) the expression to be
+minimised (as a string) ii) the number of free parameters to be
+adapted (called $P1, $P2, ...)<BR>The command returns the minimum
+found (also available in $chi2)<BR>e.g.<BR><TT><FONT FACE="Courier">MINIMIZE
+'abs(sin($p1)/$p1 - 0.5)' 1</FONT></TT><BR>returns<BR><TT><FONT FACE="Courier">MINIMIZE
+Final Value : .27782464E-04</FONT></TT><BR>and p1 is set equal to
+1.89543<BR>This tells you that the function sin(x)/x is equal to 0.5
+when x = 1.89543<BR>Note that $P1, $P2,.. are global user variables.
+If they exist when the command is called, their values will be used
+as initial trials, if they does not exist, they are created and set
+to 1.0</P>
+<H3><A NAME="Heading1562"></A><B>FITGENE, showexp</B></H3>
+<P STYLE="margin-bottom: 0cm">This command permits to fit a given function to 
+  a set of experimental points Xi, Yi. Yi is taken to be the regular 1D buffer, 
+  Xi is obtained from the TAB buffer (see <A HREF="basic-SEVERAL.html">Buffers</A>). 
+  This permits to fit an arbitrary function through any set of X,Y points.<BR>
+  You give to the command i) the expression of the function
+to be fitted (as a string) the running parameter is called $X ii) the
+number of free parameters to be adapted (called $P1, $P2,
+...)<BR>FITGENE then minimises a chi2 and returns its value after
+fitting (also available in $chi2)<BR>e.g.<BR><TT><FONT FACE="Courier">FITGENE
+'$p1 + $p2 * $x' 2</FONT></TT><BR>realises a linear fit of the data
+points.<BR>The standard macro showexp permits to draw the given
+expression to check the quality of the fit :<BR><TT><FONT FACE="Courier">showexp
+'$p1 + $p2 * $x'</FONT></TT><BR>will actually draw the fitted
+line.<BR>Again, the $P1, $P2.. $Pi are global user variables that can
+be freely used after the fit. FITGENE will also set the variables
+$DP1, $DP2..$DPi which contains the size of the error bar for each
+fitted parameter. Note that error bars are equal to two times the
+standard deviation estimated from the covariance matrix, thus
+corresponding to 95% confidence limit. If you prefer the 68.3%
+confidence limit, divide all error bars by 2.<BR><BR>Note also that
+the expression to be fitted is a generic string, and can for
+instance, very well be held in a (global) variable :<BR><TT><FONT FACE="Courier">set
+exp := '$p1*exp(-$p2*$x)'</FONT></TT><BR><TT><FONT FACE="Courier">fitgene
+$exp 2</FONT></TT><BR><TT><FONT FACE="Courier">showexp $exp</FONT></TT><BR>will
+fit T2-like data-sets</P>
+<HR>
+<P ALIGN=CENTER STYLE="margin-bottom: 0cm"><A HREF="basic-PEAK_TAB.html"><IMG SRC="images/prev.gif" NAME="Image5" ALT="Previous " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-SPECIAL-2.html"><IMG SRC="images/next.gif" NAME="Image6" ALT="Next " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Title.html"><IMG SRC="images/first.gif" NAME="Image7" ALT="Title Page " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="basic-Contents.html"><IMG SRC="images/contents.gif" NAME="Image8" ALT="Contents " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+</P>
+</BODY>
+</HTML>

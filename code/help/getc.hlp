@@ -1,0 +1,33 @@
+Get data from the currently joined data-set.
+
+syntaxe depends on the dimentionnality of the currently joined data-
+set (from) and on the current context dim (to) :
+1D to 1D : GETC left right
+2D to 1D : GETC axis index left right
+3D to 1D : GETC axis index1 index2 left right
+2D to 2D : GETC left1 left2 right1 right2
+3D to 2D : GETC axis index left1 left2 right1 right2
+3D to 3D : GETC left1 left2 left3 right1 right2 right3
+
+Loads from the currently connected file, the area of data as 
+described.
+
+for instance, if 3D_file is a 3d, the following processing
+will take the absolute value of all the planes of the 3D
+(and hence all the points of the 3D)
+
+
+join 3D_file
+dim 2
+for i = 1 to $c_sizef1
+  getc f1 $i %%        ; getc and putc prompts for the complete data by default
+  ABS
+  putc f1 $i %%
+endfor
+disjoin
+
+
+related contexts : $C_JOINED
+
+see also : PUTC JOIN dataset listfilec
+

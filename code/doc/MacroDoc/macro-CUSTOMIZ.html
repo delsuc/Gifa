@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=iso-8859-1">
+	<TITLE>Macro programming - CUSTOMIZING THE INTERFACE</TITLE>
+	<META NAME="GENERATOR" CONTENT="StarOffice/5.2 (Win32)">
+	<META NAME="CREATED" CONTENT="20011127;17510837">
+	<META NAME="CHANGEDBY" CONTENT="Thierry Gostan">
+	<META NAME="CHANGED" CONTENT="20011127;17565430">
+	<!-- This document was created from RTF source by rtftohtml version 3.9.3 -->
+</HEAD>
+<BODY>
+<P ALIGN=CENTER STYLE="margin-bottom: 0cm"><A HREF="./macro-GRAPHIC-2.html"><IMG SRC="./images/leftg.gif" NAME="Image1" ALT="Prev " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="./macro-MISCELLA.html"><IMG SRC="./images/rightg.gif" NAME="Image2" ALT="Next " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="./macro-Contents.html"><IMG SRC="./images/contg.gif" NAME="Image3" ALT="Contents " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+</P>
+<HR SIZE=4>
+<H1>CUSTOMIZING THE INTERFACE</H1>
+<UL>
+	<LI><P STYLE="margin-bottom: 0cm"><A HREF="#1"><FONT COLOR="#cc0000">Modifying
+	macros</FONT></A></P>
+	<LI><P><A HREF="#2"><FONT COLOR="#cc0000">startup.g</FONT></A></P>
+</UL>
+<HR SIZE=4>
+<P STYLE="margin-bottom: 0cm">One of the benefit of having a graphic
+user interface built from a set of macro, is that you can customise
+the interface to more closely fit your needs. This can be doe in two
+manners: modifying the standard behaviour by changing the standard
+macro; adding new menu entries.</P>
+<H2><A NAME="1"></A>Modifying macros</H2>
+<P STYLE="margin-bottom: 0cm">Most of the high level actions
+performed by the program are actually macros. These macro are located
+in the <FONT FACE="Courier">/usr/local/gifa/macro </FONT>directory,
+and the subdirectories therein.</P>
+<P STYLE="margin-bottom: 0cm">You can adapt these macro to more
+closely fit your needs. But rather than actually changing one (and
+you would have to change it at each new release of the software), it
+is a better idea to copy it in another directory, with the same name
+and to modify it. Then, if you add the directory in which you put
+this new macro into the GifaPath, it will be used instead of the
+standard one.</P>
+<P STYLE="margin-bottom: 0cm">For instance, when using the standard
+Fourier Transforms, Varian users observe that there spectra appears
+reversed, up-side down and left-right. This is simply corected with
+the <FONT FACE="Courier">REVERSE</FONT> command. However, Varian
+users would of course prefer to have this command automatically
+inserted in all the standard processing. This has been done in a copy
+of all the FT macro, as they can be found in the
+<FONT FACE="Courier">/usr/local/gifa/macro/varian</FONT> directory.
+Also the easy2d macro as been modified to directly accept VNMR data
+files.</P>
+<P STYLE="margin-bottom: 0cm">Of course, many other examples are
+possible.</P>
+<P STYLE="margin-bottom: 0cm">When calling a macro, it is searched in
+in the GifaPath, as set with the <FONT FACE="Courier">SETPATH</FONT>
+command, and examined with the <FONT FACE="Courier">$GIFAPATH </FONT>context
+(see above). Default value for GifaPath is (working directory &quot;.&quot;
+is always searched first):</P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Courier">$HOME/macro</FONT>
+ <FONT FACE="Courier">/usr/local/gifa/macro</FONT></P>
+<P STYLE="margin-bottom: 0cm">The GifaPath is handled left to right,
+so a good place were to put your modified macro is in your own
+<FONT FACE="Courier">$HOME/macro</FONT> directory.</P>
+<P STYLE="margin-bottom: 0cm">With the Varian example above, you
+probably don't want to copy the Varian macro into your own macro
+directory, but to transparently use the Varian macro instead of the
+regular one, it is enough to have the <FONT FACE="Courier">/usr/local/gifa/macro/varian</FONT>
+before <FONT FACE="Courier">/usr/local/gifa/macro </FONT>(where the
+standard macros are) in the GifaPath.</P>
+<P STYLE="margin-bottom: 0cm">so saying:</P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Courier">SETPATH
+('/usr/local/gifa/macro/varian</FONT> '; $GIFAPATH)</P>
+<P STYLE="margin-bottom: 0cm">will set the GifaPath to :</P>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Courier">/usr/local/gifa/macro/varian</FONT>
+ <FONT FACE="Courier">$HOME/macro</FONT>  <FONT FACE="Courier">/usr/local/gifa/macro</FONT></P>
+<P STYLE="margin-bottom: 0cm">and will give you the Varian behaviour
+(the <FONT FACE="Courier">Varian</FONT> macro does exactly this).</P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<H2><A NAME="2"></A>startup.g</H2>
+<P STYLE="margin-bottom: 0cm">A good place where to put this kind of
+change in the <FONT FACE="Courier">startup.g</FONT> macro which is
+called by <I>Gifa</I> when starting. When thus macro is called, the
+GifaPath is already initialised, so the <FONT FACE="Courier">startup.g</FONT>
+macro is searched first in the working directory, then in your
+personnal macro directory, and finally in the general directory.</P>
+<P STYLE="margin-bottom: 0cm">If you create a startup.g macro in your
+own macro directory, it is a good idea to also call the standard
+startup.g file. Your own startup.g macro could be like:</P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>plotter HPGL</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>cx 50 cy 50</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>@/usr/local/gifa/macro/startup.g	;
+force the standard by giving the full name</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>env_plot.g					; add the plot menu
+by default</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm; line-height: 100%; page-break-inside: avoid; page-break-after: avoid">
+<FONT FACE="Courier"><FONT SIZE=2>menubox 'my menu' .... ; put here
+your own menu</FONT></FONT></P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm">If you want that the Varian (sticking
+with this example) is the default working mode for all your <I>Gifa</I>
+users, modify the standard startup.g file by putting the <FONT FACE="Courier">SETPATH</FONT>
+command shown above. 
+</P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<HR SIZE=4>
+<P ALIGN=CENTER><A HREF="./macro-GRAPHIC-2.html"><IMG SRC="./images/leftg.gif" NAME="Image4" ALT="Prev " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="./macro-MISCELLA.html"><IMG SRC="./images/rightg.gif" NAME="Image5" ALT="Next " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="./macro-Contents.html"><IMG SRC="./images/contg.gif" NAME="Image6" ALT="Contents " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+</P>
+</BODY>
+</HTML>

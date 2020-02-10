@@ -1,0 +1,7 @@
+When set to 1, the program tries to minimize the value of the sum of 
+all the points of spectrum during the Maximum Entropy run.
+   Should be set whenever a window 1 n is used, or when Antiphase J-
+deconvolution is used.
+ 
+see also : MAXENT ALGO 
+

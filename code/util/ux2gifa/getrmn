@@ -1,0 +1,40 @@
+#!/bin/csh
+#to get directly GIFA file form the spectro
+#set verbose
+if ($#argv == 4) then
+   set spect=$1
+   set user=$2
+   set exp=$3
+   set conv=$4
+else if ($#argv == 0) then
+  echo -n 'spectrometer : '
+  set spect=$<
+  echo -n 'user-name :    '
+  set user=$<
+  echo -n 'exp-name :     '
+  set exp=$<
+  echo -n 'Do you want to convert to GIFA ?                (y/n) :'
+  set conv=$<
+else
+  echo 'usage : ' $0 ' spectro user experiment conv-switch'
+  exit
+endif
+if ($conv == 'y') then
+  echo -n 'Do you want to delete data file after transfer? (y/n) :'
+  set del=$<
+else
+  set del='n'
+endif
+echo transfering /u/data/$user/nmr/$exp
+rcp -r guest@$spect\:/u/data/$user/nmr/$exp /d3/rmn
+if ($conv == 'y') then
+   foreach i ( `cd /d3/rmn/$exp; ls` )
+     echo converting /d3/rmn/$exp/$i
+     /usr/local/commandes/ux2gifa /d3/rmn/$exp/$i /d3/rmn/$exp/$i/data
+     if ($del == 'y') then
+       rm -rf /d3/rmn/$exp/$i/ser /d3/rmn/$exp/$i/fid /d3/rmn/$exp/$i/pdata
+     endif
+   end
+endif
+echo done
+exit

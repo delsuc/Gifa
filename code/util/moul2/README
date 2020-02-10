@@ -1,0 +1,22 @@
+	This program "tape" will read Bruker tape on UNIX machines and
+will create a H format file for GIFA.
+
+	The tape should be dumped to a file with the following syntax :
+
+dd if=/dev/name_of_tape_device of=name_of_temp_file ibs=1536  conv=noerror 
+
+You may have to fiddle a little around to find what does work on your machine.
+
+The file is then read with this program.
+
+This program was first written for VAX machine by Bruno Kieffer and
+Patrice Koehl from Strasbourg, was then adapted to Alliant/UNIX, using the
+random_read fortran extension to acces the file by R.Legoas from
+Ecole Polytechnique (Palaiseau) then proted to general UNIX with the cio_lib
+file by M.A.Delsuc. This program is being used successfully on SGI machines.
+No attempt was made to make it fully portable, you may have to play around
+to adapt it to your machine!
+
+
+
+

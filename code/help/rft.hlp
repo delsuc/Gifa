@@ -1,0 +1,7 @@
+RFT {Fx}
+Perform  real-to-complex Fourier Transform on data
+
+related contexts : $ITYPE_1D $ITYPE_2D $ITYPE_3D
+
+see also : FT 
+ 

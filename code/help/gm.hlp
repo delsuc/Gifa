@@ -1,0 +1,8 @@
+GM  gb1  { gb2 { gb3 } }
+
+Multiply data by an Gaussian, and set GB.
+
+related contexts : $GB1 $GB2 $GB3
+
+see also : GB gaussbroad EM LB SIN SQSIN TM JMULT FILTER
+

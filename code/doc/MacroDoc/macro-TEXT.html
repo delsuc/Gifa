@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=iso-8859-1">
+	<TITLE>Macro programming - TEXT FILE INPUT / OUTPUT</TITLE>
+	<META NAME="GENERATOR" CONTENT="StarOffice/5.2 (Win32)">
+	<META NAME="CREATED" CONTENT="20011127;17285596">
+	<META NAME="CHANGEDBY" CONTENT="Thierry Gostan">
+	<META NAME="CHANGED" CONTENT="20011127;17295736">
+	<!-- This document was created from RTF source by rtftohtml version 3.9.3 -->
+</HEAD>
+<BODY>
+<P ALIGN=CENTER STYLE="margin-bottom: 0cm"><A HREF="./macro-PARAMETE.html"><IMG SRC="./images/leftg.gif" NAME="Image1" ALT="Prev " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="./macro-GRAPHIC.html"><IMG SRC="./images/rightg.gif" NAME="Image2" ALT="Next " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="./macro-Contents.html"><IMG SRC="./images/contg.gif" NAME="Image3" ALT="Contents " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+</P>
+<HR SIZE=4>
+<H1>TEXT FILE INPUT / OUTPUT</H1>
+<UL>
+	<LI><P><A HREF="#Heading42"><FONT COLOR="#cc0000">OPEN CLOSE FPRINT
+	&lt;file_name eof(file_name)</FONT></A><FONT COLOR="#cc0000"> </FONT>
+	</P>
+</UL>
+<HR SIZE=4>
+<P><I>Gifa</I> has the capability of reading and writing on ASCII
+text files.</P>
+<H3><A NAME="Heading42"></A>OPEN CLOSE FPRINT &lt;file_name
+eof(file_name)</H3>
+<P>It is possible to read and write directly into text files. The
+command <TT>OPEN</TT> file_name, will open the file file_name for
+input or output. The command <TT>CLOSE</TT> will close the file. Ten
+different such files may be opened at once. An <TT>OPENed</TT> file
+may be written with the command <TT>FPRINT</TT> file_name output. A
+<TT>OPENed</TT> file may be read with the <TT>&lt;file </TT>syntax.
+When <TT>OPEN</TT> is issued on an already <TT>OPENed</TT> file, the
+file is rewound to the first line. The <TT>eof(file_name) </TT>function
+(see below) will have a value of 1 if the end of file was reached
+during the last <TT>&lt;file_name</TT> operation and 0 otherwise. 
+</P>
+<HR SIZE=4>
+<P ALIGN=CENTER><A HREF="./macro-PARAMETE.html"><IMG SRC="./images/leftg.gif" NAME="Image4" ALT="Prev " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="./macro-GRAPHIC.html"><IMG SRC="./images/rightg.gif" NAME="Image5" ALT="Next " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="./macro-Contents.html"><IMG SRC="./images/contg.gif" NAME="Image6" ALT="Contents " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+</P>
+</BODY>
+</HTML>

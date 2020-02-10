@@ -1,0 +1,6 @@
+Multiplies point by point, the content of the current working buffer 
+with the content of the DATA buffer. Permits to realize convolution 
+product. Works in 1D, 2D, in real, complex and hypercomplex modes.
+
+see also : ADDDATA MINDATA MAXDATA EXCHDATA MULT PUT
+

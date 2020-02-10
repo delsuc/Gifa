@@ -1,0 +1,60 @@
+<HTML><HEAD>
+<!-- This document was created from RTF source by rtftohtml version 3.9.3 -->
+<TITLE>Assignment on-line Documentation - CAVEAT</TITLE></HEAD>
+<BODY>
+<A HREF="assignment-MACRO.html"><IMG SRC="leftg.gif" ALT="Prev " border=0></A>
+ <IMG SRC="norightg.gif" ALT=".... " border=0>
+ <A HREF="assignment-Title.html"> </A>
+ <A HREF="assignment-Contents.html"><IMG SRC="contg.gif" ALT="Contents " border=0></A>
+<hr size=4>
+<H1>
+CAVEAT</H1>
+<p>	Note that this is a preliminary work, quite a few people have been using
+this tool here in our lab, however, I'm sure there is still a lot of bugs.<ul>
+<li>	There ARE known bugs, for instance deleting spin-systems might, in certain
+cases, let the data-base within wrong incoherent informations (however version
+1.2 is much more robust than previous ones). Use the <tt>check database</tt>
+command. In this case, the best way of doing is probably to modify directly the
+wrong entries. Note that the command Low level editor permits a direct editing
+to each peak, spin and system, and can be helpful in debugging the data-bases.
+You can also modify entries from the Gifa command-line level (print $att[xx]
+set att[xxx] = "---" ).  In desesperate case, you might want to use perl to
+access directly the db files.
+<li>	There are things that will change. For instance the LARGEST entry, being
+numerical, interferes with the FIND mechanism. This will change, probably, the
+LARGEST entry will be prefixed with some non numerical char.
+<li>	There are missing tools. To cite the most likely to come first : 'edit
+build list' ...
+<li>	An integration tool based on the line-fitter commands is missing.
+<li>	Because of a bug in some dbm namagers (Not in Linux, but most other UNIX
+implementation), it is not possible to use the foreach syntaxe for modifying
+entries in the data-bases. So, you cannot use the following:</ul></p>
+
+<pre>
+foreach i in att
+  if ($i s! "LARGEST") then
+     set att[i] = "what you want"
+  endif 
+endfor
+</pre>
+<p>Rather
+use the following:</p>
+
+<pre>
+for i = 1 to $att["LARGEST"]
+  if (exist('att['//$i//']')) then
+     set att[i] = "what you want"
+  endif 
+endfor
+</pre>
+<p><br>
+If you wish to help, please contact 
+<a TARGET="_top" href="mailto:Marc-Andre.Delsuc@cbs.univ-montp1.fr">me</a>
+!
+</p>
+<P><hr size=4>
+<A HREF="assignment-MACRO.html"><IMG SRC="leftg.gif" ALT="Prev " border=0></A>
+ <IMG SRC="norightg.gif" ALT=".... " border=0>
+ <A HREF="assignment-Title.html"> </A>
+ <A HREF="assignment-Contents.html"><IMG SRC="contg.gif" ALT="Contents " border=0></A>
+</body></html>

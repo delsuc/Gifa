@@ -1,0 +1,10 @@
+integrates the current 2D data buffer using the last defined amoeba mask.
+
+The results are put into the peak list.
+
+related contexts : $PK1D_A[i] $PK2D_A[i] $PK2D_ERR[i] $PK3D_A[i]
+
+see also : MSKCONC MSKMODIF MSKSEARCH SIGN_PEAK ZERO_QU INTEG PUT GET 
+           mskread mskwrite setamb mdfamb saveamb
+
+

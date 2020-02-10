@@ -1,0 +1,15 @@
+SHOWC scale
+
+display the currently JOINed file using the current zoom window 
+(redefined in ppm and used on the JOINed data-set) 
+The current parameters are used for the display (VHEIGH, LEVEL, 
+etc..) but not SCALE which is passed to the command. In 2D the 
+display is only showed in the controur window. The command is not 
+implemented in 3D yet.
+This command is used by the super1d / super2d macros to display 
+several spectra on screen.
+
+related contexts : $C_JOINED $C_NAME
+
+see also : JOIN SHOW SCOLOR super1d super2d
+

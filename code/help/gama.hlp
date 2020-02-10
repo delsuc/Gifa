@@ -1,0 +1,7 @@
+gama g
+
+This context is the angle along the OX axis by which the cube is 
+rotated during a 3D display with the DISP3D/REF3D set of commands
+
+see also : DISP3D ALPHA BETA
+

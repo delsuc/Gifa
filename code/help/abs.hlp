@@ -1,0 +1,7 @@
+Computes absolute value of data-sets, Works only on real data-sets 
+(itype=0)
+
+related contexts : $ITYPE_1D $ITYPE_2D $ITYPE_3D
+
+see also : MODULUS REAL
+

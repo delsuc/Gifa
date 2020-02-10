@@ -1,0 +1,25 @@
+PEAK output {radius}
+
+Will generate a peak-table from the current data set, output can 
+be either a file-name or *screen. Peaks are located if their 
+intensity lies within the margin defined by the MINIMAX command.
+
+In 2D, PEAK will prompt you for a "packing radius". Peaks which 
+lies within a distance equal or smaller than this packing radius (in 
+points) will be ignored in favor of the larger peak in this radius.
+
+The command SHOWPEAKS will show you on the display where the peaks 
+have been found. The command pklist will list the peak table 
+contents.
+
+This is the peak-picker form the PARIS integrator.
+
+related contexts : $PKRADIUS $PK1D_A[i] $PK1D_F[i] $PK1D_P[i] $PK1D_T[i] $PK1D_W[i]  $PK1D_ID[i]
+     $PK2D_A[i] $PK2D_F1F[i] $PK2D_F1W[i] $PK2D_F2F[i] $PK2D_F2W[i] $PK2D_ID[i]
+     $PK3D_A[i] $PK3D_F1F[i] $PK3D_F1W[i] $PK3D_F2F[i] $PK3D_F2W[i]
+     $PK3D_F3F[i] $PK3D_F3W[i] $PK1D_ID[i]
+
+see also : MINIMAX SIGN_PEAK ZERO_QU MAX pklist PK->DT SHOWPEAK SHOWPEAKS INTEG 
+         LINEFIT PKCLEAN PKCLEAR PKREAD PKWRITE PKSELECT PKRM PKRESET PKFILTER
+         POINT->PK PKSYM PKPROJ SETPEAK SETPEAKID peak_pick integrate
+

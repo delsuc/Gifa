@@ -1,0 +1,10 @@
+USWA {Fx}
+Take a complex data set in internal representation ( i.e. odd points 
+real and even points imaginary), and put the real part on the left 
+side, and the imaginary part on the right side of the data set. This 
+is the opposite of SWA.
+ 
+related contexts : $ITYPE_1D $ITYPE_2D $ITYPE_3D
+
+see also : SWA FLIP FLOP REAL
+

@@ -1,0 +1,114 @@
+<HTML><HEAD>
+<!-- This document was created from RTF source by rtftohtml version 3.9.3 -->
+<TITLE>Build-up curve processing. - PRACTISING THE BUILD-UP CURVES PROCESSING</TITLE></HEAD>
+<BODY>
+<A HREF="redfield-THEORY.html"><IMG SRC="leftg.gif" ALT="Prev " border=0></A>
+ <A HREF="redfield-REFERENC.html"><IMG SRC="rightg.gif" ALT="Next " border=0></A>
+ <A HREF="redfield-Title.html"> </A>
+ <A HREF="redfield-Contents.html"><IMG SRC="contg.gif" ALT="Contents " border=0></A>
+<hr size=4>
+<H1>
+PRACTISING THE BUILD-UP CURVES PROCESSING</H1>
+<UL>
+<LI><A HREF="#Heading8">The Different Commands</A>
+<LI><A HREF="#Heading9">An example of  build-up curve processing </A>
+<UL>
+<LI><A HREF="#Heading10">Setting the reference distance and rate</A>
+<LI><A HREF="#Heading11">Processing a build-up curve</A>
+</UL>
+</UL>
+<hr size=4>
+<p>	A set of command as been implemented into Gifa in order to permit the
+processing as described above. The set-up is such that these commands should be
+used in conjonction with the Lineara Prediction Module of Gifa. The processing
+should thus be performed on a build-up curve, held into the regular 1D area of
+Gifa. This build-up curve should be such as obtained with a set of NOESY
+spectra, obtained for various value of the mixing time [tau]m, regularly
+sampled from 0 to Tmax. It should be noted that the value for <sub>
+<IMG SRC="redfield54.gif"></sub>
+is assumed to be present. However it is rarely usefull to measure this value,
+and it is preferable to insert a 0 value as the <sub>
+<IMG SRC="redfield55.gif"></sub>
+point of the build-up curve.</p>
+
+<h2>
+<A NAME="Heading8">The Different Commands</A></h2>
+
+<p>
+Build-up curve analysis thus starts as a regular 1D LP-SVD analysis. Commands
+specific to the processing described above are the following :<br>
+RELAXRATE	Permits to get the relaxation rate from the amplitude and the damping
+factors, which are obtained by the multi-exponential analysis of the build-up
+curve.<br>
+METH p	Determine the hydrogen pair type. p is either 1, 2 or 3 for
+hydrogen-hydrogen, hydrogen-methyl or methyl-methyl pairs.<br>
+DIST	Performs the distance calculation from the relaxation rate,  using a
+reference distance, and the type of hydrogen pair observed.<br>
+CALIBDI dist_ref rate_ref	Permits to define a reference rate, which corresponds
+to a  reference distance, a the motion model considered.<br>
+RCRYST n	Performs the computation of a "crystallographic factor", between the
+data obtained from the multi-exponential analysis and the initial data. This
+factor is calculated from the first n curve points.<br>
+SLOPE n	Performs a least-square fit on the n first curve points, to determine
+his initial slope.<br>
+RTPIV [alpha]	Performs the processing of the pairs of complexe conjugate roots,
+which can be obtained when solving the PE polynomial. The roots found inside
+the cone of extent [theta], are pivoted, those outside are removed: [alpha]=
+cotan([theta]). Works only with forward roots.<br>
+The following internal variables are available :<br>
+	$RELAX  $RCRYST  $CALIBDI[]  $DIST</p>
+
+<h2>
+<A NAME="Heading9">An example of  build-up curve processing </A></h2>
+
+<p></p>
+
+<h3>
+<A NAME="Heading10">Setting the reference distance and rate</A></h3>
+
+
+<pre>
+print"Calibration distance?" set dstcal = $_
+print"Calibration relaxation rate?" set ratecal = $_
+</pre>
+<p><tt>calibdi
+$dstcal $ratecal</tt></p>
+
+<h3>
+<A NAME="Heading11">Processing a build-up curve</A></h3>
+
+
+<pre>
+print "Name of the build-up curve file?"
+	set bldp = $_
+print "Number of points on which the R-factor is computed?"
+	set nb_pts_R = $_
+print "Number of points on which initial-slope is computed?"
+	set nb_pts_slop = $_
+print "Order of the linear prediction analysis?"
+	set ord = $_
+</pre>
+<p><tt>read
+$bldp				; read data file</tt><br>
+<tt>reverse chsize +1 reverse	; add the first (null) point</tt><br>
+<tt>slope $nb_pts_slop	dist		; determine the distance </tt><br>
+<tt>						; by initial slope method</tt><br>
+<tt>chsize *2 swa	; makes the data complex by iterleaving zeros </tt><br>
+<tt>			; (the Gifa linear prediction package </tt><br>
+<tt>			; processes only complexe data).</tt><br>
+order $ord		; defines the order of the linear 					; prediction analysis<br>
+dt-&gt;svd % svd-&gt;ar 2	; calculates the AR coefficients<br>
+rtclean 2 rtinv 2 rtfreq % 1 ; PE root processing<br>
+rt-&gt;pk % 1	     ; calculate the damping factors and the 				; amplitudes<br>
+relaxrate			; calculate the relaxation rate<br>
+dist				; calculate the distance</p>
+
+<pre>
+rcryst $nb_pts_R	; calculate the crystallographic factor
+</pre>
+<P><hr size=4>
+<A HREF="redfield-THEORY.html"><IMG SRC="leftg.gif" ALT="Prev " border=0></A>
+ <A HREF="redfield-REFERENC.html"><IMG SRC="rightg.gif" ALT="Next " border=0></A>
+ <A HREF="redfield-Title.html"> </A>
+ <A HREF="redfield-Contents.html"><IMG SRC="contg.gif" ALT="Contents " border=0></A>
+</body></html>

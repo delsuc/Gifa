@@ -1,0 +1,8 @@
+POINT_INPUT F1 {F2}
+A point with coordinates F1 (in 1D, or F1,F2 (in 2D) is put on the 
+top of the point stack.
+
+related contexts : $POINTX[i] $POINTY[i] $NPOINT
+
+see also : POINT_PUSH POINT_POP POINT_CLEAR MONOPOINT point
+

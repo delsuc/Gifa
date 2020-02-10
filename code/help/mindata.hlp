@@ -1,0 +1,6 @@
+Compare the content of the current buffer with the content of the 
+DATA buffer, and leave in memory the smallest of the 2 values.
+Usefull for projections or symetrisation macros.
+
+see also : MAXDATA EXCHDATA ADDDATA MULTDATA SYM PUT
+

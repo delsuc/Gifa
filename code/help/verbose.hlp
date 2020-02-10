@@ -1,0 +1,7 @@
+When this context is set to 1 the program  switches to a more 
+verbose mode. Specially, text output will be generated during macro 
+execution, during MaxEnt run and during LP execution. When verbose 
+equals to 0, no text is generated.
+ 
+see also : DEBUG
+

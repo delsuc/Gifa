@@ -1,0 +1,56 @@
+#!/bin/sh
+# gifaplot file1 type_of_plotter
+#
+# send file1 to the plotter
+# used by gifa for spooling plotter files
+# you should adapt it to your local set-up
+# this example is for SPARC Solaris 2.4
+# with an Epson 24-pin printer, using hpgl2ps and ghostscript
+#case $2 in
+#	 postscript)
+#		 gs -q -dNOPAUSE -dSAFER -sDEVICE=epson -r180x180 -sPAPERSIZE=a4 -sOutputFile=- $1</dev/null|lp -o nobanner
+#		 if test $1 = Gifa_Temp.Plot
+#		 then
+#			 rm -f $1
+#		 fi;;
+#	 HPGL)
+#		 hpgl2ps $1|gs -q -dNOPAUSE -dSAFER -sDEVICE=epson -r180x180 -sPAPERSIZE=a4 -sOutputFile=- -|lp -o nobanner
+#		 if test $1 = Gifa_Temp.Plot
+#		 then
+#			 rm -f $1
+#		 fi;;
+#esac
+# this example is for SGI Indy IRIX 5.3
+# with a remote HP LaserJet 4L printer with ghostscript-able interfacing,
+# and with a local HP 7475A plotter
+#case $2 in
+#	 postscript)
+#		 lp -c -dhplj4l $1
+#		 if test $1 = Gifa_Temp.Plot
+#		 then
+#			 rm -f $1
+#		 fi;;
+#	 HPGL)
+#		 lp -c -dhp7475a $1
+#		 if test $1 = Gifa_Temp.Plot
+#		 then
+#			 rm -f $1
+#		 fi;;
+#esac
+# this example is for PC Linux
+# with an Epson 9 pin printer, using hp2xx, and apsfilter
+case $2 in
+	postscript)
+		if test $1 = Gifa_Temp.Plot
+		then
+			lpr -h -r -Plp6 $1
+		else
+			lpr -h -Plp6 $1
+		fi;;
+	HPGL)
+		hp2xx -f - -m eps -q -t $1|lpr -h -Plp6
+		if test $1 = Gifa_Temp.Plot
+		then
+			rm -f $1
+		fi;;
+esac

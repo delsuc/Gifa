@@ -1,0 +1,9 @@
+        When this context is set to 1 the program refreshes the on-
+screen display during macro execution, this permits to follow the 
+data during the program execution, but slows down the macro 
+execution.
+	When equal to 0, the display is refreshed only at the end of the 
+macro execution. Default value is 0.
+ 
+see also : CLEAR REF UNREF
+

@@ -1,0 +1,15 @@
+OPEN file_name
+Opens the file called file_name for reading or writing. Writing is 
+performed with the FPRINT command. Reading is done through the 
+<file_name syntax.
+e.g.   read <file_name
+	read the file which name is found as the next line of the file 
+file_name
+set line = <file_name
+	set the variable line to the contents of the next line of the 
+file file_name
+OPENing an already OPENed file will rewind the file to the 
+beginning.
+
+see also : CLOSE FPRINT DBOPEN
+

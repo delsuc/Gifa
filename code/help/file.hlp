@@ -1,0 +1,19 @@
+Gifa works by loading in memory the file to be processed.
+The main commands are READ and WRITE. These commands can directly
+access 1D, 2D and even 3D experiments.
+
+Usually all processing is then done in-memory, without any influence on the files.
+
+Alternatively, when file get too large (3D for instance), it is possible to
+process on-file, using the cache system (JOIN GETC PUTC commands)
+
+Several non-native file formats are available :
+READV VNMR file format
+READH old FT-NMR format
+READL old NMRi format
+READM Matlab ascii format
+READS portable compact ascii format (non human readable)
+READT portable ascii format (human readable)
+READZ compressed file using internal lp coding scheme
+readgz compressed file using gzip
+

@@ -1,0 +1,8 @@
+DIAG {direc}
+In 2D, extracts the diagonal of the 2D and put into the 1D buffer
+In 3D, extracts one diagonal plane of the 3D cube, chosen with the 
+direc parameter
+and put it into the 2D buffer
+
+see also : DIM ROW COL PLANE VERT
+

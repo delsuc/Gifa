@@ -1,0 +1,6 @@
+to be used with BCORR 3
+All parameters in point unit are scaled in the ratio of the data set 
+size to this parameter.
+
+see also : BCORR
+

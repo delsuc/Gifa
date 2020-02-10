@@ -1,0 +1,7 @@
+INITINPROGRESS n
+Presets for n iterations, the progress bar, of the form :
+In Progress : 0%....25%....50%....75%....100%
+The progress bar is then updated with the INPROGRESS command.
+
+see also : INPROGRESS PRINT
+

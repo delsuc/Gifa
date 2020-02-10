@@ -1,0 +1,13 @@
+PKRM index_list
+
+Remove the peaks from the current peak table, which indexes are given in the index_list.
+The list is ended by a 0.
+
+eg :
+Gifa> pkrm 1 5 7 0
+removes the 3 peaks {1, 5 and 7} from the peak table.
+
+related contexts : $NPK1D $NPK2D $NPK3D
+
+see also : PKRESET PEAK PKCLEAN PKCLEAR PKSELECT pkrmi pkrm_diag pkrmi
+

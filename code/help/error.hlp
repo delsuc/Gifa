@@ -1,0 +1,6 @@
+ERROR string
+Generates an error, and issue the string to the user. Permits to 
+handle errors in command files.
+
+see also : ONERRORGOTO ALERT PRINT CONTROLS
+

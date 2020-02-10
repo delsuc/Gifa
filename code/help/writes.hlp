@@ -1,0 +1,10 @@
+WRITES filename
+Writes to the disk in standard compact format. This format is 
+compatible among incompatible platforms. It is ASCII format and can 
+be shared in a network by different machines, and can even be 
+E_Mailed.
+
+related contexts : $NAME
+
+see also : READS WRITE WRITET
+

@@ -1,0 +1,6 @@
+Constant used when Maximum Entropy run with no line-minimization.
+Algo 1, (1E-6..0.5)  Algo 2 or 3 (0.1 .. 10)
+These algorithms are usually highly inefficient.!
+ 
+see also : MAXENT STEPMAX ALGO
+

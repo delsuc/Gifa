@@ -1,0 +1,9 @@
+slope n
+Will compute a relaxation rate on the current nOe build-up curve by 
+using the initial slope method, computed from the first n points of 
+the data-set.
+
+related contexts : $RELAX
+
+see also : RELAXRATE METH
+

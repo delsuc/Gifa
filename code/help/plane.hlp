@@ -1,0 +1,11 @@
+PLANE axis index
+
+In 3D only.
+Permits to select a plane from the 3D buffer and copies it to the 2D 
+buffer. Axis is either F1, F2 or F3 as the axis orthogonal to the 
+chosen plane. Thus F1 selects plane F23, etc...
+
+related contexts : $PLANE[1] $PLANE[2]
+
+see also : VERT ROW COL DIAG DIM planeint vertint
+

@@ -1,0 +1,243 @@
+#!/usr/local/bin/perl
+
+# this perl script builds a HTML documentation for the macros and commands
+# macros are read in /usr/local/gifa/macro.
+#     and subdirectories
+# commands are found in /usr/local/gifa/help
+#
+# The list is linked to basic.html
+#
+# see also do_list
+#
+# version 1.0  1996
+# version 1.1  1998 - recursive in directories
+# version 2.0  feb 1999 - HTML frames
+# version 2.1  nov 2001 - modified logic for <pre> (which was badly wrong) and removde dd dl
+$version = "V2.1";
+#
+#
+#process switches
+while	($ARGV[0]  =~ /^-/) {
+	shift;
+}
+
+#open out files - with html headers
+
+# base directory
+$base = "/usr/local/gifa/doc";
+
+# the first file, listed by alpha order, with the linked command names
+$doc  = "commands.html";
+
+#nb of column in commands
+$nbcolumn = 5;
+
+# the alphabet on one column
+$doc_nav = "gifa_alpha.html";
+
+open(OUTF,">$base/$doc") || die "cannot open $doc\n";
+
+print OUTF <<EOL1;
+<html>
+<head>
+<!-- This document created by dodoc_html $version>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#CC0000">
+<TITLE> List of standard commands and macros for GIFA</TITLE>
+<A NAME="Top">
+<H1> List of standard commands and macros for GIFA</H1>
+
+This is the copy of the on-line help (HELP command)<br>
+Native commands are in UPPERCASE, macros are in lower-case,
+but Gifa is case-insensitive and commands can be issued in any case.<p>
+
+(The 'Show macro' feature may not work on the WEB version of this on_line manual)<p>
+
+EOL1
+
+
+# create left frame file
+open(ALF,">$base/$doc_nav") || die "cannot open $doc_nav\n";
+
+$alpha="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+print ALF <<EOL2;
+<html>
+<head>
+<!-- This document created by dodoc_html $version >
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<BASE TARGET=commands>
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#CC0000">
+<FONT SIZE=4>
+<B>
+EOL2
+
+for ($i=0;$i<26;$i++)
+{
+    $c=substr($alpha,$i,1);
+    print ALF "<A HREF=\"$doc#$c\">$c</A> <BR>\n";
+    }
+
+print ALF <<EOL3;
+</B> </FONT>
+</BODY>
+</HTML>
+EOL3
+
+close(ALF);
+
+
+# loop on file-names
+
+# first  commands
+open(LS,"ls /usr/local/gifa/help/*.hlp |");
+while(<LS>) {
+    chop;
+    $fls = $_;
+    if (-f $fls ) {
+	($entry = $fls) =~ s#.*/(.*)\.hlp#\1#;
+	$entry =~ tr/a-z/A-Z/;	# make it uppercase
+	if (!($entry =~ m/DISP2D/)) {
+	    $entry =~s/(.+)2(.+)/\1-&gt;\2/; # replace ar2dt en ar->dt
+	}
+	open(FILE,$fls);
+	while(<FILE>) {		# copy the comments into an assoc. array
+	    $text{$entry} = "$text{$entry}$_";
+	}
+    }
+}
+close(LS);
+
+#then recusively in main directory
+build_name("/usr/local/gifa/macro");
+
+# then output the files (sorted, one file per first letter)
+$prev_let = "0";
+
+foreach $key (sort by_upper_case (keys %text)) {
+    $key =~ /^./;
+    ($flet = $&) =~ tr/a-z/A-Z/ ; # get first letter into $flet
+    if ($flet ne $prev_let) {
+	print "$flet\n";
+	if ($prev_let ne "0") {	   
+	    print OFL "\n </body> \n ";
+	    close (OFL);
+	    print OUTF "</TR></TABLE></BLOCKQUOTE>\n";
+	}
+	$prev_let = $flet;
+	$ldoc = "$flet$doc";
+	open(OFL, ">$base/$ldoc") || die "cannot open $ldoc\n";
+	print OFL <<ICI;
+<html>
+<head>
+<!-- This document created by dodoc_html $version>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#CC0000">
+ICI
+	print OFL "<TITLE>Commands in $flet </TITLE>\n";
+	print OFL "<H2> <A HREF=\"$doc\">Back to Alphabetical List</A> </H2>\n";
+	print OFL "\n";
+    
+	print OUTF "<H2>\n";
+	print OUTF "<DT> <HR SIZE=4> <A NAME=\"$flet\" > <A HREF=\"$ldoc\">$flet</A>\n";
+	print OUTF "</H2>\n";
+	print OUTF "<BLOCKQUOTE><TABLE BORDER=0><TR>\n";
+	$count = 0;
+    }
+#    print "$key\n";
+    if (($count % $nbcolumn) == 0) {
+    	print OUTF "   </TR>   <TR>\n";
+    	}
+	$count++;
+    print OUTF "<TD><A HREF=\"$ldoc#$key\">$key<\/A> </TD> \n";
+    print OFL  "<A NAME=\"$key\">\n"; # first sign the entry
+    print OFL  "<HR> <H3> $key </H3> \n";
+    print OFL  "<BLOCKQUOTE>\n";
+    if ($loc{$key}) {        # if macro.
+	if ( $loc{$key} =~ m/att/) {
+		print OFL " <B>part of the Assignment Module</B> <P> \n";
+	}
+	print OFL " located in $loc{$key}    <A HREF=\"$loc{$key}/$key\">Show macro</A>\n";
+    }
+    print OFL "<pre>\n";
+# finally, print
+    $toprint = $text{$key};
+# remove unlegal chars
+    $toprint =~ s/&/&amp;/g;
+    $toprint =~ s/</&lt;/g;
+    $toprint =~ s/>/&gt;/g;
+    while ($toprint) {
+	if ($toprint =~ /related contexts/i) { # special treatment for (related contexts)'s
+	    print OFL $`;
+	    print OFL "related <A HREF=\"C$doc#CONTEXTS\">contexts<\/A>";
+	    $toprint = $';
+	    next;
+	}
+	if ($toprint =~ /see also/i) { # special treatment for (see also)'s
+	    print OFL $`;
+	    print OFL "\n see also : ";
+	    $_ = $';
+	    foreach $eee (sort by_upper_case (keys %text)) {
+		if (/[\s,^]$eee[,\s]/) {
+		    $eee =~ /^./;
+		    ($fff = $&) =~ tr/a-z/A-Z/ ; # get first letter
+		    print OFL "<A HREF=\"$fff$doc#$eee\">$eee<\/A> ";
+		}
+	    }
+	    print OFL "\n";
+	    $toprint = (1 == 0);
+	} else {
+	    print OFL $toprint;
+	    $toprint = (1==0);
+	}
+	print OFL "</pre>\n";
+      print OFL  "</BLOCKQUOTE>\n";
+    }
+}
+print OFL "</pre> \n </body> \n ";
+close (OFL);
+
+print OUTF "</TR></TABLE> </pre> \n </body> \n ";
+close(OUTF);
+
+sub by_upper_case {		# used to sort the entries
+    ($ua = $a) =~ tr/a-z/A-Z/ ;
+    ($ub = $b) =~ tr/a-z/A-Z/ ;
+    $ua cmp $ub;
+}
+
+sub build_name {
+	my ($dir) = @_;
+	local *LS;
+	open(LS,"ls $dir |") or die "Can't open macro directory $dir\n";
+print "dir : $dir \n";
+	while(<LS>) {
+	    chop;
+	    $fls = $_;
+	    if (-d "$dir/$fls") {       # recurse if a directory is found
+		build_name("$dir/$fls");
+	    }
+	    elsif (-f "$dir/$fls" && !($fls =~ m/~$/)) {   # (remove emacs backup)
+	        @name = split('/',$fls);
+	        $entry = pop(@name);    # found one
+		if (! $loc{$entry}) {
+	          open(FILE,"$dir/$fls") or die "cannot open $dir/$fls \n";
+		  $loc{$entry}=$dir;
+	          while(<FILE>) {         # copy the comments into an assoc. array
+	            if (/^;/) {
+	                $text{$entry}= "$text{$entry}$'";
+	            }
+	            else {
+	                last;
+	            }
+	          }
+		}
+	    }
+	}
+	close(LS);
+}
+
+
+

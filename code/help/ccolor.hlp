@@ -1,0 +1,8 @@
+ccolor n
+If n = 1 color plots (command CDISP2D) are displayed in color,
+if n = 0 color plots are displayed in B&W mode
+
+related contexts : $CCOLOR
+
+see also : COLOR SCOLOR CDISP2D
+

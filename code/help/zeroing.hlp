@@ -1,0 +1,19 @@
+ZEROING value
+sets to zero all the data-point wich have an intensity (absolute 
+value) below the value. The prompted default value is the noise 
+level.
+When coupled to a compression utility (compress or gzip), permits to 
+store a file in an optimum fashion.
+eg : on a standard tocsy on E.Coli thioredoxine 3mM, using gzip
+compressed  uncompr. ratio uncompressed_name
+  1945574   2101248   7.4% tocsy	
+   870750   2101248  58.5% tocsy1
+   149825   2101248  92.8% tocsy2
+
+tocsy	standard file
+tocsy1	after ZEROING $noise ; barely visible
+tocsy2	after ZEROING (3*$noise) ; more drastic, but all peaks are 
+still there
+
+see also : ZERO PLUS MINUS WRITE writegz
+

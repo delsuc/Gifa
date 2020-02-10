@@ -1,0 +1,19 @@
+A complete assignment module is available witin Gifa. It is almost 
+completely written in the Gifa macro language (a some Perl script), and as 
+such can be fully adapted to your needs.
+
+Right now, it is principally aimed toward protein and peptide assignment.  
+Extending it to oligonucleotides and sugars is probably a simple matter of 
+extending the basic residues data-bases.  However, I have no idea whether 
+it can be used to help in the assignment process of other kind of organic 
+molecules or not.
+
+You will not find here any fancy tools nor automatic assignment, the only 
+help provided here consists in a set of tools permitting to visualise 
+several spectra at the same time, to add notes to peaks, to draw lines to 
+help for visual align search, and to store the information in several 
+data-bases, one for assigned peaks, one for spins and one for spin systems 
+(consisting simply in a set of spins).  For the moment, this module works 
+mostly for 2D data-sets and has little support for heteronuclear 3D.
+
+Try Assignment in the Mode menu

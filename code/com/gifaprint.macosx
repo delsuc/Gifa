@@ -1,0 +1,19 @@
+#!/bin/sh
+# gifaprint file1 
+#
+# send file1 to the printer
+# used by gifa for printing files
+# you should adapt it to your local set-up
+#
+# this example is for MacOsX 10.3 - not tested on 10.2 or lower
+#
+# lpr   prints to the standard printer (as defined from MacOs)
+# if you wish to print to a specific printer, use
+# lpr -P destination $1
+# where destination is obtained with 
+# lpstat -p -d
+
+if test $1 = '*PRINTER'
+then lpr -r $1
+else lpr $1
+fi

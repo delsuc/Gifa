@@ -1,0 +1,11 @@
+offset3d dx dy dz
+
+This context holds the shift by which the (0,0,0) point will be 
+shifted from the lower left corner of the DISP3D window during a 3D 
+display with the DISP3D/REF3D set of commands. A value of 0 
+corresponds to the lower left corner; a value of 1 to the upper 
+right corner; a value of 0.5 corresponds to the center of the 
+window.
+
+see also : DISP3D PLOT3D CHECK3D
+

@@ -1,0 +1,19 @@
+Context used to describe the current algorithm
+
+Algo is a number of the form       abc
+where a, b and, c are the decimal digits.
+	c: 0 Gull and Daniel equation for Entropy 
+		1 GIFA equation for Entropy 
+		2 steepest descent equation is used
+		3 conjugate gradient is used
+	b: 0 single step iteration
+		1 line-maximization using parabolic fit.
+		2 : line-maximization using bracketing before parabolic 
+fit.
+	a: 0 no Wu correction
+		1 Wu correction is applied.
+
+related contexts : $ALGO
+
+see also : MAXENT gifa conjg gad
+

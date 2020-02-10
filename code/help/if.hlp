@@ -1,0 +1,35 @@
+Used for tests in command.
+2 syntaxes are available :
+
+IF test THEN
+..commands on several lines
+{ ELSIF test2 THEN
+..commands }   (eventually many exclusive tests )
+{ ELSE	  (default case)
+..commands }
+ENDIF
+The different commands will executed conditionnally on the value of 
+the tests. A non-zero value is considered as true.
+Permits to construct complex tests in command files.
+
+IF test remaining_of_the_line
+execute the remaining_of_the_line conditionally on the value of 
+test. It will be executed only if test is true (non zero). The 
+remaining of the line can span several lines by using the line 
+continuation sign : \
+This form can be used at the prompt level, as well as in call-backs, 
+for instance in graphic buttons. It is called the one-line IF.
+
+Tests available are :
+for numeral : == != < > <= >= 
+for strings : s= s!
+for combinations: & | !
+as well as several tests functions and variables :  exist() eof() 
+$arg $c_joined, etc...
+
+IF(in the first syntaxe) ELSIF ELSE and ENDIF should appear alone on 
+one line, eventually followed by a comment. There is no limitation 
+for the one-line IF.
+
+see also FUNCTIONS GOTO FOR FOREACH WHILE CONTROLS
+

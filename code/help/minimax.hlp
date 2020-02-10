@@ -1,0 +1,9 @@
+MINIMAX mini maxi
+
+Load the value of the minimum and the maximum points that will be 
+used for peak-picking. These value are loaded by the MAX command.
+
+related contexts : $max[1] $max[2]
+
+see also : PEAK MAX 
+

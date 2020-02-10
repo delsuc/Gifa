@@ -1,0 +1,22 @@
+____________________________________________________________
+
+Describe here briefly the context of the bug :
+USER
+
+SYSTEM
+(machine, Operating System, etc...)
+
+
+COMMAND
+(which is buggy)
+
+SITUATION
+(in which the bug happens, try to describe a reproducible situation,
+ for instance, using simu to generate a pseudo data-set, you may
+also join a gifa.log file.)
+
+
+
+DESCRIPTION
+
+

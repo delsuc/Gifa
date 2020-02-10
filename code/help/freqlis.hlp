@@ -1,0 +1,9 @@
+FREQLIST center excursion n
+
+Will list the index in the peak table which hold entries with 
+frequency values in a given range of frequencies (centered on center 
+with radius excursion ). The thus selected entries will be then 
+selected with the RTSELECT command.
+
+see also : RTSELECT RTLIST 
+

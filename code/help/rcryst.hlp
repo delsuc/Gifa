@@ -1,0 +1,9 @@
+rcryst n
+Will compute the discrepancy (computed as a R factor) between the 
+current experimental nOe build-up curves, and the build-up curve as 
+analysed from the last LP analysis.
+
+related contexts : $RCRYST
+
+see also : CALIBDI  RELAXRATE DIST
+

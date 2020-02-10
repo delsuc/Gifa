@@ -1,0 +1,10 @@
+MODULUS is used to calculates the modulus of the spectrum. 
+In 2D, will only works for fully Hypercomplex data-sets  (itype == 
+3) or for data-sets complex in F2 (itype == 1) not for data-set 
+complex in F2 (itype == 2). In this last case, you should use FLOP 
+before doing MODULUS.
+
+related contexts : $ITYPE_1D $ITYPE_2D $ITYPE_3D
+
+see also : FLIP FLOP REAL ABS
+

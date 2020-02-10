@@ -1,0 +1,5 @@
+will plot on the plot file, the contents of the internal peak table, 
+thus permitting to plot the result of the PEAK command.
+
+see also : PEAK SHOW PLOTLINE PLOTLINES PLOTTEXT PLOTTEXTS PLOT
+

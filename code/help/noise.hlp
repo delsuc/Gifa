@@ -1,0 +1,9 @@
+Contains the level of noise in the data-set. When loading data (1 or 
+2D) the noise level is evaluated automatically from the last 10th of 
+the data. Can also be set with EVALN.
+Used by INTEG and by Maximum Entropy run.
+
+related contexts : $NOISE
+
+see also : EVALN SHIFT
+

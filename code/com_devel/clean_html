@@ -1,0 +1,24 @@
+#!/usr/local/bin/perl
+
+#process switches
+if ($#ARGV != 1) {
+    print "***      clean_html niveau fichier    ***\n";
+}
+
+$niv = $ARGV[0];
+$fil = $ARGV[1];
+
+open(IN,$fil)                             || die "cannot open IN file\n";
+open(OUT,">/usr/local/gifa/new/tmp.html") || die "cannot open OUT file\n";
+
+$dpt = 0;
+while(<IN>) {
+    s/Inhaltsverzeichnis/Contents/;
+    if (/<UL>/) {$dpt += 1;}
+    if ($dpt < $niv) { print OUT $_; }
+    if (/<\/UL>/) {$dpt -= 1;}
+}
+close(IN);
+close(OUT);
+
+print "a la fin, dpt = $dpt\n";

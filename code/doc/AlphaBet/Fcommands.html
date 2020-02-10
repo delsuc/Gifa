@@ -1,0 +1,952 @@
+<html>
+<head>
+<!-- This document created by dodoc_html V2.1>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#CC0000">
+<TITLE>Commands in F </TITLE>
+<H2> <A HREF="commands.html">Back to Alphabetical List</A> </H2>
+
+<A NAME="FILE">
+<HR> <H3> FILE </H3> 
+<BLOCKQUOTE>
+<pre>
+Gifa works by loading in memory the file to be processed.
+The main commands are READ and WRITE. These commands can directly
+access 1D, 2D and even 3D experiments.
+
+Usually all processing is then done in-memory, without any influence on the files.
+
+Alternatively, when file get too large (3D for instance), it is possible to
+process on-file, using the cache system (JOIN GETC PUTC commands)
+
+Several non-native file formats are available :
+READV VNMR file format
+READH old FT-NMR format
+READL old NMRi format
+READM Matlab ascii format
+READS portable compact ascii format (non human readable)
+READT portable ascii format (human readable)
+READZ compressed file using internal lp coding scheme
+readgz compressed file using gzip
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="file_selector">
+<HR> <H3> file_selector </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/file_selector">Show macro</A>
+<pre>
+ file_selector
+
+ This is the control to loading or showing new file when within an assignment project.
+
+ the pop-up gives the list of the data-set currently copied into the project,
+ the dataset button, gives you information on the experiment currently selected
+ The Read button permits to load the experiment currently selected, as
+   well as to load the peak database asociated to it
+ Showc button simply displays the selected experiment,  
+   without loading it nor the peak data-base.
+   the cursor permits to chose the relative display ratio.
+</pre>
+</BLOCKQUOTE>
+<A NAME="film_form">
+<HR> <H3> film_form </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/film_form">Show macro</A>
+<pre>
+ film_form (interactive)
+
+ create a formbox for the visualisation of a given peak on a 
+ list of data-sets.
+
+ 
+ see also : <A HREF="Fcommands.html#film_peak">film_peak</A> <A HREF="Jcommands.html#JOIN">JOIN</A> <A HREF="Scommands.html#SHOWPEAKS">SHOWPEAKS</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="film_peak">
+<HR> <H3> film_peak </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/film_peak">Show macro</A>
+<pre>
+ film_peak $peak_no $ls_spec
+
+ permits the visualisation of a given peak on a series of data-sets 
+
+ 
+ see also : <A HREF="Fcommands.html#film_form">film_form</A> <A HREF="Jcommands.html#JOIN">JOIN</A> <A HREF="Scommands.html#SHOWPEAKS">SHOWPEAKS</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="FILTER">
+<HR> <H3> FILTER </H3> 
+<BLOCKQUOTE>
+<pre>
+Determines the filter used during Maximum Entropy processing, Filter 
+can take values: 0, 1, or 2. Default value is 1.
+0: is no filtering at all
+1: is filtering done only if one of the following is non 0 : LB GB 
+or JCONS
+The filter is constructed automatically from the value of those 
+parameters
+2: is filtering always, the filter used is the one currently loaded 
+(can be checked with SHOW FILTER , and changed with PUT FILTER)
+
+
+ see also : <A HREF="Gcommands.html#GET">GET</A> <A HREF="Ncommands.html#NCHANNEL">NCHANNEL</A> <A HREF="Pcommands.html#PUT">PUT</A> <A HREF="Scommands.html#SHOW">SHOW</A> <A HREF="Wcommands.html#WINDOW">WINDOW</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="FIND">
+<HR> <H3> FIND </H3> 
+<BLOCKQUOTE>
+<pre>
+FIND array_name nD (coordinate set)
+
+FIND permits to locate in arrays coded with a set of coordinates, 
+the entry closest to a given location.
+array_name is the name of the searched array, nD (1, 2 or 3) is the 
+number of coordinates used for the search, (coordinate set) is the 
+coordinates of the target for the search.
+FIND returns the information in the contexts $PK_FND which gives the 
+index of the found entry, and in $PK_FND_DST which gives the 
+distance between the target and the found entry.
+The coordinates in the array have to be the first values in the 
+field.
+The array can be user internal array, as well as a dbm bound array.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $PK_FND $PK_FND_DST
+
+
+ see also : <A HREF="Fcommands.html#FOREACH">FOREACH</A> <A HREF="Vcommands.html#VARIABLES">VARIABLES</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="find_att">
+<HR> <H3> find_att </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/find_att">Show macro</A>
+<pre>
+ find_att (interactive)
+
+ permits click on the data-set, and high-light the closer
+ peak in the db
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="find_dist">
+<HR> <H3> find_dist </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/find_dist">Show macro</A>
+<pre>
+ find_dist (interactive)
+
+ permits click on the data-set, high-light the closer
+ peak in the db, and create the dialog box to look 
+ for the distances between hydrogens involved in the 
+ selected correlation.
+ to look for all the residues or all th atoms, put the 
+ sign '.' into the dialog box.
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="find_spin">
+<HR> <H3> find_spin </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/find_spin">Show macro</A>
+<pre>
+ find_spin  (interactive)
+
+ permits click on the data-set, and high-light the closer
+ spin in the db
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="find_spin_low">
+<HR> <H3> find_spin_low </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/find_spin_low">Show macro</A>
+<pre>
+ find_spin_low (F1/F2) ppm
+
+ returns the spins in the db close to ppm
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="find_sys">
+<HR> <H3> find_sys </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/find_sys">Show macro</A>
+<pre>
+ find_sys (interactive)
+
+ permits click on the data-set, and high-light the closer
+ sys in the db
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="FITEXP">
+<HR> <H3> FITEXP </H3> 
+<BLOCKQUOTE>
+<pre>
+FITEXP num_of_expo
+
+This command fits the data in memory to a sum of decaying exponentials
+
+The current 1D buffer is used as Y values
+The TAB buffer is used as X values
+
+The following equation is fitted :
+$P1*exp(-$X*$P2)  for a mono exponential
+$P1*exp(-$X*$P2) + $P3*exp(-$X*$P4)  for a bi exponential
+and so forth...
+
+The adapted parameter are stored in the global user variables
+$P1..$Pn, if the variables do not exist before the call they
+will created with initial value of 1.0, if they exists, their value
+will be taken as initial value for the minimization.
+Error bars on the parameters are returned in $DP1..$DPn
+
+This command is equivalent to using FITGENE with the equations
+given above. It is however MUCH faster.
+
+The number of iterations is controled by ITER
+and MINITER. 10 is a good starting value for both of them.
+
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $CHI2 $SI_TAB $TAB[]
+
+
+ see also : <A HREF="Icommands.html#ITER">ITER</A> <A HREF="Lcommands.html#LINEFIT">LINEFIT</A> <A HREF="Lcommands.html#LINEFITD">LINEFITD</A> <A HREF="Mcommands.html#MINIMIZE">MINIMIZE</A> <A HREF="Mcommands.html#MINITER">MINITER</A> <A HREF="Pcommands.html#PUT">PUT</A> <A HREF="Rcommands.html#residue">residue</A> <A HREF="Scommands.html#showexp">showexp</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="FITGENE">
+<HR> <H3> FITGENE </H3> 
+<BLOCKQUOTE>
+<pre>
+FITGENE 'expression to minimize' num_of_param
+
+This command calls the generic minimizer and permits to
+fit a given function to the data currently held into memory.
+
+
+'expression to minimize' is the function, given in Gifa language
+    that will be minimized. The free (adaptable) parameters will
+    be called $Pi with i ranging from 1 to num_of_par.
+    the running parameter is to be called $X.
+
+num_of_par is the number of parameters to adapt in the previous
+    expression
+
+Expression should a function of $X, $X will take all the values stored
+in the TAB buffer (see PUT TAB), the expression will be matched
+against the data in the current 1D working buffer.  A CHI_square will
+be computed for the deviation and minimized.
+
+The adapted parameter are stored in the global user variables
+$P1..$Pn, if the variables do not exist before the call they
+will created with initial value of 1.0, if they exists, their value
+will be taken as initial value for the minimization.
+So be carefull with function which cannot accomodate 1.0 as starting value.
+
+Error bars on the parameters are returned in $DP1..$DPn
+
+The algorithm used is the Powell method, which does not
+require any derivative.  The number of iterations is controled by ITER
+and MINITER. 10 is a good starting value for both of them.
+
+eg :
+ dim 1 chsize 50                      ; initialize
+ one tm 50 50  put tab                ; create a dump TAB[]
+ one mult 1.5 specw 1000 em 100       ; create a dump data-set
+               ; this one look like a T2 data
+ iter 10   miniter 10                 ; number of iterations
+ FITGENE '$p1*exp(-$x/$p2)' 2         ; run fit
+ print ($p1; $p2)                     ; print fitted parameters
+
+
+will produce :
+FITGENE Final Chi2 :  .69268190E-14
+1.75513 .1273239
+
+then, try :
+showexp '$p1*exp(-$x/$p2)'
+
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $CHI2 $SI_TAB $TAB[]
+
+
+ see also : <A HREF="Fcommands.html#FITEXP">FITEXP</A> <A HREF="Icommands.html#ITER">ITER</A> <A HREF="Lcommands.html#LINEFIT">LINEFIT</A> <A HREF="Lcommands.html#LINEFITD">LINEFITD</A> <A HREF="Mcommands.html#MINIMIZE">MINIMIZE</A> <A HREF="Mcommands.html#MINITER">MINITER</A> <A HREF="Pcommands.html#PUT">PUT</A> <A HREF="Rcommands.html#residue">residue</A> <A HREF="Scommands.html#showexp">showexp</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="flat_solvent">
+<HR> <H3> flat_solvent </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/flat_solvent">Show macro</A>
+<pre>
+ flat_solvent param
+
+ this macro will remove most of water signal (large zero-frequency
+ signal) by fitting and removing the water FID in the time domain
+ based from an idea of Marion, D., Ikura, M. and Bax,
+ A. J.Magn.Reson. 84 p425 (1989).
+
+ used in 1D, will overflow the 2D area !!
+
+ argument:
+	no argument =&gt; open a form box
+	polynomial =&gt; apply polynomial correction
+	moving_average =&gt; apply a moving average correction
+	polynomial+moving_average =&gt; apply both in this order
+	moving_average+polynomial  =&gt; apply both in this order
+
+ to be used before any processing, on the FID.
+</pre>
+</BLOCKQUOTE>
+<A NAME="FLIP">
+<HR> <H3> FLIP </H3> 
+<BLOCKQUOTE>
+<pre>
+	Switch from a itype=1 2D data-set to a itype=2 by exchanging the 
+imaginary parts. Useful only for processing phase modulated 2D data-
+sets :
+Gifa&gt; FT F2 FLIP FT F1 REAL F1
+will process a phase modulated data-set.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $ITYPE_2D
+
+
+ see also : <A HREF="Fcommands.html#FLOP">FLOP</A> <A HREF="Fcommands.html#FT">FT</A> <A HREF="Fcommands.html#ft_phase_modu">ft_phase_modu</A> <A HREF="Icommands.html#ITYPE">ITYPE</A> <A HREF="Mcommands.html#MODULUS">MODULUS</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="FLOP">
+<HR> <H3> FLOP </H3> 
+<BLOCKQUOTE>
+<pre>
+Performs the inverse of FLIP.
+See FLIP.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $ITYPE_2D
+
+
+ see also : <A HREF="Fcommands.html#FLIP">FLIP</A> <A HREF="Fcommands.html#FT">FT</A> <A HREF="Fcommands.html#ft_phase_modu">ft_phase_modu</A> <A HREF="Icommands.html#ITYPE">ITYPE</A> <A HREF="Mcommands.html#MODULUS">MODULUS</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="FLUSH">
+<HR> <H3> FLUSH </H3> 
+<BLOCKQUOTE>
+<pre>
+Flushes the modified blocks of the cache memory system associated to 
+the currently connected file onto the disk.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $C_JOINED
+
+
+ see also : <A HREF="Dcommands.html#dataset">dataset</A> <A HREF="Fcommands.html#FLUSHCACHE">FLUSHCACHE</A> <A HREF="Jcommands.html#JOIN">JOIN</A> <A HREF="Lcommands.html#listfilec">listfilec</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="FLUSHCACHE">
+<HR> <H3> FLUSHCACHE </H3> 
+<BLOCKQUOTE>
+<pre>
+Flushes all the modified of the cache memory system onto the 
+associated files.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $C_JOINED
+
+
+ see also : <A HREF="Fcommands.html#FLUSH">FLUSH</A> <A HREF="Jcommands.html#JOIN">JOIN</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="FOR">
+<HR> <H3> FOR </H3> 
+<BLOCKQUOTE>
+<pre>
+FOR var = n TO p { STEP k }
+... GIFA commands
+ENDFOR
+
+Control structure permitting to loop over a set of commands. The 
+variable var will be created if does not yet exist. By default of 
+STEP is 1, but any value can be used (including negative values in 
+which case n should be larger than p). n, p and k should always be 
+integer numbers.
+
+FOR and ENDFOR should appear alone on one line, eventually followed 
+by a comment.
+
+
+ see also : <A HREF="Ccommands.html#CONTROLS">CONTROLS</A> <A HREF="Fcommands.html#FOREACH">FOREACH</A> <A HREF="Gcommands.html#GOTO">GOTO</A> <A HREF="Icommands.html#IF">IF</A> <A HREF="Wcommands.html#WHILE">WHILE</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="FOREACH">
+<HR> <H3> FOREACH </H3> 
+<BLOCKQUOTE>
+<pre>
+FOREACH var IN array { WITHIN nD coord_set }
+... GIFA commands
+ENDFOR
+
+Control structure permitting to go through all the entries of a user 
+array, or a user dbm file. The variable var will take successively 
+all the values of the entries in the array, ( $array[$var] ). The 
+order is irrelevant. var will be created if does not exist yet.
+
+If the array entries are of the form : "x { y {z } } some other stuff"
+where x (y, z) is (are) numerical values, then the optionnal WITHIN 
+syntax permits to specifically restrict the scanning to entries 
+located in a given range. nD (1, 2 or 3) tells WITHIN to use 1, 2 or 
+3 numerical entries. Then coord_set is a set of coordinates, 
+determining a range, as with the zoom syntax : 
+range_low_1 { range_low_2 { range_low_3 }} range_high_1 { range_high_2 { range_high_3 }}
+
+FOREACH and ENDFOR should appear alone on one line, eventually 
+followed by a comment.
+
+
+ see also : <A HREF="Ccommands.html#CONTROLS">CONTROLS</A> <A HREF="Dcommands.html#DBOPEN">DBOPEN</A> <A HREF="Fcommands.html#FIND">FIND</A> <A HREF="Fcommands.html#FOR">FOR</A> <A HREF="Gcommands.html#GOTO">GOTO</A> <A HREF="Icommands.html#IF">IF</A> <A HREF="Wcommands.html#WHILE">WHILE</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="FORGET">
+<HR> <H3> FORGET </H3> 
+<BLOCKQUOTE>
+<pre>
+FORGET plot_file_name
+Permits to remove a plot file from the internal list of opened plots 
+without issuing the PAGE command which also sends the plot to the 
+plotter. However the plotter code for the ejection of the paper 
+sheet is not inserted at the end of the plot_file.
+
+
+ see also : <A HREF="Pcommands.html#PAGE">PAGE</A> <A HREF="Pcommands.html#PLOT">PLOT</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="FORMBOX">
+<HR> <H3> FORMBOX </H3> 
+<BLOCKQUOTE>
+<pre>
+FORMBOX form_name gifa_command 
+      - [field_name field_param ]       | 
+      - noreturn                        |  (n times)
+      - separator                       |
+      *
+
+Permits to construct a form ( dialog box with editable fields). The 
+box will appear in a window called form_name . The program continues 
+after having created the form, whitch will stay on screen as long as 
+the user dos not close it exolicitely. It will have three buttons at 
+the button :
+
+Apply    executes the command gifa_command  and the form will remain 
+         on screen
+Ok       executes the command gifa_command  and closes the form
+Cancel   does not execute any command and closes the form
+
+The command will be executed exactly as if the user had typed it 
+as the prompt level, thus the command can be a simple command, 
+several commands on a line, of a macro name. However the WHILE, FOR, 
+FOREACH, IF .. THEN, GOTO commands are not available; the IF .. 
+any_command syntaxe is available. If a parameter is missing for the 
+command, the user will be prompted in the text window.
+
+The form is also composed en fields which appear one on each line 
+in the window. A form can hold as many field as needed. Each field 
+has the following general format :
+
+	field_name field_type eventual list of parameters...
+
+field_name 	 is displayed on the left side of the field
+field_type   determines the kind of field,
+
+field_type is chosen in the following list :
+message, text, action, string, int, real, file, cursor, enum, multienum
+
+Field types are as follow:
+
+message type of field have no other field, this kind of entries 
+        serves to put plain text in the form
+text interprets field_name  as a file name which is presented in a 
+     scrollable window.
+action gifa_command_2 will create an active button, bound to 
+    gifa_command_2; field_name  will be used as the name of the button.
+
+All following type have a field_var entry which determines the 
+name of the Gifa variable in which the user input will be stored, 
+and the default_value entry which determines the value of that 
+variable when creating the form :
+
+field_name field_type (eventual parameters) var_name default_value
+
+string int real and file types of field have no additionnal parameters. 
+  They appear in the window as editable string.  When the user hits return 
+  there, the content of the string is copied to the Gifa variable var_name.
+
+file entries will have a small arrow which permits to open a 
+     standard file dialog window.
+
+field_name cursor starting_val ending_val numb_of_digit var_name default_value
+
+cursor permits to create a sliding cursors.  It has 3 additionnal 
+  parameters : starting_val ending_val numb_of_digit.  starting_val and 
+  ending_val determines the edge of the slider zone.  numb_of_digit 
+  determines the resolution of the slider, if 0 -&gt; will be integer,
+  if larger -&gt; will be real.
+
+field_name enum/multienum enul_list var_name default_value
+
+enum and multienum permit to choose an entry into a list.
+enum will appear as a pop up menu permitting to choose between the entries 
+  defined in the list : enum_list.
+multienum will appear as a scrollable list, and several entries can be 
+  chosen from the list
+These field have an additional entry : enum_list. This list is a single blank 
+separated word, each item being separated with commas.
+
+Two special entries are also available, and not associated to 
+fields but rather to formatting the box.
+
+separator permits to enter a separator in the form,
+noreturn implies that the following field will be presented on the same 
+line than the previous entry.
+
+The variables used by the editable entries can be global variables, in 
+which case they should have been created as global before calling the 
+FORMBOX command.  If this is not the case, they are created in a special 
+context, available only to the command gifa_command when executed with the 
+Apply or Ok buttons or from the actions buutons.  This special context is 
+completely local to the form.  This permits to have several forms, using 
+the same variables syntax, without interaction.
+
+The list is terminated with a star.
+
+Within the form the context $WIDGET is the id of the current 
+FORMBOX, and can be used by the CLOSEFORM command.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $WIDGET $CONFIG_GRAPH
+
+
+ see also : <A HREF="Bcommands.html#BUTTONBOX">BUTTONBOX</A> <A HREF="Ccommands.html#CLOSEBUTTON">CLOSEBUTTON</A> <A HREF="Ccommands.html#CLOSEFORM">CLOSEFORM</A> <A HREF="Dcommands.html#DIALOGBOX">DIALOGBOX</A> <A HREF="Mcommands.html#MACRO">MACRO</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="FPRINT">
+<HR> <H3> FPRINT </H3> 
+<BLOCKQUOTE>
+<pre>
+FPRINT file_name string
+Outputs the string to the file. file must have previously be OPENed 
+(see OPEN).
+
+
+ see also : <A HREF="Ccommands.html#CLOSE">CLOSE</A> <A HREF="Fcommands.html#fprintf">fprintf</A> <A HREF="Ocommands.html#OPEN">OPEN</A> <A HREF="Pcommands.html#PRINT">PRINT</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="fprintf">
+<HR> <H3> fprintf </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/fprintf">Show macro</A>
+<pre>
+ fprintf file format_string arg1 arg2 ... *
+
+ realises the equivalent of a C  `fprintf'
+ all the remaining of the line  up to the star is taken as arguments
+ and output the result to "file" (which should have been OPENed before)
+
+ (known bug : a \n is inserted at the end of the format)
+
+ 
+ see also : <A HREF="Fcommands.html#FPRINT">FPRINT</A> <A HREF="Ocommands.html#OPEN">OPEN</A> <A HREF="Pcommands.html#PRINT">PRINT</A> <A HREF="Pcommands.html#printf">printf</A> <A HREF="Scommands.html#sprintf">sprintf</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="fractil_68.g">
+<HR> <H3> fractil_68.g </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att/dyna    <A HREF="/usr/local/gifa/macro/att/dyna/fractil_68.g">Show macro</A>
+<pre>
+  fractil_68 nb_degre_of_freedom
+
+ gives the 68% confidence limit on Chi2
+</pre>
+</BLOCKQUOTE>
+<A NAME="fractil_95.g">
+<HR> <H3> fractil_95.g </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att/dyna    <A HREF="/usr/local/gifa/macro/att/dyna/fractil_95.g">Show macro</A>
+<pre>
+  fractil_95 nb_degre_of_freedom
+
+ gives the 95% confidence limit on Chi2
+</pre>
+</BLOCKQUOTE>
+<A NAME="FREEZE">
+<HR> <H3> FREEZE </H3> 
+<BLOCKQUOTE>
+<pre>
+freeze { p }
+
+FREEZE will freeze the specified graphic window in its current 
+state, and will open a new window which will become the active 
+window. There is no way to kill the frozen window, but to exit GIFA. 
+Useful for comparing many graphics.
+Depending on which display mode are active, no parameters may be 
+needed, or the user may have to choose which window to freeze : D 
+(density) C (contour) 3 (3D)
+
+
+ see also : <A HREF="Ccommands.html#CDISP2D">CDISP2D</A> <A HREF="Dcommands.html#DISP1D">DISP1D</A> <A HREF="Dcommands.html#DISP2D">DISP2D</A> <A HREF="Dcommands.html#DISP3D">DISP3D</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="FREQ">
+<HR> <H3> FREQ </H3> 
+<BLOCKQUOTE>
+<pre>
+FREQ freq_H1 freq1 { freq2 { freq3 } }
+
+The context FREQ holds the basic frequency of the spectrometer (in 
+MHz). freq_H1 is meant to be the basic  frequency of the 
+spectrometer (1H freq) and is not used in the program. freq2 (and 
+freq1 in 2D) are the freq associated to each dimension (different if 
+in heteronuclear mode). Values are in MHz.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $FREQ $FREQ_1D $FREQ_1_2D $FREQ_1_3D $FREQ_2_2D
+                   $FREQ_2_3D $FREQ_3_3D
+
+
+ see also : <A HREF="Ccommands.html#calib">calib</A> <A HREF="Ocommands.html#OFFSET">OFFSET</A> <A HREF="Scommands.html#SPECW">SPECW</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="FREQLIS">
+<HR> <H3> FREQLIS </H3> 
+<BLOCKQUOTE>
+<pre>
+FREQLIST center excursion n
+
+Will list the index in the peak table which hold entries with 
+frequency values in a given range of frequencies (centered on center 
+with radius excursion ). The thus selected entries will be then 
+selected with the RTSELECT command.
+
+
+ see also : <A HREF="Rcommands.html#RTLIST">RTLIST</A> <A HREF="Rcommands.html#RTSELECT">RTSELECT</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="FT">
+<HR> <H3> FT </H3> 
+<BLOCKQUOTE>
+<pre>
+FT { axis }
+
+Performs in-place complex Fourier Transform on the current data-set; 
+Data-set must be Complex.
+
+All FT commands work in 1D, 2D or 3D
+in 1D axis, is not needed
+in 2D axis, is F1, F2 or F12
+in 3D axis, is F1, F2, F3, F12, F13, F23 or F123
+
+Here is a complete overview of FT routines : C stands for Complex, R 
+stands for Real
+	FIDs		Spectra
+	C	---FT---&gt;	C
+	C	&lt;--IFT---	C
+	R	--RFT--&gt;	C
+	R	&lt;--IRFT--	C
+	C	-FTBIS-&gt;	R
+	C	&lt;-IFTBIS-	R
+	R	Does not exist 	R
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $ITYPE_1D $ITYPE_2D $ITYPE_3D
+
+
+ see also : <A HREF="Ecommands.html#easy2d">easy2d</A> <A HREF="Ecommands.html#easy3d">easy3d</A> <A HREF="Fcommands.html#FLIP">FLIP</A> <A HREF="Fcommands.html#FLOP">FLOP</A> <A HREF="Fcommands.html#ft_phase_modu">ft_phase_modu</A> <A HREF="Fcommands.html#ft_seq">ft_seq</A> <A HREF="Fcommands.html#ft_sh">ft_sh</A> <A HREF="Fcommands.html#ft_sh_tppi">ft_sh_tppi</A> <A HREF="Fcommands.html#ft_sim">ft_sim</A> <A HREF="Fcommands.html#ft_tppi">ft_tppi</A> <A HREF="Icommands.html#IFTBIS">IFTBIS</A> <A HREF="Mcommands.html#MODULUS">MODULUS</A> <A HREF="Pcommands.html#proc2d">proc2d</A> <A HREF="Pcommands.html#proc3d">proc3d</A> <A HREF="Rcommands.html#REAL">REAL</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="FTBIS">
+<HR> <H3> FTBIS </H3> 
+<BLOCKQUOTE>
+<pre>
+FTBIS { axis }
+
+Performs complex-to-real Fourier Transform on data
+
+
+ see also : <A HREF="Fcommands.html#FT">FT</A> <A HREF="Icommands.html#IFTBIS">IFTBIS</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="ft_n+p">
+<HR> <H3> ft_n+p </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/ft_n+p">Show macro</A>
+<pre>
+ ft_n+p
+
+ performs the fourier transform of a 2d data-set acquired in "n+p" mode
+ i.e. PFG enhanced acquisition, with positive and negative gradients alternated
+ Processing is performed only along the F1 axis
+
+ 
+ see also : <A HREF="Fcommands.html#FT">FT</A> <A HREF="Fcommands.html#ft_phase_modu">ft_phase_modu</A> <A HREF="Fcommands.html#ft_seq">ft_seq</A> <A HREF="Fcommands.html#ft_sh">ft_sh</A> <A HREF="Fcommands.html#ft_sh_tppi">ft_sh_tppi</A> <A HREF="Fcommands.html#ft_sim">ft_sim</A> <A HREF="Fcommands.html#ft_tppi">ft_tppi</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="ft_phase_modu">
+<HR> <H3> ft_phase_modu </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/ft_phase_modu">Show macro</A>
+<pre>
+ ft_Phase_modu
+
+ performs the F1 fourier transform of a 2d data-set acquired in 
+ phase modulation mode (Bruker magnitude mode MC2=QF)
+
+ 
+ see also : <A HREF="Fcommands.html#FT">FT</A> <A HREF="Fcommands.html#ft_seq">ft_seq</A> <A HREF="Fcommands.html#ft_sh">ft_sh</A> <A HREF="Fcommands.html#ft_sh_tppi">ft_sh_tppi</A> <A HREF="Fcommands.html#ft_sim">ft_sim</A> <A HREF="Fcommands.html#ft_tppi">ft_tppi</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="ft_seq">
+<HR> <H3> ft_seq </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/ft_seq">Show macro</A>
+<pre>
+ ft_seq
+
+ performs the fourier transform of a data-set acquired on a Bruker in
+ sequential mode
+ Processing is performed only along the F2 (F3) axis if in 2D (3D)
+
+ (Bruker QSEQ mode)
+ 
+ see also : <A HREF="Fcommands.html#FT">FT</A> <A HREF="Fcommands.html#ft_phase_modu">ft_phase_modu</A> <A HREF="Fcommands.html#ft_sh">ft_sh</A> <A HREF="Fcommands.html#ft_sh_tppi">ft_sh_tppi</A> <A HREF="Fcommands.html#ft_sim">ft_sim</A> <A HREF="Fcommands.html#ft_tppi">ft_tppi</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="ft_sh">
+<HR> <H3> ft_sh </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/ft_sh">Show macro</A>
+<pre>
+ ft_sh { axis }
+
+ performs the fourier transform of a 2d data-set acquired in 
+ States-Haberkorn mode
+ Processing is performed only along the F1 axis
+
+ in 3D, axis may be either f1 or f2
+
+ (Bruker sh mode)
+ 
+ see also : <A HREF="Fcommands.html#FT">FT</A> <A HREF="Fcommands.html#ft_phase_modu">ft_phase_modu</A> <A HREF="Fcommands.html#ft_seq">ft_seq</A> <A HREF="Fcommands.html#ft_sh_tppi">ft_sh_tppi</A> <A HREF="Fcommands.html#ft_sim">ft_sim</A> <A HREF="Fcommands.html#ft_tppi">ft_tppi</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="ft_sh_tppi">
+<HR> <H3> ft_sh_tppi </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/ft_sh_tppi">Show macro</A>
+<pre>
+ ft_sh_tppi { axis }
+
+ performs the fourier transform of a 2d data-set acquired in 
+ States-Haberkorn tppi mode
+ Processing is performed only along the F1 axis
+
+ in 3D, axis may be either f1 or f2
+
+ (Bruker sh_tppi mode)
+ 
+ see also : <A HREF="Fcommands.html#FT">FT</A> <A HREF="Fcommands.html#ft_phase_modu">ft_phase_modu</A> <A HREF="Fcommands.html#ft_seq">ft_seq</A> <A HREF="Fcommands.html#ft_sh">ft_sh</A> <A HREF="Fcommands.html#ft_sim">ft_sim</A> <A HREF="Fcommands.html#ft_tppi">ft_tppi</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="ft_sim">
+<HR> <H3> ft_sim </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/ft_sim">Show macro</A>
+<pre>
+ ft_sim
+
+ performs the fourier transform of a data-set acquired on a Bruker in
+ simultaneous mode
+ Processing is performed only along the F2 (F3) axis if in 2D (3D)
+
+ (Bruker QSIM mode)
+
+ 
+ see also : <A HREF="Fcommands.html#FT">FT</A> <A HREF="Fcommands.html#ft_phase_modu">ft_phase_modu</A> <A HREF="Fcommands.html#ft_seq">ft_seq</A> <A HREF="Fcommands.html#ft_sh">ft_sh</A> <A HREF="Fcommands.html#ft_sh_tppi">ft_sh_tppi</A> <A HREF="Fcommands.html#ft_tppi">ft_tppi</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="ft_tppi">
+<HR> <H3> ft_tppi </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/ft_tppi">Show macro</A>
+<pre>
+ ft_tppi { axis }
+
+ performs the fourier transform of a 2d data-set acquired in tppi mode
+ Processing is performed only along the F1 axis
+
+ in 3D, axis may be either f1 or f2
+
+ (Bruker tppi mode)
+
+ 
+ see also : <A HREF="Fcommands.html#FT">FT</A> <A HREF="Fcommands.html#ft_phase_modu">ft_phase_modu</A> <A HREF="Fcommands.html#ft_seq">ft_seq</A> <A HREF="Fcommands.html#ft_sh">ft_sh</A> <A HREF="Fcommands.html#ft_sh_tppi">ft_sh_tppi</A> <A HREF="Fcommands.html#ft_sim">ft_sim</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="FUNCTIONS">
+<HR> <H3> FUNCTIONS </H3> 
+<BLOCKQUOTE>
+<pre>
+the following functions and operators are available within evaluated 
+expression :
+
+mathematical
+o	the regular 4 operations : + - / *  e.g. :	(2*3 - 1)
+o	the modulo function : %	(12 % 5)
+o	the power ^ operator	(3^2.1)
+o	the regular mathematical functions :
+	sqrt(x) cos(x) sin (x) atan(x) log(x) exp(x) abs(x) int(x) max(x,y) min(x,y), round(x)
+o	the special function power2(n) will have the value of the closest power of 2 below
+	or equal to the number n :  power2(130) will be 128 (2^7)
+
+the alphanumeric operators :
+o	the concatenation operator : //	('string1' // "string2"  )
+o	the formatting operator : ;equivalent to // ' ' //
+	("Value is:" ; $a)  is equivalent to  ("Value is:" // ' ' // $a)
+o	toupper(st) put string in upper case
+o	tolower(st) put string in lower case
+o	sp(i) generates a string of i blanks
+o	len(st) is the length of the string
+o	index(st1,st2) is the position of st2 located in st1, 0 if not present
+o	subst(st,i,j) is the substring from st, starting at i, ending at j
+o	isalpha(st) and isnumb(st) are true whenever st is (respectively)
+
+	alphanumeric or numeric list operators
+o	head(st) will be the first word in string st (blank separated)
+o	tail(st) will be the string st but the first word.
+o	headx(st,c) and tailx(st,c) are equivalent to head and tail but the character c 
+	is used rather than blank.
+o	the next element function : nextlm(array,entry). If i is an entry in the 
+	 associative array $array, the construction nextlm(array,i) will have 
+	 the value of the next available entry. The end of the array is notified 
+	 with an empty string. The series is also initialised with an empty string. 
+	 The series is gone through in the internal order which is not related neither 
+	 to the input order nor the sequential order. For instance the following macro 
+	 will print all the entries of the array $table :
+
+logical operators
+o	the numeral comparison operators : == != &lt; &gt; &lt;= and &gt;= for comparing numbers :
+		($x&lt;=0.5)
+o	the string comparison s= (equal) and s! (different) for comparing strings :
+		($s s= 'name')
+o	the logical operators : | (or) and &amp; (and) :	(($x&lt;=0.5)&amp;($s s= 'name'))
+o	the not operation : ! :	(!($i==1))    (!$arg)
+o	the function eof(file_name) will be true if the last input from file file_name 
+	 (with &lt;file_name) had reached the end of the file, will be false otherwise.
+o	the function dbm(array_name) is true if array_name is bound to a dbm file with the DBOPEN command
+o	the function exist(var_name) will be true if var_name is a user variable either 
+	 local or global. e.g.
+	if (exist("i")) set j = ($i+1)
+	j is computed only if $i exists as a variable.
+	The special syntax (exist("foo[]")) checks whether the array foo exists wit 
+	h at least one index. It works both for regular and dbm arrays.
+
+data and file access functions
+o	the functions va1d(i), val2d(i,j) and val3d(i,j,k) returns the value of the 
+	 content of the main Gifa working buffers. In 2D i and j are the index in F1 
+	 and F2 respectively, in 3D in F1, F2 and F3. This replaces the old $VAL[] construct. 
+	 valamb(i,j) returns the value of the amoeba buffer.
+o	the hexist(name) function returns true or false whether the parameter name is 
+	 available in the header of the currently joined file. If this parameter is 
+	 available, the header(name) returns its value
+o	The sh(command) function permit to very easily call an operating system command 
+	 and the function returns the value of the first line returned by the command. 
+	 Look at the command SH for further details.
+o The fexist(file_name) return true if the file called file_name currently exists. 
+o	the functions   itoh(index,dim,axis), htoi(hertz,dim,axis), itop(index,dim,axis), 
+	 ptoi(ppm,dim,axis), htop(hertz dim, axis), ptoh(ppm,dim,axis), itos(index,dim,axis), 
+	 stoi(second,dim,axis), itod(index,dim,axis), dtoi(damping,dim,axis), 
+	 itot(index) and ttoi(tabulated) perform unit conversion. 
+	 Respectively : index to hertz and back; index to ppm and back; 
+	 hertz to ppm and back; index to second and back, index to damping factors and back; 
+	 index to tabulated and back.
+For each function, index, ppm, hertz, second, damping or tabulated is the value to be converted, 
+	 dim is the dimension to use (1, 2 or 3) and axis is the axis to use, depending on 
+	 which spectral widths and frequencies you want to use for the conversion. 
+	 Note that since there is only one tabulated axis that can be defined 
+	 the additional parameters are useless. If dim = 0, then the conversion is done 
+	 in the context of the currently JOINed file rather than in the context of the internal buffers.
+
+ see also : <A HREF="Ccommands.html#CONTEXTS">CONTEXTS</A> <A HREF="Ccommands.html#CONTROLS">CONTROLS</A> <A HREF="Mcommands.html#MACRO">MACRO</A> <A HREF="Vcommands.html#VARIABLES">VARIABLES</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="FUNCTIONS COPIE">
+<HR> <H3> FUNCTIONS COPIE </H3> 
+<BLOCKQUOTE>
+<pre>
+the following functions and operators are available within evaluated 
+expression :
+
+Operators : 
+o the regular 4 operations, modulo  and power 
+	+	-	/	*	% (modulo)	^ (power)
+
+o arithmetic comparison
+	==	!=	&lt;	&gt;	&lt;=	&gt;=
+
+o string comparison
+	s=	s!
+
+o logical operators
+	|   (or)	&amp;  (and)	!  (not)
+
+o string concatenation
+	//   (direct concatenation)
+	;    (concatenation with a blank)
+
+functions :
+o the mathematical functions
+	sqrt(x)	cos(x)  sin(x)    atan(x)   log(x)    exp(x)
+	abs(x)  int(x)  round(x)  power2(n) max(x,y)  min(x,y)
+	
+o the alphanumeric functions :
+	toupper(st)	tolower(st)	(transformations of st)
+	sp(i)				(makes blank strings)
+	len(st)				(length of the string)
+	index(st1,st2)			(locates st2 in st1)
+	subst(st,i,j)			(extracts substring (i:j) from st)
+	head(st)			(extract the 1st word)
+	tail(st)			(everything but the 1st word)
+	headx(st,char)	tailx(st,char)  
+	       (same as head &amp; tail but char is the separator)
+	isalpha(st)  isnumb(st)
+               (check string type alphanumic. - numeric)
+o file access
+	eof(file)    (true if End of File file is reached)
+	
+o GIFA internal parameters
+	val1d(i)	val2d(i,j)	val3d(i,j,k)
+		(values in the 1D, 2D and 3D buffers)
+        valamb(i,j)   (value of the amoeba buffer)
+	itoh(index,dim,axis)	htoi(hertz,dim,axis)
+	itop(...)   ptoi(...)   htop(...)   ptoh(...)
+	itos(...)   stoi(...)   itod(...)   dtoi(...)
+	(unit conversions  i: index   p: ppm   h: Hz   s: second   d: damping  
+	 itoh:  means   index to Hz
+	 In all cases, axis is the axis along which conversion must be done
+	 and dim tells in which data space it is done (1D, 2D or 3D)
+	 dim=0 has the special meaning of using the currently joined data_set)
+
+	nextlm(array,index)     (next entry in associative or dbm array)
+	exist(var_name)         (true if var_name exists)
+	dbm(var_name)           (true if var_name is a dbm array)
+
+
+ see also : <A HREF="Ccommands.html#CONTEXTS">CONTEXTS</A> <A HREF="Ccommands.html#CONTROLS">CONTROLS</A> <A HREF="Mcommands.html#MACRO">MACRO</A> <A HREF="Vcommands.html#VARIABLES">VARIABLES</A> 
+</pre>
+</BLOCKQUOTE>
+
+ </body> 
+ 

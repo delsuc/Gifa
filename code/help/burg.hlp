@@ -1,0 +1,12 @@
+BURG size
+Will perform an in-place forward linear prediction, by using the 
+Burg method. The size of the final data-set is size. This command is 
+equivalent to the sequence :
+DT->AR AR->DT 1 size
+but is computed on-place, and can thus be used on a full 2D or 3D 
+spectrum.
+
+related contexts : $ORDER $NAR $SI1_1D
+
+see also : AR->DT DT->AR ORDER AR->SP burg_rev svd_rev burg2d burg3d
+

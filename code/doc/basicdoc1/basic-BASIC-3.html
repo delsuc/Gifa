@@ -1,0 +1,612 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=iso-8859-1">
+	<TITLE>BASIC (1D) PROCESSING</TITLE>
+	<META NAME="GENERATOR" CONTENT="StarOffice/5.2 (Linux)">
+	<META NAME="CREATED" CONTENT="20010412;17065600">
+	<META NAME="CHANGEDBY" CONTENT="Thierry Gostan">
+	<META NAME="CHANGED" CONTENT="20010611;15091000">
+	<!-- This document was converted from RTF source: 
+By r2net 5.2.4 r2netcmd Unix 
+Translation:html.trn  $Revision: 1.55 $ $Revision: 1.34 $
+See http://www.logictran.com
+Filename:basic.rtf
+OutFileName:basic.html
+Application Directory:/home/gostan/r2net
+Subject:
+Author:
+Operator:
+Document Comments:
+Version Comments:
+Comments:StarWriter
+Keywords:
+Translation Date:04/12/2001
+Translation Time:15:05:49
+Translation Platform:Unix
+Number of Output files:50
+This File:basic-BASIC-3.html
+SplitDepth=2
+SkipNavPanel=0
+SkipLeadingToc=0
+SkipTrailingToc=1
+GenContents=1
+GenFrames=1
+GenIndex=0
+ -->
+	<STYLE>
+	<!--
+		A:visited { color: #808080 }
+		A:link { color: #cc0000 }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LINK="#cc0000" VLINK="#808080" BGCOLOR="#ffffff">
+<P ALIGN=CENTER STYLE="margin-bottom: 0cm"><A HREF="./basic-General.html"><IMG SRC="./images/prev.gif" NAME="Image1" ALT="Previous " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="./basic-HANDLING.html"><IMG SRC="./images/next.gif" NAME="Image2" ALT="Next " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="./basic-Title.html"><IMG SRC="./images/first.gif" NAME="Image3" ALT="Title Page " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="./basic-Contents.html"><IMG SRC="./images/contents.gif" NAME="Image4" ALT="Contents " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+</P>
+<HR>
+<UL>
+	<LI>
+    <P STYLE="margin-bottom: 0cm"><A HREF="./basic-BASIC-3.html#Heading825">easy1d</A> 
+    </P>
+	<LI>
+    <P STYLE="margin-bottom: 0cm"><A HREF="./basic-BASIC-3.html#Heading836">Loading 
+      and Saving data-sets : READ, WRITE, READx, WRITEx, ZEROING</A> </P>
+	<LI>
+    <P STYLE="margin-bottom: 0cm"><A HREF="./basic-BASIC-3.html#Heading860">Apodisation 
+      : EM, LB, GM, GB, SIN, SQSIN, TM</A> </P>
+	<LI>
+    <P STYLE="margin-bottom: 0cm"><A HREF="./basic-BASIC-3.html#Heading872">Zero-filling 
+      : CHSIZE</A> </P>
+	<LI>
+    <P STYLE="margin-bottom: 0cm"><A HREF="./basic-BASIC-3.html#Heading875">basic 
+      Fourier transform : ft_sim ft_seq</A> </P>
+	<LI>
+    <P STYLE="margin-bottom: 0cm"><A HREF="./basic-BASIC-3.html#Heading877">nD 
+      Fourier transform : ft_sh ft_tppi ft_sh_tppi ft_phase_modu ft_n+p</A> </P>
+	<LI>
+    <P STYLE="margin-bottom: 0cm"><A HREF="./basic-BASIC-3.html#Heading885">Phasing 
+      : PHASE, PH, HPHASE, apsl (automatic phasing)</A> </P>
+	<LI>
+    <P STYLE="margin-bottom: 0cm"><A HREF="./basic-BASIC-3.html#Heading892">Integration</A> 
+    </P>
+	<LI>
+    <P STYLE="margin-bottom: 0cm"><A HREF="./basic-BASIC-3.html#Heading908">Detailed 
+      Fourier transform : REVF, FT, IFT, RFT, IRFT, FTBIS, IFTBIS, INVF, REVERSE; 
+      Hilbert transform</A> </P>
+	<LI>
+    <P STYLE="margin-bottom: 0cm"><A HREF="./basic-BASIC-3.html#Heading934">Data-type 
+      : ITYPE</A> </P>
+	<LI>
+    <P STYLE="margin-bottom: 0cm"><A HREF="./basic-BASIC-3.html#Heading940">ADD, 
+      ADDH, ADDDATA, MULT, MULTDATA</A> </P>
+	<LI>
+    <P STYLE="margin-bottom: 0cm"><A HREF="./basic-BASIC-3.html#Heading944">Post 
+      processing : REAL, SWA, USWA, ABS, MODULUS, PLUS, MINUS, ZEROING, SMOOTH, 
+      MEDIAN</A> </P>
+	<LI>
+    <P STYLE="margin-bottom: 0cm"><A HREF="./basic-BASIC-3.html#Heading954">EVALN, 
+      ADDBASE, NOISE, SHIFT</A> </P>
+	<LI>
+    <P><A HREF="./basic-BASIC-3.html#Heading959">DSA</A> </P>
+</UL>
+<HR>
+<H1><A NAME="Heading824"></A><FONT SIZE=4><I><U>BASIC (1D) PROCESSING</U></I></FONT></H1>
+<H3><A NAME="Heading825"></A><B>easy1d</B></H3>
+<P><IMG SRC="./images/Easy1D.gif" NAME="Image9" ALIGN=LEFT HSPACE=8 VSPACE=8 WIDTH=492 HEIGHT=528 BORDER=0><BR CLEAR=LEFT>
+  This
+macro has been designed to help the user in processing every day 1D
+data-sets. It consists simply in filling each field of the formbox.</P>
+<UL>
+  <LI>
+    <P STYLE="margin-bottom: 0cm">Filename is the name of the raw data-set which 
+      will be loaded before processing. </P>
+  <LI>A Bruker digital filter correction is applied when data come from a DMX 
+    spectrometer (in the Bruker version).
+  <LI> 
+    <P STYLE="margin-bottom: 0cm"><font color="#000000">Flatten solvent let you 
+      choose the way of erasing, or not, the solvent.</font> The solvent being 
+      located at the center of the spectral width.</P>
+  <LI>
+    <P STYLE="margin-bottom: 0cm">All apodisations are fully available. </P>
+  <LI>
+    <P STYLE="margin-bottom: 0cm">As well as the sizes and the types of the Fourier 
+      transform. </P>
+  <LI>
+    <P STYLE="margin-bottom: 0cm">The phase correction and the base-line correction 
+      can be also chosen. </P>
+  <LI>
+    <P STYLE="margin-bottom: 0cm">Use 'Find phase' for interactive phasing, or 
+      choose 'Automatic phasing'. </P>
+  <LI> 
+    <P>Finally a set of action buttons permits to realize all or some of these 
+      operations, additionally, the processing set-up can be stored as a macro 
+      file, which when executed latter on, realizes the very same processing. 
+      This macro file can also be read back and used to fill the fields of a new 
+      form. <font color="#000000">You can also save your current data at any time 
+      of your transform operations.</font></P>
+</UL>
+<P><BR><BR>
+</P>
+<H3><A NAME="Heading836"></A><B>Loading and Saving data-sets : READ,
+WRITE, READx, WRITEx, ZEROING</B></H3>
+<P STYLE="margin-bottom: 0cm">You can load an NMR data-set by typing
+the READ command. It will load the data-set in the working memory. 
+</P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm">In Gifa there is no distinction between
+time-domain (FIDs) and frequency domain. This is true when processing
+data-sets (so all the comands are available on all the kind of
+data-sets), and is also true when storing files. So files contain
+time or frequency domain data-set, without any distinction.</P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm">Several file format are available
+directly from within the program (plus the utilities permitting to
+translate from other file formats). The following format are
+available :</P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<UL>
+	<LI><P STYLE="margin-bottom: 0cm"><TT><FONT FACE="Courier">READ</FONT></TT>
+	or <TT><FONT FACE="Courier">READC</FONT></TT> (same command) for the
+	standard Gifa cached format, the file is stored in a submatrix
+	format, the parameters are in text format in the header part of the
+	file (can be viewed with more);</P>
+	<LI><P STYLE="margin-bottom: 0cm"><TT><FONT FACE="Courier">READH</FONT></TT>
+	is for the ft-nmr format;</P>
+	<LI><P STYLE="margin-bottom: 0cm"><TT><FONT FACE="Courier">READL</FONT></TT>
+	is for NMR1/NMR2 format;</P>
+	<LI><P STYLE="margin-bottom: 0cm"><TT><FONT FACE="Courier">READV</FONT></TT>
+	is for Varian format. The corresponding write commands are <TT><FONT FACE="Courier">WRITE</FONT></TT>
+	(or <TT><FONT FACE="Courier">WRITEC</FONT></TT>) <TT><FONT FACE="Courier">WRITEH</FONT></TT>
+	and <TT><FONT FACE="Courier">WRITEL</FONT></TT> (no <TT><FONT FACE="Courier">WRITEV</FONT></TT>
+	available so far). 
+	</P>
+</UL>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm">Several other file formats are
+available :</P>
+<UL>
+  <LI> 
+    <P STYLE="margin-bottom: 0cm"><TT><FONT FACE="Courier">READM</FONT></TT> and 
+      <TT><FONT FACE="Courier">WRITEM</FONT></TT> reads and writes text files, 
+      formatted as one line per row for a 2D data-set, and a single line for 1D 
+      (not available for 3D data-sets). This format is compatible with the -ascii 
+      format of the MATLAB&copy; program. Note however that no parameters are 
+      stored along with the data, and that the text file might have very long 
+      line that will overflow most text editors.</P>
+  <LI> 
+    <P STYLE="margin-bottom: 0cm"><TT><FONT FACE="Courier">READT</FONT></TT> and 
+      <TT><FONT FACE="Courier">WRITET</FONT></TT> handle data file in generic 
+      text format; on entry per line, with a set of parameters; this permits to 
+      import and export data from Gifa to any other program.</P>
+  <LI> 
+    <P STYLE="margin-bottom: 0cm"><TT><FONT FACE="Courier">READS</FONT></TT> and 
+      <TT><FONT FACE="Courier">WRITES</FONT></TT> are special file format stored 
+      in compacted text format; this format is totally independent from the machine 
+      used, the file thus stored can be read with the Gifa program running on 
+      any machine. This format is in text format and can be safely sent on E-Mail 
+      (however you should take care not to send too large files, and eventually 
+      cut your large files in smaller pieces (size &sup2; 100kbyte)).</P>
+  <LI> 
+    <P STYLE="margin-bottom: 0cm">Finally a <TT><FONT FACE="Courier">READZ</FONT></TT> 
+      <TT><FONT FACE="Courier">WRITEZ</FONT></TT> format is available, this format 
+      make use of Linear Predictive Coding to compress the data before storing 
+      (J.Magn.Reson. 1991). The <TT><FONT FACE="Courier">WRITEZ</FONT></TT> command 
+      uses the value of the <TT><FONT FACE="Courier">ORDER</FONT></TT> context 
+      as the length of the Linear Predictive Polynomial (see chapter on Linear 
+      Prediction). The default value of 10 seems to be an optimum for most NMR 
+      data-sets. The compression is performed with no loss of information, with 
+      a compression ratio typically in the 50% - 60%. To be used only on time 
+      domain data-sets.</P>
+</UL>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P STYLE="margin-bottom: 0cm">Another possibility has been set-up to
+permits data-set compression. The <TT><FONT FACE="Courier">ZEROING</FONT></TT>
+command will set to zero all points below a given threshold. Files
+thus processed will compress MUCH better than regular files. For
+instance, on a standard TOCSY on <I>E.Coli</I> thioredoxin 3mM, using
+gzip</P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<TABLE BORDER=1 CELLPADDING=2 CELLSPACING=2>
+	<COL WIDTH=95>
+	<COL WIDTH=87>
+	<COL WIDTH=63>
+	<COL WIDTH=390>
+	<TR VALIGN=TOP>
+		<TH WIDTH=95>
+			<P ALIGN=CENTER><TT><FONT FACE="Courier">compressed</FONT></TT></P>
+		</TH>
+		<TH WIDTH=87>
+			<P ALIGN=CENTER><TT><FONT FACE="Courier">uncompr</FONT></TT></P>
+		</TH>
+		<TH WIDTH=63>
+			<P ALIGN=CENTER><TT><FONT FACE="Courier">ratio</FONT></TT></P>
+		</TH>
+		<TH WIDTH=390>
+			<P><BR>
+			</P>
+		</TH>
+	</TR>
+	<TR>
+		<TD WIDTH=95 VALIGN=BOTTOM>
+			<P ALIGN=RIGHT><TT><FONT FACE="Courier">1945574</FONT></TT></P>
+		</TD>
+		<TD WIDTH=87 VALIGN=BOTTOM>
+			<P ALIGN=RIGHT><TT><FONT FACE="Courier">2101248</FONT></TT></P>
+		</TD>
+		<TD WIDTH=63 VALIGN=TOP>
+			<P><TT><FONT FACE="Courier">7.4%</FONT></TT></P>
+		</TD>
+		<TD WIDTH=390 VALIGN=TOP>
+			<P><TT><FONT FACE="Courier">standard file</FONT></TT></P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=95 VALIGN=BOTTOM>
+			<P ALIGN=RIGHT><TT><FONT FACE="Courier">870750</FONT></TT></P>
+		</TD>
+		<TD WIDTH=87 VALIGN=BOTTOM>
+			<P ALIGN=RIGHT><TT><FONT FACE="Courier">2101248</FONT></TT></P>
+		</TD>
+		<TD WIDTH=63 VALIGN=TOP>
+			<P><TT><FONT FACE="Courier">58.5%</FONT></TT></P>
+		</TD>
+		<TD WIDTH=390 VALIGN=TOP>
+			<P><TT><FONT FACE="Courier">after zeroing $noise ; barely visible</FONT></TT></P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=95 VALIGN=BOTTOM>
+			<P ALIGN=RIGHT><TT><FONT FACE="Courier">149825</FONT></TT></P>
+		</TD>
+		<TD WIDTH=87 VALIGN=BOTTOM>
+			<P ALIGN=RIGHT><TT><FONT FACE="Courier">2101248</FONT></TT></P>
+		</TD>
+		<TD WIDTH=63 VALIGN=TOP>
+			<P><TT><FONT FACE="Courier">92.8%</FONT></TT></P>
+		</TD>
+		<TD WIDTH=390 VALIGN=TOP>
+			<P><TT><FONT FACE="Courier">after ZEROING (3*$noise),more drastic,
+			but all peaks are still there</FONT></TT></P>
+		</TD>
+	</TR>
+</TABLE>
+<P><BR><BR>
+</P>
+<H3><A NAME="Heading860"></A><B>Apodisation : EM, LB, GM, GB, SIN,
+SQSIN, TM</B></H3>
+<P>A comprehensive set of apodisation function is available :</P>
+<UL>
+	<LI><P><TT><FONT FACE="Courier">EM</FONT></TT> is for exponential
+	broadening. The parameter is the broadening applied in Hz. Negative
+	values are possible and are for resolution enhancement (associated
+	with GM). The value used is given by the value in the context <TT><FONT FACE="Courier">LB</FONT></TT>.
+	In 2D and 3D, will apply a different exponential apodisation on axis
+	and will prompt you for a width for each axis consecutively. If you
+	do not wish to modify on a given axis, enter a null value. 
+	</P>
+	<LI><P><TT><FONT FACE="Courier">GM</FONT></TT> is for Gaussian
+	broadening. The parameter is the broadening applied in Hz. The value
+	used is given by the value in the context GB. <BR><TT><FONT FACE="Courier">LB</FONT></TT>
+	and <TT><FONT FACE="Courier">GB</FONT></TT> are also used in Maximum
+	Entropy processing. 
+	</P>
+	<LI><P><TT><FONT FACE="Courier">SIN</FONT></TT> is for a shifted
+	sine-bell. The parameter is the position of the maximum of
+	sine-bell, varying form 0 (pure cosine) to 0.5 (pure sine). The
+	parameter of <TT><FONT FACE="Courier">SIN</FONT></TT> is not kept in
+	a context. 
+	</P>
+	<LI><P><TT><FONT FACE="Courier">SQSIN</FONT></TT> is equivalent to
+	SIN but applies a SQuared SINe-bell. 
+	</P>
+	<LI><P><TT><FONT FACE="Courier">TM</FONT></TT> is for trapezoidal
+	windowing, and it uses two parameters which are the coordinates (in
+	points) of the 2 points T1 and T2. The window then goes from 0.0
+	value at the first point of the data set to 1.0 at T1 and from the
+	1.0 value at point T2 to 0.0 at the last point plus one of the data
+	set.</P>
+</UL>
+<P>In 1D, you can use the sequence :</P>
+<P><TT><FONT FACE="Courier">Gifa&gt; ONE SIN .3 ; or any other
+apodisation</FONT></TT></P>
+<P>to visualise the effect of a given filter.</P>
+<H3><A NAME="Heading872"></A><B>Zero-filling : CHSIZE</B></H3>
+<P>Truncation and zero-filling can be applied by the <TT><FONT FACE="Courier">CHSIZE</FONT></TT>
+command which changes the size(s) of the data-set. You can then
+truncate a FID or append zeros and the end. <TT><FONT FACE="Courier">CHSIZE</FONT></TT>
+can be used on any data-set, not only on FIDs, but the <TT><FONT FACE="Courier">EXTRACT</FONT></TT>
+is preferable for spectra. The zero filling capabilities in the
+Graphic User interface uses the <TT><FONT FACE="Courier">CHSIZE</FONT></TT>
+command associated to the power2() function.</P>
+<H3><A NAME="Heading875"></A><B>basic Fourier transform : ft_sim
+ft_seq</B></H3>
+<P>These commands are for the basic Fourier transform step. They
+realizes the Fourier transform in the acquisition dimension (F2 in
+2D, F3 in 3D). <TT><FONT FACE="Courier">ft_sim</FONT></TT> is for
+complex acquisition (simultaneous sampling of complex and imaginary
+points); <TT><FONT FACE="Courier">ft_seq</FONT></TT> is for
+interlaced acquisition of real and imaginary points (1D TPPI).</P>
+<H3><A NAME="Heading877"></A><B>nD Fourier transform : ft_sh ft_tppi
+ft_sh_tppi ft_phase_modu ft_n+p</B></H3>
+<P>In 2D and 3D the Fourier transform along the non classical axis is
+performed with another set of macros. The number of way you can
+acquire the data along the incremental axis of a 2D is much larger
+than what can be done in the acquisition axis. These macro implements
+the FT for the more common acquisition mode.</P>
+<UL>
+	<LI><P><TT><FONT FACE="Courier">ft_sh</FONT></TT> performs the
+	Fourier transform for datasets acquired in States-Haberkorn mode</P>
+	<LI><P><TT><FONT FACE="Courier">ft_tppi</FONT></TT> performs the
+	Fourier transform for datasets acquired in Time Proportional Phase
+	Increment</P>
+	<LI><P><TT><FONT FACE="Courier">ft_sh_tppi</FONT></TT> performs the
+	Fourier transform for datasets acquired in the mixture of the 2
+	previous modes</P>
+	<LI><P><TT><FONT FACE="Courier">ft_phase_modu</FONT></TT> performs
+	the Fourier transform for datasets acquired in phase modulation
+	(J-Modulated for instance)</P>
+	<LI><P><TT><FONT FACE="Courier">ft_n+p</FONT></TT> performs the
+	Fourier transform for datasets acquired with Pulsed Field Gradients
+	in echo/antiecho mode.</P>
+</UL>
+<H3><A NAME="Heading885"></A><B>Phasing : PHASE, PH, HPHASE, apsl
+(automatic phasing)</B></H3>
+<P><IMG SRC="./images/Phase.gif" NAME="Image10" ALIGN=LEFT HSPACE=8 VSPACE=8 WIDTH=289 HEIGHT=182 BORDER=0>Phasing 
+  of the data can be applied with <TT><FONT FACE="Courier">PHASE a b</FONT></TT>. 
+  The 2 parameters <TT><FONT FACE="Courier">a</FONT></TT> and <TT><FONT FACE="Courier">b</FONT></TT>, 
+  are respectively the 0th order (frequency independent) and 1st order (frequency 
+  linearly dependent) phase corrections. In 2D and 3D, axis on which phase correction 
+  should be applied is also entered. The pivot for the first order correction 
+  is always the centre point of the spectrum. <TT><FONT FACE="Courier">PH</FONT></TT> 
+  is an interactive mode for phasing 1D data-sets.</P>
+<P>you can choose and move around your pivot (the double line) by
+clicking on the spectrum with the second button of the mouse, and you
+can add phase corrections using the Dialogue box. You can zoom in and
+out, selecting the zoom box with the first button. Clicking &quot;OK&quot;
+will finish the <TT><FONT FACE="Courier">PH</FONT></TT> mode, leave
+the spectrum phased and load the <TT><FONT FACE="Courier">PHASE</FONT></TT>
+default values with the one you just chose, clicking &quot;CANCEL&quot;
+will exit the <TT><FONT FACE="Courier">PH</FONT></TT> mode as if
+nothing had happen. <TT><FONT FACE="Courier">HPHASE</FONT></TT>
+permits to phase real data-sets, with the same syntax as <TT><FONT FACE="Courier">PHASE</FONT></TT>.
+</P>
+<P><TT><FONT FACE="Courier">HPHASE</FONT></TT> performs a Hilbert
+transform in order to create the missing imaginary part, it thus
+permits to phase a real spectrum by creating the imaginary part on
+fly.</P>
+<P>The sequence <TT><FONT FACE="Courier">IFTBIS</FONT></TT> <TT><FONT FACE="Courier">FT</FONT></TT>
+will create a complex spectrum from a real one (with half the
+resolution), thus permitting to experiment phase parameters with the
+PH command. These phase parameters can then be used on the
+corresponding original real spectrum.</P>
+<P>An automatic phasing method have been made available in Gifa
+lately : it is the APSL method (by A.Heuer, <I>J.Magn.Reson</I>. <B>91</B>,
+p241-253 (1991)). This method works by using the symmetry of the
+phased line. A macro have been written which implements this method,
+it is called <TT><FONT FACE="Courier">apsl</FONT></TT>, and works in
+1D.</P>
+<H3><A NAME="Heading892"></A><B>Integration</B></H3>
+<P>Start the 1D graphic integration module. Here is an example of an
+integration, with 2 zones defined.<BR>And you get on screen :</P>
+<P STYLE="margin-bottom: 0cm"><IMG SRC="./images/Integrate.gif" NAME="Image11" ALIGN=LEFT HSPACE=8 VSPACE=8 WIDTH=497 HEIGHT=277 BORDER=0><BR CLEAR=LEFT>
+  <BR>
+</P>
+<P><IMG SRC="./images/Integrate1.gif" NAME="Image12" ALIGN=LEFT HSPACE=8 VSPACE=8 WIDTH=483 HEIGHT=265 BORDER=0><BR CLEAR=LEFT>
+  From
+there, you can create and delete integration zones; calibrate one
+zone to a given value and all other zones will adapt; or even create
+a listing :<BR>Note that the base line should be corrected before
+hand. Accurate integration values can also be obtained when using the
+Linefitter.<BR>adapting to your own set-up 
+</P>
+<P>The macros present above are intended to be adapted to your own
+set-up and spectrometer. The way the complex numbers are stored in
+the FID depends on the spectrometer manufacturer, so these macro
+should be adapted so that the spectra show correctly after using
+them. They are based on elementary commands presented below. In the
+standard distribution, the files are pre-set for usage with Bruker
+spectrometers. A series of adapted macros are available for Varian
+users in the directory: <TT><FONT FACE="Courier">/usr/local/gifa/macro/varian</FONT></TT>.
+Have a look to the README file in there.</P>
+<P>You can easily customise your set-up to use the Varian macros by
+default by adding the varian directory to your GifaPath. This is done
+by adding the following line :<BR><BR><TT><FONT FACE="Courier">SETPATH
+('/usr/local/gifa/macro/varian'; $GIFAPATH)</FONT></TT><BR><BR>at the
+end of the set-up file: <TT><FONT FACE="Courier">/usr/local/gifa/macro/startup.g</FONT></TT><BR>This
+should be done for each new version of Gifa you download. (See
+<A HREF="http://www.cbs.univ-montp1.fr/gifa/macro/macro.html" TARGET="_top">customising
+the interface</A> for details)</P>
+<H3><A NAME="Heading908"></A><B>Detailed Fourier transform : REVF,
+FT, IFT, RFT, IRFT, FTBIS, IFTBIS, INVF, REVERSE; Hilbert transform</B></H3>
+<P>These commands details the elementary steps of the basic Fourier
+transform. <BR>The elementary Fourier transforms available are :</P>
+<UL>
+	<LI><P><TT><FONT FACE="Courier">FT IFT</FONT></TT> : complex to
+	complex FT and its inverse</P>
+	<LI><P><TT><FONT FACE="Courier">RFT IRFT</FONT></TT> : real to
+	complex FT and its inverse</P>
+	<LI><P><TT><FONT FACE="Courier">FTBIS IFTBIS</FONT></TT> : complex
+	to real FT and its inverse 
+	</P>
+</UL>
+<P>The complete set of Fourier transform can also be summarised as
+follow (C stands for Complex and R for real) :</P>
+<PRE>        FIDs            Spectra 
+C       ~FT-&gt;   C       
+C       &lt;-IFT~  C       
+R       ~RFT-&gt;  C       
+R       &lt;-IRFT~ C       
+C       ~FTBIS-&gt;        R       
+C       &lt;-IFTBIS~       R       
+R       Does not exist  R</PRE><P>
+The Hilbert transform is simply realised by :</P>
+<UL>
+	<LI><P><TT><FONT FACE="Courier">IFTBIS FT ; generate a complex data
+	set from a real</FONT></TT></P>
+	<LI><P><TT><FONT FACE="Courier">IFTBIS PHASE 90 0 FTBIS ; generate
+	the missing imaginary part</FONT></TT></P>
+	<LI><P><TT><FONT FACE="Courier">IFT FTBIS ; in-place zero filling
+	using Hilbert relations</FONT></TT></P>
+</UL>
+<P><BR><BR>
+</P>
+<P>Depending on the spectrometer the data you get should usually be
+processed with FT (complex FT) or RFT (real FT) and eventually
+pre-processed with REVF. REVF actually inverses every 2 points over
+4. This has the effect to reduce the time-proportional format used
+for the seq mode on BRUKER spectrometers (on real data-sets). <BR>On
+complex data-set it has the effect to put the zero-frequency on the
+borders of the spectrum (after the FT step!). <BR>INVF is related to
+REVF, it inverse every other point in the data set, thus taking the
+conjugated value on complex data-sets. Because of this, the sequences
+: INVF FT and FT REVERSE are equivalent. On hypercomplex data (2D)
+INVF F12 will take the hyperconjugated. <BR>REVERSE simply returns
+the current spectra left to right.</P>
+<H3><A NAME="Heading934"></A><B>Data-type : ITYPE</B></H3>
+<P>1D Data-set are either real or complex. On multidimensional
+data-set (2D or 3D), each direction may be either real or complex.
+This the so-called hypercomplex data-type. <BR>The type of the
+data-set (real or complex) is described by the context <TT><FONT FACE="Courier">ITYPE</FONT></TT>.</P>
+<P>For 1D, <TT><FONT FACE="Courier">ITYPE</FONT></TT> is 0 for real
+data and 1 for complex data.</P>
+<P>For 2D, <TT><FONT FACE="Courier">ITYPE</FONT></TT> can takes 4
+different values :</P>
+<UL>
+	<LI><P>0 means real;</P>
+	<LI><P>1 means complex in the F2 direction</P>
+	<LI><P>2 means complex in the F1 direction (I know, this is a bit
+	odd but has to make sense in 1D as well as in 2D)</P>
+	<LI><P>3 means complex in both directions (so-called Hypercomplex
+	data type).</P>
+</UL>
+<P>In 3D</P>
+<UL>
+	<LI><P>1 means complex in F3</P>
+	<LI><P>2 complex in F2</P>
+	<LI><P>4 complex in F1</P>
+	<LI><P>and the corresponding sums depending on the hypercomplex
+	state of the data-set. For instance</P>
+	<LI><P>7 means that the data-set is complex in all axes.</P>
+</UL>
+<P>Certain commands require a specific <TT><FONT FACE="Courier">ITYPE</FONT></TT>
+value. For instance <TT><FONT FACE="Courier">FT</FONT></TT> is
+available only on complex data sets. An error message will be given
+if an <TT><FONT FACE="Courier">FT</FONT></TT> is tried on a real
+data-set. Note that if the data is complex, the real part is held in
+odd points of the buffer, the imaginary part is held in the even
+points. <BR><TT><FONT FACE="Courier">ITYPE</FONT></TT> is usually
+handled automatically by the program, so the user does not need to
+worry about it. You may however have to change it in certain cases,
+typically when loading the data-set the first time, when &quot;playing
+around&quot; with the data-set, or when a &quot;bug&quot; happens in
+the program (highly unlikely......!?)</P>
+<H3><A NAME="Heading940"></A><B>ADD, ADDH, ADDDATA, MULT, MULTDATA</B></H3>
+<P>Two data-sets (1D, 2D or 3D) can be added together with the <TT><FONT FACE="Courier">ADD</FONT></TT>
+command which prompts you for a file-name, then adds the current
+data-set along with the content of the file &quot;file-name&quot; in
+standard format, the result being left in memory.</P>
+<P>It is also possible to add a file in FT-NMR format with the <TT><FONT FACE="Courier">ADDH</FONT></TT>
+command.</P>
+<P>Finally it is also possible to add the current buffer with the
+data held into the <TT><FONT FACE="Courier">DATA</FONT></TT> buffer
+with the <TT><FONT FACE="Courier">ADDDATA</FONT></TT> command (single
+word).</P>
+<P>In all cases, you may want to pre-scale the current data-set with
+the command <TT><FONT FACE="Courier">MULT</FONT></TT> which allows
+one to multiply the current data-set by a given scalar.</P>
+<P>The command <TT><FONT FACE="Courier">MULTDATA</FONT></TT>, on the other hand, 
+  multiplies point by point the content of the current buffer with the content 
+  of the <TT><FONT FACE="Courier">DATA</FONT></TT> buffer. This permits to realise 
+  convolution product. When applied on complex (respectively hypercomplex) data-sets, 
+  a complex (respectively hypercomplex) product is realised. (See <A HREF="./basic-SEVERAL.html">Several 
+  Buffers</A><SPAN STYLE="text-decoration: none">)</SPAN> for more multi buffer 
+  commands</P>
+<H3><A NAME="Heading944"></A><B>Post processing : REAL, SWA, USWA,
+ABS, MODULUS, PLUS, MINUS, ZEROING, SMOOTH, MEDIAN</B></H3>
+<P>These commands are meant for post-processing of spectra after
+Fourier transformation :</P>
+<P><TT><FONT FACE="Courier">REAL</FONT></TT> will remove the
+imaginary part of a complex data-set, thus halving of the size of the
+file of a phased spectrum.</P>
+<P><TT><FONT FACE="Courier">USWA</FONT></TT> will separate the real
+and imaginary part of a complex data-set, they will be displayed on
+each side of the data-set, changing its <TT><FONT FACE="Courier">ITYPE</FONT></TT>
+from complex to real, thus permitting to examine both part at the
+same time.</P>
+<P><TT><FONT FACE="Courier">SWA</FONT></TT> performs the inverse of
+<TT><FONT FACE="Courier">USWA</FONT></TT> by taking each side of a
+real data-set as real and imaginary parts of a complex data-set. Both
+<TT><FONT FACE="Courier">SWA</FONT></TT> and <TT><FONT FACE="Courier">USWA</FONT></TT>
+will only work on data with a size equal to a power of two. If it is
+not the case, you will have to add zeros up to the next power of 2,
+apply the command, and then reduce the size to the previous value. 
+</P>
+<P><TT><FONT FACE="Courier">ABS</FONT></TT> will compute the absolute
+value of the current real data set.</P>
+<P><TT><FONT FACE="Courier">MODULUS</FONT></TT> will compute the
+modulus of the current complex data-set and put the result in a new
+real data-set. In 2D the action taken will depend on the value of
+<TT><FONT FACE="Courier">ITYPE</FONT></TT> :</P>
+<UL>
+	<LI>
+    <P><TT><FONT FACE="Courier">ITYPE=3</FONT></TT>, the hypercomplex modulus 
+      = <IMG SRC="./images/Equation1.gif" NAME="Image13" ALIGN=BOTTOM WIDTH=187 HEIGHT=20 BORDER=0>will 
+      be computed</P>
+	<LI>
+    <P><TT><FONT FACE="Courier">ITYPE=1</FONT></TT>, the complex modulus = <IMG SRC="./images/Equation2.gif" NAME="Image14" ALIGN=BOTTOM WIDTH=74 HEIGHT=20 BORDER=0>will 
+      be computed along F2</P>
+	<LI><P><TT><FONT FACE="Courier">ITYPE=2</FONT></TT> is not handle
+	and the data should be modified with FLOP.</P>
+</UL>
+<P>In 3D, the modulus will be computed only for fully hypercomplex
+data-sets (<TT><FONT FACE="Courier">ITYPE = 7</FONT></TT>).</P>
+<P><TT><FONT FACE="Courier">PLUS</FONT></TT> and <TT><FONT FACE="Courier">MINUS</FONT></TT>
+will put to zero all the negative points (the positive for <TT><FONT FACE="Courier">MINUS</FONT></TT>),
+thus leaving a purely positive (negative) data-set.</P>
+<P><TT><FONT FACE="Courier">ZEROING</FONT></TT> will set to zero all
+points below a given threshold (very useful for compacting processed
+data-file see above at <TT><FONT FACE="Courier">WRITE</FONT></TT>).</P>
+<P><TT><FONT FACE="Courier">SMOOTH</FONT></TT> and <TT><FONT FACE="Courier">MEDIAN</FONT></TT>
+are after-processing filters. <TT><FONT FACE="Courier">SMOOTH</FONT></TT>
+realises a moving-average smoothing of the data set on a window of
+variable length, whereas <TT><FONT FACE="Courier">MEDIAN</FONT></TT>
+will perform a median filter on the data-set, by taking the ith
+smaller value of the moving window. Both <TT><FONT FACE="Courier">MEDIAN</FONT></TT>
+and <TT><FONT FACE="Courier">SMOOTH</FONT></TT> will change the
+data-set size by the number of point of the moving window.</P>
+<H3><A NAME="Heading954"></A><B>EVALN, ADDBASE, NOISE, SHIFT</B></H3>
+<P>Permits to compute the noise level and the systematic offset of
+the current data-set within a given window. Computed noise level will
+be put into the context <TT><FONT FACE="Courier">NOISE</FONT></TT>,
+the systematic offset will be in <TT><FONT FACE="Courier">SHIFT</FONT></TT>.
+<BR><TT><FONT FACE="Courier">ADDBASE</FONT></TT> will remove a given
+systematic offset on the data-set. The command prompts you with the
+last value computed by <TT><FONT FACE="Courier">EVALN</FONT></TT>. <BR>A
+macro: evaln.g implements a graphical interface to <TT><FONT FACE="Courier">EVALN</FONT></TT>,
+permitting to compute noise in a graphically given window.</P>
+<H3><A NAME="Heading959"></A><B>DSA</B></H3>
+<P>Implements the Digital Shifted Acquisition method which permits reduction of 
+  the water signal after acquisition (if the water signal is at zero-frequency). 
+  This command will actually add the actual data with itself, after a shift and 
+  multiplication. Values of -2 for the shift and -1.0 for the multiplication factor 
+  will remove the water signal at zero frequency on a BRUKER data-set. <font color="#000000">You 
+  can notice that there are also several other ways of removing the water by the 
+  flatten solvent correction methods.</font></P>
+<HR>
+<P ALIGN=CENTER STYLE="margin-bottom: 0cm"><A HREF="./basic-General.html"><IMG SRC="./images/prev.gif" NAME="Image5" ALT="Previous " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="./basic-HANDLING.html"><IMG SRC="./images/next.gif" NAME="Image6" ALT="Next " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="./basic-Title.html"><IMG SRC="./images/first.gif" NAME="Image7" ALT="Title Page " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="./basic-Contents.html"><IMG SRC="./images/contents.gif" NAME="Image8" ALT="Contents " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+</P>
+</BODY>
+</HTML>

@@ -1,0 +1,8 @@
+Diagonalize the current 2D buffer (must be square and real), puts 
+the eigenvalues
+into the 1D buffer, sorted in decreasing order; and puts the 
+eigenvector matrix
+into the 2D buffer
+
+see also : BACKPROD
+

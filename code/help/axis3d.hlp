@@ -1,0 +1,6 @@
+axis3d fx   where x is 1, 2, 3, 12, 13, or 123
+This context holds the focal length that will be used for computing 
+a 3D display with the DISP3D/REF3D set of commands
+
+see also : REF3D CHECK3D DISP3D DISP3D?
+

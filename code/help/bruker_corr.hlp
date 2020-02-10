@@ -1,0 +1,8 @@
+BRUKER_CORR DSPFIRM DSPFVS DECIM
+
+compute and apply the first order phase correction to be executed on a spectrum
+after Fourier trasform, when the digital filter was used on a Bruker spectrometer.
+
+the value actually used is put in the $RETURNED context
+
+see also : PHASE bruker_add_param

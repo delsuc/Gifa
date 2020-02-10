@@ -1,0 +1,11 @@
+SVD->AR n
+Compute the autoregressive coefficients from the singular 
+decomposition. This is the second step of the LP-SVD method.
+n = 1 : forward autoregressive coefficients
+n = 2 : backward autoregressive coefficients
+n = 3 : both coefficients
+
+related contexts : $NAR $NSVD
+
+see also : SVDLIST SVDCLEAN1 SVDLIST SVD->DT ORDER DT->SVD svd_rev
+

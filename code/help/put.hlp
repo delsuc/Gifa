@@ -1,0 +1,29 @@
+PUT parameter {n}
+ 
+Moves the content of the current buffer to an other buffer
+With parameter equal to:
+
+DATA     load the data to be used for MaxEnt processing or
+         as a off-hand place for processing
+
+in 1D only
+FILTER   load the filter used for Deconvolution.  If NCHANNEL is 
+  greater than 1, then which channel you want to put.  eg.  PUT FILTER 
+  3.  PUT FILTER 0  will consider the current data set as the 
+  multichannel filter, and will load the whole filter. Useful when 
+  associated with GET FILTER to store filters as files.
+WINDOW   load the window to be used for MaxEnt processing
+TAB      load the TAB buffer, used for tabulated fit.
+
+in 2D only
+ROW n    load the 1D buffer in the ROW n
+COL n    load the 1D buffer in the COL n
+AMOEBA   the mask definition to be used by the next MSKINTEG command
+
+in 3D only
+PLANE Fx n   load the 2D buffer in the plane Fx n
+ 
+related context : $SI_TAB $TAB[]
+
+see also : GET SHOW APPLY
+

@@ -1,0 +1,10 @@
+SMOOTH1 n
+
+to be used with BCORR 3
+controls the smoothing of data for the first segmentation
+0     no smoothing.
++1    moving average of the data set on a window of WINMA points.
++10   hysteresis smoothing of the data set with the value LEVELHYSTE.
+
+see also : BCORR
+

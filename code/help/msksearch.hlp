@@ -1,0 +1,8 @@
+MSKSEARCH peak_number
+
+Gives the (F2,F1) coordinates of all the pixels located in 
+the integration mask of a peak.
+The coordinates are given in index.
+
+see also : MSKMODIF MSKINTEG MSKCONC INTEG mskread mskwrite
+

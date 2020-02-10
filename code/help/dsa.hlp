@@ -1,0 +1,8 @@
+DSA shift factor.
+
+Adds to the current data set the same data set multiplied by factor 
+and shifted left by shift points. When applied on a FID with a strong
+signal at zero frequency, wiil remove this signal.
+Useful for suppression of water signal.
+
+see also : rem_h2o 

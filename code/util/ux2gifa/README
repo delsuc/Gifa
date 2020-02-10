@@ -1,0 +1,15 @@
+This program provided by Bruker, permits handle UX/NMR files
+	coming from the X32.
+The shell scripts ux2gifa and ux2par help in handling the program.
+When transfering the experiment NAME=A EXPNO=1 from the X32 to your machine
+you should :
+create a directory on the target machine to hold the bruker files,
+FTP in binary mode the files : acqu , acqus , acqu2 , acqu2s , ser
+or use rcp -r
+type ux2gifa to convert (then answer the questions with dircetory name and
+	gifa file name)
+or type ux2par to get a listing of the parameter file.
+
+The program will create the file in GIFA H format
+
+The shell script getrmn will do the whole work for you

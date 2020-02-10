@@ -1,0 +1,12 @@
+DISP3D n
+
+When DISP3D is set to 1, a graphic window is opened which will be 
+used by the REF3D command to display 3D vues of the current3D data-
+set. The size of the window is set to max(cx,cy,cz) in each 
+dimension.
+
+related contexts : $DISP3D
+
+see also : DISP1D DISP2D CDISP2D REF3D CHECK3D DISP3D? PLOT3D ALPHA 
+BETA GAMA ZNOT CX CY CZ OFFSET3D AXIS3D SCALE3D disp3d? disp3d_form
+

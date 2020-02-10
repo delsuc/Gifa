@@ -1,0 +1,8 @@
+FORGET plot_file_name
+Permits to remove a plot file from the internal list of opened plots 
+without issuing the PAGE command which also sends the plot to the 
+plotter. However the plotter code for the ejection of the paper 
+sheet is not inserted at the end of the plot_file.
+
+see also : PLOT PAGE
+

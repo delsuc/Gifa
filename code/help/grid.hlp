@@ -1,0 +1,8 @@
+GRID direc plot_file
+This command draws a set of horizontal (if direc=F2 or F12) and 
+vertical (if direc=F1 or F12) lines. A CX by CY space is spanned. 
+The grid lines are plotted as defined by the plotaxis? command,. The 
+plot is sent to plot_file.
+ 
+see also PLOT PLOTAXIS PLOTAXIS?
+

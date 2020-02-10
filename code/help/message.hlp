@@ -1,0 +1,14 @@
+message text
+
+This command ermits to build interactive macros. If no argument 
+is present on the calling line when MESSAGE is executed, the text 
+will be issued to the user when the next data entry will be needed; 
+if an argument is present, nothing will happend.
+
+If the macro is called from a menu button, then the text will 
+appear in the data entry dialog box.
+
+related contexts : $ARG
+
+see also : PRINT VARIABLES ALERT SETPROMPT
+

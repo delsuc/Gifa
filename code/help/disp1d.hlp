@@ -1,0 +1,11 @@
+DISP1D 0/1
+
+When DISP1D is set to one, the window displaying the content of the 
+1D buffer is opened. The window is closed if DISP1D is 0.
+
+related contexts : $DISP1D $ABSMAX $BCOLOR $COLOR
+    $SCALE $VHEIGHT $AXIS $ZOOM ZOOM_1D[1] ZOOM_1D[2]
+
+see also : DISP2D CDISP2D DISP3D AXIS STPL COLOR BCOLOR CCOLOR SCALE VHEIGHT
+CLEAR REF UNREF SHOWC disp? super1d
+

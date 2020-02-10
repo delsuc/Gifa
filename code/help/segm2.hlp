@@ -1,0 +1,13 @@
+choose the way the second segmentation is done in BCORR 3. This 
+feature is only useful with a polynomial approximation.
+0 : without.
+1 : interactive.
+2 : automatic.
+When you choose an interactive second segmentation, you have to 
+choose one or several areas with the WINDOW command to allow the 
+program to cut the correction in these areas if needed. The 
+automatic segmentation uses a window, WINSEGM2, and a threshold, 
+LEVELSEGM2.
+
+see also : BCORR
+

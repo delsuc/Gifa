@@ -1,0 +1,8 @@
+This cache2pc utility has been written by Georgy Salnikov <sge@tomosoft.nsk.su>
+in January 1996.
+
+Here is an extract from his mail :
+        The cache2pc utility converts datasets in the Gifa internal format
+     from one ENDIAN to another to make possible data exchange between
+     for example SGI and PC etc.
+

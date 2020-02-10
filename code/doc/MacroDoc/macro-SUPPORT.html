@@ -1,0 +1,74 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=iso-8859-1">
+	<TITLE>Macro programming - SUPPORT FOR DATA-BASES</TITLE>
+	<META NAME="GENERATOR" CONTENT="StarOffice/5.2 (Win32)">
+	<META NAME="CREATED" CONTENT="20011127;17104473">
+	<META NAME="CHANGEDBY" CONTENT="Thierry Gostan">
+	<META NAME="CHANGED" CONTENT="20011127;17112739">
+	<!-- This document was created from RTF source by rtftohtml version 3.9.3 -->
+</HEAD>
+<BODY>
+<P ALIGN=CENTER STYLE="margin-bottom: 0cm"><A HREF="./macro-CONTROL.html"><IMG SRC="./images/leftg.gif" NAME="Image1" ALT="Prev " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="./macro-ENVIRONM.html"><IMG SRC="./images/rightg.gif" NAME="Image2" ALT="Next " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="./macro-Contents.html"><IMG SRC="./images/contg.gif" NAME="Image3" ALT="Contents " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+</P>
+<HR SIZE=4>
+<H1>SUPPORT FOR DATA-BASES</H1>
+<UL>
+	<LI><P><A HREF="#Heading30"><FONT COLOR="#cc0000">DBOPEN, DBCLOSE</FONT></A><FONT COLOR="#cc0000">
+	</FONT>
+	</P>
+</UL>
+<HR SIZE=4>
+<P>There is in <I>Gifa</I> a support for the UNIX standard data-base
+file format dbm. A dbm data-base is composed of two files:
+<TT>base_name.pag</TT> and <TT>base_name.dir</TT> which together hold
+the information of the base_name data-base. Each entry consist of a
+field indexed with an access key. Each entry is accessed with the
+access key. Data can be retrieve, stored, modified in the data-base.
+Every operations are realized on the file, but the disk accesses are
+minimized.<BR>In <I>Gifa</I>, such a dbm data-base is accessed
+through a binding to an associative array. Each entry of the
+data-base appears as a element of the array. Reading, storing and
+modifying entries is performed by fetching and assigning array
+values. The access key of the entry in the dbm file appears as the
+index of the associative array, and the content appears as the value
+of the associative array. Due to internal <I>Gifa</I> limitation,
+only keys up to 31 characters and entries up to 256 characters can be
+handled.</P>
+<H3><A NAME="Heading30"></A>DBOPEN, DBCLOSE</H3>
+<P>These two commands permits to associate the dbm file with a pseudo
+internal array variable. The command</P>
+<PRE STYLE="margin-bottom: 0.5cm">dbopen array_name file_name</PRE><P>
+will associate a pseudo associative array with the dbm files of base
+name : <I>file_name. </I>The file is created if it does not exist
+yet. No actual variable <I>array_name</I> is created, but each
+operation on it is performed on the dbm file.<BR><TT>DBCLOSE</TT>
+closes the file and forget about the array <I>array_name</I> .<BR>The
+functions <TT>dbm()</TT> and <TT>nextlm()</TT> permits to handle the
+dbm file in macro processing. The control <TT>FOREACH</TT> permits to
+scan easily through all the entries of a dbm file.<BR>Let's give an
+example :</P>
+<HR WIDTH=605 ALIGN=CENTER>
+<PRE STYLE="margin-left: 1cm; margin-right: 1cm">dbopen array file_db                    ; associates the file 
+set array['dim'] = $dim         ; store entries (associative array)
+set array['size_1d'] = $si1_1d
+dbclose array                           ; and closes the file</PRE>
+<HR WIDTH=605 ALIGN=CENTER>
+<P>after closing <TT>array[]</TT> is not available anymore (it was
+here as a tool to writing into the file <TT>file_db</TT>.<BR>However,
+values have been stored into the file, so next time you will <TT>DBOPEN</TT>
+it (eventually binding an array with a different name this time),
+they will be there again.</P>
+<PRE>dbopen next_time file_db
+print $next_time['dim']
+dbclose next_time </PRE>
+<HR SIZE=4>
+<P ALIGN=CENTER><A HREF="./macro-CONTROL.html"><IMG SRC="./images/leftg.gif" NAME="Image4" ALT="Prev " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="./macro-ENVIRONM.html"><IMG SRC="./images/rightg.gif" NAME="Image5" ALT="Next " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+  <A HREF="./macro-Contents.html"><IMG SRC="./images/contg.gif" NAME="Image6" ALT="Contents " ALIGN=BOTTOM WIDTH=30 HEIGHT=29 BORDER=0></A> 
+</P>
+</BODY>
+</HTML>

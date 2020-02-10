@@ -1,0 +1,16 @@
+NEWFILEC file-name dim ( parameters )(xdim) spec_freq itype
+
+dim is 1D 2D or 3D
+(parameters) is (size, offset, specw, freq)
+
+parameters are entered in the order : F1 {F2 {F3 } }
+
+Creates an empty data file, as described by the parameters. The file
+can then be filled with PUTC or with macros. e.g.
+newfilec data_set 2D 128 0 6000 100.13  256 0 4000 400.13 400 1
+for a 1H-13C experiment on a 400MHz machine.
+A file connected with NEWFILEC can be JOINed and DISJOINed. However 
+a GETC is not possible (it is a Write only acces mode).
+
+see also : JOIN GETHEADER  PUTHEADER dataset macro/proc2d
+

@@ -1,0 +1,10 @@
+CHSIZE SI1 { SI2 { SI3 } }
+Change size of data, zero-fill or truncate.
+DO NOT change the value of OFFSET and SPECW, so EXTRACT should 
+always be preferred on spectra (unless you know exactly what your 
+are doing).
+ 
+related contexts : $SI1_1D $SI1_2D $SI1_3D $SI2_2D $SI2_3D $SI3_3D
+
+see also : EXTRACT MODIFYSIZE lshift rshift size
+

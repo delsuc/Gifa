@@ -1,0 +1,15 @@
+RT->PK size n delay
+
+Calculate the peaks parameters from the roots by a least-square 
+method, computed on the size first points of the current data-set.
+This is the fourth (and last) step of the LP-SVD method.
+n = 1 : forward roots
+n = 2 : "matched" roots
+delay is the dead-time delay of the first point .in seconds. (the 
+error on the time zero)
+
+related contexts : $NRT $PK1D_A[i] $PK1D_F[i] $PK1D_P[i] $PK1D_W[i]
+
+see also : RT->AR, AR->RT, RTLIST, RTPIV, RTCLEAN, RTMATCH, 
+    RTSELECT, RTREFLECT, RTINV, ORDER, PK->RT
+

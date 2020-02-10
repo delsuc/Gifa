@@ -1,0 +1,159 @@
+<HTML><HEAD>
+<!-- This document was created from RTF source by rtftohtml version 3.9.3 -->
+<TITLE>DOSY Processing - DOSY MENU</TITLE></HEAD>
+<BODY>
+<A HREF="dosy-USAGE.html"><IMG SRC="leftg.gif" ALT="Prev " border=0></A>
+ <A HREF="dosy-RELATED.html"><IMG SRC="rightg.gif" ALT="Next " border=0></A>
+ <A HREF="dosy-Title.html"> </A>
+ <A HREF="dosy-Contents.html"><IMG SRC="contg.gif" ALT="Contents " border=0></A>
+<hr size=4>
+<H1>
+DOSY MENU</H1>
+<UL>
+<LI><A HREF="#Heading18">Tab_buffer</A>
+<LI><A HREF="#Heading19">Showtab</A>
+<LI><A HREF="#Heading20">Eval noise</A>
+<LI><A HREF="#Heading21">Calibdosy</A>
+<LI><A HREF="#Heading22">Dosy_setup</A>
+<LI><A HREF="#Heading23">dosyfit (1 comp.)</A>
+<LI><A HREF="#Heading24">dosyfit_2 (2 comp.)</A>
+<LI><A HREF="#Heading25">Inv Laplace</A>
+<LI><A HREF="#Heading26">continue</A>
+<LI><A HREF="#Heading27">Inv tab Laplace</A>
+<LI><A HREF="#Heading28">continue</A>
+<LI><A HREF="#Heading29">Dosy2D</A>
+<LI><A HREF="#Heading30">Dosy3D</A>
+</UL>
+<hr size=4>
+<p>This menu is defined in the /usr/local/gifa/macro/env_dosy.g macro and
+permits to access most of the needed commands.</p>
+
+<h2>
+<A NAME="Heading18">Tab_buffer</A></h2>
+
+<p>Equivalent
+to calling the load macro, which permits to read a plain ascii file into the 1D
+buffer. Raise to square the content of the 1D buffer, needed when using
+tabulated gradient values, before loading them into the TAB buffer (performed
+by copying the data temporary to DATA). The <tt>PUT TAB</tt> command which
+copies the current 1D buffer to the TAB buffer, used for tabulated Laplace
+transform.</p>
+
+<h2>
+<A NAME="Heading19">Showtab</A></h2>
+
+<p>Displays
+the content of the 1D buffer as a tabulated data-set. Xi, Yi are plotted, where
+Xi is taken from the TAB buffer, and Yi from the current data-set. </p>
+
+<h2>
+<A NAME="Heading20">Eval noise</A></h2>
+
+<p>Evaluate
+the noise of the experiment in a signal free region. Needed by the MaxEnt
+processing. Actually calls the <tt>evaln.g</tt> macro.</p>
+
+<h2>
+<A NAME="Heading21">Calibdosy</A></h2>
+
+<p>Brings
+a form that permits to describe the acquisition parameters, in order to
+determine the correct diffusion coefficients in <sub>
+<IMG HEIGHT=21 WIDTH=62 SRC="dosy13.GIF"></sub>
+unit (sets <tt>DFACTOR</tt>).<br>
+  <IMG SRC="dosy14.GIF"><br>
+Chose the used pulses sequence and the observed nucleus. Enter the length, the
+duration of the diffusion delay, the value in G/cm of a gradient coded as 1 in
+the TAB buffer and the shape of your gradient pulse (shape defined by ascii
+file can be used).</p>
+
+<h2>
+<A NAME="Heading22">Dosy_setup</A></h2>
+
+<p>Brings a form that permit to set most of the relevent parameters for DOSY processing.<br>
+  <img src="dosy15.GIF">
+<ul>
+<li>	The DMIN DMAX range must encompass the range of actual decays observed in
+the experiment.
+<li>	Access to the <tt>ITER</tt> context, which determines the number of
+iterations for fit and for the MaxEnt inversion. 30-50 is certainely fine for
+fit, much more is needed for MaxEnt (200 seems a minimum).
+<li>	The context <tt>NDISP</tt> which determines the screen refresh rate during
+MaxEnt processing.
+<li>	Control for MaxEnt, the context <tt>LAMBSP</tt> which determines the speed
+at which the GIFA algorithm will converge (a large value may generate
+instabilities in the processing).</ul><p></p>
+
+<h2>
+<A NAME="Heading23">dosyfit (1 comp.)</A></h2>
+
+<p>Evaluates
+the current 1D buffer as one exponential damping, sampled as described in the
+TAB buffer.</p>
+
+<h2>
+<A NAME="Heading24">dosyfit_2 (2 comp.)</A></h2>
+
+<p>As
+dosyfit, but assuming 2 exponential dampings.</p>
+
+<h2>
+<A NAME="Heading25">Inv Laplace</A></h2>
+
+<p>Starts
+the MaxEnt processing for computing the inverse Laplace transform of the
+current data-set, considered as a regularly sampled one. Equivalent to the
+<tt>INVLAP</tt> command.</p>
+
+<h2>
+<A NAME="Heading26">continue</A></h2>
+
+<p>Increments
+ITER and continue the preceding processing, uses the <tt>INVLAPCONT</tt> command.</p>
+
+<h2>
+<A NAME="Heading27">Inv tab Laplace</A></h2>
+
+<p>Starts
+the MaxEnt processing for computing the inverse Laplace transform of the
+current data-set, considered as a tabulated sampled one. Equivalent to the
+INVTLAP command.</p>
+
+<h2>
+<A NAME="Heading28">continue</A></h2>
+
+<p>Incremnts
+ITER and continue the preceding processing, uses the INVTLAPCONT command.</p>
+
+<h2>
+<A NAME="Heading29">Dosy2D</A></h2>
+
+<p>This
+will bring a box in which the user can simply enter the parameters for the
+dosy2d processing.<br>
+  <IMG SRC="dosy16.GIF"><br>
+The dosy2d processing requires 4 parameters : nature of the data-set (regular
+or tabulated); the processing to do (MaxEnt, fit or fit with 2 components); the
+final size and a noise threshold which permits to determine which slices will
+be processed. <tt>Count</tt> buttom determines how many columns will be
+processed (initial data-set higher than the noise level time the threshold).
+Starts the dosy2d macro which performs the complete processing of the current
+2D data-set.</p>
+
+<h2>
+<A NAME="Heading30">Dosy3D</A></h2>
+
+<p>From
+this form you can set-up parameters for the processing of 3D DOSY datasets (set
+of 2D, wighted by the diffusion). The processing is done on-file.<br>
+  <IMG SRC="dosy17.GIF"><br>
+The parameters are the same than for 2D. You will have to give a input filename
+(from which the data will be taken) as well as the output filename.Starts the
+dosy3d or te dosy3d_on_file macros which perform the complete processing. 
+</p>
+<P><hr size=4>
+<A HREF="dosy-USAGE.html"><IMG SRC="leftg.gif" ALT="Prev " border=0></A>
+ <A HREF="dosy-RELATED.html"><IMG SRC="rightg.gif" ALT="Next " border=0></A>
+ <A HREF="dosy-Title.html"> </A>
+ <A HREF="dosy-Contents.html"><IMG SRC="contg.gif" ALT="Contents " border=0></A>
+</body></html>

@@ -1,0 +1,15 @@
+GETHEADER param_name 
+
+Display the value of a parameter associated to the currently JOINed 
+data-set. Any parameters can be used. Gifa already uses the 
+following parameters (as listed with the dataset command) :
+Frequency, Freq1, Freq2, Freq3, Specw1, Specw2, Specw3, Offset1, 
+Offset2, Offset3, Type, Dim.
+But parameters created with PUTHEADER can also be used.
+The value of the last read parameter is set into the Gifa $c_header 
+variable.
+
+related contexts : $C_JOINED $C_HEADER
+
+see also : JOIN NEWFILEC dataset PUTHEADER 
+

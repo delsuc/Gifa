@@ -1,0 +1,12 @@
+mirror X
+
+implements mirror image reflection, as proposed by Zhu and Bax J.Magn.Reson. 90, p405 (1990)
+
+X determines the position of the t=0 point
+X =  0  no shift : in-phase data set
+    -1  acquisition started exactly half a dwell after t=0 (will need phase 0 180)
+    n>0 acquisition started exactly n dwell before t=0
+        Warning, this is not coherent notation
+
+see also : burg_mirror BURG
+

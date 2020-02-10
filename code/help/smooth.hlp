@@ -1,0 +1,8 @@
+ SMOOTH z   { z2 { z3 }}
+where z { z2 { z3 }} is the size of the smoothing window
+
+Permits to smooth a data set by the moving-average technic. Works in 
+1D as well as in 2D and 3D.
+
+see also : MEDIAN
+

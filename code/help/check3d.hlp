@@ -1,0 +1,6 @@
+This command enters a interactive mode in which the user can choose 
+the different parameters used for a 3D display. Only the cube is 
+shown for speed convinience. DISP3D must have been previously set to 1.
+
+see also : REF3D, DISP3D
+

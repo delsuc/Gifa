@@ -1,0 +1,6 @@
+PLOTLINE X1 Y1 X2 Y2 plot_file
+Draws a line from the X1 Y1 point to the X2 Y2 point (in cm, 
+relative to PLOTOFFSET).
+
+see also : PLOTLINES PLOTTEXT PLOTTEXTS PLOT
+

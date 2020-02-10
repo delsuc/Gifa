@@ -1,0 +1,36 @@
+ITYPE 0..7
+
+ITYPE is a context which describes the type of data in the image buffer.
+
+For 1D if Itype is 1 then the data-set is considered as complex 
+(with real and imaginary parts interleaved), if Itype is 0, the 
+data-set is considered as real. 
+
+For 2D data-sets, itype takes values 0 (real) 1 (complex in dim 
+2, real in dim 1), 2 (complex in dim1, real in dim 2) and 3 (complex 
+in both dimensions).
+
+For 3D data-sets, itype takes values 0 (real) 1 (complex in dim 
+3, real in dim 1 and 2), 2 (complex in dim 2, real in dim 1 and 3), 
+4 (complex in dim 1 real in dim 2 and 3) and the sums for the 
+combinations.
+
+Itype is normally handled automatically by the program. Changing the 
+value of Itype DOES NOT CHANGE the data, only what the program 
+believes they are. When the itype is wrong, use another command 
+(example FT instead of RFT) or make them real (command REAL).
+
+Results of FT, IFT, RFT, IFTBIS PK->DT, SIMU, SIMUN etc... are 
+complex. Results from IRFT, FTBIS, MODULUS, REAL (!) etc... are 
+real. Image from Maximum Entropy Iteration are real.
+
+Linear Prediction package works only on real FIDS. To make real 
+FID complex,use the sequence RFT IFT.
+
+When displaying complex data sets, only the real part is shown on 
+the screen.
+
+related contexts :$ITYPE_1D $ITYPE_2D $ITYPE_3D
+
+see also : REAL FT MODULUS FLIP FLOP
+

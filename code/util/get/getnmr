@@ -1,0 +1,93 @@
+#!/bin/csh
+#to get directly GIFA file form the spectro
+# modif MAD 29 july 1998  - added 3D
+
+# set verbose
+unalias cd
+unalias ls
+echo ""
+if ($#argv == 6 || $#argv == 8 ) then
+   set localpath=$1
+   set spect=$2
+   set user=$3
+   set disk=$4
+   set exp=$5
+   set conv=$6
+else if ($#argv == 0) then
+  echo -n 'destination :'
+  set localpath=$<
+  echo -n 'spectrometer : '
+  set spect=$<
+  echo -n 'user-name :    '
+  set user=$<
+  echo -n 'disk :     '
+  set disk=$<
+  echo -n 'exp-name :     '
+  set exp=$<
+  echo -n 'Do you want to convert to GIFA ?                (y/n) :'
+  set conv=$<
+else
+  echo 'usage : ' $0 ' dest spectro user disk experiment conv-switches..'
+  exit
+endif
+if ($conv == 'y') then
+  if ($#argv == 8) then
+     set del=$7
+     set trf=$8
+  else
+    echo -n 'Do you want to delete uxnmr data file after transfer? (y/n) :'
+    set del=$<
+    echo -n 'Do you want to realize the transfer? (y/n) (n just converts):'
+    set trf=$<
+  endif
+else
+  set del='n'
+  set trf='y'
+endif
+if ($trf == 'y') then
+   if ( ! -e $localpath) then
+        mkdir -p $localpath
+   endif
+   echo transfering /$disk/data/$user/nmr/$exp from guest@$spect
+# REMARK !!!!
+# this is SGI syntax !
+# on certain machine, (eg HP) the following line sould be
+#   rcp -r guest@$spect\:/$disk/data/$user/nmr/$exp $localpath/$exp
+#
+#    if ("`uname`" != "IRIX") then
+#	echo WARNING Shell-Script might be buggy on non-SGI machines
+#    endif
+   rcp -r guest@$spect\:/$disk/data/$user/nmr/$exp $localpath
+endif
+if ($conv == 'y') then
+   foreach i ( `cd $localpath/$exp; ls` )
+     set direc = $localpath/$exp/$i
+     echo converting $direc
+     if  ( -e $direc/ser ) then
+     	if ( -e $direc/acqu3s ) then
+     		set dim=3
+     	else
+        	set dim=2
+        endif
+     else if ( -e $direc/fid ) then
+        set dim=1
+     else
+        echo "GETNMR : No data file found"
+	set dim=0
+     endif
+
+	if ( $dim == 3) then
+		echo "Warning, Choosing AQORDER = 3-2-1"
+		echo "call ux2cach.sh directly if this does not fit your needs"
+		ux2cach.sh $direc $direc/data $dim 1 0
+	else
+		ux2cach.sh $direc $direc/data $dim 1
+	endif
+
+     if ($del == 'y') then
+       rm -rf $direc/ser $direc/fid $direc/pdata
+     endif
+   end
+endif
+echo done
+exit

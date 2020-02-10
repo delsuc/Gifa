@@ -1,0 +1,52 @@
+FITGENE 'expression to minimize' num_of_param
+
+This command calls the generic minimizer and permits to
+fit a given function to the data currently held into memory.
+
+
+'expression to minimize' is the function, given in Gifa language
+    that will be minimized. The free (adaptable) parameters will
+    be called $Pi with i ranging from 1 to num_of_par.
+    the running parameter is to be called $X.
+
+num_of_par is the number of parameters to adapt in the previous
+    expression
+
+Expression should a function of $X, $X will take all the values stored
+in the TAB buffer (see PUT TAB), the expression will be matched
+against the data in the current 1D working buffer.  A CHI_square will
+be computed for the deviation and minimized.
+
+The adapted parameter are stored in the global user variables
+$P1..$Pn, if the variables do not exist before the call they
+will created with initial value of 1.0, if they exists, their value
+will be taken as initial value for the minimization.
+So be carefull with function which cannot accomodate 1.0 as starting value.
+
+Error bars on the parameters are returned in $DP1..$DPn
+
+The algorithm used is the Powell method, which does not
+require any derivative.  The number of iterations is controled by ITER
+and MINITER. 10 is a good starting value for both of them.
+
+eg :
+ dim 1 chsize 50                      ; initialize
+ one tm 50 50  put tab                ; create a dump TAB[]
+ one mult 1.5 specw 1000 em 100       ; create a dump data-set
+               ; this one look like a T2 data
+ iter 10   miniter 10                 ; number of iterations
+ FITGENE '$p1*exp(-$x/$p2)' 2         ; run fit
+ print ($p1; $p2)                     ; print fitted parameters
+
+
+will produce :
+FITGENE Final Chi2 :  .69268190E-14
+1.75513 .1273239
+
+then, try :
+showexp '$p1*exp(-$x/$p2)'
+
+
+related contexts : $CHI2 $SI_TAB $TAB[]
+
+see also : FITEXP showexp residue ITER MINITER MINIMIZE PUT LINEFIT LINEFITD

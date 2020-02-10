@@ -1,0 +1,17 @@
+LOGA n 	with n>=1
+
+Controls the way the levels are computed in the Contour Plot graphic 
+mode.
+
+If LOGA = 1, then the lowest level is ABSMAX/(SCALE*LEVEL), and all 
+the levels above are equidistant with the same quantity.
+
+If LOGA >1, the lowest level is the same, but each level is computed 
+from the previous one : L(i+1) = L(i)*LOGA; in a exponential manner. 
+
+For instance, LOGA = 2 corresponds to the standard BRUKER output.
+
+related contexts : $LOGA
+
+see also : CDISP2D PLOT
+

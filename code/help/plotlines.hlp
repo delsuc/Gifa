@@ -1,0 +1,6 @@
+PLOTLINES X1 Y1 X2 Y2 plot_file
+Draws a line from the X1 Y1 point to the X2 Y2 point (in index unit, 
+projected on the CX x CY area, as used by the PLOT command).
+
+see also : PLOTLINE PLOTTEXT PLOTTEXTS PLOT PLOTPEAKS
+

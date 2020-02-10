@@ -1,0 +1,258 @@
+<html>
+<head>
+<!-- This document created by dodoc_html V2.1>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#CC0000">
+<TITLE>Commands in W </TITLE>
+<H2> <A HREF="commands.html">Back to Alphabetical List</A> </H2>
+
+<A NAME="WHILE">
+<HR> <H3> WHILE </H3> 
+<BLOCKQUOTE>
+<pre>
+WHILE test
+..commands
+ENDWHILE
+
+Commands in the WHILE .. ENDWHILE structure will be executed as long 
+as the test holds true. Can be used only in macro command files.
+
+WHILE and ENDWHILE should appear alone on one line, eventually 
+followed by a comment.
+
+
+ see also : <A HREF="Ccommands.html#CONTROLS">CONTROLS</A> <A HREF="Fcommands.html#FOR">FOR</A> <A HREF="Fcommands.html#FOREACH">FOREACH</A> <A HREF="Fcommands.html#FUNCTIONS">FUNCTIONS</A> <A HREF="Gcommands.html#GOTO">GOTO</A> <A HREF="Icommands.html#IF">IF</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="WINDOW">
+<HR> <H3> WINDOW </H3> 
+<BLOCKQUOTE>
+<pre>
+ WINDOW {Fx} x y   or WINDOW {Fx} 0
+	Define the window (with the starting point and the ending 
+point)on which data is  actually used for the iteration. Data 
+outside this window(displayed as 0 during the interactive input) are 
+just ignored for the processing. Window can be entered several time, 
+the result being cumulative.
+Entering 0 to reset the whole window available.
+ 
+
+ see also : <A HREF="Acommands.html#APPLY">APPLY</A> <A HREF="Pcommands.html#PUT">PUT</A> <A HREF="Scommands.html#SHOW">SHOW</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="WRITE">
+<HR> <H3> WRITE </H3> 
+<BLOCKQUOTE>
+<pre>
+WRITE file_name
+Writes the current data set to a file in standard format.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $NAME
+
+
+ see also : <A HREF="Rcommands.html#READ">READ</A> <A HREF="Wcommands.html#WRITEC">WRITEC</A> <A HREF="Wcommands.html#writegz">writegz</A> <A HREF="Wcommands.html#WRITEH">WRITEH</A> <A HREF="Wcommands.html#WRITEL">WRITEL</A> <A HREF="Wcommands.html#WRITEM">WRITEM</A> <A HREF="Wcommands.html#WRITES">WRITES</A> <A HREF="Wcommands.html#WRITEZ">WRITEZ</A> <A HREF="Zcommands.html#ZEROING">ZEROING</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="WRITEC">
+<HR> <H3> WRITEC </H3> 
+<BLOCKQUOTE>
+<pre>
+Same as WRITE
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $NAME
+
+
+ see also : <A HREF="Rcommands.html#READC">READC</A> <A HREF="Wcommands.html#WRITE">WRITE</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="writegz">
+<HR> <H3> writegz </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/writegz">Show macro</A>
+<pre>
+ writegz filename
+
+ write a regular Gifa file and compresses it
+
+ 
+ see also : <A HREF="Wcommands.html#WRITEZ">WRITEZ</A> <A HREF="Zcommands.html#ZEROING">ZEROING</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="WRITEH">
+<HR> <H3> WRITEH </H3> 
+<BLOCKQUOTE>
+<pre>
+WRITEH file_name
+Writes the current data set to a file in a standard format 
+compatible with ft-nmr file format.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $NAME
+
+
+ see also : <A HREF="Rcommands.html#READH">READH</A> <A HREF="Wcommands.html#WRITE">WRITE</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="WRITEL">
+<HR> <H3> WRITEL </H3> 
+<BLOCKQUOTE>
+<pre>
+WRITEL file_name
+  Write a NMR1/NMR2 compatible data-set
+ 
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $NAME
+
+
+ see also : <A HREF="Rcommands.html#READL">READL</A> <A HREF="Wcommands.html#WRITE">WRITE</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="WRITEM">
+<HR> <H3> WRITEM </H3> 
+<BLOCKQUOTE>
+<pre>
+WRITEM file_name
+Creates an ascii files which can than be read with the MATLAB 
+program, or ith the READM command. Does not work for 3D data-set.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $NAME
+
+
+ see also : <A HREF="Rcommands.html#READM">READM</A> <A HREF="Wcommands.html#WRITE">WRITE</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="WriteNV">
+<HR> <H3> WriteNV </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/WriteNV">Show macro</A>
+<pre>
+ convert Gifa data file into NmrView file entry
+
+WriteNV $datafile .
+</pre>
+</BLOCKQUOTE>
+<A NAME="WRITES">
+<HR> <H3> WRITES </H3> 
+<BLOCKQUOTE>
+<pre>
+WRITES filename
+Writes to the disk in standard compact format. This format is 
+compatible among incompatible platforms. It is ASCII format and can 
+be shared in a network by different machines, and can even be 
+E_Mailed.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $NAME
+
+
+ see also : <A HREF="Rcommands.html#READS">READS</A> <A HREF="Wcommands.html#WRITE">WRITE</A> <A HREF="Wcommands.html#WRITET">WRITET</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="WRITET">
+<HR> <H3> WRITET </H3> 
+<BLOCKQUOTE>
+<pre>
+WRITET filename
+Write to the disk in text format. The data are in formatted values, 
+1 entry per line. Useful for sending data to an other program.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $NAME
+
+
+ see also : <A HREF="Rcommands.html#READT">READT</A> <A HREF="Wcommands.html#WRITE">WRITE</A> <A HREF="Wcommands.html#WRITES">WRITES</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="WRITEZ">
+<HR> <H3> WRITEZ </H3> 
+<BLOCKQUOTE>
+<pre>
+WRITEZ filename
+Write from the disk in compacted file format. Uses ORDER for 
+compaction.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $NAME
+
+
+ see also : <A HREF="Rcommands.html#READZ">READZ</A> <A HREF="Wcommands.html#WRITE">WRITE</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="write_bmrb">
+<HR> <H3> write_bmrb </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/write_bmrb">Show macro</A>
+<pre>
+ write_bmrb
+
+ output the assignment in BRMB format (hopefully!)
+</pre>
+</BLOCKQUOTE>
+<A NAME="write_nmrstar">
+<HR> <H3> write_nmrstar </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/write_nmrstar">Show macro</A>
+<pre>
+ write_nmrstar
+
+ output the assignment in NMR-STAR format (partial !)
+</pre>
+</BLOCKQUOTE>
+<A NAME="write_nmrstar.old">
+<HR> <H3> write_nmrstar.old </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/write_nmrstar.old">Show macro</A>
+<pre>
+ write_nmrstar
+
+ output the assignment in NMR-STAR format (partial !)
+</pre>
+</BLOCKQUOTE>
+<A NAME="write_param_maxent">
+<HR> <H3> write_param_maxent </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/write_param_maxent">Show macro</A>
+<pre>
+write_param_maxent file_name
+ 
+ store MaxEnt parameters in file header
+</pre>
+</BLOCKQUOTE>
+<A NAME="writproc.g">
+<HR> <H3> writproc.g </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att/dyna    <A HREF="/usr/local/gifa/macro/att/dyna/writproc.g">Show macro</A>
+<pre>
+ writproc.g $data_typ $out $dbno
+
+ write the result of a processing for a curve 
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="writproc.g.1">
+<HR> <H3> writproc.g.1 </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att/dyna    <A HREF="/usr/local/gifa/macro/att/dyna/writproc.g.1">Show macro</A>
+<pre>
+ writproc.g $data_typ $out $dbno
+
+ write the result of a processing for a curve 
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="writproc.g.old">
+<HR> <H3> writproc.g.old </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att/dyna    <A HREF="/usr/local/gifa/macro/att/dyna/writproc.g.old">Show macro</A>
+<pre>
+ writproc.g $data_typ $out $dbno
+
+ write the result of a processing for a curve 
+
+</pre>
+</BLOCKQUOTE>
+
+ </body> 
+ 

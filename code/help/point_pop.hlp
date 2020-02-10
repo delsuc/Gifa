@@ -1,0 +1,6 @@
+remove one entry from the point stack.
+
+related contexts : $POINTX[i] $POINTY[i] $NPOINT
+
+see also : POINT_PUSH POINT_CLEAR POINT_INPUT point
+

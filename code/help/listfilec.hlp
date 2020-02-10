@@ -1,0 +1,7 @@
+Lists to the user the name of the currently connected file with the 
+JOIN command
+
+related contexts : $C_JOINED $C_NAME
+
+see also : JOIN DISJOIN dataset
+

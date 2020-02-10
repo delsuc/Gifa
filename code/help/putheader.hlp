@@ -1,0 +1,11 @@
+PUTHEADER param_name value
+Set the value of a parameter associated to the currently JOINed 
+data-set. If the parameter already exists, the value is changed, 
+otherwise it is created. Any parameters can be used. Gifa already 
+uses the following parameters (as listed with the dataset command) :
+Frequency, Freq1, Freq2, Freq3, Specw1, Specw2, Specw3, Offset1, 
+Offset2, Offset3, Type, Dim.
+But you can use any other parameter name if you wish.
+
+see also : JOIN NEWFILEC dataset GETHEADER 
+

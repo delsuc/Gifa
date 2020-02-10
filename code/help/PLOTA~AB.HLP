@@ -1,0 +1,11 @@
+PLOTAXIS? Unit X_separation Y_separation
+
+This command prompts you for different parameters that will be used 
+by PLOTAXIS : unit (may be different of the UNIT command) and 
+separations on x and y axes. The definition is also used for the 
+GRID command.
+
+related contexts : $PLOTAXIS[1] $PLOTAXIS[2] $PLOTAXIS[3]
+
+see also : PLOTAXIS PLOT title GRID
+

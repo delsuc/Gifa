@@ -1,0 +1,11 @@
+RTPIV alpha
+
+Will remove all the forward roots with frequency higher than 1/alpha 
+(in -PI +PI unit). Used to remove spurious frequency when doing 
+build-up curve analysis.
+
+related contexts : $NRT
+
+see also : RT->AR, AR->RT, RTLIST, RTCLEAN, RTMATCH, RTSELECT, 
+   RTREFLECT, RTINV, RT->PK
+

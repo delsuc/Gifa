@@ -1,0 +1,9 @@
+DBOPEN file_name array_name 
+
+associates the array array_name  with the db file file_name. Each 
+operation on the array will be propagated to the file : access, 
+change, delete, exist(), nextlm() etc... Any db file can be 
+accessed.
+
+see also : DBCLOSE VARIABLES FUNCTIONS FOREACH dbimport dbexport
+

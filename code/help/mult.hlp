@@ -1,0 +1,5 @@
+MULT x
+Multiply data-set by a scalar.
+
+see also : MULTDATA ADD ADDDATA
+

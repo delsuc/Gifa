@@ -1,0 +1,9 @@
+TLAPLACE size
+
+Computes the Laplace transform of the current data-set, considered as 
+spanning the range DMIN-DMAX in a logarithmic manner.  Result consists in 
+'size' points sampled at the location tabulated in the TAB buffer.
+
+related contexts : $DMIN $DMAX $SI_TAB $TAB[]
+
+see also : DMIN DMAX LAPLACE PUT INVTLAP TRANSTLAP env_dosy.g

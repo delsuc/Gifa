@@ -1,0 +1,47 @@
+   The assignment module implements a set of very simple assignment
+tools.  It is completely written in the Gifa macro language, and as
+such can be fully adapted to your needs.  Right now, it is principally
+aimed toward protein and peptide assignment.
+
+   You enter the module by choosing 'Assignment' in Mode menu.
+
+   Here is a simple 'recipe' on how to use this module:
+
+1) get a set of nice processed homonuclear 2D experiments somewhere on
+the computer system.
+
+2) create a new project, enter the primary sequence, and link all your
+nice 2D into the spectra directory; then read-in the TOCSY.
+
+3) peak-pick the TOCSY spectrum, at least on the finger print region
+and copy it over into the assignment data-base, eventually redo so for
+NH-side chain regions.
+
+4) use the marker tool to note peak alignments, eventually confirm by
+"showing" also the NOESY, or a TOCSY from other experimental
+conditions.
+
+5) once a spin system is found, and noted with one or several markers,
+eventually create the corresponding additional peaks with marker tool,
+create spins, and put them in the special "build-list";
+
+6) promote the spin-list to a spin-system
+
+7) go back to 4) as long as there are spin-systems to assign.
+
+8) load the NOESY in place of the TOCSY
+
+9) use the NH-NH region and the NH-Ha region to do the sequential
+assignment, use the marker tool again to create new NOESY peaks in the
+data-base. Check peaks and spins with the find peak and find spin
+tools, use edit peak to add peaks in the NOESY data base.
+
+10) once a sequential is found, modify the spin systems accordingly
+
+11) go back to 9 as long as the sequential is not finished
+
+12) assign all remaining NOESY peaks.
+
+13) output the NOESY peaks in the form of a XPLOR constraint list
+(this will become automatic soon !)  Thirteen steps, not such a big
+deal after all !

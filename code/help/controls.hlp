@@ -1,0 +1,15 @@
+Several control structures are available in the macros file :
+
+GOTO
+one line IF
+multiple line IF .. ELSEIF .. ELSE .. ENDIF
+FOR loop
+FOREACH loop
+WHILE loop
+
+macros can be called from within macros, up to 9 levels of nesting.
+No recursivity is allowed.
+
+see also : MACRO GOTO IF FOR FOREACH WHILE VARIABLES CONTEXTS 
+     FUNCTIONS ERROR ONERRORGOTO SETPATH SETPROMPT
+

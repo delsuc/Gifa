@@ -1,0 +1,50 @@
+   The intensity analysis module implements a set of simple tools 
+dedicated to the analysis of peak intensity according to the 
+assignment database. It is completely written in the Gifa macro 
+language, and can be fully adapted to your needs.
+
+   The module is now contained in the button "Intens-ana" of 
+the assignment menu.
+
+   Here is a simple 'recipe' on how to use this module:
+
+   If you want to produce a constraint file used for structure 
+generation:
+
+1) Determine accurate intensities of database peaks using 
+the 'integ', 'sumrec', 'amoeba' or 'line-fitter procedure. 
+The command is ?
+
+2) Determine a set of calibration peaks, which will be used 
+to define distance estimates on the current peak of the database 
+(Choose the calibration intensities).
+This set of peaks contains the calibration distances chosen for 
+a series of peaks, for which the corresponding intensities are 
+contained in the database.
+
+3) Write the output constraint file, according to the set of 
+calibration peaks. The file cab be written in XPLOR or DIANA format, 
+and the distance estimates can be generated in the 'build_up' or 
+'qualitative' ways. 'Build-up' way means that a precise distance 
+estimate is quantitatively determined from the information 
+contained in the peak calibration set. Then, a general uncertainty 
+can be supposed for all the distances.
+
+   If you want to generate files containing intensity variation on 
+a series of data-sets (in the case you want to perform quantitative 
+T1, T2 or nOe analysis).
+
+1) Copy the database to an ascii peak file (same format than those 
+used in pkread/pkwrite commands), and save the lookup table giving 
+the peak index in function of the database index (command: Copy db 
+to a pk file).
+
+2) Then read this peak file (PkRead) and integrate it using the 
+amoeba procedure. Save the amoeba file using the same basename than 
+the peak file.
+
+3) Finally, perform a multiple integration of the series of data-sets 
+according to the saved amoeba file, using the 'Multiple Integration Tool'. 
+For each peak in the database, an intensity file is generated and 
+you can check it by using the 'Show Inegration Curve' command.
+

@@ -1,0 +1,10 @@
+Secondary iteration number for two steps minimisation in GIFA.
+Number of iterations used for the line-minimization during one step 
+of the MaxEnt iteration.
+In a MaxEnt run, the number of FT's per iteration is MINITER + 2
+Also used by other iterative process LINEFIT AUTOPHASE
+
+related contexts : $MINITER
+
+see also : ITER
+

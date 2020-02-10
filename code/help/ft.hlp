@@ -1,0 +1,27 @@
+FT { axis }
+
+Performs in-place complex Fourier Transform on the current data-set; 
+Data-set must be Complex.
+
+All FT commands work in 1D, 2D or 3D
+in 1D axis, is not needed
+in 2D axis, is F1, F2 or F12
+in 3D axis, is F1, F2, F3, F12, F13, F23 or F123
+
+Here is a complete overview of FT routines : C stands for Complex, R 
+stands for Real
+	FIDs		Spectra
+	C	---FT--->	C
+	C	<--IFT---	C
+	R	--RFT-->	C
+	R	<--IRFT--	C
+	C	-FTBIS->	R
+	C	<-IFTBIS-	R
+	R	Does not exist 	R
+
+related contexts : $ITYPE_1D $ITYPE_2D $ITYPE_3D
+
+see also : FLIP FLOP MODULUS REAL IFTBIS ft_seq ft_sim ft_sh ft_tppi 
+           ft_sh_tppi ft_phase_modu ft_n+p corect1st easy2d easy3d
+           proc2d proc3d
+

@@ -1,0 +1,9 @@
+MSKMODIF crdf1 crdf2 nopeak
+
+Assign the pixel at coordinates crdf1 crdf2 to the amoeba of the 
+peak nopeak. The pixel coordinates crdf1 and crdf2 are given in  index.
+Setting a nopeak of zero removes that pixel from the amoeba 
+definition.
+
+see also : MSKCONC MSKINTEG INTEG SETVAL MSKSEARCH mskread mskwrite
+

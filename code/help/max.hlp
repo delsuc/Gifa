@@ -1,0 +1,7 @@
+Finds the maximum and minimum points of the current data-set. Load 
+the values used by MINIMAX.
+
+related contexts : $MAX[1] $MAX[2]
+
+see also : MAX ABSMAX
+

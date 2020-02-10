@@ -1,0 +1,10 @@
+AR->DT size n
+Extend the data-set up to size points long by predicting the missing 
+data points, using linear prediction.
+n = 1 : following points predicted -> forward prediction 
+n = 2 : previous points predicted -> backward prediction
+
+related contexts : $NAR $SI1_1D
+
+see also : BURG DT->AR SVD->AR ORDER
+

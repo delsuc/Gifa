@@ -1,0 +1,9 @@
+   ADD  name_of_file   -or- ADDC name_of_file
+	permits to add to the current data-set the content of the file 
+name_of_file, which is in standard format. Works for both 1D, 2D and 
+3D data-sets.
+
+related contexts : $NAME
+
+see also : ADDH ADDDATA  MULT READ
+

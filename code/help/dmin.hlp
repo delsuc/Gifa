@@ -1,0 +1,8 @@
+DMIN value
+
+Determines the slowest decaying component during Laplace analysis
+Given in arbitrary unit, use DFACTOR to relate to actual values.
+
+related contexts : $DMIN
+
+see also : DMAX DFACTOR UNIT LAPLACE TLAPLACE INVLAP INVTLAP env_dosy.g

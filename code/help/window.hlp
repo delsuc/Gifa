@@ -1,0 +1,10 @@
+ WINDOW {Fx} x y   or WINDOW {Fx} 0
+	Define the window (with the starting point and the ending 
+point)on which data is  actually used for the iteration. Data 
+outside this window(displayed as 0 during the interactive input) are 
+just ignored for the processing. Window can be entered several time, 
+the result being cumulative.
+Entering 0 to reset the whole window available.
+ 
+see also : SHOW PUT APPLY
+

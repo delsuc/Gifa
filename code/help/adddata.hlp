@@ -1,0 +1,5 @@
+	Add the contents of the DATA buffer to the current data-set. 
+Equivalent to ADD but in-memory.
+
+see also : MULTDATA MAXDATA MINDATA EXCHDATA ADD ADDH MULT PUT
+

@@ -1,0 +1,11 @@
+JMULT J1 {J2) k
+Set up the J (J1 and J2) constant for J-deconvolution; the J entered 
+should be half the J of the coupling you want to deconvoluate. k is 
+either A or P if you want Antiphase or Inphase J-deconvolution. The 
+data are actually multiplied by the filter function. Used mostly to 
+check the effect of the filter one the Data.
+DO NOT use JMULT before launching a J-deconvolution Maximum Entropy 
+run.
+
+see also : JCONS FILTER EM GM SIN SQSIN TM
+

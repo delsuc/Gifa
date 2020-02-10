@@ -1,0 +1,6 @@
+Compare the content of the current buffer with the content of the 
+DATA buffer, and leave in memory the largest of the 2 values.
+Usefull for projections or symetrisation macros.
+
+see also : MINDATA EXCHDATA ADDDATA MULTDATA SYM PUT
+

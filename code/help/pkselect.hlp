@@ -1,0 +1,7 @@
+PKSELECT index()
+
+Select the peaks parameters whose index() are given. To end 
+selection, enter the index 0.
+
+see also : PKRESET PEAK PKCLEAN PKCLEAR PKRM
+

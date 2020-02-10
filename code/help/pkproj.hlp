@@ -1,0 +1,16 @@
+PKPROJ axis alogrithm tolerance
+
+Propagates the contents of the 2D peak-table on the 1D peak-table. 
+All the 2D peaks will generate an entry in the 1D table. If two (or 
+n) peaks are less than tolerance (in Hz) apart during the 
+projection, they will be merged into one peak. The intensity of the 
+resulting peak will be either the mean value ot the max value of the 
+initial peak, depending on the chosen algorithm (Mean or Skyline).
+PKPROJ does not modify the spectral parameters (spectral width, 
+frequences and offsets), so, if the 1D spectral parameters are 
+different from the 2D parameters, strange results can be obtained.
+
+related contexts : $NPK1D $NPK2D $PK1D_A[i] $PK1D_F[i] $PK1D_P[i] $PK1D_W[i]
+
+see also: PEAK PKSYM
+

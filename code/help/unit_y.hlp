@@ -1,0 +1,17 @@
+UNIT_Y value
+        The context UNIT_Y will determine the unit used for the vertical
+axis on 2D display
+UNIT_Y can take the values INDEX (number of
+channel) HERTZ (based on SPECW and OFFSET), PPM (HERTZ divided by
+FREQ), SECOND (usefull only for FID), TABULATED (values are taken from
+the TAB buffer) or DAMPING (in damping values). All other values are
+invalid.
+
+UNIT_Y is reset to UNIT wheneever the UNIT command is used.
+
+related contexts : $UNITY choose_unit
+
+see also : UNIT
+
+~
+

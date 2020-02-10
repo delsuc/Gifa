@@ -1,0 +1,8 @@
+znot value
+This context holds the focal length that will be used for computing 
+a 3D display with the DISP3D/REF3D set of commands. A large value 
+(1000) will produce a nearly orthometric projection, a small value 
+(10 or less) will result in large conic distortions.
+
+see also : DISP3D DISP3D?
+

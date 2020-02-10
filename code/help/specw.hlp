@@ -1,0 +1,15 @@
+SPECW x { y { z }}
+Permits to enter the value for the spectral width of the current 
+data-set. One parameter will be needed for each dimension of the 
+data-set.
+
+When reading a file the spectral width is set to 2000 * 3.1416 if no 
+parameter block is available.
+
+The value for spectral width are changed by EXTRACT
+ 
+related contexts : $SPECW_1D $SPECW_1_2D $SPECW_1_3D $SPECW_2_2D
+               $SPECW_2_3D $SPECW_3_3D
+
+see also : size OFFSET EXTRACT calib 
+

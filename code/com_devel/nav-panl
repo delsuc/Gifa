@@ -1,0 +1,58 @@
+#
+# This file is used for customizing the layout of the
+# navigation panels created by rtftoweb. You can tell rtftoweb to load
+# a customization file like this one by the command line option "-N <file>".
+# If the file "nav-panel" exists in rtftohtml's library directory and no
+# -N option was given the navigation panel layout will be read from that file.
+#
+# Each of the following lines define a certain panel element. Everything that 
+# follows the first colon will be literally inserted into the html files.
+# This way it is possible to have inline images as navigation buttons.
+#
+
+# these define the buttons of the navigation panels:
+previous.:<IMG SRC="leftg.gif" ALT="Prev " border=0>
+next.....:<IMG SRC="rightg.gif" ALT="Next " border=0>
+up.......:<IMG SRC="upg.gif" ALT="Up " border=0>
+title....:<IMG SRC="upg.gif" ALT="Title " border=0>
+contents.:<IMG SRC="contg.gif" ALT="Contents " border=0>
+index....:<IMG SRC="indexg.gif" ALT="Index" border=0>
+
+# the following maybe specified to display, say, a "previous" button, even if
+# there is no previous document (so that the nav panel always looks the same):
+#noprev...:<IMG SRC="noleftg.gif" ALT=".... " border=0>
+#nonext...:<IMG SRC="norightg.gif" ALT=".... " border=0>
+#noup.....:<IMG SRC="noupg.gif" ALT=".. " border=0>
+#notitle..:<IMG SRC="noupg.gif" ALT="..... " border=0>
+
+# the delimiter between navigation items:
+delimiter: 
+
+# definition for the horizontal line:
+hr.......:<hr size=4>
+
+#
+# The following lines specify additional document options to date only
+# supported by Netscape.
+#
+
+bgimage..:
+bgcolor..:
+
+
+# this sets the text color of the document:
+textcolor:
+
+# the color of links (default blue):
+#linkcolor.:#00ff00
+
+# the color of visited links (default purple):
+#vlinkcolor:#009900
+
+# the color of active links (default red):
+#alinkcolor:#aa00aa
+
+
+
+
+

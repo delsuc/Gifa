@@ -1,0 +1,6 @@
+Pen n plot_file_name
+Selects the pen number n on the plotter. On a postscript laser 
+printer, this corresponds to different line width and dash patterns.
+ 
+see also : PLOT PAGE PCOLOR
+

@@ -1,0 +1,8 @@
+WRITET filename
+Write to the disk in text format. The data are in formatted values, 
+1 entry per line. Useful for sending data to an other program.
+
+related contexts : $NAME
+
+see also : READT WRITE WRITES
+

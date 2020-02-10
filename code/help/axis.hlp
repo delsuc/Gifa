@@ -1,0 +1,10 @@
+AXIS axis_to_draw
+with axis_to_draw : [ NONE | F1 | F2 | F12 ]
+
+Determines how coordinates will be drawn on screen
+Axes are drawn on the 1D, the 2D density and the 2D contour windows.
+The unit is determined by the command UNIT
+
+related contexts : $AXIS $UNIT
+
+see also: UNIT DISP1D DISP2D CDISP2D PLOTAXIS PLOTAXIS?

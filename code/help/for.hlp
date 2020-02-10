@@ -1,0 +1,15 @@
+FOR var = n TO p { STEP k }
+... GIFA commands
+ENDFOR
+
+Control structure permitting to loop over a set of commands. The 
+variable var will be created if does not yet exist. By default of 
+STEP is 1, but any value can be used (including negative values in 
+which case n should be larger than p). n, p and k should always be 
+integer numbers.
+
+FOR and ENDFOR should appear alone on one line, eventually followed 
+by a comment.
+
+see also : FOREACH IF WHILE GOTO CONTROLS
+

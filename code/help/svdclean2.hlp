@@ -1,0 +1,9 @@
+SVDCLEAN2 level flag
+Keep only the singular values larger than level and put the other to 
+0. The flag (yes/no) determines wether you want to remove the noise 
+power associated with the removed root.
+
+related contexts : $NSVD
+
+see also : SVDCLEAN1 SVDLIST SVD->DT SVD->AR DT->SVD ORDER
+

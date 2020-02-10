@@ -1,0 +1,9 @@
+DEGRE value
+
+selects the degree of the Legendre polynomial used for baseline correction
+by the bcorr 3 (polynomial) baseline correction command.
+
+Maximum (and recommanded) value is 10
+
+see also : BCORR
+

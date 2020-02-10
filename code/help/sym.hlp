@@ -1,0 +1,8 @@
+SYM n
+Symetrizes the current 2D data set using either a mean value (n=1) 
+or a smallest value (n=2) algorithm. n=3 corresponds to an algorithm which
+smootly switch from one algorithm to the other depending on the difference 
+between the 2 values.
+
+see also : TRANSPOSE MINDATA MAXDATA
+

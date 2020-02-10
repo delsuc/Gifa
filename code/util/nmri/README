@@ -1,0 +1,22 @@
+Voici un utilitaire que Jean-Marc Nuzillard m'a envoye
+
+(J'ai fait quelques petites modifications pour coller avec
+ les dernieres modifications de cache_mad)
+
+Extraits de son courrier :
+>
+>Il s'agit d'un essai d'interfacage de la
+>librairie "cache" afin de faciliter l'acces aux fichiers GIFA
+>depuis des programmes en C.
+>
+>Ce trouvent ici les fichiers nmri.h et nmri.c 
+>qui me servent a l'interfacage ainsi qu'un programme qui les utilise
+>et qui convertit un fichier 2D acquis en mode N+P en un fichier en
+>mode States.
+>
+>Je sais, le nom "nmri" est mal choisi....
+>
+>Jean-Marc Nuzillard.
+
+M.A.Delsuc
+

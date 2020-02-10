@@ -1,0 +1,61 @@
+<HTML><HEAD>
+<!-- This document was created from RTF source by rtftohtml version 3.9.3 -->
+<TITLE>DOSY Processing - USAGE</TITLE></HEAD>
+<BODY>
+<A HREF="dosy-IMPLEMEN.html"><IMG SRC="leftg.gif" ALT="Prev " border=0></A>
+ <A HREF="dosy-DOSY.html"><IMG SRC="rightg.gif" ALT="Next " border=0></A>
+ <A HREF="dosy-Title.html"> </A>
+ <A HREF="dosy-Contents.html"><IMG SRC="contg.gif" ALT="Contents " border=0></A>
+<hr size=4>
+<H1>
+USAGE</H1>
+<UL>
+<LI><A HREF="#Heading15">Principle</A>
+<LI><A HREF="#Heading16">Tips</A>
+</UL>
+<hr size=4>
+
+<h2>
+<A NAME="Heading15">Principle</A></h2>
+
+<p>Usage
+of the DOSY module is actually quite simple. First acquire a DOSY experiment
+(either 2D or 3D). Then process it in a regular fashion along the spectroscopic
+axes (note that you will not be able to use the easy2D module, but will have to
+go through the elementary operations yourself). Then estimate the noise in a
+signal free region. Preset the various Laplace parameters : <tt>DMIN</tt>,
+<tt>DMAX</tt>, TAB buffer, etc... as well as the MaxEnt parameters :
+<tt>ITER</tt>, <tt>LAMBSP</tt>, etc... Then start the complete processing
+(which can be quite lengthy, even on a fast computer) with <tt>dosy2d</tt> or
+<tt>dosy3d</tt>.</p>
+
+<h2>
+<A NAME="Heading16">Tips</A></h2>
+
+<ul>
+<li>	Be careful to use a very good baseline correction before trying to apply
+the inverse Laplace transform. You should not use the polynomial baseline
+correction for this purpose, since peak intensity is varying from one row to
+the other. Rather use the spline baseline correction.
+<li>	You might find a good idea to practice on 2 or 3 typical 1D slices taken
+out of the complete experiment.
+<li>	Some care must be taken in choosing the <tt>DMIN</tt> <tt>DMAX</tt> range.
+It must encompass the range of actual decays observed in the experiment.
+However note that <tt>DMIN</tt> and <tt>DMAX</tt> are in the reciprocal unit of
+the direct space unit. This means that if you use regularly sampled,
+<tt>DMIN</tt> and <tt>DMAX</tt> are in sec-1 (thus related with
+<tt>SPECW</tt>), but if you use tabulated values, they are in inverse of the
+tabulated values (be carefull with those strange Gradient units). <tt>DMIN</tt>
+and <tt>DMAX</tt> determine completely the reciprocal space, <tt>DFACTOR</tt>
+is only used when displaying the unit to the user, and has no effect on the
+processing.
+<li>	You may want to check the range either by generating a fake data-set (eg :
+<tt>ZERO</tt> and <tt>SETVAL</tt> to generate a delta function,
+<tt>LAPLACE</tt> or <tt>TLAPLACE</tt> to generate direct space data-set), or by
+trying directly an inversion with <tt>INVLAP</tt> or <tt>INVTLAP</tt>.
+</ul><P><hr size=4>
+<A HREF="dosy-IMPLEMEN.html"><IMG SRC="leftg.gif" ALT="Prev " border=0></A>
+ <A HREF="dosy-DOSY.html"><IMG SRC="rightg.gif" ALT="Next " border=0></A>
+ <A HREF="dosy-Title.html"> </A>
+ <A HREF="dosy-Contents.html"><IMG SRC="contg.gif" ALT="Contents " border=0></A>
+</body></html>

@@ -1,0 +1,11 @@
+DISP2D 0/1
+
+When DISP2D is set to one, the window displaying the content of the 
+2D buffer is opened. The window is closed if DISP2D is 0.
+
+related contexts : $DISP2D $ABSMAX $BCOLOR $COLOR 
+    $SCALE $SIGN $AXIS $ZOOM ZOOM_2D[1] ZOOM_2D[2] ZOOM_2D[3] ZOOM_2D[4]
+
+see also : DISP1D CDISP2D DISP3D AXIS STPL COLOR BCOLOR SCALE 
+    CLEAR REF UNREF disp?
+

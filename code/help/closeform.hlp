@@ -1,0 +1,9 @@
+CLOSEFORM #id
+This command closes the FormBox, which id is #id
+The context $WIDGET when evaluated wihtin a form, contains
+the #id of the current form.
+
+related contexts : $WIDGET
+
+see also : CLOSEBUTTON FORMBOX
+

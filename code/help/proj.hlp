@@ -1,0 +1,8 @@
+PROJ n a
+
+Permits to perform a projection of 2D data-set. Projections are 
+done either along F1 (n=1) or F2 (n=2) axes, with either skyline 
+(a=s) or mean (a=m) technic.
+ 
+see also : DIAG DIM proj3d proj_loc
+

@@ -1,0 +1,12 @@
+# To help in listing Bruker parameter files
+echo -n 'Bruker file directory : '
+set direc=$<
+if  ( -e $direc/acqus ) then
+	set param=$direc/acqus 
+else if ( -e $direc/acqu ) then
+	set param=$direc/acqu
+else
+	echo "No acquisition parameter found"
+	exit
+endif
+/usr/local/bin/listPar.iris $param | more

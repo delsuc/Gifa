@@ -1,0 +1,14 @@
+REAL {axis}
+
+This command extract the real part of the current the data set 
+considered as complex.
+axis is not needed in 1D, can be F1, F2 or F12 in 2D,
+and can be F1, F2, F3, F12, F13, F23, or F123 in 3D
+
+On 2D and 3D you can choose on which axis the REAL operation will be 
+taken. Data size can thus be reduced either by 2 , 4 or even 8.
+
+related contexts : $ITYPE_1D $ITYPE_2D $ITYPE_3D
+
+see also : ITYPE FLIP FLOP MODULUS
+

@@ -1,0 +1,6 @@
+ROTATE 0 / 1
+When ROTATE=1, plots are rotated by 90 degrees, useful for plotting 
+1D spectra on A4 Postscript plotter or on a A3 HP-GL plotter
+ 
+see also : PLOT
+

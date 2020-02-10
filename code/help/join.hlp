@@ -1,0 +1,15 @@
+JOIN filename 
+
+Connects the cache memory system to the file `filename' in standard 
+format ( created with WRITE or NEWFILEC). The file can then accessed 
+randomly with GETC and PUTC commands
+
+related contexts : $C_ABSMAX $C_DIM $C_FREQ $C_FREQ1 $C_FREQ2 $C_FREQ3
+                   $C_HEADER $C_JOINED $C_OFFSF1 $C_OFFSF2 $C_OFFSF3
+                   $C_SIZEF1 $C_SIZEF2 $C_SIZEF3 $C_SPECWF1 $C_SPECWF2 $C_SPECWF3
+                   $C_TYPE   $C_DMIN   $C_DMAX   $C_DFACTOR
+
+see also : DISJOIN dataset listfilec GETC PUTC NEWFILEC GETHEADER 
+           PUTHEADER FLUSH FLUSHCACHE SHOWC dataset proc2d proc3d
+           super1d super2d
+

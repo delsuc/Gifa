@@ -1,0 +1,7 @@
+Compute the relaxation rate (in arbitrary unit) from the last LP 
+analysis.
+
+related contexts : $RELAX
+
+see also : DIST CALIBDI RCRYST METH SLOPE RT->PK ORDER
+

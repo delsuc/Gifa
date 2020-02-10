@@ -1,0 +1,6 @@
+ Simulate data, works in 1D in 2D and in 3D
+You will be prompted for input. SIMU memorizes the last used values 
+so SIMU %% is a valid syntax.
+ 
+see also : SIMUN SimSpect2D READ ADDNOISE
+

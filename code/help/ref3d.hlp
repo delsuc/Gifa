@@ -1,0 +1,7 @@
+This command will display a 3D view of the current 3D data-set, in 
+the window previously opened with the DISP3D command. The parameters 
+used for the display can be chosen with the DISP3D? and the CHECK3D 
+commands.
+
+see also : DISP3D CHECK3D
+
