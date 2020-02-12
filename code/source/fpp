@@ -65,7 +65,7 @@ $match || die "You should define at least one platform\n";
 # loop on file-names found on	the command	line
 foreach $file (@ARGV) {
 	open (OUT,">".$file.".f");
-	do process($file.".for",'fh00');
+	&process($file.".for",'fh00');
 	}
 
 # this one do the	whole	processing
@@ -130,7 +130,7 @@ MATCH:		while (/^#/) {
 			 }
 # last include
 			   if (/^#include "(.*)"/i) {
-			       do process($1,$input);
+			       &process($1,$input);
 			       next LINE;
 			   }
 # remove the left over

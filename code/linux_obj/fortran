@@ -12,7 +12,7 @@ case $1 in
 esac
 
 base=`basename $nom .f`
-cflag='-mpentium -fomit-frame-pointer -c'
+cflag='-fomit-frame-pointer -c'
 f2cflag='-a -A -h -kr -!R'
 
 # cflag='-pg -mpentium -c'

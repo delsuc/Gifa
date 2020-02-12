@@ -24,10 +24,15 @@ Some source file of *Gifa* was still stored somehow on my current hard drive and
 
 No version control system was used at that time. 
 I could find several versions of the source in in tar archives from version 4.31  dated Aug 2000, to version 4.5 dated Mars 2004.
-In the absence of the article version, I decided to use the latest version, and moved it to https://github.com/delsuc/Gifa 
+In the absence of the article version, I decided to use the latest version, and moved it to https://github.com/delsuc/Gifa .
+
+The second step is reminding the file organisation and in particular how to build the program.
+As the program was not open-source, the official documentation does not describe how to build from source.
+A central `Makefile` and a set of perl scripts control the building process - this is as easy as remembering the syntax of these kind-of-exotic languages.
 
 
 
 # Conclusions
 - make it simple ()
-- thank to tgz and ascii
+- thank to tgz and ascii<
+- should have written everything !

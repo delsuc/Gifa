@@ -27,7 +27,7 @@ CFLAGS = -DF2C -DLINUX -DNOREADLINE -Dis_big_endian -I/usr/X11R6/include -I/usr/
 FFLAGS =
 
 #COPT and FOPT are optimisation switches used if not DEBUG
-COPT = -O2 -mpentium -fomit-frame-pointer
+COPT = -O2 -fomit-frame-pointer
 #COPT = -O2 -mpentium
 FOPT = -O
 
