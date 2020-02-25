@@ -375,6 +375,10 @@ double dtime_ (float *time) /* f2c does not know dtime */
 #ifdef SPEC1
 #define CLK_TCK 60
 #endif
+/* this was added on feb 2020 */
+#ifndef CLK_TCK
+#define CLK_TCK CLOCKS_PER_SEC
+#endif
 
   static float utime=0, stime=0;
   struct tms buffer;

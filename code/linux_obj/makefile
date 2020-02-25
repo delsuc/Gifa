@@ -23,7 +23,9 @@ CC = gcc
 FORTRAN = ./fortran
 
 #CFLAGS and FFLAGS are the compilation options (optimisation not included)
-CFLAGS = -DF2C -DLINUX -DNOREADLINE -Dis_big_endian -I/usr/X11R6/include -I/usr/include/gdbm -mieee-fp
+#-Wno-implicit-function-declaration 
+#CFLAGS = -DF2C -DLINUX -DNOREADLINE -Dis_big_endian -I/usr/X11R6/include -I/usr/include/gdbm -I. -I/home/gifa/Gifa/code/source -mieee-fp
+CFLAGS = -DF2C -DLINUX  -Dis_big_endian -I/usr/X11R6/include -I/usr/include/gdbm -I. -I/home/gifa/Gifa/code/source -mieee-fp
 FFLAGS =
 
 #COPT and FOPT are optimisation switches used if not DEBUG
@@ -45,7 +47,8 @@ ARCREATE = -cqs
 #L = gcc -static
 L = gcc 
 #LDFLAG = -L/usr/X11R6/lib /usr/lib/libf2c.a /usr/X11R6/lib/libXm.a -lXt -lX11 -lgdbm -lm
-LDFLAG = -L/usr/local/lib -L/usr/X11R6/lib -Xlinker -Bstatic -lf2c -lXm -lgdbm -Xlinker -Bdynamic -lXt -lX11 -lXext -lSM -lICE -lm 
+#LDFLAG = -L/usr/local/lib -Xlinker -Bstatic -lf2c -lXm -lgdbm -Xlinker -Bdynamic -lXt -lX11 -lXext -lXft -lfontconfig -lpng -ljpeg  -lSM -lICE -lm 
+LDFLAG = -L/usr/local/lib -Xlinker -lf2c -lXm -lgdbm -Xlinker -lXt -lX11 -lXext  -lSM -lICE -lm -lreadline
 #LDFLAG = -L/usr/X11R6/lib /usr/lib/libf2c.a /usr/local/lib/libXm.a -lXt -lX11 -lXext -lgdbm -lm -lreadline 
 
 # END of the user-modifiable part
