@@ -20,19 +20,50 @@ This was an additional motivation to try to renew this program and to make it fr
 NMR spectrometers, computers, and programs were badly prepared for this new approach, where complex pulse sequences had to be prepared and launched in automation, generated large datasets, which had to be transformed, visualized and quantified while not fitting in the 64kB central memory, and even barely on the removable 14 inch disk pack that stored 2.5MB of data !
 
 # Recovering the software
-Some source file of *Gifa* was still stored somehow on my current hard drive and has been through two laboratory relocations (from Montpellier to Lyon and then to Strasbourg), many computer upgrades (with migration of the accounts), and one OS change (from MacoS to Linux Ubuntu).
+Some source file of *Gifa* was still stored somehow on my current hard drive and has been through two laboratory relocations (from Montpellier to Lyon and then to Strasbourg), many computer upgrades (with migration of the accounts), and one OS change (from MacOsX to Linux Ubuntu).
 
-No version control system was used at that time. 
-I could find several versions of the source in in tar archives from version 4.31  dated Aug 2000, to version 4.5 dated Mars 2004.
-In the absence of the article version, I decided to use the latest version, and moved it to https://github.com/delsuc/Gifa .
+No version control system was used at that time, however I could find several versions of the source in in tar archives from version 4.31  dated Aug 2000, to version 4.5 dated Mars 2004.
+In the absence of the article version, I decided to use these versions, and moved them to https://github.com/delsuc/Gifa .
 
 The second step is reminding the file organisation and in particular how to build the program.
 As the program was not open-source, the official documentation does not describe how to build from source.
-A central `Makefile` and a set of perl scripts control the building process - this is as easy as remembering the syntax of these kind-of-exotic languages.
+A central `Makefile` and a set of perl scripts control the building process - this is as easy
 
+## step by step
+ndbm.h is not found => apt-get install libgdbm-dev
 
+Xm => apt-get install libmotif-dev
+
+CLK_TCK in util.c
+
+-lXext => apt-get install libxext-dev
+
+apt-get install libreadline6-dev
+
+compiles ! does not link
+
+modif ndbm gdbm
+
+struggle with the link line - the simpler the better !
+
+=> compiles, link, starts gracefully with the GUI which seems operationnal
+
+Test suit fails
+
+- on tmp file (using /usr/tmp => make a link to /tmp solves it)
+- on dbm - with a core dump !
+- timer does not measure anything...
+- everything else is ok ! ;-)
+
+Commit
+
+## to do
+- get dbm working => required by several modules, the assignment one in particular
+- rebuild the doc
+- package the VM (right now Ubuntu 16.04)
+- test in a more recent version of Linux !
 
 # Conclusions
 - make it simple ()
-- thank to tgz and ascii<
-- should have written everything !
+- thanks perl has not changed too much 
+- thank to tgz and ascii
