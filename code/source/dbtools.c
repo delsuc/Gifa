@@ -14,6 +14,7 @@ without written permission from the authors.
 */
 
 #include <stdio.h>
+#include "util.h"
 
 #ifdef TOTO
 #ifndef MACHTEN
@@ -21,16 +22,6 @@ without written permission from the authors.
 #else
 #   include <sys/malloc.h>
 #endif
-#endif
-
-#ifdef LINUX
-#   define dbm_open gdbm_open
-#   define dbm_close gdbm_close
-#   define dbm_store gdbm_store
-#   define dbm_fetch gdbm_fetch
-#   define dbm_delete gdbm_delete
-#   define dbm_firstkey gdbm_firstkey
-#   define dbm_nextkey gdbm_nextkey
 #endif
 
 #ifdef SPEC1
