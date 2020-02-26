@@ -139,7 +139,7 @@ print $pic[$i]
 else                    ;sort in peak number order
 
 ;=========================================
-  set temp_file_name = '/usr/tmp/gifa_temporary_big'
+  set temp_file_name = '/tmp/gifa_temporary_big'
 
   set first = 1
   message "Enter index of first peak"

@@ -15,7 +15,7 @@ set total = ($total /1k)   ; in ko
 ; this will be precise only if txx values are slightly smaller than power of 2
 
 ; change direc if you want to work on a different directory
-set direc = "/usr/tmp"
+set direc = "/tmp"
 print ("Be carefull that this test will create large temporary files on";$direc)
 print ("for a total of about" ; int($total) ; "ko")
 print "Please make sure that this space is available !"

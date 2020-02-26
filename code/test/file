@@ -1,5 +1,5 @@
 ; used to test file I/O
-set ff = '/usr/tmp/gifa_testfile'
+set ff = '/tmp/gifa_testfile'
 open README		; open for read
 open $ff		; open for write
 set l = <README

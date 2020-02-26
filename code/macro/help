@@ -27,8 +27,8 @@ set liste = "primer,file,processing,plotting,dosy,assignment,display,zoom_intera
 ;les directories /usr/local/gifa/help; ./; et 
 ;ceux definis dans $GIFAPATH 
 
-   set tmpfile = ("/usr/tmp/hgifa" // int(100000*$random))
-   set file_out = ("/usr/tmp/gifahelp" // int(100000*$random))
+   set tmpfile = ("/tmp/hgifa" // int(100000*$random))
+   set file_out = ("/tmp/gifahelp" // int(100000*$random))
    set path = $GIFAPATH
 
    sh ("ls  /usr/local/gifa/help/"//$comm//".hlp >";$file_out;" 2> /dev/null")

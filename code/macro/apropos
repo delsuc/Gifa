@@ -10,7 +10,7 @@ set a_it = $_
 
 if ($CONFIG_GRAPH==1) then
 	set list_comm = ' ' 
-	set fileout = ("/usr/tmp/gifapropos" // int(100000*$random))
+	set fileout = ("/tmp/gifapropos" // int(100000*$random))
 	sh ('/usr/local/gifa/com/create_apropos_macro.sh '  // $a_it ; $GIFAPATH ; '>'; $fileout )
 	$fileout
 	sh ( '/bin/rm -f';$fileout )

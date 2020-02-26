@@ -30,19 +30,19 @@ set b = (abs($pk2d_f1f[1] - 114)<0.01)
 set c = (abs($pk2d_f1f[2] - 232.980)<0.01)
 report ($a & $b & $c) "PKSELECT - PKSYM 2D with option remove"
 
-pkwrite /usr/tmp/pkhandle_test.file
+pkwrite /tmp/pkhandle_test.file
 pkclear
 report ($npk2d == 0)  "PKCLEAR"
 
-pkread /usr/tmp/pkhandle_test.file yes
+pkread /tmp/pkhandle_test.file yes
 set a = ($npk2d == 2)
 pkclear
 transpose peak 0
-pkread /usr/tmp/pkhandle_test.file no
+pkread /tmp/pkhandle_test.file no
 set b = (abs($pk2d_f1f[1] - 501)<0.01)
 set c = (abs($pk2d_f1f[4] - 453.03)<0.01)
 report ($a & $npk2d == 4 & $b & $c ) "PKWRITE and PKREAD"
-sh "/bin/rm /usr/tmp/pkhandle_test.file"
+sh "/bin/rm /tmp/pkhandle_test.file"
 
 ; testing PKPROJ in 2D, unit Hertz (using SIMUN)
 

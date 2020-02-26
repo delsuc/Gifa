@@ -14,7 +14,7 @@
 ; that the position in ppm reflects the peak index.
 ;
 ; if the final size is larger than a given threshold (see macro code)
-; a temporary file will be created in /usr/tmp. Be careful not to overflow
+; a temporary file will be created in /tmp. Be careful not to overflow
 ; your disk !
 
 if (!$arg & $CONFIG_GRAPH ) then          ; adapted to dialogbox on 21/09/98 M.A.D.
@@ -30,7 +30,7 @@ if (!$arg & $CONFIG_GRAPH ) then          ; adapted to dialogbox on 21/09/98 M.A
 	*
 else
 
-set temp_file_name = '/usr/tmp/gifa_temporary_big'
+set temp_file_name = '/tmp/gifa_temporary_big'
 
 if ($c_dim!=3) error 'Works only on a JOINed 3D'
 
