@@ -1,0 +1,2501 @@
+         ------------------------------------------------------------
+        |                                                            |
+        |     M     M    AAA      CCCCC  RRRRR    OOOOO    SSSSS     |
+        |     MM   MM   A   A    C       R    R  O     O  S          |
+        |     M M M M  AAAAAAA  C        RRRRR   O     O   SSSSS     |
+        |     M  M  M  A     A   C       R R     O     O        S    |
+        |     M     M  A     A    CCCCC  R   R    OOOOO    SSSSS     |
+        |                                                            |
+         ------------------------------------------------------------
+ 
+ List of all the macros available in the standard distribution 
+ 
+ 
+==========================================================
+alert
+; alert "text to display"
+;Creates a graphic alert box displaying the text. User must click in 
+;the alert box to continue.
+;
+;see also : PRINT ERROR DIALOGBOX
+ 
+==========================================================
+apropos
+; apropos topic
+; for GIFA on_line help
+;
+; Search the string "topic" in all the help files available
+;
+; see also : help 
+ 
+==========================================================
+apsl
+; automatic 1D phase correction
+; APSL method
+;    A.Heuer J.Magn.Reson. 91 p241 (1991)
+;
+; uses the data buffer
+;
+; you may want to adapt :
+;   s_wdth : ration of line width to spectral width used for computing phases
+;   p_wdth : ration of line width to spectral width used for broadening for peak picking
+;   npk :  minimum number of peaks needed for phasing
+;   nfrst : the number of peaks used for first approx
+;
+; see also : PH PHASE apsl_cp
+ 
+==========================================================
+apsl_cp
+; apsl_cp i sz
+;
+; computes the phase of the peak centered on i, using +/-sz points
+; the phase of the peak is returned 
+; between -180 and 180
+; i  has to be odd !
+; used as a routine by the macro apsl
+;
+; see also : apsl
+ 
+==========================================================
+autocalib
+; autocalib
+;
+; this is based on the work by Wishart et al, J.Biomol NMR, (1995) 6 p135-140
+;
+; computes the correct offset in F1 from F2
+ 
+==========================================================
+bcorr.g
+;
+ 
+==========================================================
+big
+; obsolete, for compatibility
+; big was removed in Gifa since version 4_09alpha
+ 
+==========================================================
+bruker_add_param
+; bruker_add_param file
+;
+; this macro adds to the header of "file" the parameters needed to process bruker digital filter.
+; parameters are found in the acqu (or acqus) file found in the same dir as  "file" 
+;
+; The parameters are : BRUKER_DECIM BRUKER_DSPFVS BRUKER_DSPFIRM
+;
+; These parameters are then taken into account by the easy_nD processing
+;
+; see also : BRUKER_CORR easy2d get_acqus PUTHEADER
+ 
+==========================================================
+bug_report
+; for interactive bug report
+ 
+==========================================================
+build2d
+; build2d file_name
+; builds a 2d from a set of 1D, the name of which are found in file_name
+; one entry per line
+;
+; see also : READ build3d
+ 
+==========================================================
+build3d
+; build3d file_name
+; builds a 3d from a set of 2D, the name of which are found in file_name
+; one entry per line
+;
+; see also : READ build2d
+ 
+==========================================================
+burg2d
+; burg2d axis new_size
+;
+; axis is F1 or F2,
+; extend the FID up to new_size, using burg method
+;
+; see also : burg3d BURG
+ 
+==========================================================
+burg2d_back
+; burg2d_back axis new_size
+;
+; extend backward the FID along axis up to new_size, using burg method
+; to be used when the beginning of the FIDs got truncated for some reason.
+;
+; this is probably not optimum, as burg is phase-minimum
+; what we need here is rather a 'phase maximum' method.
+; This has the advantage of being MUCH faster than what would be optimum,
+; and will work probably just as well, as long as the number of points
+; to reconstruct is 'small enough'
+;
+; see also : burg_back burg2d burg3d BURG
+ 
+==========================================================
+burg2d_mirror
+; burg2d_mirror axis offset new_size
+;
+; axis is F1 or F2,
+; extend the FID up to new_size, using burg_mirror method
+;
+; see also : burg_mirror burg2d burg3d BURG
+ 
+==========================================================
+burg3d
+; burg3d axis new_size
+;
+; axis is F1 F2 or F3
+; extend the FID up to new_size, using burg method
+;
+; see also : burg2d BURG
+ 
+==========================================================
+burg_back
+; burg_back new_size
+;
+; extend backward the FID up to new_size, using burg method
+; to be used when the beginning of the FID got truncated for some reason.
+;
+; this is probably not optimum, as burg is phase-minimum
+; what we need here is rather a 'phase maximum' method.
+; This has the advantage of being MUCH faster than what would be optimum,
+; and will work probably just as well, as long as the number of points
+; to reconstruct is 'small enough'
+;
+; see also : BURG burg2d_back burg2d burg3d
+ 
+==========================================================
+burg_mirror
+; burg_mirror offset new_size
+;
+; realizes he mirror image Linear Prediction, using the burg algorithm.
+;
+; offset determines the position of the t=0 point 
+;     0  no shift : in-phase data set.
+;    -1  acquisition started exactly half a dwell after t=0 - (will need phase 0 180)
+;    n>0 acquisition started exactly n dwell before t=0
+;        Warning, this is not coherent notation
+;
+; new_size is the size of the FID after the LP extension.
+;
+; See : Zhu and Bax J.Magn.Reson. 90, p405 (1990)
+; see also : burg2d_mirror BURG
+ 
+==========================================================
+burg_rev
+; burg_rev n_of_point
+;
+; reconstruct the missing n_of_point first data points
+; using the burg method
+; changes order to n_of_point*2
+;
+; see also : svd_rev BURG AR->DT
+ 
+==========================================================
+button.g
+; set-up the basic GUI
+; by loading the default menus
+; 
+; see also startup.g env_basic.g
+;
+ 
+==========================================================
+cadzow
+; cadzow n_of_line n_of_iter
+;
+; apply the cadzow procedure to remove noise from the current FID.
+; should be followed with an FT or an LP-SVD analysis
+;
+; see also : SVDCLEAN1 ORDER
+ 
+==========================================================
+calib
+; interactive 
+; permits to assign chemical shift to a given point
+; will change the offset
+;
+;see also : UNIT SPECW OFFSET FREQ point calibdosy
+ 
+==========================================================
+calibdosy
+; calibdosy { sequence nucleus grad_length grad_delay grad_calib grad_shape }
+;
+; computes theoretical dfactor from experimental parameters
+; for some nucleus (1H, 2H, 13C, 15N, 17O, 19F, 31P)
+; When calibration is correct, your DOSY spectra should be directly
+; readable in diffusion factors (in micron^2/sec) when using unit d (damping)
+;
+; Delays are in seconds, gradients are in Gauss/cm
+;
+; Gradient shape can be either :  Square  or  Other shape defined by ascii file
+;
+; see also: DMIN DMAX DFACTOR calib
+ 
+==========================================================
+cdisp
+; obsolete, for compatibility
+ 
+==========================================================
+center
+; center $f1 { $f2 { $f3 } }
+;
+; centers the zoom window on the coordinates
+; the zoom window is kept with the same size
+ 
+==========================================================
+choose_scolor
+; to choose interactively the show color
+;
+ 
+==========================================================
+choose_unit
+; chose_unit
+;
+; permit to choose display unit
+; see also : UNIT UNIT_Y
+ 
+==========================================================
+close_all_view
+; closes all opened view
+;
+; see also CLOSE_VIEW OPEN_VIEW
+ 
+==========================================================
+colint
+; interactive
+; permits to choose columns interactively on a 2D by clicking on the data-set
+;
+;see also : rowint vertint planeint ph2dc ROW COL
+ 
+==========================================================
+config
+; equivalent to the config command
+;
+ 
+==========================================================
+conjg
+; set up for Conjugated Gradient algorithm for MAXENT
+;
+; see also gifa gad ALGO
+ 
+==========================================================
+cont
+; obsolete, for compatibility
+ 
+==========================================================
+conv_n+p
+; conv_n+p
+;
+; preprocess a n+p experiment;
+; i.e. PFG enhanced acquisition, with positive and negative gradients alternated
+; and make it States-Haberkorn
+;
+; Can actually be applied before or after Fourier Transform in F2
+;
+; see also : ft_n+p ft_sh conv_n+p_onfile
+ 
+==========================================================
+conv_n+p_onfile
+; conv_n+p_onfile filename
+;
+; preprocess a n+p experiment  - WORKS IN PLACE !!!
+; i.e. PFG enhanced acquisition, with positive and negative gradients alternated
+; and make it States-Haberkorn
+;
+; Can actually be applied before or after Fourier Transform in F2
+;
+; see also : conv_n+p
+ 
+==========================================================
+correct1st
+; no parameter
+;
+; corrects for the 1st point by dividing it by 2
+;
+; see also : FT
+ 
+==========================================================
+correctppm
+; to correct the ppm/Hz computation in Gifa
+; with version < 4.10
+;
+; in Gifa version < 4.10 ,  (i.e up to 4.09)
+; computation of ppm and Hz is slightly wrong, by a factor (size-1)/size.
+; This macro corrects the internal values of specw and offset
+; to give a correct computation of ppm and Hz.
+; however, ppm definition will shift a little for spectral region at high field.
+; so you might want to recalibrate afterward.
+; It should be applied only ONCE to a data-set.
+;
+; Since it modifies the spectral parameters of the data-set,
+; this data-set, if wrote onto a file will be wrong when read with
+; a corrected version of Gifa.
+;
+; so the following procedure is proposed :
+; Do not touch to your files, version 4.10 should be available by sept. 1996
+; Rather read your files, and apply correctppm after reading, so that the
+; in-memory file is correct. Do not write it back, at least not on file
+; you wish to use later on.
+;
+; Note also that peak-files are stored in ppm format
+; so peak-tables stored in corrected ppm, will be Ok when read with the
+; corrected version of Gifa.
+; If you have already peak-tables that you wish to keep,
+; and you want to correct the ppm values, do the following :
+;   read file         ; get file
+;   pkread peaks.old  ; load peaks
+;   correctppm        ; peaks won't move because they are internally in index !
+;   pkwrite peaks.new ; store corrected peak values.
+; next time you use it
+;   read file    correctppm   pkread peaks.new   ; is fine
+ 
+==========================================================
+cosy_fit
+; cosy_fit f1 f2 J_act F1_pat F2_pat
+;
+; f1 f2 : cross peak center, in ppm
+; J_act : estimation of the active coupling value, in Hz
+; F1_pat F2_pat : shape of the spins
+;       D T Q M :  Doublet Triplet Quadruplet Multiplet.
+; returns J_act value in $returned
+ 
+==========================================================
+count
+; count value
+;
+; Count the data_point which have an intensity above the value.
+; The results are stored in the returned variable.
+;
+; see also : count_3d_dosy 
+ 
+==========================================================
+count_2d_dosy
+; count_3d_dosy $thres 
+;
+; Count the number of columns to process in the dosy2d macro
+;
+; see also : dosy2d count
+ 
+==========================================================
+count_3d_dosy
+; count_3d_dosy $thres $filein
+;
+; Count the number of columns to process in the dosy3d macro
+;
+; see also : dosy3d count
+ 
+==========================================================
+dataset
+; list the parameters of the currently JOINed data file
+;
+; see also : listfilec JOIN  param
+ 
+==========================================================
+dbexport
+; dbexport basname
+; export a db file to an ascii dump.
+;
+; see also : dbimport DBOPEN
+ 
+==========================================================
+dbimport
+; dbimport basname
+; import a db file from an ascii dump, produced by dbexport
+;
+; see also : dbexport DBOPEN
+ 
+==========================================================
+dbm2gtb
+; dbm2gtb input file output file
+;
+; WARNING
+; even though it is distributed with Gifa 5, this macro will run only
+; in Gifa version 4
+;
+; this macro, will convert dbm files (the *.pag *.dir files)
+; and will create a gtb file (the format used by the dbopen command in Gifa 5)
+;
+; see also : dbopen dbclose
+ 
+==========================================================
+disjoin_all
+; disjoin_all
+;
+; disjoin all the data-set currently JOINed
+;
+; related contexts : $CACHE[]  $C_JOINED $C_NAME
+;
+; see also : DISJOIN JOIN
+ 
+==========================================================
+disp
+; obsolete, for compatibility
+ 
+==========================================================
+disp?
+; initeractive
+; to set all plot relevant parameters
+;
+; see also : DISP1D DISP2D DISP3D
+ 
+==========================================================
+disp3d?
+; interactive for choosing the view point in 3D
+;
+; user gets prompted for values
+;
+; see also : disp3d_form disp? DISP3D
+ 
+==========================================================
+disp3d_form
+; interactive for choosing the view point in 3D
+;
+; builds a form to enter parameters for 3D display and plotting.
+;
+; see also : disp? disp3d? zoom3di DISP3D PLOT3D
+ 
+==========================================================
+dispcont
+; dispcont no_arg 
+;
+; creates a form box which permits to modify the contour parameters
+;
+; calls itself with parameters for the update
+;
+; see also : CDISP2D LEVEL LOGA SIGN
+ 
+==========================================================
+dispcont.old
+; dispcont no_arg 
+;
+; creates a form box which permits to modify the contour parameters
+;
+; calls itself with parameters for the update
+;
+; see also : CDISP2D LEVEL LOGA SIGN
+ 
+==========================================================
+dmxclean
+; dmxclean DECIM_value
+;
+; DECIM is a parameter which is found in the acqus file in your
+; data tree.
+;
+; This macro solves the problem of the 'additional' points
+; on the data-sets acquired on DMX Bruker spectrometer with the 
+; digital filtering on.
+; After applying the macro, you get an FID, on which regular processing
+; should work, All apodisation of Linear Prediction processing
+; will behave as usual.
+; The macro assumes that you have acquired in SIM mode, and will
+; work much better if you have a spectrum phased at the acquisition level.
+;
+; Be carefull that this macro will change slightly the size of your data-set,
+; since the wrong points are removed.
+;
+; Look to the F.A.Q. at the end of the manual for details
+;
+; DECIM logic is adapted from  W. M. Westler and F.  Abildgaard
+;
+ 
+==========================================================
+dmxphase
+; dmxphase DECIM_value
+;
+; DECIM is a parameter which is found in the acqus file in your
+; data tree.
+;
+; When processing DMX data-sets, you may have noticed that the spectrum is
+; really strange, with wiggles like artefacts.
+; This is due to additional points in the beginning of the FID, left by the
+; Bruker acquisition software.
+; The artefacts are corrected by applying a 1st order phase correction
+; of -180*n where n is the number of additionnal points.
+;
+; This macro uses the value DECIM (from which the number of additional points
+; is guessed) as found in the acqus file to apply the phase correction.
+;
+; Look to the F.A.Q. at the end of the manual for details
+;
+; DECIM logic is adapted from  W. M. Westler and F.  Abildgaard
+;
+; NOTE: dmxphase should be applied on spectra
+;       dmxclean should be applied of FID
+;
+; see also: dmxclean PHASE
+ 
+==========================================================
+DO_NOTHING
+; DO_NOTHING
+ 
+==========================================================
+dosy2d
+; dosy2d data_type processing_type size thres 
+;
+; implements the complete DOSY processing for 2D
+;
+; DOSY data are in-memory, diffusion dimension is in F1,
+; NMR spectra in F2
+;
+; data_type :       tabulated or regular   determines the type of sampling
+; processing_type : MaxEnt, Fit or Fit_2_comp   determines the processing which will be used
+;           Fit is faster (if you have a small number of data-point), but is less accurate,
+;           and cannot handle supersposition in spectra, nor polydisperse species.
+;           Fit_2_comp tries to fit two exponential components
+;             should be used with CAUTION
+; size : size after Laplace inversion
+; thres : multiplier used to determine the processing threshold
+;         only columns which first point is larger
+;         than the noise level by this ratio, will be processed
+;
+; see also :  INVLAP, INVTLAP, FITGENE, dosyfit, dosyfit_2, dosy3d, dosy2d.g, dosy_setup
+ 
+==========================================================
+dosy2d.g
+; dosy2d.g
+;
+; this is a Graphic Interface to the dosy2d macro
+;
+; file will be written at the end of the processing
+;
+; see also : dosy2d dosy3d dosy3d.g
+ 
+==========================================================
+dosy3d
+; dosy3d input_file data_type processing_type size thres output_file
+;
+; implements the complete DOSY processing for 3D
+;
+; DOSY data are on-file, diffusion dimension is in F1,
+; NMR spectra in F23
+;
+; data_type :       tabulated or regular   determines the type of sampling
+; processing_type : MaxEnt, Fit or Fit_2_comp   determines the processing which will be used
+;           Fit is faster (if you have a small number of data-point), but is less accurate,
+;           and cannot handle supersposition in spectra, nor polydisperse species.
+;           Fit_2_comp tries to fit two exponential components
+;             should be used with CAUTION
+; size : size after Laplace inversion
+; thres : multiplier used to determine the processing threshold
+;         only columns which first point is larger
+;         than the noise level by this ratio, will be processed
+;
+; see also :  INVLAP, INVTLAP, FITGENE, dosyfit, dosyfit_2, dosy2d, dosy3d.g, dosy_setup
+ 
+==========================================================
+dosy3d.g
+; dosy3d.g
+;
+; this is a Graphic Interface to the dosy3d macro
+;
+; file will be written at the end of the processing
+;
+; see also : dosy2d dosy3d dosy2d.g
+ 
+==========================================================
+dosyfit
+; Realizes the least-square fit of a DOSY 1D curve,
+; as extracted from a 2D or 3D DOSY experiment.
+;
+; values are computed directly in physical units thanks to $dfactor
+;
+; see also : dosyfit_2 dosyfit_verbose FITGENE FITEXP INVTLAP dosy2d
+ 
+==========================================================
+dosyfit_2
+; Realizes the least-square fit of a DOSY 1D curve,
+; as extracted from a 2D or 3D DOSY experiment
+; tries to fit 2 exponential damping
+;
+; values are computed directly in physical units thanks to $dfactor
+;
+; SHOULD BE USED WITH CAUTION
+;
+; see also : dosyfit dosyfit_2_verbose FITGENE FITEXP INVTLAP dosy2d
+ 
+==========================================================
+dosyfit_2_verbose
+; Realizes the least-square fit of a DOSY 1D curve,
+; tries to fit 2 exponential damping
+; and displays values and quality of the fit
+;
+; SHOULD BE USED WITH CAUTION
+;
+; see also : dosyfit_2 dosyfit_verbose dosy2d showexp
+ 
+==========================================================
+dosyfit_verbose
+; Realizes the least-square fit of a DOSY 1D curve,
+; and displays values and quality of the fit
+;
+; see also : dosyfit dosyfit_2_verbose dosy2d showexp
+ 
+==========================================================
+dosy_setup
+; dosy_setup
+;
+; interactive Graphic interface to set most of the parameters
+; needed for dosy processing
+;
+; Dmin - Dmax : the range of dampings that should be considered during the
+;    present processing.
+;    unit is in 1/tab[i]  that is in inverse of the experimetal value
+; Dfactor : this is the coefficient which is used to convert dampings value
+;    from arbitrary units (in 1/tab[i]) to real life values (eg in micron^2/sec)
+;    This can be computed with the "calibrate" macro
+;    DO NOT call "calibrate" while this menu is on
+; 'From Tabulated' use the entries in tab[] to preset Dmin Dmax values
+; 'from Time' use specw to do the same.
+;
+; Iter : number of iterations used either by the
+;    Fit (use 20-50) or the MaxEnt (use 200-1000) processing
+; Ndisp : screen refresh rate used by MaxEnt
+; Lambsp : constant used to increment lambda  
+;
+; see also : DMIN DMAX DFACTOR ITER NDISP LAMBSP dosy.g
+;
+ 
+==========================================================
+easy1d
+;This form is a simple interface, which permits to use most of the
+;Gifa features when processing 1D.
+;
+;It is meant for simple / standard processing. Many other possibilities 
+;are available in Gifa, either from the menu entries or from the command line.
+;
+;You will have to fill several fields, and to execute actions.
+;
+;The form can remain on screen as long as you wish, you can even have several
+;forms opened at the same time, which will execute different processing.
+;__________________________________________________________________________
+;The entries to fill-in are :
+;
+;Filename : The file that contains the FID that will be loaded for processing
+;
+; "info. on data" 
+;   Clicking on this button will list on the terminal the content of header
+;   of the file.
+;
+;Flatten solvent : if selected, the macro flat_solvent (see help flat_solvent) will
+;   be called before Fourier transform. It permits to flatten strong solvent line
+;   if this one is at the zero frequency.
+;
+;apodisation - F2 apodisation  : the apodisation (window) that will be applied
+;   before Fourier transform, along with parameters
+;   The available apodisation functions are :
+;      sin  - The sine bell       parameter : 0 = pure Cosine,  0.5 = pure Sine
+;      sqsin - The squred sine bell 
+;      expbroad - exponential broadening   parameter : width in Hz
+;      gaussbroad - Gaussian broadening   parameter : width in Hz
+;      none
+;
+;Fourier transform
+;   FT type    sim (complex data);  seq (real/tppi data)
+;   size after FT (but will be halved if you throw the imaginaries)
+;
+;Bruker Digital filter
+;   if on, the correction for Bruker digital filter will be applied.
+;   the needed parameters will be found in the header of the file
+;   if they are missing (files imported before the 4.4 version) they will be searched
+;   in the bruker parameer files (acqu or acqus) that should be kept in the same directory
+;
+; Phasing parameters
+;   Enter here the phase corrections which should be determined independently
+;   Use Find phase to determine phase correction.
+;      The phase thus found will be added to the current phase parameters
+;   The "Automatic phase corr." button will try to phase for you
+;      using an automatic phasing algorithm
+;   Use the "Clear" button to reset phase parameters to zero
+;
+; Baseline correction
+;   You can choose to apply automatic baseline correction on both axes,
+;   "polynomial" corresponds to 'bcorrp0 bcorr 3'
+;   "moving_average" corresponds to 'bcorrp1 bcorr 3'
+;   "polynomial+moving_average" or "moving_average+polynomial" correspond to
+;	applying both correction one after the other in the described order.
+;   The "Apply b.corr." button will apply the baseline corrections
+;      to the data-set currently in memory.
+;   Baseline correction requires the imaginary part of the data-set
+;   to be thrown away, so the actual size of the data-set will be halved
+;   along each axis along which baseline correction is applied.
+;   "Just extract real" does not apply any baseline correction, but
+;         throw away the Im part. (usefull for smaller resulting data-sets)
+;
+; "Do it all"
+;   Apply all the processing currently defined in the form,
+;   actually realises the same that the Apply and ok buttons below
+;
+; "Write macro"
+;   writes a executable macro file which, when executed,
+;   realises the same that the current form
+;
+; "Read macro"
+;   load a previously written macro file, and create a pre-loaded form
+ 
+==========================================================
+easy1d_doit
+; easy1d_doit
+; used by the easy1d form
+;
+; see also easy1d
+ 
+==========================================================
+easy1d_doitold
+; easy1d_doit
+; used by the easy1d form
+;
+; see also easy1d
+ 
+==========================================================
+easy1dold
+;This form is a simple interface, which permits to use most of the
+;Gifa features when processing 1D.
+;
+;It is meant for simple / standard processing. Many other possibilities 
+;are available in Gifa, either from the menu entries or from the command line.
+;
+;You will have to fill several fields, and to execute actions.
+;
+;The form can remain on screen as long as you wish, you can even have several
+;forms opened at the same time, which will execute different processing.
+;__________________________________________________________________________
+;The entries to fill-in are :
+;
+;Filename : The file that contains the FID that will be loaded for processing
+;
+; "info. on data" 
+;   Clicking on this button will list on the terminal the content of header
+;   of the file.
+;
+;apodisation - F2 apodisation  : the apodisation (window) that will be applied
+;   before Fourier transform, along with parameters
+;   The available apodisation functions are :
+;      sin  - The sine bell       parameter : 0 = pure Cosine,  0.5 = pure Sine
+;      sqsin - The squred sine bell 
+;      expbroad - exponential broadening   parameter : width in Hz
+;      gaussbroad - Gaussian broadening   parameter : width in Hz
+;      none
+;
+;Fourier transform
+;   FT type    sim (complex data);  seq (real/tppi data)
+;   size after FT (but will be halved if you throw the imaginaries)
+;
+; Phasing parameters
+;   Enter here the phase corrections which should be determined independently
+;   Use Find phase to determine phase correction.
+;      The phase thus found will be added to the current phase parameters
+;   The "Automatic phase corr." button will try to phase for you
+;      using an automatic phasing algorithm
+;   Use the "Clear" button to reset phase parameters to zero
+;
+; Baseline correction
+;   You can choose to apply automatic baseline correction on both axes,
+;   "polynomial" corresponds to 'BCORR 3'
+;   "2 stages" corresponds to 2 succesive 'BCORR 3' corrections with
+;        bcorrp1 and bcorrp0 parameters
+;   The "Apply b.corr." button will apply the baseline corrections
+;      to the data-set currently in memory.
+;
+; "Do it all"
+;   Apply all the processing currently defined in the form,
+;   actually realises the same that the Apply and ok buttons below
+;
+; "Write macro"
+;   writes a executable macro file which, when executed,
+;   realises the same that the current form
+;
+; "Read macro"
+;   load a previously written macro file, and create a pre-loaded form
+ 
+==========================================================
+easy2d
+;This form is a simple interface, which permits to use most of the
+;Gifa features when processing 2D.
+;
+;It is meant for simple / standard processing. Many other possibilities 
+;are available in Gifa, either from the menu entries or from the command line.
+;
+;You will have to fill several fields, and to execute actions.
+;
+;The form can remain on screen as long as you wish, you can even have several
+;forms opened at the same time, which will execute different processing.
+;__________________________________________________________________________
+;The entries to fill-in are :
+;
+;Filename : The file that contains the FID that will be loaded for processing
+;
+; "info. on data" 
+;   Clicking on this button will list on the terminal the content of header
+;   of the file.
+;
+;1st point correction : if 'yes' is selected, will perform the macro correct1st
+;   which correct the first row of the 2D. Should probably always be on
+;
+;Flatten solvent : if selected, the macro flat_solvent (see help flat_solvent) will
+;   be called before Fourier transform. It permits to flatten strong solvent line
+;   if this one is at the zero frequency.
+;
+;F1 apodisation - F2 apodisation  : the apodisation (window) that will be applied
+;   before Fourier transform along each axis, along with parameters
+;   The available apodisation functions are :
+;      sin        - The sine bell       parameter : 0 = pure Cosine,  0.5 = pure Sine
+;      sqsin      - The squared sine bell 
+;      expbroad   - exponential broadening   parameter : width in Hz
+;      gaussbroad - Gaussian broadening   parameter : width in Hz
+;      none
+;
+;LP backward prediction of FID
+;   When the beginning of the FID is to be reconstructed, indicates here the number
+;   points to add. Uses the burg2d_back macro to reconstruct using Linear Prediction
+;
+;F1 transform
+;   FT type    sh (States Haberkorn) - tppi - sh_tppi - phase modu - n+p (echo antiecho)
+;   size after FT
+;      (but will be halved if you throw the imaginaries or do a baseline correction)
+;   use LP : if "burg" Linear Prediction (the burg algorithm) is used for zerofilling in F1,
+;            if "mirror on-phase" mirror image on-phase is used instead
+;            if "mirror off-phase" mirror image off-phase is used (for data offseted by half a dwell time)
+;      in all cases, use a strong apodisation (sqsin) in F1
+;
+;F2 transform
+;   FT type    sim (complex data);  seq (real/tppi data)
+;   size after FT
+;      (but will be halved if you throw the imaginaries or do a baseline correction)
+;
+;Bruker Digital filter
+;   if on, the correction for Bruker digital filter will be applied.
+;   the needed parameters will be found in the header of the file
+;   if they are missing (files imported before the 4.4 version) they will be searched
+;   in the bruker parameer files (acqu or acqus) that should be kept in the same directory
+;
+; A note on sizes:
+;   If you happen to use very large sizes, the program will switch by itself
+;   in "on file" mode. In this mode, there is NO limitation on the size of
+;   the data-set. Macro written in this mode will also process on file.
+; 
+; Phasing parameters
+;   You can choose phase-sensitive of modulus mode
+;   the phase corrections can be determined independently
+;   Use the ph2dr / ph2dc commands to determine phase corrections.
+;   The "Apply phase correction" button will apply the corrections
+;      to the data-set currently in memory.
+;   Use the "Clear" button to reset phases to zero
+;
+; Baseline correction
+;   You can choose to apply automatic baseline correction on both axes,
+;   "polynomial" corresponds to 'bcorrp0 bcorr 3'
+;   "moving_average" corresponds to 'bcorrp1 bcorr 3'
+;   "polynomial+moving_average" or "moving_average+polynomial" correspond to
+;	applying both correction one after the other in the described order.
+;   The "Apply b.corr." button will apply the baseline corrections
+;      to the data-set currently in memory.
+;   Baseline correction requires the imaginary part of the data-set
+;   to be thrown away, so the actual size of the data-set will be halved
+;   along each axis along which baseline correction is applied.
+;   "Just extract real" does not apply any baseline correction, but
+;         throw away the Im part. (usefull for smaller resulting data-sets)
+;
+; "Do it all"
+;   Apply all the processing currently defined in the form,
+;   actually realises the same that the Apply and ok buttons below
+;
+; "Do it but phase"	every thing but the phase corections
+;
+; "Write macro"
+;   writes a executable macro file which, when executed,
+;   realises the same that the current form
+;
+; "Read macro"
+;   load a previously written macro file, and create a pre-loaded form
+;   Note that "on file" processing macro cannot be loaded.
+;
+; see also : easy2d_doit easy3d FT proc2d
+ 
+==========================================================
+easy2d_doit
+; easy2d_doit
+; used by the easy2d form
+;
+; see also easy2d proc2d
+ 
+==========================================================
+easy2d_doitold
+; easy2d_doit
+; used by the easy2d form
+;
+; see also easy2d proc2d
+ 
+==========================================================
+easy2dold
+;This form is a simple interface, which permits to use most of the
+;Gifa features when processing 2D.
+;
+;It is meant for simple / standard processing. Many other possibilities 
+;are available in Gifa, either from the menu entries or from the command line.
+;
+;You will have to fill several fields, and to execute actions.
+;
+;The form can remain on screen as long as you wish, you can even have several
+;forms opened at the same time, which will execute different processing.
+;__________________________________________________________________________
+;The entries to fill-in are :
+;
+;Filename : The file that contains the FID that will be loaded for processing
+;
+; "info. on data" 
+;   Clicking on this button will list on the terminal the content of header
+;   of the file.
+;
+;1st point correction : if 'yes' is selected, will perform the macro correct1st
+;   which correct the first row of the 2D. Should probably always be on
+;
+;Remove water : if 'yes' is selected, the macro rem_h2o (see help rem_h2o) will
+;   be called before Fourier transform. It permits to remove the strong solvent line
+;   if this one is at the zero frequency.
+;
+;F1 apodisation - F2 apodisation  : the apodisation (window) that will be applied
+;   before Fourier transform along each axis, along with parameters
+;   The available apodisation functions are :
+;      sin        - The sine bell       parameter : 0 = pure Cosine,  0.5 = pure Sine
+;      sqsin      - The squared sine bell 
+;      expbroad   - exponential broadening   parameter : width in Hz
+;      gaussbroad - Gaussian broadening   parameter : width in Hz
+;      none
+;
+;LP backward prediction of FID
+;   When the beginning of the FID is to be reconstructed, indicates here the number
+;   points to add. Uses the burg2d_back macro to reconstruct using Linear Prediction
+;
+;F1 transform
+;   FT type    sh (States Haberkorn) - tppi - sh_tppi - phase modu - n+p (echo antiecho)
+;   size after FT
+;      (but will be halved if you throw the imaginaries or do a baseline correction)
+;   use LP : if "yes" Linear Prediction (the burg algorithm) is used for zerofilling in F1,
+;      in which case, use a strong apodisation (sqsin) in F1
+;
+;F2 transform
+;   FT type    sim (complex data);  seq (real/tppi data)
+;   size after FT
+;      (but will be halved if you throw the imaginaries or do a baseline correction)
+;
+; A note on sizes:
+;   If you happen to use very large sizes, the program will switch by itself
+;   in "on file" mode. In this mode, there is NO limitation on the size of
+;   the data-set. Macro written in this mode will also process on file.
+; 
+; Phasing parameters
+;   You can choose phase-sensitive of modulus mode
+;   the phase corrections can be determined independently
+;   Use the ph2dr / ph2dc commands to determine phase corrections.
+;   The "Apply phase correction" button will apply the corrections
+;      to the data-set currently in memory.
+;   Use the "Clear" button to reset phases to zero
+;
+; Baseline correction
+;   You can choose to apply automatic baseline correction on both axes,
+;   "polynomial" corresponds to 'BCORR 3'
+;   "2 stages" corresponds to 2 succesive 'BCORR 3' corrections with
+;        bcorrp1 and bcorrp0 parameters
+;   The "Apply b.corr." button will apply the baseline corrections
+;      to the data-set currently in memory.
+;   Baseline correction requires the imaginary part of the data-set
+;   to be thrown away, so the actual size of the data-set will be halved
+;   along each axis along which baseline correction is applied.
+;   "Just extract real" does not apply any baseline correction, but
+;         throw away the Im part. (usefull for smaller resulting data-sets)
+;
+; "Do it all"
+;   Apply all the processing currently defined in the form,
+;   actually realises the same that the Apply and ok buttons below
+;
+; "Do it but phase"	every thing but the phase corections
+;
+; "Write macro"
+;   writes a executable macro file which, when executed,
+;   realises the same that the current form
+;
+; "Read macro"
+;   load a previously written macro file, and create a pre-loaded form
+;   Note that "on file" processing macro cannot be loaded.
+;
+; see also : easy2d_doit easy3d FT proc2d
+ 
+==========================================================
+easy3d
+;This form is a simple interface, which permits to use most of the
+;Gifa features when processing 3D.
+;
+;Simply give   the input and output filename
+;              processing and axis to process for each pass
+;                  (use -none- if 1 pass is enough)
+;              -write macro- can be used 
+;
+;It is based on the proc3d macro which permits to apply a given
+;macro processing on all the plane of a 3D file, the present macro simply
+;helps in the process of building the various macros used for proc3d.
+;
+;A typical processing consists in setting up a 2D processing for all
+;the planes of the 3D, along a given axis, then to set_up for 1D processing
+;for the remaining axis.
+;
+;To get things set-up, select the axis, then use the
+;-practice- button. This will create a dummy 2D file extracted from
+;the 3D, and which can be used for testing a given processing. You will be
+;provided with easy2d form to test things up.
+;
+;When you have found a correct processing, store the macro (with -write macro-
+;on the easy2d form), and get back to easy3d form.
+;You will have to click on the - rem. 'read' action - button to remove the
+;read commande which is in macro written by the easy2d form.
+;
+;The major difficulty is that you have to process all 3 axes with two 2D 
+;passes, and things get a little confuse.
+;To do so, you can typically do the following:
+;1) practice on 1st pass on F1 planes, and find correct parameters for F1 and F2 
+;   of F1 planes (thus F2 and F3 of the 3D)
+;2) store parameters as a macro and close easy2d form
+;3) click on   rem. 'read' action  for 1st pass
+;4) Then practice on 2nd pass on F2 planes. Propagate the parameters you 
+;   have found in 1st pass in F2 to current F2 (it is the same F3 axis of the 
+;   3D) and find correct parameters for F1
+;5) DO NOT store these parameters as is, otherwise F3 of the 3D would
+;   be processed twice !
+;   Rather, change FT type in F2 to "none" in easy2d form before storing the 
+;   macro. 
+;6) click on   rem. 'read' action  for 2nd pass
+;7) Now you have setted-up two macros, the first one (probably called 
+;   plane_F1.g) for processing F1 planes (thus F3 and F2 of the 3D), the second 
+;   one (probably called plane_F2.g) for processing F2 planes, but onbly along 
+;   the F1 axis of the 3D.
+;
+;Note that there is no need to process everything at once, may want to do
+;a partial processing, keep the intermediate file, and use it latter on
+;to finish the 3D processing.
+;
+;
+; see also : proc3d easy3d_doit easy2d
+ 
+==========================================================
+easy3d_doit
+; easy3d_doit
+; used by the easy3d form
+;
+; see also : easy3d
+; syntax is: easy3D_doit action ..then list of arg depends on action..
+ 
+==========================================================
+easyplot
+; easyplot 
+;
+; This tool is a simple interface to preview and realize  plots. 
+; 
+; After choosing the plot parameters, you can visualize the current
+; spectrum (in a postscript format) with the 'preview' button before drawing
+; the current spectrum on a output file (postscript or HPGL).
+; You can superimpose several spectra (with different offset) on the same 
+; output file.
+; The resulting output file can then be visualized, printed or cancelled.
+; 
+;	'Page Set-up'
+; The page orientation can be in a landscape format (rotation off) or 
+; in a portrait format (rotation on). The 'parameters' button permits
+; to activate the form box used to modify the contour parameters.
+; The plot offset values are used to offset the origin of the plot
+; (the lower left corner) at (x,y). The plot size can also be modified.
+;
+;	'Color Set-up'
+; The plot can be :	- 'Monochrome' with a specified color (black, red, 
+; yellow, green, cian, blue, purple or white), 
+;		- 'Bicolor' with the positive signals in blue and 
+; the negative ones in red,
+;		- 'Multicolor'.
+; For the postscript format, the line style can be modified.
+;
+;	'Axes Set-up'
+; Along the X and/or Y axes, projections or diagonal can be added.
+; The unit along X and Y axes can be in ppm, hz, index, damping or none.
+; The tick space can be choosed except for damping unit wich was
+; automatically calculated. A grid can also be added.
+;
+; You can also give a title to your plot.
+;
+; see also : plot? PLOT
+ 
+==========================================================
+easyplot2
+; easyplot 
+;
+; This tool is a simple interface to preview and realize  plots. 
+; 
+; After choosing the plot parameters, you can visualize the current
+; spectrum (in a postscript format) with the 'preview' button before drawing
+; the current spectrum on a output file (postscript or HPGL).
+; You can superimpose several spectra (with different offset) on the same 
+; output file.
+; The resulting output file can then be visualized, printed or cancelled.
+; 
+;	'Page Set-up'
+; The page orientation can be in a landscape format (rotation off) or 
+; in a portrait format (rotation on). The 'parameters' button permits
+; to activate the form box used to modify the contour parameters.
+; The plot offset values are used to offset the origin of the plot
+; (the lower left corner) at (x,y). The plot size can also be modified.
+;
+;	'Color Set-up'
+; The plot can be :	- 'Monochrome' with a specified color (black, red, 
+; yellow, green, cian, blue, purple or white), 
+;		- 'Bicolor' with the positive signals in blue and 
+; the negative ones in red,
+;		- 'Multicolor'.
+; For the postscript format, the line style can be modified.
+;
+;	'Axes Set-up'
+; Along the X and/or Y axes, projections or diagonal can be added.
+; The unit along X and Y axes can be in ppm, hz, index, damping or none.
+; The tick space can be choosed except for damping unit wich was
+; automatically calculated. A grid can also be added.
+;
+; You can also give a title to your plot.
+;
+; see also : plot? PLOT
+ 
+==========================================================
+env_2donfile.g
+;set up a menu for 2D processing on file
+; 
+; see also : button.g startup.g BUTTONBOX
+ 
+==========================================================
+env_advp.g
+; GUI for the advanced processing technics
+; 
+; see also : button.g startup.g BUTTONBOX
+ 
+==========================================================
+env_att.g
+; set-up the assignment module
+; 
+; bound to the 'Assignment' button in the Mode menu
+;
+ 
+==========================================================
+env_base.g
+;Set-up the minimum GUI
+; 
+; see also : button.g startup.g BUTTONBOX
+ 
+==========================================================
+env_basic.g
+;Set-up the simplified GUI
+; 
+; see also : button.g startup.g BUTTONBOX
+ 
+==========================================================
+env_lin_pred.g
+; set up a menu for Linear Prediction
+;
+; 
+; see also : button.g startup.g BUTTONBOX
+ 
+==========================================================
+env_maxent.g
+;set-up a menu for MaxEnt
+; 
+; see also : button.g startup.g BUTTONBOX
+ 
+==========================================================
+env_peak.g
+;set up a menu for Peak picking
+; 
+; see also : button.g startup.g BUTTONBOX
+ 
+==========================================================
+env_plot.g
+;set up a menu for plotting
+; 
+; see also : button.g startup.g BUTTONBOX
+ 
+==========================================================
+env_proc1d.g
+;set up a menu for 1D processing
+; 
+; see also : button.g startup.g BUTTONBOX
+ 
+==========================================================
+env_proc2d.g
+;set up a menu for 2D processing
+; 
+; see also : button.g startup.g BUTTONBOX
+ 
+==========================================================
+env_proc3d.g
+;set up a menu for 3D processing
+; 
+; see also : button.g startup.g BUTTONBOX
+ 
+==========================================================
+env_unix.g
+;set up a menu for UNIX tools
+; 
+; see also : button.g startup.g BUTTONBOX SH
+ 
+==========================================================
+evaln.g
+; evaln.g
+; graphic interface for the EVALN command.
+;
+; see also : EVALN
+ 
+==========================================================
+expbroad
+; expbroad lb { axis }
+;
+; this macro applies a exponential broadening in nD
+; it actually duplicates the EM functionnality, but
+; but, uses the same syntax as SIN and SQSIN
+;
+; contexts : $LB1 $LB2 $LB3
+;
+; see also : EM SIN gaussbroad
+ 
+==========================================================
+flat_solvent
+; flat_solvent param
+;
+; this macro will remove most of water signal (large zero-frequency
+; signal) by fitting and removing the water FID in the time domain
+; based from an idea of Marion, D., Ikura, M. and Bax,
+; A. J.Magn.Reson. 84 p425 (1989).
+;
+; used in 1D, will overflow the 2D area !!
+;
+; argument:
+;	no argument => open a form box
+;	polynomial => apply polynomial correction
+;	moving_average => apply a moving average correction
+;	polynomial+moving_average => apply both in this order
+;	moving_average+polynomial  => apply both in this order
+;
+; to be used before any processing, on the FID.
+ 
+==========================================================
+fprintf
+; fprintf file format_string arg1 arg2 ... *
+;
+; realises the equivalent of a C  `fprintf'
+; all the remaining of the line  up to the star is taken as arguments
+; and output the result to "file" (which should have been OPENed before)
+;
+; (known bug : a \n is inserted at the end of the format)
+;
+; see also : printf sprintf FPRINT PRINT OPEN
+ 
+==========================================================
+ft_n+p
+; ft_n+p
+;
+; performs the fourier transform of a 2d data-set acquired in "n+p" mode
+; i.e. PFG enhanced acquisition, with positive and negative gradients alternated
+; Processing is performed only along the F1 axis
+;
+; see also : conv_n+p ft_seq ft_sim ft_sh ft_tppi ft_sh_tppi ft_phase_modu FT
+ 
+==========================================================
+ft_phase_modu
+; ft_Phase_modu
+;
+; performs the F1 fourier transform of a 2d data-set acquired in 
+; phase modulation mode (Bruker magnitude mode MC2=QF)
+;
+; see also : ft_seq ft_sim ft_sh ft_tppi ft_sh_tppi ft_n+p FT
+ 
+==========================================================
+ft_seq
+; ft_seq
+;
+; performs the fourier transform of a data-set acquired on a Bruker in
+; sequential mode
+; Processing is performed only along the F2 (F3) axis if in 2D (3D)
+;
+; (Bruker QSEQ mode)
+; see also : ft_sim ft_sh ft_tppi ft_sh_tppi ft_phase_modu ft_n+p FT
+ 
+==========================================================
+ft_sh
+; ft_sh { axis }
+;
+; performs the fourier transform of a 2d data-set acquired in 
+; States-Haberkorn mode
+; Processing is performed only along the F1 axis
+;
+; in 3D, axis may be either f1 or f2
+;
+; (Bruker sh mode)
+; see also : ft_seq ft_sim ft_tppi ft_sh_tppi ft_phase_modu ft_n+p FT
+ 
+==========================================================
+ft_sh_tppi
+; ft_sh_tppi { axis }
+;
+; performs the fourier transform of a 2d data-set acquired in 
+; States-Haberkorn tppi mode
+; Processing is performed only along the F1 axis
+;
+; in 3D, axis may be either f1 or f2
+;
+; (Bruker sh_tppi mode)
+; see also : ft_seq ft_sim ft_sh ft_tppi ft_phase_modu ft_n+p FT
+ 
+==========================================================
+ft_sim
+; ft_sim
+;
+; performs the fourier transform of a data-set acquired on a Bruker in
+; simultaneous mode
+; Processing is performed only along the F2 (F3) axis if in 2D (3D)
+;
+; (Bruker QSIM mode)
+;
+; see also : ft_seq ft_sh ft_tppi ft_sh_tppi ft_phase_modu ft_n+p FT
+ 
+==========================================================
+ft_tppi
+; ft_tppi { axis }
+;
+; performs the fourier transform of a 2d data-set acquired in tppi mode
+; Processing is performed only along the F1 axis
+;
+; in 3D, axis may be either f1 or f2
+;
+; (Bruker tppi mode)
+;
+; see also : ft_seq ft_sim ft_sh ft_sh_tppi ft_phase_modu ft_n+p FT
+ 
+==========================================================
+gad
+; setup for gull & Daniell MAXENT iteration
+;
+; see also : gifa conjg MAXENT
+ 
+==========================================================
+gaussbroad
+; gaussbroad lb { axis }
+;
+; this macro applies a exponential broadening in nD
+; it actually duplicates the GM functionnality, but
+; but, uses the same syntax as SIN and SQSIN
+;
+; contexts : $GB1 $GB2 $GB3
+;
+; see also : GM SIN expbroad
+ 
+==========================================================
+get_1d
+; create a form to acces interactively planes from a joined 3D
+ 
+==========================================================
+get_acqus
+; get_acqus 
+;
+; returned valus of asked parameters found in an Bruker acqus file
+;
+; use : get_acqus					; open dialogbox
+;		get_acqus acqusfile param	; returned the asked parameter
+;
+ 
+==========================================================
+getuxnmr
+;This macro is a wrapper around the getnmr / getexp utilities,
+; permitting to bring UXNMR data-sets from a BRUKER spectrometer to the computer,
+; and to convert them to Gifa format.
+;
+; It is to be used if you want to copy the data files from the spectrometer
+; to the workstation through the network (actually getnmr / getexp does this)
+; In the case you simply want to convert from UXNMR files to Gifa files
+; on the local disk, use the ux2cach.sh shell script instead.
+ 
+==========================================================
+gifa
+; set up for GIFA MAXENT algorithm
+;
+; see also : conjg gad MAXENT
+ 
+==========================================================
+gm_bruker
+; gm_bruker lb gb
+; will perform a Gaussian apodisation in the Bruker manner
+;
+; lb is negative,
+; gb goes from 0 to 1
+; will set LB and GB (gifa ones) to their corresponding value)
+; see also: GM EM sin_bruker
+ 
+==========================================================
+gm_inter
+; interactive
+;
+; Permits to explore the effect of a gaussian apodisation
+;
+; start with a FID in memory, and with the correct phase correction
+; in memory
+;
+; GB is the size in Hz of the feature you want to select
+; -LB/GB rration selects the strength of the enhancement
+; Click on Apply to see the effect.
+;
+; try DO_NOTHING as ft if you want to see the effect on the FID
+;
+; To start with a new data set, read it in and click on 'New FID'
+; see also : GM EM 
+ 
+==========================================================
+go
+; obsolete, for compatibility
+ 
+==========================================================
+help
+;help {COMMAND or macro}
+;
+;Type help Name_of_item to get info about a specific command.
+;Use apropos topic, to find commands name related to a specific
+;topic.
+;Use help primer for a first introduction.
+;
+;see also : apropos
+ 
+==========================================================
+hph
+; permits to interactively phase a real 1D spectrum,
+; by doing an Hilbert transform first
+;
+; see also : PH HPHASE IFTBIS 
+;
+ 
+==========================================================
+hzpcm
+; hzpcm { hz_per_cm_in F1 } hz_per_cm_in F2
+; determines CX an CY to give the correct Hz per cm
+; depending on the current zoom window
+;
+ 
+==========================================================
+integrate
+; integrate
+;
+; This tool is intented to realize the 'old' 1D integration, so loved
+; by the chemists. With it, you can define integration zones,
+; name draw and calibrate them.
+;
+; When you first enter the tool, no integration zone is defined, so you
+;   are presented with an empty box.
+;
+;           'New Zone'
+; To create a new integration zone, click on the the 'New zone' button.
+;   A small dialog will tell you to select the region, do so with the mouse
+;   (left + medium buttons or shift-left button).
+;   Then (only then) click on Ok in the small dialog. The interaction box
+;   will redraw itself with an additionnal line for the new zone.
+;   You can define as many zones as you wish, and zones can superpose!
+; The line for the defined zone present the name of the zone (its index
+;   by default), the starting and ending points, and the integral value.
+;   By default the first zone is calibrated to 1.0
+; You can change the name and the calibration constant on using the specific
+;   buttons on the right of the entry.
+; You can change the starting and ending points, simply by modifying them
+;  in the box (click on calibrate to recompute the calibration).
+; You can even delete a given integration zone with the corresponding
+;  button on the line.
+;
+;            'Draw'
+; If you change the display (e.g. by zooming in or changing scale),
+;   you can redraw the integration curves on the spectrum with the
+;   'Draw' button on the botton of the box, (same action thant 'Apply')
+; The cursor just above the buttons permit to scale on the display
+;   the size of the integration versus the size of the spectrum.
+;
+;            'List'
+; The 'List' button simply produces a listing of the zone and the integration
+;   values on the terminal.
+;
+;            'Reset'
+; If you goofed completely with the zone definitions (or if you inadvertedly
+;   use a previously defined zone set (see below)), you can throw every thing
+;   and restart form an empty box.
+;
+;            'Close and forget'
+; The definitions used by the tool are statically stored in the program. So if
+;   you simply close the integration box, the definitions will remain in memory.
+;   When entering again the integration tool, these old definitions will show again.
+;   This can be very convenient in certain cases, but can also be very cumbersome.
+;   If you close the box with the 'Close and forget' button, all the static definitions
+;   will go away.
+;   These static definitions imply also that you can have only one integrate box
+;   on screen at a single time (most boxes (such as easy1d, easy2d) storing variables
+;   locally, can have independent instances on screen at the same time)
+; 
+;
+; Calling from macros
+; The 'integrate' macro checks wether there are arguments on its calling line,
+; so if you want to use it in another macro, put it alone on one line, so
+; that the formbox will build.
+;
+; see also : easy1d INTEG
+ 
+==========================================================
+largest_3d
+; This macro prints the sizes of the largest 3D which can be processed
+; with the current version of Gifa.
+;
+ 
+==========================================================
+linefitd.g
+; linefitd.g
+; graphic interface for the linefitd command.
+; permit to fit only one selected peak
+;
+; see also : linefit.g LINEFITD LINEFIT
+ 
+==========================================================
+linefitd_manu
+; linefitd_manu
+; graphic interface for the linefitd command.
+; permit to fit manually  one selected peak
+;
+; see also : linefit.g LINEFITD LINEFIT
+ 
+==========================================================
+linefit.g
+; linefit.g
+; graphic interface for the linefit command.
+;
+; see also : LINEFIT linefitd.g 
+ 
+==========================================================
+list
+; This macro outputs all the important parameters
+;
+; Replaces the built-in command list.
+;
+; see also : param listd dataset size
+ 
+==========================================================
+listd
+; List the first values of the data buffer
+; Replaces the previous built-in LISTD
+;
+; see also : list
+ 
+==========================================================
+listfilec
+; listefilec
+;
+; list on screen all the currently JOINed data-sets
+;
+; related contexts : $CACHE[]  $C_JOINED $C_NAME
+;
+; see also : JOIN DISJOIN dataset
+ 
+==========================================================
+load
+; load file_name
+;
+; loads the value for a text file, one entry per line,
+; no special format.
+;
+; quite inefficient (understand slow) !
+;
+; see also : READM READT
+ 
+==========================================================
+ls
+;as in unix
+;
+; see also : pwd more rm vi vim vip SH CD
+ 
+==========================================================
+lshift
+; lshift n_points
+;
+; makes a left shift of the data
+;
+; see also : rshift EXTRACT CHSIZE
+ 
+==========================================================
+maxent_dosy
+; utility used by dosy2d when processing in MaxEnt
+;
+; stores temporary results in a file, and get back to it if
+; something went wrong
+;
+; see also : dosy2d INVTLAP INVTLAPCONT
+ 
+==========================================================
+mdfamb
+;mdfamb  interactive
+;
+; this macro permits to interactively and graphically
+; modify a peak amoeba by selecting one-by-one pixels.
+; two possibilities are available.  
+; "add": add the selected pixel to the pic amoeba. 
+; "erase": remove the selected pixel from the pic amoeba. 
+; If the pixel is in another peak amoeba, the program ask 
+; information to user.
+;
+; see also : INTEG MSKINTEG saveamb setamb
+ 
+==========================================================
+mkdbppm
+; Macro to generate a ppm DBM file from a ppm ascii file
+;
+; mkdbppm dbm_ppm_filename ascii_ppm_filename 
+;
+; the ascii ppm file has the following free-format:
+;
+; PPM residu_name residu_number atom_name ppm_value linewidth_value
+;
+; see also: SimSpect2D DBOPEN SIMUN 
+ 
+==========================================================
+module
+; obsolote, use MODULUS instead
+ 
+==========================================================
+more
+;as in unix
+;
+; see also : ls pwd rm vi vim vip SH CD
+ 
+==========================================================
+mskread
+; mskread file_name
+; read the peak table and the amoeba written with mskwrite
+; for integration with mskinteg
+; appends extensions .pek and .amb to file_name
+;
+; see also : mskwrite MSKINTEG PKREAD PKWRITE
+ 
+==========================================================
+mskwrite
+; mskwrite file_name
+; write the peak table and the amoeba for latter integration
+; with mskread and mskinteg
+; appends extensions .pek and .amb to file_name
+;
+; see also : mskread MSKINTEG PKREAD PKWRITE
+ 
+==========================================================
+multi_zoom
+; multi_zoom
+;
+; creates a tool which permits to handle several zoom box on a data-set.
+;
+; you can define zoom regions
+;         jump to a given window
+;         store and load a set of zoom definitions (stored as macro commands)
+;         draw the zoom definitions on screen
+;
+; when loaded, the zoom definition are stored in an associative array called
+; zmem[]
+;
+;related contexts : $ZOOM $ZOOM_1D[1..2] $ZOOM_2D[1..4] $ZOOM_3D[1..6]
+;
+;related variable : $ZMEM[]
+;
+;see also : ZM zoom point zoom3di rzoom center 
+ 
+==========================================================
+nice_plot
+; nice_plot  y option_f1 option_f2 (label y/n)  title
+;
+; do a nice plot in 2D with projections, axes & title
+;
+ 
+==========================================================
+param
+; param
+;
+; generates a form with all the pertinent parameter for the current file
+;
+; see also : SPECW FREQ OFFSET ITYPE list listd dataset size
+ 
+==========================================================
+pca_1d
+; pca_1d  algo
+;
+; applies the PCA analysis on a set of 1D
+; (Stoyanova et al JMR Ser A 115 (1995) p 265)
+; (Brown et al JMR Ser B 112 (1996) p 32)
+; 
+;       algo is 0 or 1
+; 0 : directly computes the intensity of the line,
+;
+; 1 : iteratively correct for 1st order errors
+;     on shift and phase
+;
+; in all cases, the result is in the 1D buffer
+; and the initial data kept in the DATA buffer
+;
+ 
+==========================================================
+peak_pick
+; peak_pick  - interactive
+;
+; sets - up every thing for peak picking and realizes it
+; permits peakpicking in a interactive, graphical manner.
+;
+; related contexts : $NOISE $MAX[] $NPK1D $NPK2D $NPK3D and all $PKXX
+;
+; see also : PEAK MAX MINIMAX pklist
+ 
+==========================================================
+percentile.g
+; percentile nb_degre_of_freedom
+;
+; gives the 95% confidence limit on Chi2
+ 
+==========================================================
+ph2dc
+; interactive
+; permits to phase a 2D in F1 by interactively selecting columns
+; and building a composite 1D
+;
+; see also : ph2dr rowint colint PH
+ 
+==========================================================
+ph2dr
+; interactive
+; permits to phase a 2D in F2 by interactively selecting rows
+; and building a composite 1D
+;
+;
+; see also : ph2dc rowint colint PH
+ 
+==========================================================
+pkadjust
+; pkadjust line_shape
+; with line_shape lorentzian / gaussian
+;
+; adjust each peak in the table by fitting around it
+;
+; see also : LINEFIT LINEFITD
+ 
+==========================================================
+pkl
+; pklist start end
+;
+; lists the content of the internal peak table from entry `start' to entry `end'
+;
+; (formats have been chosen in order to have as compact as possible outputs,
+;  If you want more accuracy, then go to the $PKXX contexts themselves )
+;
+;related contexts : $NPK1D $NPK2D $NPK3D and all $PKXX
+;
+;see also : PEAK peak_pick PKSELECT PKWRITE PKREAD
+ 
+==========================================================
+pklist
+; pklist start end
+;
+; lists the content of the internal peak table from entry `start' to entry `end'
+;
+; Values are display with the current unit
+;
+; (formats have been chosen in order to have compact outputs,
+;  If you want more accuracy, then go to the $PKXX contexts themselves )
+;
+;related contexts : $NPK1D $NPK2D $NPK3D and all $PKXX
+;
+;see also : PEAK peak_pick PKSELECT PKWRITE PKREAD
+ 
+==========================================================
+pklist.1
+; pklist start end
+;
+; lists the content of the internal peak table from entry `start' to entry `end'
+;
+; Values are display with the current unit
+;
+; (formats have been chosen in order to have compact outputs,
+;  If you want more accuracy, then go to the $PKXX contexts themselves )
+;
+;related contexts : $NPK1D $NPK2D $NPK3D and all $PKXX
+;
+;see also : PEAK peak_pick PKSELECT PKWRITE PKREAD
+ 
+==========================================================
+pkrm_diag
+; removes all peaks along the diagonal
+;
+; asks for the width of the diagonal to remove.
+;
+; see also : pkrmi pkrmz PKRM
+ 
+==========================================================
+pkrmi
+;pkrmi  interactive
+;
+; this macro permits to interactively and graphically
+; remove peaks from the peak table
+;
+; see also : PKRM MONOPOINT pkrm_diag pkrmz
+ 
+==========================================================
+pkrmz
+; pkrmz
+;
+; permits to remove all the peaks within a given zone
+;
+; see also : PKRM pkrmi pkrm_diag
+ 
+==========================================================
+pksumrec
+; pksumrec  { height(F1) width(F2)}
+;
+; permit to integrate all the peaks in the current peak table
+; over a given rectangle.
+;
+; if called with no argument, build a graphic interface,
+; if called with arguments, uese them as the width and the height of the box
+; (n means -n +n range, e.g. 2 means integrate over 5 points)
+; see also SUMREC INTEG
+ 
+==========================================================
+planeint
+; interactive
+; permits to choose a plane interactively on a 3D by clicking on the 1D
+; typically, the 1D should come from a vert command (or equivalent direction)
+; and the currently displayed plane determines the direction
+;
+;see also : rowint vertint ph2dc ROW COL
+ 
+==========================================================
+plot?
+;PLOT?
+; interactive
+; prompt for parameters for plotting
+;
+; see also : disp? easyplot PLOT
+ 
+==========================================================
+plotn
+; plotn total_cx total_cy partial_cx partial_cy  y/n
+;
+; plot on several pages to fit size
+; permits to build large composite plots on size limited plotters
+;
+; see also : easyplot PLOT
+ 
+==========================================================
+plotcolordisp
+; plotcolordisp <Filename>
+;
+; Makes a color contour plot on plotter
+;
+; see also : easyplot PLOT
+ 
+==========================================================
+plotdamp_x
+; plotdamp_x step plot_file
+;
+; draw along x axis labels for damping units.
+; 
+; see also : plotdamp_y PLOTAXIS easyplot
+ 
+==========================================================
+plotdamp_y
+; plotdamp_y step plot_file
+;
+; draw along y axis labels for damping units.
+;
+; see also : plotdamp_x PLOTAXIS easyplot
+ 
+==========================================================
+plot_fit
+; to make a nice multicolored plot out of the fitted line shapes
+;
+; see also : show_fit SHOW LINEFIT
+ 
+==========================================================
+plotn
+; plotn total_cx total_cy partial_cx partial_cy  y/n
+;
+; plot on several pages to fit size
+; permits to build large composite plots on size limited plotters
+;
+; see also : easyplot PLOT
+ 
+==========================================================
+point
+; interactive mode on screen
+;
+; Permit to interactively inspect the content of the data-set,
+; using the mouse on the graphic-screen.  Exit when you click
+; the 3rd button of the mouse
+; Clicked point are stacked onto the POINT_STACK
+;
+; see also : point_cross point_dump POINT_PUSH MONOPOINT ZM
+ 
+==========================================================
+point_cross
+; interactive mode on screen
+;
+; Permit to interactively inspect the content of the data-set,
+; using the mouse on the graphic-screen.  Exit when you click
+; the 3rd button of the mouse
+; Clicked point are stacked onto the POINT_STACK
+;
+; that one draws a little cross
+;
+; see also : point point_dump POINT_PUSH MONOPOINT ZM
+ 
+==========================================================
+point_dump
+; dumps the containt of the point stack
+;
+; see also : point POINT_PUSH
+ 
+==========================================================
+printf
+; printf format_string arg1 arg2 ... *
+;
+; realises the equivalent of a C  `printf'
+; all the remaining of the line  up to the star is taken as arguments 
+;
+; see also : fprintf sprintf FPRINT PRINT
+ 
+==========================================================
+proc2d
+; proc2d sourcefile destinationfile axis_to_process commands
+;
+; this macro processes a 2D file using the cache system (join, getc, putc)
+; it permits to handle very large files, which would not fit into memory.
+;
+; sourcefile         : is the initial data-set
+; destinationfile    : is the result of the process
+; axis_to_process    : either F1 or F2 (NOT F12)
+; commands           : the commands to be applied to each row/column in 1D notation
+;
+; the commands are the regular commands you would used to process a 1D data-set.
+; when called without parameters, 'commands' can be several line long, as typed
+; when proc2d is called with parameters on the line, then 'commands' should be a single
+; command line within quotes.
+;
+; e.g.
+; proc2 my_ser_file my_F2_processed F2 'sin 0.2  ft_sim  phase 30 -40  real'
+; proc2 my_F2_processed my_F12_processed F1 'sin 0.2  revf ft  phase 0 30  real  bcorr 3'
+;
+; would process a whole 2D in 2 steps.
+;
+; if sourcefile and destinationfile are identical, assumes in_place 
+; processing (i.e. no size changes)
+;
+; see also : proc3d easy2d FT JOIN easy2d
+ 
+==========================================================
+proc2d_form
+; prepares a form for proc2d
+;
+; see also : proc2d
+ 
+==========================================================
+profile
+; profile { command }
+;
+; if called without argument, it analyses the profiler sats currently in memory
+; if called with a command name as argument, it sets the profiler to 1, 
+;    launch the command, and analyse the result
+;
+; lines are sorted in increasing duration order, and % to the total time are computed.
+; time spent in all called macros is allso reported
+;
+; see also : PROFILER TIMER
+ 
+==========================================================
+proj2d
+; proj2d axis algo abs
+;
+; axis is F1 or F2
+; algo is M or S
+; if abs is Y, absolute value is taken first
+;
+; equivalent to proj in 2D, but on a 2D joined file
+;
+; see also :  proj3d PROJ proj_loc JOIN proc2d
+ 
+==========================================================
+proj_loc
+; proj_loc axis algorithm start end 
+;
+; Permits to perform a local projection of 2D data-set.
+; Projections are done either along F1 or F2 axes, 
+; with either skyline or mean algorithm.
+;       
+;
+; see also : proj3d_all proj3d PROJ 
+ 
+==========================================================
+pwd
+;as in unix
+;
+; see also : ls more rm vi vim vip SH CD
+ 
+==========================================================
+readgz
+; readgz filename
+;
+; read a regular Gifa file and compresses it
+;
+; see also : writegz WRITEZ ZEROING
+ 
+==========================================================
+rem_h2o
+; rem_h2o -no param-
+;
+; this macro will remove most of water signal (large zero-frequency
+; signal) by fitting and removing the water FID in the time domain
+; based from an idea of Marion, D., Ikura, M. and Bax,
+; A. J.Magn.Reson. 84 p425 (1989).
+;
+; used in 1D, will overflow the 2D area !!
+;
+; to be used before any processing, on the FID.
+;
+ 
+==========================================================
+reset_absmax
+; reset_absmax file_name
+;
+; sometimes, the absmax get screwed up on a file obtained by
+; on-file processing (typically 3D's)
+; this macro resets it to the correct value
+ 
+==========================================================
+residue
+; residue exp
+;
+; compute the residue (difference between calc and data values)
+; from a given expression, with the same syntax as FITGENE
+;
+; exp should be an equation in $X, 
+; $X will take the values $TAB[1] to $TAB[n]
+; where n is the size of the current TAB buffer
+;
+; see also : showexp FITGENE showtab PUT DISP1D SHOWLINE 
+ 
+==========================================================
+return
+; return value
+;
+; set a global variable to $returned
+;
+; used to simulate a RETURN command
+ 
+==========================================================
+rm
+; as in unix
+;
+; see also : ls pwd more vi vim vip SH CD
+ 
+==========================================================
+rowint
+; interactive
+; permits to choose rows interactively on a 2D by clicking on the data-set
+;
+;see also : colint vertint planeint ph2dc ROW COL
+ 
+==========================================================
+rshift
+; rshift n_points
+;
+; makes a right shift of the data
+;
+; see also : lshift EXTRACT CHSIZE
+ 
+==========================================================
+rzoom
+; This command permits, when in zoom mode in 2D, to jump to a zoom 
+;window symmetric relatively to the diagonal of the one currently 
+;used.
+;
+;see also : ZOOM ZM multi_zoom
+ 
+==========================================================
+saveamb
+; saveamb (interactive)
+;
+; saveamb save the peak and amoeba files 
+; according to a given basename. 
+; If peaks/amoeba files already exist with the 
+; same basename, the user is asked to remove them.
+;
+; see also : INTEG MSKINTEG saveamb setamb
+ 
+==========================================================
+setamb
+; setamb $pic $typ_act
+;
+; this macro permits to interactively modify the 
+; amoeba of pic $pic
+;
+; see also : INTEG MSKINTEG saveamb setamb
+ 
+==========================================================
+setfont
+; setfont font-name font-size file-name
+;
+; Permit to change the font type and size in Postscript outputs
+; eg. setfont Symbol 14 %PL
+;
+; Should not be the first drawing command for a given plot,
+; use PEN or instance
+;
+; see also : PCOLOR PEN PLOTTEXT PLOT
+ 
+==========================================================
+showexp
+; showexp exp
+;
+; displays the curve of a given expression, with the same
+; syntax as FITGENE
+;
+; exp should be an equation in $X, 
+; $X will take the values $TAB[1] to $TAB[n]
+; where n is the size of the current TAB buffer
+;
+; see also : residue FITGENE showtab PUT DISP1D SHOWLINE 
+ 
+==========================================================
+show_fit
+; to make a nice multicolored plot out of the fitted line shapes
+;
+; see also : plot_fit SHOW LINEFIT
+ 
+==========================================================
+showtab
+; showtab
+;
+; displays tabulated data in tabulated mode
+; i.e. realizes a scatter plot Xi Yi,
+;    where Yi are the current 1D data-set
+;      and Xi are the value stored in $TAB[i]
+;
+; see also : showexp PUT DISP1D SHOWLINE UNIT
+ 
+==========================================================
+SimSpect2D
+; Macro to simulate a 2D spectrum from an intensity file and a DBM ppm file,
+; used by SimSpect2D_form
+;
+; SimSpect2D dbm_ppm_filename intensity_filename F1_modulation Symetrical_option
+;
+; the ppm DBM file can be generated from an ascii ppm file by the
+; macro mkdbppm
+;
+; the ascii intensity file has the following free-format:
+;
+; INT residu_name1 residu_number1 atom_name1 residu_name2 residu_number2 
+; atom_name2 intensity_value
+;
+; F1_modulation can be either sh_tppi or phase_modu
+;
+; if Symetrical_option is sym, then each entry in the intensity file is duplicated on 
+; the other side of the spectral diagonal.
+;
+; see also: SimSpect2D_form mkdbppm DBOPEN SIMUN 
+ 
+==========================================================
+SimSpect2D_form
+; SimSpect2D_form args...
+; builds and apply a standard action for 2D spectrum simulation
+;
+; see also: SimSpect2D DBOPEN SIMUN 
+ 
+==========================================================
+sin_bruker
+; sin_bruker SSB
+; 
+; realizes the exact counter part of the SIN Bruker command.
+; see also: SIN gm_bruker
+ 
+==========================================================
+size
+; list the size parameters of the current data-set
+;
+; see also : CHSIZE LIST
+ 
+==========================================================
+sprintf
+; sprintf format_string arg1 arg2 ... *
+;
+; realises the equivalent of a C  `sprintf'
+; all the remaining of the line  up to the star is taken as arguments
+; result is returned to the context $returned
+;
+; only one line can be put into the string, so \n cannot be used
+;
+; see also : printf fprintf FPRINT PRINT
+ 
+==========================================================
+startup.g
+; used as a default startup macro
+;
+; this macro is called whenever Gifa is started.
+; However if another startup.g file is available earlier in the GIFAPATH
+; (typically in . or in $HOME/macro) then this other one will be used instead
+;
+; load the default GUI and preset some default values
+;
+; see also : button.g
+;
+;
+; you can adapt this file to your local set-up, either by :
+;      copying it over to your $HOME/macro directory, and modifying it
+; or   modifying it directly to adapt to your general set-up
+;
+; however, if you choose the second solution, remember to save it before
+; upgrading Gifa to a new version, because this file :
+; /usr/local/gifa/macro/startup.g 
+; will be overwritten
+ 
+==========================================================
+sumrec_1d
+; sumrec_1d  radius_of_box
+; 
+; integrate 1D peak on a box around each peak in the peak table
+;
+; see also : SUMREC INTEG
+ 
+==========================================================
+super1d
+; if called with no argument :
+;    builds a form which permits to superimpose up to 3 1D in the disp1d window
+;
+; if called with proper arguments :
+;    does actually the display
+;
+; see also : super2d SHOWC JOIN DISP1D
+ 
+==========================================================
+super2d
+; super2d (Superimpose 2D display)
+;
+; Displays spectra read form files, to the data-set currently held into
+; memory.
+; For each data-set, choose the color, the scale ratio 
+;    and adapt lateral shift.
+;
+; Shifts are in index values on the current one
+;
+; Click on 'Apply' to restore the display
+;   but use the current data-set form chosing the zoom level.
+;
+; see also : super1d SHOWC JOIN CDISP2D
+ 
+==========================================================
+svd2d
+; svd2d axis new_size
+;
+; axis is F1 or F2,
+; extend the FID up to new_size, using SVD method
+;
+; see also : DT->SVD burg2d 
+ 
+==========================================================
+svd2d_stable
+; svd2d_stable axis new_size
+;
+; axis is F1 or F2,
+; extend the FID up to new_size, using SVD method
+;
+; see also : svd2d DT->SVD burg2d 
+ 
+==========================================================
+svd_rev
+; svd_rev n_of_point
+;
+; reconstruct the missing n_of_point first data points
+; using the lp-svd method
+; changes order to n_of_point*2
+;
+; see also : burg_rev BURG SVD->AR
+ 
+==========================================================
+tab_buffer
+; tab_buffer
+;
+; Load ascii file as a 1D data-set and put the square in a buffer 'TAB'
+;
+; see also : PUT TAB, GET TAB, showtab, load
+ 
+==========================================================
+title
+; title string_of_characters plot_file
+; Draw the string at x=0, y=cy+1.0 on the designed plot_file.
+; 
+; see also : PLOT PAGE PLOTTEXT PLOTTEXTS
+ 
+==========================================================
+toto
+; listefilec
+;
+; list on screen all the currently JOINed data-sets
+ 
+==========================================================
+tunset
+; tunset name_of_array
+;
+; unset the whole set of entries of the array 'name_of_array'
+;
+; see also : UNSET MUNSET
+ 
+==========================================================
+upzoom
+; upzoom permits to propagate a zoom window to a higher dimension
+;
+;Normally, each dim buffer (i.e. 1D, 2D 3D) has an independent zoom definition.
+; however, commands like
+;    ROW, COL, PROJ (2D->1D)
+;    PLANE, PROJ (3D->2D)
+;    VERT (3D->1D)   etc...
+; copy the zoom definition from the higher dimension to the lower one.
+;
+; upzoom realizes exactly the opposite.
+; if you are in nD, upzoom will copy the current zoom definition to (n+1)D
+;  using the last commands to guess the axis.
+;
+; see also : ZOOM zoom3di
+ 
+==========================================================
+user_apod
+; user_apod func($i)
+;
+; func($i) is entered as a string which defines the function to be applied
+; as an apodisation function.
+; $i will run from 1 to the size of the data_set
+; no blank should be inserted in the definition of func($i)
+;
+; all context can be used
+; $pi is predefined
+;
+; see also : user_apod_2d
+ 
+==========================================================
+user_apod_2d
+; user_apod_2d func($i) direc
+; 
+; func($i) is entered as a string which defines the function to be applied
+; $i will run from 1 to the size of the data_set
+; no blank should inserted in the definition of func($i)
+;
+; all context can be used
+; $pi is predefined
+;
+; direc is either F1 or F2
+;
+; see also : user_apod
+ 
+==========================================================
+Varian
+; This command switches to Varian mode
+;
+; if you wish to be be permanently in Varian mode, simply
+; put the first liine (SETPATH etc..) as the first line in
+; your startup.g file (either global or personnal)
+;
+; see also: /usr/local/gifa/macro/varian/README.varian
+ 
+==========================================================
+Varian.g
+; This command switches to Varian mode
+;
+; if you wish to be be permanently in Varian mode, simply
+; put the first liine (SETPATH etc..) as the first line in
+; your startup.g file (either global or personnal)
+;
+; see also: /usr/local/gifa/macro/varian/README.varian
+ 
+==========================================================
+varian_param
+; varian_param procpar_file_name
+;
+; this macro reads-in the procpar Varian file and sets
+; the Gifa relevant parameters from the values found in the file.
+; The parameters which are sets are :
+; FREQ - SPECW
+;
+; see also : READV READ varian_read
+;
+ 
+==========================================================
+varian_read
+; varian_read
+;
+; reads-in a Varian file and load parameters.
+; The macro asks for the name of the directory which is supposed to
+; hold the data file (called fid) and the parameters (called procpar)
+;
+; see also : READV varian_param
+ 
+==========================================================
+vertint
+; interactive
+; permits to choose verts interactively on a 3D by clicking on the 2d plane
+;
+;see also : rowint colint planeint ph2dc ROW COL
+ 
+==========================================================
+vi
+;as in unix
+;
+; see also : ls pwd more rm vim vip SH CD
+ 
+==========================================================
+view_manager
+;2D view manager
+;
+;permits to set up the views for 2D analysis
+ 
+==========================================================
+view_manager_2d
+;2D view manager
+;
+;permits to set up the views for 2D analysis
+ 
+==========================================================
+vim
+;open with vi a macro in the standard place
+; i.e. in /usr/local/gifa/macro/
+;
+; see also : ls pwd more rm vi vip SH CD
+ 
+==========================================================
+vip
+;open with vi a macro in the $HOME/macro directory
+;
+; see also : ls pwd more rm vi vim SH CD
+ 
+==========================================================
+writegz
+; writegz filename
+;
+; write a regular Gifa file and compresses it
+;
+; see also : WRITEZ ZEROING
+ 
+==========================================================
+WriteNV
+; convert Gifa data file into NmrView file entry
+;
+;WriteNV $datafile .
+ 
+==========================================================
+write_param_maxent
+;write_param_maxent file_name
+; 
+; store MaxEnt parameters in file header
+ 
+==========================================================
+zoom3di
+; interactive
+; to setup a zoom window in 3D
+;
+; see also : ZOOM disp3d_form upzoom disp3d?
