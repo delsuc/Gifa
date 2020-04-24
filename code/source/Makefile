@@ -291,7 +291,7 @@ distrib:
 	../com_devel/dodoc_html
 
 show_doc : ../doc/programer_doc.html
-	netscape ../doc/programer_doc.html &
+	firefox ../doc/programer_doc.html &
 
 #to create a compressed archive off-hand, just in case
 # RES_DIR is the off directory to put stuff on, SHOULD NOT BE .

@@ -25,6 +25,17 @@ char lic[MAX_CHAR];
 int  *ilic;
 
 {
+
+  strcpy(lic,"free version");
+  *ilic = strlen(lic);
+  return;
+
+/* 
+   This was the original code to check for a valid (paid !) software licence 
+   it is not used anymore in this public version
+*/
+
+
   char key[64];
   unsigned long hash, ih, j;
   char string[MAX_CHAR], check[MAX_CHAR];

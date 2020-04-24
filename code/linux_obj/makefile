@@ -25,7 +25,7 @@ FORTRAN = ./fortran
 #CFLAGS and FFLAGS are the compilation options (optimisation not included)
 #-Wno-implicit-function-declaration 
 #CFLAGS = -DF2C -DLINUX -DNOREADLINE -Dis_big_endian -I/usr/X11R6/include -I/usr/include/gdbm_compat -I. -I/home/gifa/Gifa/code/source -mieee-fp
-CFLAGS = -DF2C -DLINUX  -Dis_big_endian -I/usr/X11R6/include -I/usr/include/gdbm_compat -I. -I/home/gifa/Gifa/code/source -mieee-fp
+CFLAGS = -DF2C -DLINUX  -Dis_big_endian -I/usr/X11R6/include -I/usr/include/gdbm_compat -I. -I$(VPATH) -mieee-fp
 FFLAGS =
 
 #COPT and FOPT are optimisation switches used if not DEBUG

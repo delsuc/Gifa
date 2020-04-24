@@ -380,7 +380,7 @@ variable.o : variable.for variable.inc paramfilev.inc gifshellv.inc \
 
 dbm.o : dbm.for variable.inc 
 
-dbtools.o : dbtools.c sizebasec.h dbmdef.h 
+dbtools.o : dbtools.c util.h sizebasec.h dbmdef.h 
 
 addc.o : addc.for cachev.inc paramfilev.inc sizeparam.inc \
    sizebase.inc 

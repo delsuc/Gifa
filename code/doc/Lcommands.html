@@ -1,0 +1,515 @@
+<html>
+<head>
+<!-- This document created by dodoc_html V2.1 -->
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#CC0000">
+<TITLE>Commands in L </TITLE>
+<H2> <A HREF="commands.html">Back to Alphabetical List</A> </H2>
+
+<A NAME="LAMBCONT">
+<HR> <H3> LAMBCONT </H3> 
+<BLOCKQUOTE>
+<pre>
+LAMBCONT 0/1/2
+
+Tells the Maximum Entropy minimizer which lambda controlling should 
+be used.
+If LAMBCONT is 0 no controlling is done and Lambda is kept at its 
+initial value may be used for hand made lambda control.
+If LAMBCONT is 1  lambda is computed such as dQ.dS = 0.0  if conv&lt;1  
+(dC dS angle larger than pi/2)
+If LAMBCONT is 2  lambda is computed such as cos(dQ,-dC) = 
+cos(dQ.dS) if lambcont.eq.2
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $LAMBCONT
+
+
+ see also : <A HREF="Acommands.html#ALGO">ALGO</A> <A HREF="Lcommands.html#LAMBDA">LAMBDA</A> <A HREF="Lcommands.html#LAMBSP">LAMBSP</A> <A HREF="Mcommands.html#MAXENT">MAXENT</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="LAMBDA">
+<HR> <H3> LAMBDA </H3> 
+<BLOCKQUOTE>
+<pre>
+Used to set the value for Lambda when no lambda controlling is used.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $LAMBDA
+
+
+ see also : <A HREF="Acommands.html#ALGO">ALGO</A> <A HREF="Lcommands.html#LAMBCONT">LAMBCONT</A> <A HREF="Lcommands.html#LAMBSP">LAMBSP</A> <A HREF="Mcommands.html#MAXENT">MAXENT</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="LAMBSP">
+<HR> <H3> LAMBSP </H3> 
+<BLOCKQUOTE>
+<pre>
+Constant used to increment lambda (1 .. 20) The larger the value of 
+LAMBSP, the faster is the advancement of the Maximum Entropy run .
+A too large value for LAMBSP may hamper the correct convergence of 
+the program, a value too small may stop the convergence. Typical 
+values are within 3..5 
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $LAMBSP
+
+
+ see also : <A HREF="Acommands.html#ALGO">ALGO</A> <A HREF="Lcommands.html#LAMBCONT">LAMBCONT</A> <A HREF="Lcommands.html#LAMBDA">LAMBDA</A> <A HREF="Mcommands.html#MAXENT">MAXENT</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="LAPLACE">
+<HR> <H3> LAPLACE </H3> 
+<BLOCKQUOTE>
+<pre>
+LAPLACE size
+
+Computes the Laplace transform of the current data-set, considered as 
+spanning the range DMIN-DMAX in a logarithmic manner.  Result consists in 
+'size' points regularly sampling the time domain with a sampling rate 
+SPECW.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $DMIN $DMAX $SPECW_1D
+
+
+ see also : <A HREF="Dcommands.html#DMAX">DMAX</A> <A HREF="Dcommands.html#DMIN">DMIN</A> <A HREF="Icommands.html#INVLAP">INVLAP</A> <A HREF="Scommands.html#SPECW">SPECW</A> <A HREF="Tcommands.html#TLAPLACE">TLAPLACE</A> <A HREF="Tcommands.html#TRANSLAP">TRANSLAP</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="largest_3d">
+<HR> <H3> largest_3d </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/largest_3d">Show macro</A>
+<pre>
+ This macro prints the sizes of the largest 3D which can be processed
+ with the current version of Gifa.
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="LB">
+<HR> <H3> LB </H3> 
+<BLOCKQUOTE>
+<pre>
+Constant used for exponential deconvolution. The value is loaded 
+from the last EM command. A non-zero value indicates the program to 
+do Lorentzian deconvolution during a Maximum Entropy  run (if FILTER 
+is 1).
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $LB1 $LB2 $LB3
+
+
+ see also : <A HREF="Ecommands.html#EM">EM</A> <A HREF="Fcommands.html#FILTER">FILTER</A> <A HREF="Gcommands.html#GB">GB</A> <A HREF="Gcommands.html#GM">GM</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="LEVEL">
+<HR> <H3> LEVEL </H3> 
+<BLOCKQUOTE>
+<pre>
+LEVEL n
+
+number of levels to be plotted by the plot command in 2D and in  the 
+contour plot graphic window, and in 3D contour. Default is 8; 
+maximum is 64.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $LEVEL
+
+
+ see also : <A HREF="Ccommands.html#CDISP2D">CDISP2D</A> <A HREF="Pcommands.html#PLOT">PLOT</A> <A HREF="Pcommands.html#PLOT3D">PLOT3D</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="LEVELHYSTE">
+<HR> <H3> LEVELHYSTE </H3> 
+<BLOCKQUOTE>
+<pre>
+LEVELHYSTE value
+internal value for BCORR 3 algorithm
+
+
+ see also : <A HREF="Bcommands.html#BCORR">BCORR</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="LEVELSEGM2">
+<HR> <H3> LEVELSEGM2 </H3> 
+<BLOCKQUOTE>
+<pre>
+LEVELSEGM2 value
+internal value for BCORR 3 algorithm
+
+
+ see also : <A HREF="Bcommands.html#BCORR">BCORR</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="licence.g">
+<HR> <H3> licence.g </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro/gm    <A HREF="/usr/local/gifa/macro/gm/licence.g">Show macro</A>
+<pre>
+ registration box
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="LINEFIT">
+<HR> <H3> LINEFIT </H3> 
+<BLOCKQUOTE>
+<pre>
+linefit line_shape
+
+where line_shape is Lorentz / Gauss used to determine the fitted 
+line-shape (Lorentzian or Gaussian).
+Performs a line fitting of the current 1D spectrum (sometimes
+called incorrectly deconvolution) based on the
+current peak-table contents.
+
+The parameter of the line will be modified 
+to the best fit of the current spectrum using the Levenberg-
+Marquardt method. The fit is estimated with a chi squared value, 
+computing on the displayed region, using the value of the noise. 
+Optimum fit is btained for a chi squared equal to 1. This value is 
+return in the $CHI2 variable. The program will fit the currently 
+displayed region, using the values in the peak table as starting 
+values, and returning the fitted values in the same peak table. Uses 
+the values of TOLERANCE and ITER for the run. All the values in the 
+peak-table will be used, but only the line in the displayed region 
+will be adjusted. Unknown line shapes will be assumed to be 
+Lorentzian.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $PK1D_A[i] $PK1D_F[i] $PK1D_P[i] $PK1D_T[i] $PK1D_W[i] 
+     $PK2D_A[i] $PK2D_F1F[i] $PK2D_F1W[i] $PK2D_F2F[i] $PK2D_F2W[i]
+     $PK3D_A[i] $PK3D_F1F[i] $PK3D_F1W[i] $PK3D_F2F[i] $PK3D_F2W[i]
+     $PK3D_F3F[i] $PK3D_F3W[i] $CHI2 $ITERDONE
+ and related errors: $PK1D_Ai_ERR[i] $PK1D_F_ERR[i] $PK1D_W_ERR[i]
+     $PK2D_A_ERR[i] $PK2D_F1F_ERR[i] $PK2D_F1W_ERR[i]
+     $PK2D_F2F_ERR[i] $PK2D_F2W_ERR[i]
+
+
+ see also : <A HREF="Fcommands.html#FITEXP">FITEXP</A> <A HREF="Fcommands.html#FITGENE">FITGENE</A> <A HREF="Gcommands.html#GET">GET</A> <A HREF="Lcommands.html#LINEFITD">LINEFITD</A> <A HREF="Mcommands.html#MINIMIZE">MINIMIZE</A> <A HREF="Ncommands.html#NOISE">NOISE</A> <A HREF="Pcommands.html#PK-&gt;DT">PK-&gt;DT</A> <A HREF="Pcommands.html#plot_fit">plot_fit</A> <A HREF="Scommands.html#SHOW">SHOW</A> <A HREF="Scommands.html#show_fit">show_fit</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="linefit.g">
+<HR> <H3> linefit.g </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/linefit.g">Show macro</A>
+<pre>
+ linefit.g
+ graphic interface for the linefit command.
+
+ 
+ see also : <A HREF="Lcommands.html#LINEFIT">LINEFIT</A> <A HREF="Lcommands.html#linefitd.g">linefitd.g</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="LINEFITD">
+<HR> <H3> LINEFITD </H3> 
+<BLOCKQUOTE>
+<pre>
+linefitd { peak_ID  line_shape amp freq line_width } (n times) 0
+
+Start the line fitter, fitting only the selected parameters to fit. 
+The command will prompt for the index of the peak to fit, for the 
+parameters to fit for that peak. Several peaks can be fitted at 
+once, the list is finished with a 0.
+
+All questions are answered with yes/no, but line_shape  which is to 
+be Lorentz/Gauss for Loretzian or Gaussian line-shapes.
+In all cases, the command LINEFITD %% fits all the peaks, retaining 
+the current line-shape of each peaks.
+
+All the values in the peak-table will be used, but only the line 
+with the selected parameters will be adjusted. Unknown line shapes 
+will be assumed to be Lorentzian.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $PK1D_A[i] $PK1D_F[i] $PK1D_P[i] $PK1D_T[i] $PK1D_W[i] 
+     $PK2D_A[i] $PK2D_F1F[i] $PK2D_F1W[i] $PK2D_F2F[i] $PK2D_F2W[i]
+     $PK3D_A[i] $PK3D_F1F[i] $PK3D_F1W[i] $PK3D_F2F[i] $PK3D_F2W[i]
+     $PK3D_F3F[i] $PK3D_F3W[i] $CHI2 $ITERDONE
+
+
+ see also : <A HREF="Gcommands.html#GET">GET</A> <A HREF="Lcommands.html#LINEFIT">LINEFIT</A> <A HREF="Pcommands.html#PK-&gt;DT">PK-&gt;DT</A> <A HREF="Pcommands.html#pkadjust">pkadjust</A> <A HREF="Scommands.html#SHOW">SHOW</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="linefitd.g">
+<HR> <H3> linefitd.g </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/linefitd.g">Show macro</A>
+<pre>
+ linefitd.g
+ graphic interface for the linefitd command.
+ permit to fit only one selected peak
+
+ 
+ see also : <A HREF="Lcommands.html#LINEFIT">LINEFIT</A> <A HREF="Lcommands.html#linefit.g">linefit.g</A> <A HREF="Lcommands.html#LINEFITD">LINEFITD</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="linefitd_manu">
+<HR> <H3> linefitd_manu </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/linefitd_manu">Show macro</A>
+<pre>
+ linefitd_manu
+ graphic interface for the linefitd command.
+ permit to fit manually  one selected peak
+
+ 
+ see also : <A HREF="Lcommands.html#LINEFIT">LINEFIT</A> <A HREF="Lcommands.html#linefit.g">linefit.g</A> <A HREF="Lcommands.html#LINEFITD">LINEFITD</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="list">
+<HR> <H3> list </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/list">Show macro</A>
+<pre>
+ This macro outputs all the important parameters
+
+ Replaces the built-in command list.
+
+ 
+ see also : <A HREF="Dcommands.html#dataset">dataset</A> <A HREF="Lcommands.html#listd">listd</A> <A HREF="Pcommands.html#param">param</A> <A HREF="Scommands.html#size">size</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="list2spin">
+<HR> <H3> list2spin </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/list2spin">Show macro</A>
+<pre>
+ lis2spin list_of_peaks
+
+ converts the list of peaks to a list of ppm, 
+ considering all possible alignments,
+ uses $tol_align
+
+ list is peaks is by index
+ return values is in (static) $returned as a list of chemical shifts
+
+ used by promote and others...
+</pre>
+</BLOCKQUOTE>
+<A NAME="listd">
+<HR> <H3> listd </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/listd">Show macro</A>
+<pre>
+ List the first values of the data buffer
+ Replaces the previous built-in LISTD
+
+ 
+ see also : <A HREF="Lcommands.html#list">list</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="listfilec">
+<HR> <H3> listfilec </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/listfilec">Show macro</A>
+<pre>
+ listefilec
+
+ list on screen all the currently JOINed data-sets
+
+ related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $CACHE[]  $C_JOINED $C_NAME
+
+ 
+ see also : <A HREF="Dcommands.html#dataset">dataset</A> <A HREF="Dcommands.html#DISJOIN">DISJOIN</A> <A HREF="Jcommands.html#JOIN">JOIN</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="LISTFILEC">
+<HR> <H3> LISTFILEC </H3> 
+<BLOCKQUOTE>
+<pre>
+Lists to the user the name of the currently connected file with the 
+JOIN command
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $C_JOINED $C_NAME
+
+
+ see also : <A HREF="Dcommands.html#dataset">dataset</A> <A HREF="Dcommands.html#DISJOIN">DISJOIN</A> <A HREF="Jcommands.html#JOIN">JOIN</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="listout.g">
+<HR> <H3> listout.g </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att/dyna    <A HREF="/usr/local/gifa/macro/att/dyna/listout.g">Show macro</A>
+<pre>
+ listout.g $dbno $out_file
+
+ List the integration of assignment entry $dbno to the file $out_file
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="list_all_spin">
+<HR> <H3> list_all_spin </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/list_all_spin">Show macro</A>
+<pre>
+ list_all_spin
+
+ list all spin entries in a clickable table
+</pre>
+</BLOCKQUOTE>
+<A NAME="list_all_sys">
+<HR> <H3> list_all_sys </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/list_all_sys">Show macro</A>
+<pre>
+ list_sys
+
+ list all sys entries in a clickable table
+</pre>
+</BLOCKQUOTE>
+<A NAME="list_assign">
+<HR> <H3> list_assign </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/list_assign">Show macro</A>
+<pre>
+ list_assign
+
+ list all assign entries to a file
+</pre>
+</BLOCKQUOTE>
+<A NAME="list_att">
+<HR> <H3> list_att </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/list_att">Show macro</A>
+<pre>
+ list_att
+
+ list all peak entries to a file
+</pre>
+</BLOCKQUOTE>
+<A NAME="list_cnst_db">
+<HR> <H3> list_cnst_db </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/list_cnst_db">Show macro</A>
+<pre>
+ list_cnst_db
+
+ list all contraint entries to a file
+</pre>
+</BLOCKQUOTE>
+<A NAME="list_spin">
+<HR> <H3> list_spin </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/list_spin">Show macro</A>
+<pre>
+ list_spins
+
+ list all spin entries to a file
+</pre>
+</BLOCKQUOTE>
+<A NAME="list_sys">
+<HR> <H3> list_sys </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/list_sys">Show macro</A>
+<pre>
+ list_sys
+
+ list all sys entries to a file
+</pre>
+</BLOCKQUOTE>
+<A NAME="load">
+<HR> <H3> load </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/load">Show macro</A>
+<pre>
+ load file_name
+
+ loads the value for a text file, one entry per line,
+ no special format.
+
+ quite inefficient (understand slow) !
+
+ 
+ see also : <A HREF="Rcommands.html#READM">READM</A> <A HREF="Rcommands.html#READT">READT</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="local_pk">
+<HR> <H3> local_pk </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/local_pk">Show macro</A>
+<pre>
+ local_pk $i
+
+ display on the screen a zoom around the $i peak in the 
+ database
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="LOG">
+<HR> <H3> LOG </H3> 
+<BLOCKQUOTE>
+<pre>
+The LOG file is a text file journaling all the actions performed 
+during the session in the GIFA program. This file is called 
+gifa.log. When exiting the program, you are asked whether you want 
+to keep this file for latter use.
+
+
+ see also : <A HREF="Ccommands.html#CONNECT">CONNECT</A> <A HREF="Dcommands.html#DISCONNECT">DISCONNECT</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="LOGA">
+<HR> <H3> LOGA </H3> 
+<BLOCKQUOTE>
+<pre>
+LOGA n 	with n&gt;=1
+
+Controls the way the levels are computed in the Contour Plot graphic 
+mode.
+
+If LOGA = 1, then the lowest level is ABSMAX/(SCALE*LEVEL), and all 
+the levels above are equidistant with the same quantity.
+
+If LOGA &gt;1, the lowest level is the same, but each level is computed 
+from the previous one : L(i+1) = L(i)*LOGA; in a exponential manner. 
+
+For instance, LOGA = 2 corresponds to the standard BRUKER output.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $LOGA
+
+
+ see also : <A HREF="Ccommands.html#CDISP2D">CDISP2D</A> <A HREF="Pcommands.html#PLOT">PLOT</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="low_level">
+<HR> <H3> low_level </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/low_level">Show macro</A>
+<pre>
+ low_level
+
+ this form permits direct acces to the data base
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="ls">
+<HR> <H3> ls </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/ls">Show macro</A>
+<pre>
+as in unix
+
+ 
+ see also : <A HREF="Ccommands.html#CD">CD</A> <A HREF="Mcommands.html#more">more</A> <A HREF="Pcommands.html#pwd">pwd</A> <A HREF="Rcommands.html#rm">rm</A> <A HREF="Scommands.html#SH">SH</A> <A HREF="Vcommands.html#vi">vi</A> <A HREF="Vcommands.html#vim">vim</A> <A HREF="Vcommands.html#vip">vip</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="lshift">
+<HR> <H3> lshift </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/lshift">Show macro</A>
+<pre>
+ lshift n_points
+
+ makes a left shift of the data
+
+ 
+ see also : <A HREF="Ccommands.html#CHSIZE">CHSIZE</A> <A HREF="Ecommands.html#EXTRACT">EXTRACT</A> <A HREF="Rcommands.html#rshift">rshift</A> 
+</pre>
+</BLOCKQUOTE>
+
+ </body> 
+ 

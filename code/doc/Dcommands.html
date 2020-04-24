@@ -1,0 +1,982 @@
+<html>
+<head>
+<!-- This document created by dodoc_html V2.1 -->
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#CC0000">
+<TITLE>Commands in D </TITLE>
+<H2> <A HREF="commands.html">Back to Alphabetical List</A> </H2>
+
+<A NAME="dataset">
+<HR> <H3> dataset </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/dataset">Show macro</A>
+<pre>
+ list the parameters of the currently JOINed data file
+
+ 
+ see also : <A HREF="Jcommands.html#JOIN">JOIN</A> <A HREF="Lcommands.html#listfilec">listfilec</A> <A HREF="Pcommands.html#param">param</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="dbck">
+<HR> <H3> dbck </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/dbck">Show macro</A>
+<pre>
+ dbck
+
+ check all current assignment data-bases for integrity
+
+ default is to keep as much as possible wrong entries
+
+ due to a bug in the foreach code, This command may have to
+ be applied more than once in case of wrong entries.
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="dbck.save">
+<HR> <H3> dbck.save </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/dbck.save">Show macro</A>
+<pre>
+ dbck
+
+ check all current assignment data-bases for integrity
+
+ default is to keep as much as possible wrong entries
+
+ due to a bug in the foreach code, This command may have to
+ be applied more than once in case of wrong entries.
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="DBCLOSE">
+<HR> <H3> DBCLOSE </H3> 
+<BLOCKQUOTE>
+<pre>
+DBCLOSE array_name
+
+Closes the db file previously associated to the array  array_name by 
+a previous DBOPEN command.
+
+
+ see also : <A HREF="Dcommands.html#DBOPEN">DBOPEN</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="dbexport">
+<HR> <H3> dbexport </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/dbexport">Show macro</A>
+<pre>
+ dbexport basname
+ export a db file to an ascii dump.
+
+ 
+ see also : <A HREF="Dcommands.html#dbimport">dbimport</A> <A HREF="Dcommands.html#DBOPEN">DBOPEN</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="dbimport">
+<HR> <H3> dbimport </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/dbimport">Show macro</A>
+<pre>
+ dbimport basname
+ import a db file from an ascii dump, produced by dbexport
+
+ 
+ see also : <A HREF="Dcommands.html#dbexport">dbexport</A> <A HREF="Dcommands.html#DBOPEN">DBOPEN</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="dbm2gtb">
+<HR> <H3> dbm2gtb </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/dbm2gtb">Show macro</A>
+<pre>
+ dbm2gtb input file output file
+
+ WARNING
+ even though it is distributed with Gifa 5, this macro will run only
+ in Gifa version 4
+
+ this macro, will convert dbm files (the *.pag *.dir files)
+ and will create a gtb file (the format used by the dbopen command in Gifa 5)
+
+ 
+ see also : 
+</pre>
+</BLOCKQUOTE>
+<A NAME="DBOPEN">
+<HR> <H3> DBOPEN </H3> 
+<BLOCKQUOTE>
+<pre>
+DBOPEN file_name array_name 
+
+associates the array array_name  with the db file file_name. Each 
+operation on the array will be propagated to the file : access, 
+change, delete, exist(), nextlm() etc... Any db file can be 
+accessed.
+
+
+ see also : <A HREF="Dcommands.html#DBCLOSE">DBCLOSE</A> <A HREF="Dcommands.html#dbexport">dbexport</A> <A HREF="Dcommands.html#dbimport">dbimport</A> <A HREF="Fcommands.html#FOREACH">FOREACH</A> <A HREF="Fcommands.html#FUNCTIONS">FUNCTIONS</A> <A HREF="Vcommands.html#VARIABLES">VARIABLES</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="DCALGO">
+<HR> <H3> DCALGO </H3> 
+<BLOCKQUOTE>
+<pre>
+DCALGO n
+
+Selects the which kind of data will be used for the first 
+segmentation step of BCORR 3 when Dynamic clustering is used.
++1 : the algorithm runs on the data set.
++10 : the algorithm runs on the first derivative of the data set.
++100 : the algorithm runs on the second derivative of the data set.
+
+
+ see also : <A HREF="Bcommands.html#BCORR">BCORR</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="DCDISTANCE">
+<HR> <H3> DCDISTANCE </H3> 
+<BLOCKQUOTE>
+<pre>
+Selects the norm that will be used for the first segmentation step 
+of BCORR 3 when Dynamic clustering is used.
+0 : Norm 1.
+1 : Euclidian distance.
+
+
+ see also : <A HREF="Bcommands.html#BCORR">BCORR</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="DCFACTOR">
+<HR> <H3> DCFACTOR </H3> 
+<BLOCKQUOTE>
+<pre>
+Selects the scaling that will be used for the first segmentation 
+step of BCORR 3 when Dynamic clustering is used.
+
+
+ see also : <A HREF="Bcommands.html#BCORR">BCORR</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="DCITER">
+<HR> <H3> DCITER </H3> 
+<BLOCKQUOTE>
+<pre>
+Selects the maximum number of iterations that will be used for the 
+first segmentation step of BCORR 3 when Dynamic clustering is used.
+
+
+ see also : <A HREF="Bcommands.html#BCORR">BCORR</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="DEBUG">
+<HR> <H3> DEBUG </H3> 
+<BLOCKQUOTE>
+<pre>
+When this context is set to 1 some command generate some debuging 
+information. Used mainly by developers.
+
+
+ see also : <A HREF="Rcommands.html#REFMACRO">REFMACRO</A> <A HREF="Tcommands.html#TIMER">TIMER</A> <A HREF="Vcommands.html#VERBOSE">VERBOSE</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="DEGRE">
+<HR> <H3> DEGRE </H3> 
+<BLOCKQUOTE>
+<pre>
+DEGRE value
+
+selects the degree of the Legendre polynomial used for baseline correction
+by the bcorr 3 (polynomial) baseline correction command.
+
+Maximum (and recommanded) value is 10
+
+
+ see also : <A HREF="Bcommands.html#BCORR">BCORR</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="detnbexp.g">
+<HR> <H3> detnbexp.g </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att/dyna    <A HREF="/usr/local/gifa/macro/att/dyna/detnbexp.g">Show macro</A>
+<pre>
+ detnbexp.g $liste
+
+ determine the number of experiments from the liste of data-sets
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="DFACTOR">
+<HR> <H3> DFACTOR </H3> 
+<BLOCKQUOTE>
+<pre>
+DFACTOR value
+
+Relates arbitrary unit decay factors given by DMIN and DMAX to actual unit.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $DFACTOR
+
+
+ see also : <A HREF="Ccommands.html#calibdosy">calibdosy</A> <A HREF="Dcommands.html#DMAX">DMAX</A> <A HREF="Dcommands.html#DMIN">DMIN</A> <A HREF="Ucommands.html#UNIT">UNIT</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="DIAG">
+<HR> <H3> DIAG </H3> 
+<BLOCKQUOTE>
+<pre>
+DIAG {direc}
+In 2D, extracts the diagonal of the 2D and put into the 1D buffer
+In 3D, extracts one diagonal plane of the 3D cube, chosen with the 
+direc parameter
+and put it into the 2D buffer
+
+
+ see also : <A HREF="Ccommands.html#COL">COL</A> <A HREF="Dcommands.html#DIM">DIM</A> <A HREF="Pcommands.html#PLANE">PLANE</A> <A HREF="Rcommands.html#ROW">ROW</A> <A HREF="Vcommands.html#VERT">VERT</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="DIAGONALIZE">
+<HR> <H3> DIAGONALIZE </H3> 
+<BLOCKQUOTE>
+<pre>
+Diagonalize the current 2D buffer (must be square and real), puts 
+the eigenvalues
+into the 1D buffer, sorted in decreasing order; and puts the 
+eigenvector matrix
+into the 2D buffer
+
+
+ see also : <A HREF="Bcommands.html#BACKPROD">BACKPROD</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="diag_plot">
+<HR> <H3> diag_plot </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro/misc    <A HREF="/usr/local/gifa/macro/misc/diag_plot">Show macro</A>
+<pre>
+ diag_plot diana_file
+
+ create a diagonal plot from a DIANA input file
+ Destroy the current 2D data-set
+</pre>
+</BLOCKQUOTE>
+<A NAME="DIALOGBOX">
+<HR> <H3> DIALOGBOX </H3> 
+<BLOCKQUOTE>
+<pre>
+DIALOGBOX dialog_name
+      - [field_name field_param ]       | 
+      - noreturn                        |  (n times)
+      - separator                       |
+      *
+
+Permits to construct a dialog box with editable fields. The box will 
+appear in a window called dialog_name . The Gifa program will be 
+blocked as long as the user has not closed the window. It will have 
+two buttons at the button :
+
+Ok      closes the form and resumes the execution of Gifa
+Cancel  closes the form, aborts the command and generates an error
+
+
+The dialog box is also composed en fields which appear one on each line 
+in the window. A dialog box can hold as many field as needed. Each field 
+has the following general format :
+
+	field_name field_type eventual list of parameters...
+
+field_name 	 is displayed on the left side of the field
+field_type   determines the kind of field,
+
+field_type is chosen in the following list :
+message, text, string, int, real, file, cursor, enum, multienum
+
+Field types are as follow:
+
+message type of field have no other field, this kind of entries 
+        serves to put plain text in the form
+text interprets field_name  as a file name which is presented in a 
+     scrollable window.
+
+All following type have a field_var entry which determines the 
+name of the Gifa variable in which the user input will be stored, 
+and the default_value entry which determines the value of that 
+variable when creating the form :
+
+field_name field_type (eventual parameters) var_name default_value
+
+string int real and file types of field have no additionnal parameters. 
+  They appear in the window as editable string.  When the user hits return 
+  there, the content of the string is copied to the Gifa variable var_name.
+
+file entries will have a small arrow which permits to open a 
+     standard file dialog window.
+
+field_name cursor starting_val ending_val numb_of_digit var_name default_value
+
+cursor permits to create a sliding cursors.  It has 3 additionnal 
+  parameters : starting_val ending_val numb_of_digit.  starting_val and 
+  ending_val determines the edge of the slider zone.  numb_of_digit 
+  determines the resolution of the slider, if 0 -&gt; will be integer,
+  if larger -&gt; will be real.
+
+field_name enum/multienum enul_list var_name default_value
+
+enum and multienum permit to choose an entry into a list.
+enum will appear as a pop up menu permitting to choose between the entries 
+  defined in the list : enum_list.
+multienum will appear as a scrollable list, and several entries can be 
+  chosen from the list
+These field have an additional entry : enum_list. This list is a single blank 
+separated word, each item being separated with commas.
+
+Two special entries are also available, and not associated to 
+fields but rather to formatting the box.
+
+separator permits to enter a separator in the form,
+noreturn implies that the following field will be presented on the same 
+line than the previous entry.
+
+The list is terminated with a star.
+
+The variables used by the editable entries are regular variables, that 
+can either global or local to macro that built the dialog box. If the 
+variable does not exist before creating the dialog box, the variable will 
+be created local. The variables will be available to the macro after the 
+user has clicked on Ok.
+
+
+ see also : <A HREF="Bcommands.html#BUTTONBOX">BUTTONBOX</A> <A HREF="Ccommands.html#CLOSEBUTTON">CLOSEBUTTON</A> <A HREF="Fcommands.html#FORMBOX">FORMBOX</A> <A HREF="Mcommands.html#MACRO">MACRO</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="DIM">
+<HR> <H3> DIM </H3> 
+<BLOCKQUOTE>
+<pre>
+DIM n  (n=1 , 2 or 3)
+
+DIM is a context which equals 1 if you are processing one 
+dimensional  NMR spectra, 2 if you are processing two dimensional 
+spectra and 3 if you are processing three dimensional spectra.
+Since 1D 2D and 3D data-sets are kept in different buffers, you can 
+switch between this 3 modes freely, keeping the data-sets protected.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $DIM
+
+
+ see also : <A HREF="Ccommands.html#COL">COL</A> <A HREF="Dcommands.html#DIAG">DIAG</A> <A HREF="Pcommands.html#PLANE">PLANE</A> <A HREF="Rcommands.html#ROW">ROW</A> <A HREF="Scommands.html#size">size</A> <A HREF="Vcommands.html#VERT">VERT</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="DISCONNECT">
+<HR> <H3> DISCONNECT </H3> 
+<BLOCKQUOTE>
+<pre>
+Journaling is resumed to the standard gifa.log files when previously 
+redirected with the CONNECT command.
+
+
+ see also : <A HREF="Ccommands.html#CLOSE">CLOSE</A> <A HREF="Ccommands.html#CONNECT">CONNECT</A> <A HREF="Lcommands.html#LOG">LOG</A> <A HREF="Ocommands.html#OPEN">OPEN</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="DISJOIN">
+<HR> <H3> DISJOIN </H3> 
+<BLOCKQUOTE>
+<pre>
+disconnect the previously connected file with the JOIN command
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $C_JOINED $C_NAME
+
+
+ see also : <A HREF="Dcommands.html#dataset">dataset</A> <A HREF="Jcommands.html#JOIN">JOIN</A> <A HREF="Lcommands.html#listfilec">listfilec</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="disjoin_all">
+<HR> <H3> disjoin_all </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/disjoin_all">Show macro</A>
+<pre>
+ disjoin_all
+
+ disjoin all the data-set currently JOINed
+
+ related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $CACHE[]  $C_JOINED $C_NAME
+
+ 
+ see also : <A HREF="Dcommands.html#DISJOIN">DISJOIN</A> <A HREF="Jcommands.html#JOIN">JOIN</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="disp">
+<HR> <H3> disp </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/disp">Show macro</A>
+<pre>
+ obsolete, for compatibility
+</pre>
+</BLOCKQUOTE>
+<A NAME="DISP1D">
+<HR> <H3> DISP1D </H3> 
+<BLOCKQUOTE>
+<pre>
+DISP1D 0/1
+
+When DISP1D is set to one, the window displaying the content of the 
+1D buffer is opened. The window is closed if DISP1D is 0.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $DISP1D $ABSMAX $BCOLOR $COLOR
+    $SCALE $VHEIGHT $AXIS $ZOOM ZOOM_1D[1] ZOOM_1D[2]
+
+
+ see also : <A HREF="Acommands.html#AXIS">AXIS</A> <A HREF="Bcommands.html#BCOLOR">BCOLOR</A> <A HREF="Ccommands.html#CCOLOR">CCOLOR</A> <A HREF="Ccommands.html#CDISP2D">CDISP2D</A> <A HREF="Ccommands.html#CLEAR">CLEAR</A> <A HREF="Ccommands.html#COLOR">COLOR</A> <A HREF="Dcommands.html#DISP2D">DISP2D</A> <A HREF="Dcommands.html#DISP3D">DISP3D</A> <A HREF="Rcommands.html#REF">REF</A> <A HREF="Scommands.html#SCALE">SCALE</A> <A HREF="Scommands.html#SHOWC">SHOWC</A> <A HREF="Scommands.html#STPL">STPL</A> <A HREF="Scommands.html#super1d">super1d</A> <A HREF="Ucommands.html#UNREF">UNREF</A> <A HREF="Vcommands.html#VHEIGHT">VHEIGHT</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="DISP2D">
+<HR> <H3> DISP2D </H3> 
+<BLOCKQUOTE>
+<pre>
+DISP2D 0/1
+
+When DISP2D is set to one, the window displaying the content of the 
+2D buffer is opened. The window is closed if DISP2D is 0.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $DISP2D $ABSMAX $BCOLOR $COLOR 
+    $SCALE $SIGN $AXIS $ZOOM ZOOM_2D[1] ZOOM_2D[2] ZOOM_2D[3] ZOOM_2D[4]
+
+
+ see also : <A HREF="Acommands.html#AXIS">AXIS</A> <A HREF="Bcommands.html#BCOLOR">BCOLOR</A> <A HREF="Ccommands.html#CDISP2D">CDISP2D</A> <A HREF="Ccommands.html#CLEAR">CLEAR</A> <A HREF="Ccommands.html#COLOR">COLOR</A> <A HREF="Dcommands.html#DISP1D">DISP1D</A> <A HREF="Dcommands.html#DISP3D">DISP3D</A> <A HREF="Rcommands.html#REF">REF</A> <A HREF="Scommands.html#SCALE">SCALE</A> <A HREF="Scommands.html#STPL">STPL</A> <A HREF="Ucommands.html#UNREF">UNREF</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="DISP3D">
+<HR> <H3> DISP3D </H3> 
+<BLOCKQUOTE>
+<pre>
+DISP3D n
+
+When DISP3D is set to 1, a graphic window is opened which will be 
+used by the REF3D command to display 3D vues of the current3D data-
+set. The size of the window is set to max(cx,cy,cz) in each 
+dimension.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $DISP3D
+
+
+ see also : <A HREF="Acommands.html#ALPHA">ALPHA</A> <A HREF="Acommands.html#AXIS3D">AXIS3D</A> <A HREF="Bcommands.html#BETA">BETA</A> <A HREF="Ccommands.html#CDISP2D">CDISP2D</A> <A HREF="Ccommands.html#CHECK3D">CHECK3D</A> <A HREF="Ccommands.html#CX">CX</A> <A HREF="Ccommands.html#CY">CY</A> <A HREF="Ccommands.html#CZ">CZ</A> <A HREF="Dcommands.html#DISP1D">DISP1D</A> <A HREF="Dcommands.html#DISP2D">DISP2D</A> <A HREF="Dcommands.html#disp3d_form">disp3d_form</A> <A HREF="Gcommands.html#GAMA">GAMA</A> <A HREF="Ocommands.html#OFFSET3D">OFFSET3D</A> <A HREF="Pcommands.html#PLOT3D">PLOT3D</A> <A HREF="Rcommands.html#REF3D">REF3D</A> <A HREF="Scommands.html#SCALE3D">SCALE3D</A> <A HREF="Zcommands.html#ZNOT">ZNOT</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="disp3d?">
+<HR> <H3> disp3d? </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/disp3d?">Show macro</A>
+<pre>
+ interactive for choosing the view point in 3D
+
+ user gets prompted for values
+
+ 
+ see also : <A HREF="Dcommands.html#DISP3D">DISP3D</A> <A HREF="Dcommands.html#disp3d_form">disp3d_form</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="disp3d_form">
+<HR> <H3> disp3d_form </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/disp3d_form">Show macro</A>
+<pre>
+ interactive for choosing the view point in 3D
+
+ builds a form to enter parameters for 3D display and plotting.
+
+ 
+ see also : <A HREF="Dcommands.html#DISP3D">DISP3D</A> <A HREF="Pcommands.html#PLOT3D">PLOT3D</A> <A HREF="Zcommands.html#zoom3di">zoom3di</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="disp?">
+<HR> <H3> disp? </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/disp?">Show macro</A>
+<pre>
+ initeractive
+ to set all plot relevant parameters
+
+ 
+ see also : <A HREF="Dcommands.html#DISP1D">DISP1D</A> <A HREF="Dcommands.html#DISP2D">DISP2D</A> <A HREF="Dcommands.html#DISP3D">DISP3D</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="dispcont">
+<HR> <H3> dispcont </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/dispcont">Show macro</A>
+<pre>
+ dispcont no_arg 
+
+ creates a form box which permits to modify the contour parameters
+
+ calls itself with parameters for the update
+
+ 
+ see also : <A HREF="Ccommands.html#CDISP2D">CDISP2D</A> <A HREF="Lcommands.html#LEVEL">LEVEL</A> <A HREF="Lcommands.html#LOGA">LOGA</A> <A HREF="Scommands.html#SIGN">SIGN</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="dispcont.old">
+<HR> <H3> dispcont.old </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/dispcont.old">Show macro</A>
+<pre>
+ dispcont no_arg 
+
+ creates a form box which permits to modify the contour parameters
+
+ calls itself with parameters for the update
+
+ 
+ see also : <A HREF="Ccommands.html#CDISP2D">CDISP2D</A> <A HREF="Lcommands.html#LEVEL">LEVEL</A> <A HREF="Lcommands.html#LOGA">LOGA</A> <A HREF="Scommands.html#SIGN">SIGN</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="DISPLAY">
+<HR> <H3> DISPLAY </H3> 
+<BLOCKQUOTE>
+<pre>
+Full control on the display is available in Gifa.
+
+A control box should also appear at start-up in the upper right corner of 
+the screen.  This box holds controls which permits to zoom and adjust the 
+scale of the display.
+
+There are many ways for selecting a zoom window in Gifa.  You can simply 
+click on the graphic window with the left and middle buttons pressed at the 
+same time (or Shift+left button), and draw a rectangle on the display.  You 
+can redraw as many time as wished this rectangle.  Zoom into the selected 
+region simply by clicking in the window with the left and right button of 
+the mouse (or Shift+right button).  You can also use the Zoom in and Zoom 
+out buttons in the control box.  Of course the Full button resets to the 
+full spectral view.
+
+      Summary
+      -------
+		Mouse		Shift +
+Action		Buttons		Buttons
+-----------------------------------------
+Draw Selection	left + middle	left
+Zoom in		left+right		right
+Zoom out		middle+right	middle
+
+The control box holds a miniature spectrum of your 2D data-set, it was 
+displayed when you clicked on the Catch Spectrum button.  The white 
+rectangle in it, shows the current zoom region.  You can also move around 
+the little zoom box in this window with your mouse, and the zoom will move 
+accordingly.
+
+The 8 little arrows on the top of the zoom box can be used to move around 
+the zoom region.  Each arrow will move the selected region by half the size 
+of the zoom box.
+
+There are five controls to adjust the vertical scale used for displaying 
+the spectra.  The Reset button will reset the display to the default, where 
+the largest peak in the screen in full size.  The four other buttons permit 
+to modify the scale value, raising or lowering the SCALE context by factor 
+of 2 and of 1.2.
+
+The refresh button redraw the spectrum on screen, without changing the 
+settings.
+
+The pop-up menu Dim, can be used to rapidly switch between the 3 working 
+buffers : 1D, 2D and 3D.
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="DIST">
+<HR> <H3> DIST </H3> 
+<BLOCKQUOTE>
+<pre>
+This command will issue the distance value as computed from the 
+reference
+distance, set by CALIBDI, and the current relaxation rate, set by 
+RELAXRATE
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $DIST
+
+
+ see also : <A HREF="Ccommands.html#CALIBDI">CALIBDI</A> <A HREF="Mcommands.html#METH">METH</A> <A HREF="Rcommands.html#RCRYST">RCRYST</A> <A HREF="Rcommands.html#RELAXRATE">RELAXRATE</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="DMAX">
+<HR> <H3> DMAX </H3> 
+<BLOCKQUOTE>
+<pre>
+DMAX value
+
+Determines the fastest decaying component during Laplace analysis
+Given in arbitrary unit, use DFACTOR to relate to actual values.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $DMAX
+
+
+ see also : <A HREF="Dcommands.html#DFACTOR">DFACTOR</A> <A HREF="Dcommands.html#DMIN">DMIN</A> <A HREF="Icommands.html#INVLAP">INVLAP</A> <A HREF="Icommands.html#INVTLAP">INVTLAP</A> <A HREF="Lcommands.html#LAPLACE">LAPLACE</A> <A HREF="Tcommands.html#TLAPLACE">TLAPLACE</A> <A HREF="Ucommands.html#UNIT">UNIT</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="DMIN">
+<HR> <H3> DMIN </H3> 
+<BLOCKQUOTE>
+<pre>
+DMIN value
+
+Determines the slowest decaying component during Laplace analysis
+Given in arbitrary unit, use DFACTOR to relate to actual values.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $DMIN
+
+
+ see also : <A HREF="Dcommands.html#DFACTOR">DFACTOR</A> <A HREF="Dcommands.html#DMAX">DMAX</A> <A HREF="Icommands.html#INVLAP">INVLAP</A> <A HREF="Icommands.html#INVTLAP">INVTLAP</A> <A HREF="Lcommands.html#LAPLACE">LAPLACE</A> <A HREF="Tcommands.html#TLAPLACE">TLAPLACE</A> <A HREF="Ucommands.html#UNIT">UNIT</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="dmxclean">
+<HR> <H3> dmxclean </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/dmxclean">Show macro</A>
+<pre>
+ dmxclean DECIM_value
+
+ DECIM is a parameter which is found in the acqus file in your
+ data tree.
+
+ This macro solves the problem of the 'additional' points
+ on the data-sets acquired on DMX Bruker spectrometer with the 
+ digital filtering on.
+ After applying the macro, you get an FID, on which regular processing
+ should work, All apodisation of Linear Prediction processing
+ will behave as usual.
+ The macro assumes that you have acquired in SIM mode, and will
+ work much better if you have a spectrum phased at the acquisition level.
+
+ Be carefull that this macro will change slightly the size of your data-set,
+ since the wrong points are removed.
+
+ Look to the F.A.Q. at the end of the manual for details
+
+ DECIM logic is adapted from  W. M. Westler and F.  Abildgaard
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="dmxphase">
+<HR> <H3> dmxphase </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/dmxphase">Show macro</A>
+<pre>
+ dmxphase DECIM_value
+
+ DECIM is a parameter which is found in the acqus file in your
+ data tree.
+
+ When processing DMX data-sets, you may have noticed that the spectrum is
+ really strange, with wiggles like artefacts.
+ This is due to additional points in the beginning of the FID, left by the
+ Bruker acquisition software.
+ The artefacts are corrected by applying a 1st order phase correction
+ of -180*n where n is the number of additionnal points.
+
+ This macro uses the value DECIM (from which the number of additional points
+ is guessed) as found in the acqus file to apply the phase correction.
+
+ Look to the F.A.Q. at the end of the manual for details
+
+ DECIM logic is adapted from  W. M. Westler and F.  Abildgaard
+
+ NOTE: dmxphase should be applied on spectra
+       dmxclean should be applied of FID
+
+ 
+ see also : <A HREF="Dcommands.html#dmxclean">dmxclean</A> <A HREF="Pcommands.html#PHASE">PHASE</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="DOSY">
+<HR> <H3> DOSY </H3> 
+<BLOCKQUOTE>
+<pre>
+The processing of DOSY spectra is fully implemented in Gifa.
+  
+Two main techniques are available to process DOSY experiment, and, more 
+generally, to process sums of damped exponentials: the fit of different 
+components, based on the general fitter available in Gifa; and the inverse 
+Laplace transform approach, performed here by Maximum Entropy.
+
+The first method is simple and rapid, but inadequate when there is more
+than a simgle decay, or if non exponential decays are taking place. The
+MaxEnt method is fully general, and much more powerfull.
+
+Try Dosy processing in the Mode menu.</pre>
+</BLOCKQUOTE>
+<A NAME="dosy2d">
+<HR> <H3> dosy2d </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/dosy2d">Show macro</A>
+<pre>
+ dosy2d data_type processing_type size thres 
+
+ implements the complete DOSY processing for 2D
+
+ DOSY data are in-memory, diffusion dimension is in F1,
+ NMR spectra in F2
+
+ data_type :       tabulated or regular   determines the type of sampling
+ processing_type : MaxEnt, Fit or Fit_2_comp   determines the processing which will be used
+           Fit is faster (if you have a small number of data-point), but is less accurate,
+           and cannot handle supersposition in spectra, nor polydisperse species.
+           Fit_2_comp tries to fit two exponential components
+             should be used with CAUTION
+ size : size after Laplace inversion
+ thres : multiplier used to determine the processing threshold
+         only columns which first point is larger
+         than the noise level by this ratio, will be processed
+
+ 
+ see also : <A HREF="Dcommands.html#dosy2d.g">dosy2d.g</A> <A HREF="Dcommands.html#dosy3d">dosy3d</A> <A HREF="Dcommands.html#dosyfit">dosyfit</A> <A HREF="Dcommands.html#dosyfit_2">dosyfit_2</A> <A HREF="Dcommands.html#dosy_setup">dosy_setup</A> <A HREF="Fcommands.html#FITGENE">FITGENE</A> <A HREF="Icommands.html#INVLAP">INVLAP</A> <A HREF="Icommands.html#INVTLAP">INVTLAP</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="dosy2d.g">
+<HR> <H3> dosy2d.g </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/dosy2d.g">Show macro</A>
+<pre>
+ dosy2d.g
+
+ this is a Graphic Interface to the dosy2d macro
+
+ file will be written at the end of the processing
+
+ 
+ see also : <A HREF="Dcommands.html#dosy2d">dosy2d</A> <A HREF="Dcommands.html#dosy3d">dosy3d</A> <A HREF="Dcommands.html#dosy3d.g">dosy3d.g</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="dosy3d">
+<HR> <H3> dosy3d </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/dosy3d">Show macro</A>
+<pre>
+ dosy3d input_file data_type processing_type size thres output_file
+
+ implements the complete DOSY processing for 3D
+
+ DOSY data are on-file, diffusion dimension is in F1,
+ NMR spectra in F23
+
+ data_type :       tabulated or regular   determines the type of sampling
+ processing_type : MaxEnt, Fit or Fit_2_comp   determines the processing which will be used
+           Fit is faster (if you have a small number of data-point), but is less accurate,
+           and cannot handle supersposition in spectra, nor polydisperse species.
+           Fit_2_comp tries to fit two exponential components
+             should be used with CAUTION
+ size : size after Laplace inversion
+ thres : multiplier used to determine the processing threshold
+         only columns which first point is larger
+         than the noise level by this ratio, will be processed
+
+ 
+ see also : <A HREF="Dcommands.html#dosy2d">dosy2d</A> <A HREF="Dcommands.html#dosy3d.g">dosy3d.g</A> <A HREF="Dcommands.html#dosyfit">dosyfit</A> <A HREF="Dcommands.html#dosyfit_2">dosyfit_2</A> <A HREF="Dcommands.html#dosy_setup">dosy_setup</A> <A HREF="Fcommands.html#FITGENE">FITGENE</A> <A HREF="Icommands.html#INVLAP">INVLAP</A> <A HREF="Icommands.html#INVTLAP">INVTLAP</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="dosy3d.g">
+<HR> <H3> dosy3d.g </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/dosy3d.g">Show macro</A>
+<pre>
+ dosy3d.g
+
+ this is a Graphic Interface to the dosy3d macro
+
+ file will be written at the end of the processing
+
+ 
+ see also : <A HREF="Dcommands.html#dosy2d">dosy2d</A> <A HREF="Dcommands.html#dosy2d.g">dosy2d.g</A> <A HREF="Dcommands.html#dosy3d">dosy3d</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="dosyfit">
+<HR> <H3> dosyfit </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/dosyfit">Show macro</A>
+<pre>
+ Realizes the least-square fit of a DOSY 1D curve,
+ as extracted from a 2D or 3D DOSY experiment.
+
+ values are computed directly in physical units thanks to $dfactor
+
+ 
+ see also : <A HREF="Dcommands.html#dosy2d">dosy2d</A> <A HREF="Dcommands.html#dosyfit_2">dosyfit_2</A> <A HREF="Dcommands.html#dosyfit_verbose">dosyfit_verbose</A> <A HREF="Fcommands.html#FITEXP">FITEXP</A> <A HREF="Fcommands.html#FITGENE">FITGENE</A> <A HREF="Icommands.html#INVTLAP">INVTLAP</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="dosyfit_2">
+<HR> <H3> dosyfit_2 </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/dosyfit_2">Show macro</A>
+<pre>
+ Realizes the least-square fit of a DOSY 1D curve,
+ as extracted from a 2D or 3D DOSY experiment
+ tries to fit 2 exponential damping
+
+ values are computed directly in physical units thanks to $dfactor
+
+ SHOULD BE USED WITH CAUTION
+
+ 
+ see also : <A HREF="Dcommands.html#dosy2d">dosy2d</A> <A HREF="Dcommands.html#dosyfit">dosyfit</A> <A HREF="Dcommands.html#dosyfit_2_verbose">dosyfit_2_verbose</A> <A HREF="Fcommands.html#FITEXP">FITEXP</A> <A HREF="Fcommands.html#FITGENE">FITGENE</A> <A HREF="Icommands.html#INVTLAP">INVTLAP</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="dosyfit_2_verbose">
+<HR> <H3> dosyfit_2_verbose </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/dosyfit_2_verbose">Show macro</A>
+<pre>
+ Realizes the least-square fit of a DOSY 1D curve,
+ tries to fit 2 exponential damping
+ and displays values and quality of the fit
+
+ SHOULD BE USED WITH CAUTION
+
+ 
+ see also : <A HREF="Dcommands.html#dosy2d">dosy2d</A> <A HREF="Dcommands.html#dosyfit_2">dosyfit_2</A> <A HREF="Dcommands.html#dosyfit_verbose">dosyfit_verbose</A> <A HREF="Scommands.html#showexp">showexp</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="dosyfit_verbose">
+<HR> <H3> dosyfit_verbose </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/dosyfit_verbose">Show macro</A>
+<pre>
+ Realizes the least-square fit of a DOSY 1D curve,
+ and displays values and quality of the fit
+
+ 
+ see also : <A HREF="Dcommands.html#dosy2d">dosy2d</A> <A HREF="Dcommands.html#dosyfit">dosyfit</A> <A HREF="Dcommands.html#dosyfit_2_verbose">dosyfit_2_verbose</A> <A HREF="Scommands.html#showexp">showexp</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="dosy_setup">
+<HR> <H3> dosy_setup </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/dosy_setup">Show macro</A>
+<pre>
+ dosy_setup
+
+ interactive Graphic interface to set most of the parameters
+ needed for dosy processing
+
+ Dmin - Dmax : the range of dampings that should be considered during the
+    present processing.
+    unit is in 1/tab[i]  that is in inverse of the experimetal value
+ Dfactor : this is the coefficient which is used to convert dampings value
+    from arbitrary units (in 1/tab[i]) to real life values (eg in micron^2/sec)
+    This can be computed with the "calibrate" macro
+    DO NOT call "calibrate" while this menu is on
+ 'From Tabulated' use the entries in tab[] to preset Dmin Dmax values
+ 'from Time' use specw to do the same.
+
+ Iter : number of iterations used either by the
+    Fit (use 20-50) or the MaxEnt (use 200-1000) processing
+ Ndisp : screen refresh rate used by MaxEnt
+ Lambsp : constant used to increment lambda  
+
+ 
+ see also : <A HREF="Dcommands.html#DFACTOR">DFACTOR</A> <A HREF="Dcommands.html#DMAX">DMAX</A> <A HREF="Dcommands.html#DMIN">DMIN</A> <A HREF="Icommands.html#ITER">ITER</A> <A HREF="Lcommands.html#LAMBSP">LAMBSP</A> <A HREF="Ncommands.html#NDISP">NDISP</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="do_marker">
+<HR> <H3> do_marker </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/do_marker">Show macro</A>
+<pre>
+ called by marker
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="DO_NOTHING">
+<HR> <H3> DO_NOTHING </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/DO_NOTHING">Show macro</A>
+<pre>
+ DO_NOTHING
+</pre>
+</BLOCKQUOTE>
+<A NAME="draw">
+<HR> <H3> draw </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro/misc    <A HREF="/usr/local/gifa/macro/misc/draw">Show macro</A>
+<pre>
+ interactive
+ permits to draw directly on the spectrum a set of lines.
+ drawing store in a file - can be redrawn with the macro redraw
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="draw_noesy_walk">
+<HR> <H3> draw_noesy_walk </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/draw_noesy_walk">Show macro</A>
+<pre>
+ draw_noesy_walk
+
+ draw the homonuclear noesy walk in the HN-HN and the HN-HA regions
+
+ should be optimized to draw only the visible segments !
+</pre>
+</BLOCKQUOTE>
+<A NAME="DSA">
+<HR> <H3> DSA </H3> 
+<BLOCKQUOTE>
+<pre>
+DSA shift factor.
+
+Adds to the current data set the same data set multiplied by factor 
+and shifted left by shift points. When applied on a FID with a strong
+signal at zero frequency, wiil remove this signal.
+Useful for suppression of water signal.
+
+
+ see also : <A HREF="Rcommands.html#rem_h2o">rem_h2o</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="DT-&gt;AR">
+<HR> <H3> DT-&gt;AR </H3> 
+<BLOCKQUOTE>
+<pre>
+Calculates the autoregressive coefficients directly from the data 
+using the Burg method. 
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $ORDER $NAR
+
+
+ see also : <A HREF="Acommands.html#AR-&gt;DT">AR-&gt;DT</A> <A HREF="Acommands.html#ARLIST">ARLIST</A> <A HREF="Bcommands.html#BURG">BURG</A> <A HREF="Ocommands.html#ORDER">ORDER</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="DT-&gt;SVD">
+<HR> <H3> DT-&gt;SVD </H3> 
+<BLOCKQUOTE>
+<pre>
+DT-&gt;SVD size
+Calculates the Toeplitz rectangular matrix from the data and perform 
+the singular value decomposition. size is the size of data used in 
+the formation of Toeplitz matrix. This is the first step of the LP-
+SVD spectral analysis method. The same singular value decomposition 
+can be used to perform forward and backward analysis.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $ORDER $NSVD
+
+
+ see also : <A HREF="Scommands.html#SVD-&gt;AR">SVD-&gt;AR</A> <A HREF="Scommands.html#SVD-&gt;DT">SVD-&gt;DT</A> <A HREF="Scommands.html#SVDCLEAN1">SVDCLEAN1</A> <A HREF="Scommands.html#SVDLIST">SVDLIST</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="DUMP">
+<HR> <H3> DUMP </H3> 
+<BLOCKQUOTE>
+<pre>
+Lists the values of all the variables presently defined within GIFA.
+Each value is shown with its associated context level : level 20 is the 
+global context, higher context are associated to higher call levels.
+
+
+ see also : <A HREF="Scommands.html#SET">SET</A> 
+</pre>
+</BLOCKQUOTE>
+
+ </body> 
+ 

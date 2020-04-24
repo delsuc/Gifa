@@ -1,0 +1,79 @@
+<html>
+<head>
+<!-- This document created by dodoc_html V2.1 -->
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#CC0000">
+<TITLE>Commands in H </TITLE>
+<H2> <A HREF="commands.html">Back to Alphabetical List</A> </H2>
+
+<A NAME="help">
+<HR> <H3> help </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro/gm    <A HREF="/usr/local/gifa/macro/gm/help">Show macro</A>
+<pre>
+ interactive
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="help_assign">
+<HR> <H3> help_assign </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/help_assign">Show macro</A>
+<pre>
+ start the help window for assignment module
+</pre>
+</BLOCKQUOTE>
+<A NAME="help_intana">
+<HR> <H3> help_intana </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/help_intana">Show macro</A>
+<pre>
+ start the help window for intensity analysis sub-module
+</pre>
+</BLOCKQUOTE>
+<A NAME="hph">
+<HR> <H3> hph </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/hph">Show macro</A>
+<pre>
+ permits to interactively phase a real 1D spectrum,
+ by doing an Hilbert transform first
+
+ 
+ see also : <A HREF="Hcommands.html#HPHASE">HPHASE</A> <A HREF="Icommands.html#IFTBIS">IFTBIS</A> <A HREF="Pcommands.html#PH">PH</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="HPHASE">
+<HR> <H3> HPHASE </H3> 
+<BLOCKQUOTE>
+<pre>
+HPHASE x y {dim}
+
+Equivalent to PHASE, but the phase rotation is computed for real 
+spectra, using the properties of the Hilbert transform. HPHASE x y 
+is equivalent to the sequence : IFTBIS  CHSIZE *2  FT  PHASE x y  
+REAL 
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $ITYPE_1D $ITYPE_2D $ITYPE_3D
+
+
+ see also : <A HREF="Fcommands.html#FT">FT</A> <A HREF="Pcommands.html#PHASE">PHASE</A> <A HREF="Rcommands.html#REAL">REAL</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="hzpcm">
+<HR> <H3> hzpcm </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/hzpcm">Show macro</A>
+<pre>
+ hzpcm { hz_per_cm_in F1 } hz_per_cm_in F2
+ determines CX an CY to give the correct Hz per cm
+ depending on the current zoom window
+
+</pre>
+</BLOCKQUOTE>
+
+ </body> 
+ 

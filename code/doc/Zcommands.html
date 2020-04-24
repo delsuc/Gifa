@@ -1,0 +1,188 @@
+<html>
+<head>
+<!-- This document created by dodoc_html V2.1 -->
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#CC0000">
+<TITLE>Commands in Z </TITLE>
+<H2> <A HREF="commands.html">Back to Alphabetical List</A> </H2>
+
+<A NAME="ZERO">
+<HR> <H3> ZERO </H3> 
+<BLOCKQUOTE>
+<pre>
+Put the value zero (0.0) in the current buffer. Quite a destructive 
+command !
+ 
+
+ see also : <A HREF="Mcommands.html#MINUS">MINUS</A> <A HREF="Ocommands.html#ONE">ONE</A> <A HREF="Pcommands.html#PLUS">PLUS</A> <A HREF="Zcommands.html#ZEROING">ZEROING</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="ZEROING">
+<HR> <H3> ZEROING </H3> 
+<BLOCKQUOTE>
+<pre>
+ZEROING value
+sets to zero all the data-point wich have an intensity (absolute 
+value) below the value. The prompted default value is the noise 
+level.
+When coupled to a compression utility (compress or gzip), permits to 
+store a file in an optimum fashion.
+eg : on a standard tocsy on E.Coli thioredoxine 3mM, using gzip
+compressed  uncompr. ratio uncompressed_name
+  1945574   2101248   7.4% tocsy	
+   870750   2101248  58.5% tocsy1
+   149825   2101248  92.8% tocsy2
+
+tocsy	standard file
+tocsy1	after ZEROING $noise ; barely visible
+tocsy2	after ZEROING (3*$noise) ; more drastic, but all peaks are 
+still there
+
+
+ see also : <A HREF="Mcommands.html#MINUS">MINUS</A> <A HREF="Pcommands.html#PLUS">PLUS</A> <A HREF="Wcommands.html#WRITE">WRITE</A> <A HREF="Wcommands.html#writegz">writegz</A> <A HREF="Zcommands.html#ZERO">ZERO</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="ZERO_QU">
+<HR> <H3> ZERO_QU </H3> 
+<BLOCKQUOTE>
+<pre>
+ZERO_QU 0 or 1
+	Controls the algorithm for INTEG 2D peak integration. When 
+ZERO_QU is 0, normal integration is done, When 1, the amoeba is 
+computed one the Absolute value of the data-set, and the integration 
+is done over this amoeba in normal mode. Useful when integrating 
+NOESY peaks with Zero-Quanta contribution. (Zero-quanta integrates 
+to 0)
+ 
+
+ see also : <A HREF="Icommands.html#INTEG">INTEG</A> <A HREF="Pcommands.html#PEAK">PEAK</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="ZM">
+<HR> <H3> ZM </H3> 
+<BLOCKQUOTE>
+<pre>
+ZM 1 / 0
+
+Creates / closes  (1 / 0) the graphic box that permits to control interactively
+the value of SCALE and the zoom state.
+
+The ZM 1 command will recompute the display in the vignette if the zoom box is
+already opened.
+
+The zoom box contains several controls which permits to
+-move the zoom area (arrows and by moving the square in the vignette area)
+-zoom in and out
+-REFRESH button redraws the spectrum
+-RESET resets all graphic controls to default values
+-switch between the 1D / 2D and 3D working buffers
+
+The ZM box also displays the coordinate of the cursor when a 
+button is depressed, the unit used for display depends on UNIT
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $UNIT
+
+
+ see also : <A HREF="Mcommands.html#MONOPOINT">MONOPOINT</A> <A HREF="Pcommands.html#point">point</A> <A HREF="Scommands.html#SCALE">SCALE</A> <A HREF="Ucommands.html#UNIT">UNIT</A> <A HREF="Zcommands.html#ZOOM">ZOOM</A> <A HREF="Zcommands.html#ZOOM_INTERACTIVE">ZOOM_INTERACTIVE</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="ZNOT">
+<HR> <H3> ZNOT </H3> 
+<BLOCKQUOTE>
+<pre>
+znot value
+This context holds the focal length that will be used for computing 
+a 3D display with the DISP3D/REF3D set of commands. A large value 
+(1000) will produce a nearly orthometric projection, a small value 
+(10 or less) will result in large conic distortions.
+
+
+ see also : <A HREF="Dcommands.html#DISP3D">DISP3D</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="ZOOM">
+<HR> <H3> ZOOM </H3> 
+<BLOCKQUOTE>
+<pre>
+ZOOM n f_low f_up  (1D) or  f1_low f2_low f1_up f2_up  (2D) 
+    or  f1_low f2_low f3_low f1_up f2_up f3_up (3D)
+
+The basic command for defining zoom windows
+(used mostly in macros)
+
+See ZM for information on interactive zooming
+
+if n=0, zoom mode is off.
+if n=1, zoom mode is on, you are then prompted for the coordinates 
+(row,col) of the lower left point and upper right point for defining 
+the 2D zoom window.
+
+In 1D, you are only prompted for left and right borders. 
+If a region was already selected on the display with the POINT 
+command, this region is proposed as the default region.
+
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $ZOOM $ZONE[1] $ZONE[2] $ZONE[3] $ZONE[4] $ZOOM
+    $ZOOM_1D[1] $ZOOM_1D[2] $ZOOM_2D[1] $ZOOM_2D[2] $ZOOM_2D[3] $ZOOM_2D[4]
+
+
+ see also : <A HREF="Ccommands.html#center">center</A> <A HREF="Mcommands.html#multi_zoom">multi_zoom</A> <A HREF="Pcommands.html#point">point</A> <A HREF="Rcommands.html#rzoom">rzoom</A> <A HREF="Ucommands.html#upzoom">upzoom</A> <A HREF="Zcommands.html#ZM">ZM</A> <A HREF="Zcommands.html#zoom3di">zoom3di</A> <A HREF="Zcommands.html#ZOOM_INTERACTIVE">ZOOM_INTERACTIVE</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="zoom3di">
+<HR> <H3> zoom3di </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/zoom3di">Show macro</A>
+<pre>
+ interactive
+ to setup a zoom window in 3D
+
+ 
+ see also : <A HREF="Dcommands.html#disp3d_form">disp3d_form</A> <A HREF="Ucommands.html#upzoom">upzoom</A> <A HREF="Zcommands.html#ZOOM">ZOOM</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="ZOOM_INTERACTIVE">
+<HR> <H3> ZOOM_INTERACTIVE </H3> 
+<BLOCKQUOTE>
+<pre>
+To zoom in the display, simply click on the graphic window with 
+the left and middle buttons pressed (or Shift + left button),
+and draw a rectangle on the display. You can redraw as many time
+as wished this rectangle. To zoom into the selected region,
+simply click in this rectangle with the left and right button
+of the mouse (or Shift + right buttons).
+You can also use the Zoom in and Zoom out buttons in the control box.
+
+      Summary
+      -------
+		Mouse		Shift +
+Action		Buttons		Buttons
+-----------------------------------------
+Draw Selection	left + middle	left
+Zoom in		left+right		right
+Zoom out		middle+right	middle
+
+To move the zoom window around, you can use the box which appears
+in the small vignette at the bottom of the Zoom box.
+The eight little arrows can be used also to move around the zoom 
+region. Each arrow will move the selected region by half the size of 
+the zoom box. The ZM 1 command will recompute the display in the vignette
+
+There are five controls to adjust the vertical scale used for 
+displaying the spectra. The Reset button will reset the display to 
+the default, (ABSMAX 0 SCALE 1 ZOOM 0) where the largest peak in the 
+screen in full size. The four other buttons permit to modify the 
+scale value, raising or lowering the SCALE context by factor of 2 
+and of 1.2.
+
+The zoom box also displays the coordinate of the cursor when a 
+button is depressed, the unit used for display depends on UNIT
+
+
+ see also : <A HREF="Mcommands.html#MONOPOINT">MONOPOINT</A> <A HREF="Pcommands.html#point">point</A> <A HREF="Scommands.html#SCALE">SCALE</A> <A HREF="Ucommands.html#UNIT">UNIT</A> <A HREF="Zcommands.html#ZM">ZM</A> <A HREF="Zcommands.html#ZOOM">ZOOM</A> 
+</pre>
+</BLOCKQUOTE>
+</pre> 
+ </body> 
+ 

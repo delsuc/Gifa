@@ -377,17 +377,18 @@ double dtime_ (float *time) /* f2c does not know dtime */
 #endif
 /* this was added on feb 2020 */
 #ifndef CLK_TCK
-#define CLK_TCK CLOCKS_PER_SEC
+#define CLK_TCK sysconf (_SC_CLK_TCK) /* CLOCKS_PER_SEC */
 #endif
 
-  static float utime=0, stime=0;
+  static float utime=0.0, stime=0.0;
   struct tms buffer;
-
+/*  printf ("_SC_CLK_TCK = %ld\n", CLK_TCK); */
   if (times(&buffer) == -1) return -1;
-  time[0] = (float)buffer.tms_utime/CLK_TCK-utime;
-  time[1] = (float)buffer.tms_stime/CLK_TCK-stime;
-  utime = (float)buffer.tms_utime/CLK_TCK;
-  stime = (float)buffer.tms_stime/CLK_TCK;
+/*  printf("tms u: %ld s: %ld\n",buffer.tms_utime, buffer.tms_stime); */
+  time[0] = ((float)buffer.tms_utime)/CLK_TCK-utime;
+  time[1] = ((float)buffer.tms_stime)/CLK_TCK-stime;
+  utime = ((float)buffer.tms_utime)/CLK_TCK;
+  stime = ((float)buffer.tms_stime)/CLK_TCK;
   return time[0]+time[1];
 }
 #endif

@@ -1,4 +1,4 @@
-#!/usr/local/bin/perl
+#!/usr/bin/perl
 
 # this perl script builds a HTML documentation for the macros and commands
 # macros are read in /usr/local/gifa/macro.
@@ -40,7 +40,7 @@ open(OUTF,">$base/$doc") || die "cannot open $doc\n";
 print OUTF <<EOL1;
 <html>
 <head>
-<!-- This document created by dodoc_html $version>
+<!-- This document created by dodoc_html $version -->
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 </head>
 <body bgcolor="#FFFFFF" text="#000000" link="#CC0000">
@@ -64,7 +64,7 @@ $alpha="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 print ALF <<EOL2;
 <html>
 <head>
-<!-- This document created by dodoc_html $version >
+<!-- This document created by dodoc_html $version -->
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <BASE TARGET=commands>
 </head>
@@ -131,7 +131,7 @@ foreach $key (sort by_upper_case (keys %text)) {
 	print OFL <<ICI;
 <html>
 <head>
-<!-- This document created by dodoc_html $version>
+<!-- This document created by dodoc_html $version -->
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 </head>
 <body bgcolor="#FFFFFF" text="#000000" link="#CC0000">

@@ -1,0 +1,775 @@
+<html>
+<head>
+<!-- This document created by dodoc_html V2.1 -->
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#CC0000">
+<TITLE>Commands in R </TITLE>
+<H2> <A HREF="commands.html">Back to Alphabetical List</A> </H2>
+
+<A NAME="RCRYST">
+<HR> <H3> RCRYST </H3> 
+<BLOCKQUOTE>
+<pre>
+rcryst n
+Will compute the discrepancy (computed as a R factor) between the 
+current experimental nOe build-up curves, and the build-up curve as 
+analysed from the last LP analysis.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $RCRYST
+
+
+ see also : <A HREF="Ccommands.html#CALIBDI">CALIBDI</A> <A HREF="Dcommands.html#DIST">DIST</A> <A HREF="Rcommands.html#RELAXRATE">RELAXRATE</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="READ">
+<HR> <H3> READ </H3> 
+<BLOCKQUOTE>
+<pre>
+READ file_name
+
+Reads the file as the new data set in standard format .
+Same as READC
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $NAME
+
+
+ see also : <A HREF="Bcommands.html#build2d">build2d</A> <A HREF="Bcommands.html#build3d">build3d</A> <A HREF="Lcommands.html#load">load</A> <A HREF="Rcommands.html#readgz">readgz</A> <A HREF="Rcommands.html#READH">READH</A> <A HREF="Rcommands.html#READL">READL</A> <A HREF="Rcommands.html#READM">READM</A> <A HREF="Rcommands.html#READS">READS</A> <A HREF="Rcommands.html#READT">READT</A> <A HREF="Rcommands.html#READV">READV</A> <A HREF="Rcommands.html#READZ">READZ</A> <A HREF="Wcommands.html#WRITE">WRITE</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="READC">
+<HR> <H3> READC </H3> 
+<BLOCKQUOTE>
+<pre>
+Same as READ
+ 
+</pre>
+</BLOCKQUOTE>
+<A NAME="readcurve.g">
+<HR> <H3> readcurve.g </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att/dyna    <A HREF="/usr/local/gifa/macro/att/dyna/readcurve.g">Show macro</A>
+<pre>
+ readcurve.g $nbexp $inp 
+
+ read a curve from the file of integration result
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="readgz">
+<HR> <H3> readgz </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/readgz">Show macro</A>
+<pre>
+ readgz filename
+
+ read a regular Gifa file and compresses it
+
+ 
+ see also : <A HREF="Wcommands.html#writegz">writegz</A> <A HREF="Wcommands.html#WRITEZ">WRITEZ</A> <A HREF="Zcommands.html#ZEROING">ZEROING</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="READH">
+<HR> <H3> READH </H3> 
+<BLOCKQUOTE>
+<pre>
+READH file_name
+Will read ft-nmr compatible files.
+ 
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $NAME
+
+
+ see also : <A HREF="Rcommands.html#READ">READ</A> <A HREF="Wcommands.html#WRITEH">WRITEH</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="READL">
+<HR> <H3> READL </H3> 
+<BLOCKQUOTE>
+<pre>
+Load  NMR1/NMR2 data-set
+ 
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $NAME
+
+
+ see also : <A HREF="Rcommands.html#READ">READ</A> <A HREF="Wcommands.html#WRITEL">WRITEL</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="READM">
+<HR> <H3> READM </H3> 
+<BLOCKQUOTE>
+<pre>
+READM file_name
+
+Loads a file created with the program MATLAB, using the -ascii 
+option; or with the WRITEM command.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $NAME
+
+
+ see also : <A HREF="Lcommands.html#load">load</A> <A HREF="Rcommands.html#READ">READ</A> <A HREF="Rcommands.html#READT">READT</A> <A HREF="Wcommands.html#WRITEM">WRITEM</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="READS">
+<HR> <H3> READS </H3> 
+<BLOCKQUOTE>
+<pre>
+READS filename
+
+Read from the disk in standard compact format. This format is 
+compatible among incompatible platforms. It is ASCII format and can 
+even be E_Mailed.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $NAME
+
+
+ see also : <A HREF="Rcommands.html#READ">READ</A> <A HREF="Rcommands.html#READT">READT</A> <A HREF="Wcommands.html#WRITES">WRITES</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="READT">
+<HR> <H3> READT </H3> 
+<BLOCKQUOTE>
+<pre>
+READT filename
+
+Read from the disk in text format. The data are in formatted values, 
+1 entry per line. Useful for entering data from an other program.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $NAME
+
+
+ see also : <A HREF="Lcommands.html#load">load</A> <A HREF="Rcommands.html#READ">READ</A> <A HREF="Rcommands.html#READS">READS</A> <A HREF="Wcommands.html#WRITET">WRITET</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="READV">
+<HR> <H3> READV </H3> 
+<BLOCKQUOTE>
+<pre>
+Load  Varian data set.
+ 
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $NAME
+
+
+ see also : <A HREF="Rcommands.html#READ">READ</A> <A HREF="Vcommands.html#Varian">Varian</A> <A HREF="Vcommands.html#varian_param">varian_param</A> <A HREF="Vcommands.html#varian_read">varian_read</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="READZ">
+<HR> <H3> READZ </H3> 
+<BLOCKQUOTE>
+<pre>
+READZ filename
+
+Reads from the disk in compacted file format.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $NAME
+
+
+ see also : <A HREF="Ocommands.html#ORDER">ORDER</A> <A HREF="Rcommands.html#READ">READ</A> <A HREF="Wcommands.html#WRITEZ">WRITEZ</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="read_pdb">
+<HR> <H3> read_pdb </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/read_pdb">Show macro</A>
+<pre>
+ read_pdb pdb_file
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="REAL">
+<HR> <H3> REAL </H3> 
+<BLOCKQUOTE>
+<pre>
+REAL {axis}
+
+This command extract the real part of the current the data set 
+considered as complex.
+axis is not needed in 1D, can be F1, F2 or F12 in 2D,
+and can be F1, F2, F3, F12, F13, F23, or F123 in 3D
+
+On 2D and 3D you can choose on which axis the REAL operation will be 
+taken. Data size can thus be reduced either by 2 , 4 or even 8.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $ITYPE_1D $ITYPE_2D $ITYPE_3D
+
+
+ see also : <A HREF="Fcommands.html#FLIP">FLIP</A> <A HREF="Fcommands.html#FLOP">FLOP</A> <A HREF="Icommands.html#ITYPE">ITYPE</A> <A HREF="Mcommands.html#MODULUS">MODULUS</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="recalib">
+<HR> <H3> recalib </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/recalib">Show macro</A>
+<pre>
+ recalib
+
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="recalibrate">
+<HR> <H3> recalibrate </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/recalibrate">Show macro</A>
+<pre>
+ interactive 
+ permits to assign a new chemical shift to a given point
+ will change the offset
+ adjust all the spin chemical shift in the assignement
+ DBM database
+
+
+ see also : <A HREF="Fcommands.html#FREQ">FREQ</A> <A HREF="Ocommands.html#OFFSET">OFFSET</A> <A HREF="Scommands.html#SPECW">SPECW</A> <A HREF="Ucommands.html#UNIT">UNIT</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="redraw">
+<HR> <H3> redraw </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro/misc    <A HREF="/usr/local/gifa/macro/misc/redraw">Show macro</A>
+<pre>
+ redraw drawing_file
+ redraw on the spectrum a drawing entered with the macro draw
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="REF">
+<HR> <H3> REF </H3> 
+<BLOCKQUOTE>
+<pre>
+This command will force a new computing of the display, as if a 
+display command had been issued. This is useful for cleaning the 
+spectrum after any command that draw on the spectrum, such as POINT, 
+SHOWLINE, etc...
+Note that, during macro execution, REFMACRO should be set to 1
+for REF to be effective.
+
+
+ see also : <A HREF="Ccommands.html#CDISP2D">CDISP2D</A> <A HREF="Dcommands.html#DISP1D">DISP1D</A> <A HREF="Dcommands.html#DISP2D">DISP2D</A> <A HREF="Rcommands.html#REF3D">REF3D</A> <A HREF="Rcommands.html#REFMACRO">REFMACRO</A> <A HREF="Ucommands.html#UNREF">UNREF</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="REF3D">
+<HR> <H3> REF3D </H3> 
+<BLOCKQUOTE>
+<pre>
+This command will display a 3D view of the current 3D data-set, in 
+the window previously opened with the DISP3D command. The parameters 
+used for the display can be chosen with the DISP3D? and the CHECK3D 
+commands.
+
+
+ see also : <A HREF="Ccommands.html#CHECK3D">CHECK3D</A> <A HREF="Dcommands.html#DISP3D">DISP3D</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="REFMACRO">
+<HR> <H3> REFMACRO </H3> 
+<BLOCKQUOTE>
+<pre>
+        When this context is set to 1 the program refreshes the on-
+screen display during macro execution, this permits to follow the 
+data during the program execution, but slows down the macro 
+execution.
+	When equal to 0, the display is refreshed only at the end of the 
+macro execution. Default value is 0.
+ 
+
+ see also : <A HREF="Ccommands.html#CLEAR">CLEAR</A> <A HREF="Rcommands.html#REF">REF</A> <A HREF="Ucommands.html#UNREF">UNREF</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="RELAXRATE">
+<HR> <H3> RELAXRATE </H3> 
+<BLOCKQUOTE>
+<pre>
+Compute the relaxation rate (in arbitrary unit) from the last LP 
+analysis.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $RELAX
+
+
+ see also : <A HREF="Ccommands.html#CALIBDI">CALIBDI</A> <A HREF="Dcommands.html#DIST">DIST</A> <A HREF="Mcommands.html#METH">METH</A> <A HREF="Ocommands.html#ORDER">ORDER</A> <A HREF="Rcommands.html#RCRYST">RCRYST</A> <A HREF="Rcommands.html#RT-&gt;PK">RT-&gt;PK</A> <A HREF="Scommands.html#SLOPE">SLOPE</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="rem_att">
+<HR> <H3> rem_att </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/rem_att">Show macro</A>
+<pre>
+ rem_att $pk_id
+
+ removes $pk_id from peak data base
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="rem_cnst_db">
+<HR> <H3> rem_cnst_db </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/rem_cnst_db">Show macro</A>
+<pre>
+ rem_cnst_db $sp1 $sp2
+
+ removes $cnst_id from cnst data base
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="rem_h2o">
+<HR> <H3> rem_h2o </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/rem_h2o">Show macro</A>
+<pre>
+ rem_h2o -no param-
+
+ this macro will remove most of water signal (large zero-frequency
+ signal) by fitting and removing the water FID in the time domain
+ based from an idea of Marion, D., Ikura, M. and Bax,
+ A. J.Magn.Reson. 84 p425 (1989).
+
+ used in 1D, will overflow the 2D area !!
+
+ to be used before any processing, on the FID.
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="rem_spin">
+<HR> <H3> rem_spin </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/rem_spin">Show macro</A>
+<pre>
+ rem_spin $sp_id
+
+ ask for removes $sp_id from peak data base
+</pre>
+</BLOCKQUOTE>
+<A NAME="rem_spin_clean">
+<HR> <H3> rem_spin_clean </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/rem_spin_clean">Show macro</A>
+<pre>
+ rem_spin_clean $sp_id
+
+ removes $sp_id from spin data base
+ unassign related peaks
+ check and clear all spin_systems
+
+ This the correct way to remove a spin
+</pre>
+</BLOCKQUOTE>
+<A NAME="rem_spin_proc">
+<HR> <H3> rem_spin_proc </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/rem_spin_proc">Show macro</A>
+<pre>
+ rem_spin $sp_id
+
+ removes $sp_id from peak data base
+ unassign related peaks
+ DOES NOT check spin_systems
+</pre>
+</BLOCKQUOTE>
+<A NAME="rem_spin_sys">
+<HR> <H3> rem_spin_sys </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/rem_spin_sys">Show macro</A>
+<pre>
+ rem_spin_sys $sys_id $spin_id
+
+ removes spin_id from the spin-system $sys_id
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="rem_sys">
+<HR> <H3> rem_sys </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/rem_sys">Show macro</A>
+<pre>
+ rem_sys $ss_id
+
+ check all spins on a system
+ removes all spins using the rem_spin macro
+ unset $sys[$ss_id]
+ 
+</pre>
+</BLOCKQUOTE>
+<A NAME="rem_unass_att">
+<HR> <H3> rem_unass_att </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/rem_unass_att">Show macro</A>
+<pre>
+ rem_unass_att
+
+ remove all the unassigned peaks in a database
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="reset">
+<HR> <H3> reset </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro/misc    <A HREF="/usr/local/gifa/macro/misc/reset">Show macro</A>
+<pre>
+ interactive
+ put the clicked point at the level zero
+ 
+</pre>
+</BLOCKQUOTE>
+<A NAME="reset_absmax">
+<HR> <H3> reset_absmax </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/reset_absmax">Show macro</A>
+<pre>
+ reset_absmax file_name
+
+ sometimes, the absmax get screwed up on a file obtained by
+ on-file processing (typically 3D's)
+ this macro resets it to the correct value
+</pre>
+</BLOCKQUOTE>
+<A NAME="residue">
+<HR> <H3> residue </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/residue">Show macro</A>
+<pre>
+ residue exp
+
+ compute the residue (difference between calc and data values)
+ from a given expression, with the same syntax as FITGENE
+
+ exp should be an equation in $X, 
+ $X will take the values $TAB[1] to $TAB[n]
+ where n is the size of the current TAB buffer
+
+ 
+ see also : <A HREF="Dcommands.html#DISP1D">DISP1D</A> <A HREF="Fcommands.html#FITGENE">FITGENE</A> <A HREF="Pcommands.html#PUT">PUT</A> <A HREF="Scommands.html#showexp">showexp</A> <A HREF="Scommands.html#SHOWLINE">SHOWLINE</A> <A HREF="Scommands.html#showtab">showtab</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="RESIDUE">
+<HR> <H3> RESIDUE </H3> 
+<BLOCKQUOTE>
+<pre>
+Returns into the current buffer the result of the substraction of 
+the DATA buffer, with the reconstruction of the mock data from the 
+spectrum held into the current buffer. To be used after a MaxEnt run 
+to see that part of the signal not analysed by the MaxEnt process.
+
+
+ see also : <A HREF="Gcommands.html#GET">GET</A> <A HREF="Mcommands.html#MAXENT">MAXENT</A> <A HREF="Scommands.html#SHOW">SHOW</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="restore_backup">
+<HR> <H3> restore_backup </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/restore_backup">Show macro</A>
+<pre>
+restore backup from the assignment project backup file "backup.tar.Z"
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="RETURN">
+<HR> <H3> RETURN </H3> 
+<BLOCKQUOTE>
+<pre>
+RETURN value
+
+used in macro to return a value to the caller
+the caller will examine the value in $RETURNED
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="return">
+<HR> <H3> return </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/return">Show macro</A>
+<pre>
+ return value
+
+ set a global variable to $returned
+
+ used to simulate a RETURN command
+</pre>
+</BLOCKQUOTE>
+<A NAME="REVERSE">
+<HR> <H3> REVERSE </H3> 
+<BLOCKQUOTE>
+<pre>
+REVERSE {Fx} 
+reverse the order of the current data-set (i.e. first points are 
+last, last points are first).
+If dataset is complex, REVERSE will reverse the complex  vector (2 
+by 2).
+
+
+ see also : <A HREF="Icommands.html#INVF">INVF</A> <A HREF="Rcommands.html#REVF">REVF</A> <A HREF="Tcommands.html#TRANSPOSE">TRANSPOSE</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="REVF">
+<HR> <H3> REVF </H3> 
+<BLOCKQUOTE>
+<pre>
+REVF {Fx}
+   Processes FID data-sets by multiplying by -1 2 points out of 4. 
+Permits to preprocess Bruker FIDs in Dim 2 (Bruker trick) before 
+RFT, or permits to bring back zero frequency in the center for some 
+other data formats
+ 
+
+ see also : <A HREF="Fcommands.html#FT">FT</A> <A HREF="Icommands.html#INVF">INVF</A> <A HREF="Icommands.html#ITYPE">ITYPE</A> <A HREF="Rcommands.html#REVERSE">REVERSE</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="RFT">
+<HR> <H3> RFT </H3> 
+<BLOCKQUOTE>
+<pre>
+RFT {Fx}
+Perform  real-to-complex Fourier Transform on data
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $ITYPE_1D $ITYPE_2D $ITYPE_3D
+
+
+ see also : <A HREF="Fcommands.html#FT">FT</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="rm">
+<HR> <H3> rm </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/rm">Show macro</A>
+<pre>
+ as in unix
+
+ 
+ see also : <A HREF="Ccommands.html#CD">CD</A> <A HREF="Lcommands.html#ls">ls</A> <A HREF="Mcommands.html#more">more</A> <A HREF="Pcommands.html#pwd">pwd</A> <A HREF="Scommands.html#SH">SH</A> <A HREF="Vcommands.html#vi">vi</A> <A HREF="Vcommands.html#vim">vim</A> <A HREF="Vcommands.html#vip">vip</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="ROTATE">
+<HR> <H3> ROTATE </H3> 
+<BLOCKQUOTE>
+<pre>
+ROTATE 0 / 1
+When ROTATE=1, plots are rotated by 90 degrees, useful for plotting 
+1D spectra on A4 Postscript plotter or on a A3 HP-GL plotter
+ 
+
+ see also : <A HREF="Pcommands.html#PLOT">PLOT</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="ROW">
+<HR> <H3> ROW </H3> 
+<BLOCKQUOTE>
+<pre>
+ROW n
+
+Extract the nth 1D row (along F2 axis) from the 2D data-set, and put 
+it in the 1D buffer. The row will be available as a 1D data set when 
+going from 2D to 1D
+ 
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $ROW
+
+
+ see also : <A HREF="Ccommands.html#COL">COL</A> <A HREF="Ccommands.html#colint">colint</A> <A HREF="Dcommands.html#DIM">DIM</A> <A HREF="Pcommands.html#PLANE">PLANE</A> <A HREF="Rcommands.html#rowint">rowint</A> <A HREF="Vcommands.html#VERT">VERT</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="rowint">
+<HR> <H3> rowint </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/rowint">Show macro</A>
+<pre>
+ interactive
+ permits to choose rows interactively on a 2D by clicking on the data-set
+
+
+ see also : <A HREF="Ccommands.html#COL">COL</A> <A HREF="Ccommands.html#colint">colint</A> <A HREF="Pcommands.html#ph2dc">ph2dc</A> <A HREF="Pcommands.html#planeint">planeint</A> <A HREF="Rcommands.html#ROW">ROW</A> <A HREF="Vcommands.html#vertint">vertint</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="rshift">
+<HR> <H3> rshift </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/rshift">Show macro</A>
+<pre>
+ rshift n_points
+
+ makes a right shift of the data
+
+ 
+ see also : <A HREF="Ccommands.html#CHSIZE">CHSIZE</A> <A HREF="Ecommands.html#EXTRACT">EXTRACT</A> <A HREF="Lcommands.html#lshift">lshift</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="RT-&gt;AR">
+<HR> <H3> RT-&gt;AR </H3> 
+<BLOCKQUOTE>
+<pre>
+RT-&gt;AR n
+
+Compute back the autoregressive coefficients from a given set of 
+roots.
+n = 1 : forward coefficients are calculated from forward roots
+n = 2 : backward coefficients are calculated from backward roots
+n = 3 : both coefficient sets are calculated
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $NAR $NRT
+
+
+ see also : <A HREF="Acommands.html#AR-&gt;RT">AR-&gt;RT</A> <A HREF="Ocommands.html#ORDER">ORDER</A> <A HREF="Rcommands.html#RT-&gt;PK">RT-&gt;PK</A> <A HREF="Rcommands.html#RTCLEAN">RTCLEAN</A> <A HREF="Rcommands.html#RTINV">RTINV</A> <A HREF="Rcommands.html#RTLIST">RTLIST</A> <A HREF="Rcommands.html#RTMATCH">RTMATCH</A> <A HREF="Rcommands.html#RTPIV">RTPIV</A> <A HREF="Rcommands.html#RTREFLECT">RTREFLECT</A> <A HREF="Rcommands.html#RTSELECT">RTSELECT</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="RT-&gt;PK">
+<HR> <H3> RT-&gt;PK </H3> 
+<BLOCKQUOTE>
+<pre>
+RT-&gt;PK size n delay
+
+Calculate the peaks parameters from the roots by a least-square 
+method, computed on the size first points of the current data-set.
+This is the fourth (and last) step of the LP-SVD method.
+n = 1 : forward roots
+n = 2 : "matched" roots
+delay is the dead-time delay of the first point .in seconds. (the 
+error on the time zero)
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $NRT $PK1D_A[i] $PK1D_F[i] $PK1D_P[i] $PK1D_W[i]
+
+
+ see also : <A HREF="Acommands.html#AR-&gt;RT">AR-&gt;RT</A> <A HREF="Ocommands.html#ORDER">ORDER</A> <A HREF="Rcommands.html#RT-&gt;AR">RT-&gt;AR</A> <A HREF="Rcommands.html#RTCLEAN">RTCLEAN</A> <A HREF="Rcommands.html#RTINV">RTINV</A> <A HREF="Rcommands.html#RTLIST">RTLIST</A> <A HREF="Rcommands.html#RTMATCH">RTMATCH</A> <A HREF="Rcommands.html#RTPIV">RTPIV</A> <A HREF="Rcommands.html#RTREFLECT">RTREFLECT</A> <A HREF="Rcommands.html#RTSELECT">RTSELECT</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="RTCLEAN">
+<HR> <H3> RTCLEAN </H3> 
+<BLOCKQUOTE>
+<pre>
+RTCLEAN n
+Keep only the roots whose modulus is greater than one. Useful to 
+clean up root-set computed from a backward analysis, before 
+inverting.
+n = 1 : forward roots
+n = 2 : backward roots
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $NRT 
+
+
+ see also : <A HREF="Acommands.html#AR-&gt;RT">AR-&gt;RT</A> <A HREF="Ocommands.html#ORDER">ORDER</A> <A HREF="Rcommands.html#RT-&gt;AR">RT-&gt;AR</A> <A HREF="Rcommands.html#RT-&gt;PK">RT-&gt;PK</A> <A HREF="Rcommands.html#RTINV">RTINV</A> <A HREF="Rcommands.html#RTLIST">RTLIST</A> <A HREF="Rcommands.html#RTMATCH">RTMATCH</A> <A HREF="Rcommands.html#RTPIV">RTPIV</A> <A HREF="Rcommands.html#RTREFLECT">RTREFLECT</A> <A HREF="Rcommands.html#RTSELECT">RTSELECT</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="RTINV">
+<HR> <H3> RTINV </H3> 
+<BLOCKQUOTE>
+<pre>
+RTINV n
+
+Calculate the inverse conjugate of all the polynomial roots, thus 
+converting backward and forward polynomial. To be used after a 
+backward analysis.
+n = 1 : forward roots are inversed, and their inverses are put in 
+the backward root array.
+n = 2 : backward roots are inversed, and their inverses are put in 
+the forward root array.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $NRT 
+
+
+ see also : <A HREF="Acommands.html#AR-&gt;RT">AR-&gt;RT</A> <A HREF="Ocommands.html#ORDER">ORDER</A> <A HREF="Rcommands.html#RT-&gt;AR">RT-&gt;AR</A> <A HREF="Rcommands.html#RT-&gt;PK">RT-&gt;PK</A> <A HREF="Rcommands.html#RTCLEAN">RTCLEAN</A> <A HREF="Rcommands.html#RTLIST">RTLIST</A> <A HREF="Rcommands.html#RTMATCH">RTMATCH</A> <A HREF="Rcommands.html#RTPIV">RTPIV</A> <A HREF="Rcommands.html#RTREFLECT">RTREFLECT</A> <A HREF="Rcommands.html#RTSELECT">RTSELECT</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="RTLIST">
+<HR> <H3> RTLIST </H3> 
+<BLOCKQUOTE>
+<pre>
+RTLIST n i j
+List the roots of prediction-error polynomial from entry i to entry 
+j.
+n = 1 : forward roots 
+n = 2 : backward roots 
+n = 3 : matched roots
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $NRT 
+
+
+ see also : <A HREF="Acommands.html#AR-&gt;RT">AR-&gt;RT</A> <A HREF="Rcommands.html#RT-&gt;AR">RT-&gt;AR</A> <A HREF="Rcommands.html#RT-&gt;PK">RT-&gt;PK</A> <A HREF="Rcommands.html#RTCLEAN">RTCLEAN</A> <A HREF="Rcommands.html#RTINV">RTINV</A> <A HREF="Rcommands.html#RTMATCH">RTMATCH</A> <A HREF="Rcommands.html#RTPIV">RTPIV</A> <A HREF="Rcommands.html#RTREFLECT">RTREFLECT</A> <A HREF="Rcommands.html#RTSELECT">RTSELECT</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="RTMATCH">
+<HR> <H3> RTMATCH </H3> 
+<BLOCKQUOTE>
+<pre>
+RTMATCH nsignals
+"Match" the forward and backward roots to eliminate the roots dues 
+to noise. Those matched roots can then be used by RT-&gt;PK, with the 
+"matched forward &amp; backward" roots. nsignals is the number of true 
+roots expected.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $NRT
+
+
+ see also : <A HREF="Acommands.html#AR-&gt;RT">AR-&gt;RT</A> <A HREF="Ocommands.html#ORDER">ORDER</A> <A HREF="Rcommands.html#RT-&gt;AR">RT-&gt;AR</A> <A HREF="Rcommands.html#RT-&gt;PK">RT-&gt;PK</A> <A HREF="Rcommands.html#RTCLEAN">RTCLEAN</A> <A HREF="Rcommands.html#RTINV">RTINV</A> <A HREF="Rcommands.html#RTLIST">RTLIST</A> <A HREF="Rcommands.html#RTPIV">RTPIV</A> <A HREF="Rcommands.html#RTREFLECT">RTREFLECT</A> <A HREF="Rcommands.html#RTSELECT">RTSELECT</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="RTPIV">
+<HR> <H3> RTPIV </H3> 
+<BLOCKQUOTE>
+<pre>
+RTPIV alpha
+
+Will remove all the forward roots with frequency higher than 1/alpha 
+(in -PI +PI unit). Used to remove spurious frequency when doing 
+build-up curve analysis.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $NRT
+
+
+ see also : <A HREF="Acommands.html#AR-&gt;RT">AR-&gt;RT</A> <A HREF="Rcommands.html#RT-&gt;AR">RT-&gt;AR</A> <A HREF="Rcommands.html#RT-&gt;PK">RT-&gt;PK</A> <A HREF="Rcommands.html#RTCLEAN">RTCLEAN</A> <A HREF="Rcommands.html#RTINV">RTINV</A> <A HREF="Rcommands.html#RTLIST">RTLIST</A> <A HREF="Rcommands.html#RTMATCH">RTMATCH</A> <A HREF="Rcommands.html#RTREFLECT">RTREFLECT</A> <A HREF="Rcommands.html#RTSELECT">RTSELECT</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="RTREFLECT">
+<HR> <H3> RTREFLECT </H3> 
+<BLOCKQUOTE>
+<pre>
+RTREFLECT n
+Calculate the inverse conjugate of roots lying outside the unity 
+circle. The modified roots are let in the same root array.
+n = 1 : forward roots
+n = 2 : backward roots
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $NRT
+
+
+ see also : <A HREF="Acommands.html#AR-&gt;RT">AR-&gt;RT</A> <A HREF="Ocommands.html#ORDER">ORDER</A> <A HREF="Rcommands.html#RT-&gt;AR">RT-&gt;AR</A> <A HREF="Rcommands.html#RT-&gt;PK">RT-&gt;PK</A> <A HREF="Rcommands.html#RTCLEAN">RTCLEAN</A> <A HREF="Rcommands.html#RTINV">RTINV</A> <A HREF="Rcommands.html#RTLIST">RTLIST</A> <A HREF="Rcommands.html#RTMATCH">RTMATCH</A> <A HREF="Rcommands.html#RTPIV">RTPIV</A> <A HREF="Rcommands.html#RTSELECT">RTSELECT</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="RTSELECT">
+<HR> <H3> RTSELECT </H3> 
+<BLOCKQUOTE>
+<pre>
+RTSELECT n index()
+Select the roots whose index() are given. To end selection, enter 
+the index 0.
+n = 1 : forward roots
+n = 2 : backward roots
+n = 3 : matched roots
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $NRT
+
+
+ see also : <A HREF="Acommands.html#AR-&gt;RT">AR-&gt;RT</A> <A HREF="Ocommands.html#ORDER">ORDER</A> <A HREF="Rcommands.html#RT-&gt;AR">RT-&gt;AR</A> <A HREF="Rcommands.html#RT-&gt;PK">RT-&gt;PK</A> <A HREF="Rcommands.html#RTCLEAN">RTCLEAN</A> <A HREF="Rcommands.html#RTINV">RTINV</A> <A HREF="Rcommands.html#RTLIST">RTLIST</A> <A HREF="Rcommands.html#RTMATCH">RTMATCH</A> <A HREF="Rcommands.html#RTPIV">RTPIV</A> <A HREF="Rcommands.html#RTREFLECT">RTREFLECT</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="rzoom">
+<HR> <H3> rzoom </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/rzoom">Show macro</A>
+<pre>
+ This command permits, when in zoom mode in 2D, to jump to a zoom 
+window symmetric relatively to the diagonal of the one currently 
+used.
+
+
+ see also : <A HREF="Mcommands.html#multi_zoom">multi_zoom</A> <A HREF="Zcommands.html#ZM">ZM</A> <A HREF="Zcommands.html#ZOOM">ZOOM</A> 
+</pre>
+</BLOCKQUOTE>
+
+ </body> 
+ 

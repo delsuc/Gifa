@@ -1,0 +1,697 @@
+<html>
+<head>
+<!-- This document created by dodoc_html V2.1 -->
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#CC0000">
+<TITLE>Commands in B </TITLE>
+<H2> <A HREF="commands.html">Back to Alphabetical List</A> </H2>
+
+<A NAME="BACKPROD">
+<HR> <H3> BACKPROD </H3> 
+<BLOCKQUOTE>
+<pre>
+Replaces the 2D buffer by the product of the current 2D buffer by 
+the transpose of it
+
+
+ see also : <A HREF="Dcommands.html#DIAGONALIZE">DIAGONALIZE</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="back_store_zoom">
+<HR> <H3> back_store_zoom </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro/gm    <A HREF="/usr/local/gifa/macro/gm/back_store_zoom">Show macro</A>
+<pre>
+ jumps back to a zoom window memorized with store_zoom
+</pre>
+</BLOCKQUOTE>
+<A NAME="basic_db.g">
+<HR> <H3> basic_db.g </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/basic_db.g">Show macro</A>
+<pre>
+ basic
+
+ create entries for protein assignment
+</pre>
+</BLOCKQUOTE>
+<A NAME="BCOLOR">
+<HR> <H3> BCOLOR </H3> 
+<BLOCKQUOTE>
+<pre>
+BCOLOR index window
+Defines the current background color used for display. The chosen 
+color remains until the next
+BCOLOR command.
+index is :	1:white  2:red  3:yellow  4:green
+		5:cian  6:blue  7:purple  8:black
+Window is :   1:1D 2:disp 3:contour 4:3D
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $BCOLOR
+
+
+ see also : <A HREF="Ccommands.html#CCOLOR">CCOLOR</A> <A HREF="Ccommands.html#CDISP2D">CDISP2D</A> <A HREF="Ccommands.html#COLOR">COLOR</A> <A HREF="Dcommands.html#DISP1D">DISP1D</A> <A HREF="Dcommands.html#DISP2D">DISP2D</A> <A HREF="Dcommands.html#DISP3D">DISP3D</A> <A HREF="Scommands.html#SCOLOR">SCOLOR</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="BCORR">
+<HR> <H3> BCORR </H3> 
+<BLOCKQUOTE>
+<pre>
+	BCORR A { R {n}  list_of_points 0  }
+Computes and applies a base-line correction to the current data set.
+A   describe the algorithm used:
+    1 is linear correction
+    2 is cubic spline correction.
+    3 is polynomial (and related) correction
+
+o If A is 1 or 2 :
+
+ R   is the radius around which each pivot point is averaged.
+
+ n in 2D is either f1 or f2 (dimension in which correction is 
+applied).
+
+ list_of_points is then the list of the pivot points used for the 
+base-line correction. The list finishes by 0. The content of th 
+point stack is used for prompting.
+Linear correction can use 1 or more pivot points. 1 point 
+corresponds to correction of a continuous level. Spline corrections 
+needs at least 3 points.
+In any case maximum is 100 pivot points.
+
+o If A is 3 : 
+This method uses a correction by estimation of the baseline and 
+subtraction. Words in uppercase are commands.
+The four steps are :
+	* Initial smooth of data : SMOOTH1
+	* First segmentation (detection of signal) : SEGM1
+	* Second segmentation (Polynomial approximation
+	  may be done on several areas) : SEGM2
+	* Approximation (the estimated baseline is an approximation
+	  of data points that are not signal) : APPROX
+If you do not know how to use these corrections the next three 
+commands should help you :
+	* BCORRP : Will prompt you for the related parameters, along with 
+the name of the command..
+	* BCORRP? : the current choices are listed.
+	* BCORRP0 : the default set up is restored.
+	* BCORRP1 : another set up is activated
+
+Polynomial correction is described by a set of related external 
+contexts :
+BLCW, BLCITER, BLOCBASE, BCORRP, BCORRP?, BCORRP0, BCORRP1, SMOOTH1, 
+WINMA, LEVELHYSTE, SEGM1, BLCU, BLCV, SDS, SDB, SCS, SCB, DCFACTOR, 
+DCITER, MORPHOB,  MORPHOS, DCALGO, DCDISTANCE, SEGM2, WINDOW, 
+WINSEGM2, LEVELSEGM2, APPROX, WINMA2, ITERM2, DEGRE, WINLIN.
+
+
+ see also : <A HREF="Acommands.html#APPROX">APPROX</A> <A HREF="Bcommands.html#BCORRP">BCORRP</A> <A HREF="Bcommands.html#BCORRP0">BCORRP0</A> <A HREF="Bcommands.html#BCORRP1">BCORRP1</A> <A HREF="Bcommands.html#BLCITER">BLCITER</A> <A HREF="Bcommands.html#BLCU">BLCU</A> <A HREF="Bcommands.html#BLCV">BLCV</A> <A HREF="Bcommands.html#BLCW">BLCW</A> <A HREF="Bcommands.html#BLOCBASE">BLOCBASE</A> <A HREF="Dcommands.html#DCALGO">DCALGO</A> <A HREF="Dcommands.html#DCDISTANCE">DCDISTANCE</A> <A HREF="Dcommands.html#DCFACTOR">DCFACTOR</A> <A HREF="Dcommands.html#DCITER">DCITER</A> <A HREF="Dcommands.html#DEGRE">DEGRE</A> <A HREF="Lcommands.html#LEVELHYSTE">LEVELHYSTE</A> <A HREF="Lcommands.html#LEVELSEGM2">LEVELSEGM2</A> <A HREF="Mcommands.html#MEDIAN">MEDIAN</A> <A HREF="Mcommands.html#MORPHOB">MORPHOB</A> <A HREF="Mcommands.html#MORPHOS">MORPHOS</A> <A HREF="Pcommands.html#point">point</A> <A HREF="Scommands.html#SEGM1">SEGM1</A> <A HREF="Scommands.html#SEGM2">SEGM2</A> <A HREF="Scommands.html#SMOOTH">SMOOTH</A> <A HREF="Scommands.html#SMOOTH1">SMOOTH1</A> <A HREF="Wcommands.html#WINDOW">WINDOW</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="bcorr.g">
+<HR> <H3> bcorr.g </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/bcorr.g">Show macro</A>
+<pre>
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="BCORRP">
+<HR> <H3> BCORRP </H3> 
+<BLOCKQUOTE>
+<pre>
+a step by step command to choose a set up for the BCORR 3 module
+
+
+ see also : <A HREF="Bcommands.html#BCORR">BCORR</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="BCORRP0">
+<HR> <H3> BCORRP0 </H3> 
+<BLOCKQUOTE>
+<pre>
+Restores the initial configuration with a polynomial approximation 
+for the BCORR 3 module
+
+
+ see also : <A HREF="Bcommands.html#BCORR">BCORR</A> <A HREF="Bcommands.html#BCORRP">BCORRP</A> <A HREF="Bcommands.html#BCORRP1">BCORRP1</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="BCORRP1">
+<HR> <H3> BCORRP1 </H3> 
+<BLOCKQUOTE>
+<pre>
+Enables a configuration with a dynamic clusters segmentation and a 
+moving average approximation for the BCORR 3 module
+
+
+ see also : <A HREF="Bcommands.html#BCORR">BCORR</A> <A HREF="Bcommands.html#BCORRP">BCORRP</A> <A HREF="Bcommands.html#BCORRP0">BCORRP0</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="bcorr_x">
+<HR> <H3> bcorr_x </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro/gm    <A HREF="/usr/local/gifa/macro/gm/bcorr_x">Show macro</A>
+<pre>
+ interactive for baseline correction
+ should be called : bcorr_x $algo_to_apply
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="BETA">
+<HR> <H3> BETA </H3> 
+<BLOCKQUOTE>
+<pre>
+beta b
+This context is the angle along the OY axis by which the cube is 
+rotated during a 3D display with the DISP3D/REF3D set of commands
+
+
+ see also : <A HREF="Acommands.html#ALPHA">ALPHA</A> <A HREF="Dcommands.html#DISP3D">DISP3D</A> <A HREF="Gcommands.html#GAMA">GAMA</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="big">
+<HR> <H3> big </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/big">Show macro</A>
+<pre>
+ obsolete, for compatibility
+ big was removed in Gifa since version 4_09alpha
+</pre>
+</BLOCKQUOTE>
+<A NAME="BLCITER">
+<HR> <H3> BLCITER </H3> 
+<BLOCKQUOTE>
+<pre>
+to be used with BCORR 3
+The maximum number of iterations for the whole process
+
+
+ see also : <A HREF="Bcommands.html#BCORR">BCORR</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="BLCU">
+<HR> <H3> BLCU </H3> 
+<BLOCKQUOTE>
+<pre>
+blcu real_value
+internal value used by the BCORR 3 algorithm
+
+
+ see also : <A HREF="Bcommands.html#BCORR">BCORR</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="BLCV">
+<HR> <H3> BLCV </H3> 
+<BLOCKQUOTE>
+<pre>
+blcv real_value
+internal value used by the BCORR 3 algorithm
+
+
+ see also : <A HREF="Bcommands.html#BCORR">BCORR</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="BLCW">
+<HR> <H3> BLCW </H3> 
+<BLOCKQUOTE>
+<pre>
+To be used with BCORR 3
+When the RMS of the correction is lower than BLCW times the RMS of 
+the data, the correction is finished
+
+
+ see also : <A HREF="Bcommands.html#BCORR">BCORR</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="BLOCBASE">
+<HR> <H3> BLOCBASE </H3> 
+<BLOCKQUOTE>
+<pre>
+to be used with BCORR 3
+All parameters in point unit are scaled in the ratio of the data set 
+size to this parameter.
+
+
+ see also : <A HREF="Bcommands.html#BCORR">BCORR</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="bmrb2primary">
+<HR> <H3> bmrb2primary </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/bmrb2primary">Show macro</A>
+<pre>
+ bmrb2primary
+
+ This macro extract the primary sequence of the protein 
+ from a BMRB assignment file
+</pre>
+</BLOCKQUOTE>
+<A NAME="bmrb2spin">
+<HR> <H3> bmrb2spin </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/bmrb2spin">Show macro</A>
+<pre>
+ bmrb2spin
+
+ This macro extract the chemical shifts of spins 
+ from a BRMN assignment file
+ one line per spin
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="bruit1pklst.g">
+<HR> <H3> bruit1pklst.g </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att/dyna    <A HREF="/usr/local/gifa/macro/att/dyna/bruit1pklst.g">Show macro</A>
+<pre>
+ bruit1pklst.g $dbno $liste $intmeth $homoth $zone 
+ bruit1pklst.g 110 datalst Sumrec 0.8 "57 774 168 956"
+
+ determine the error on intensities on a list of experiments, 
+ according to the methode of evaluation "Multiexp"
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="bruker">
+<HR> <H3> bruker </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro/varian    <A HREF="/usr/local/gifa/macro/varian/bruker">Show macro</A>
+<pre>
+ This command switches to Bruker mode
+
+ 
+ see also : 
+</pre>
+</BLOCKQUOTE>
+<A NAME="bruker_add_param">
+<HR> <H3> bruker_add_param </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/bruker_add_param">Show macro</A>
+<pre>
+ bruker_add_param file
+
+ this macro adds to the header of "file" the parameters needed to process bruker digital filter.
+ parameters are found in the acqu (or acqus) file found in the same dir as  "file" 
+
+ The parameters are : BRUKER_DECIM BRUKER_DSPFVS BRUKER_DSPFIRM
+
+ These parameters are then taken into account by the easy_nD processing
+
+ 
+ see also : <A HREF="Bcommands.html#BRUKER_CORR">BRUKER_CORR</A> <A HREF="Ecommands.html#easy2d">easy2d</A> <A HREF="Gcommands.html#get_acqus">get_acqus</A> <A HREF="Pcommands.html#PUTHEADER">PUTHEADER</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="BRUKER_CORR">
+<HR> <H3> BRUKER_CORR </H3> 
+<BLOCKQUOTE>
+<pre>
+BRUKER_CORR DSPFIRM DSPFVS DECIM
+
+compute and apply the first order phase correction to be executed on a spectrum
+after Fourier trasform, when the digital filter was used on a Bruker spectrometer.
+
+the value actually used is put in the $RETURNED context
+
+
+ see also : <A HREF="Bcommands.html#bruker_add_param">bruker_add_param</A> <A HREF="Pcommands.html#PHASE">PHASE</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="bug_report">
+<HR> <H3> bug_report </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/bug_report">Show macro</A>
+<pre>
+ for interactive bug report
+</pre>
+</BLOCKQUOTE>
+<A NAME="build2d">
+<HR> <H3> build2d </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/build2d">Show macro</A>
+<pre>
+ build2d file_name
+ builds a 2d from a set of 1D, the name of which are found in file_name
+ one entry per line
+
+ 
+ see also : <A HREF="Bcommands.html#build3d">build3d</A> <A HREF="Rcommands.html#READ">READ</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="build3d">
+<HR> <H3> build3d </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/build3d">Show macro</A>
+<pre>
+ build3d file_name
+ builds a 3d from a set of 2D, the name of which are found in file_name
+ one entry per line
+
+ 
+ see also : <A HREF="Bcommands.html#build2d">build2d</A> <A HREF="Rcommands.html#READ">READ</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="build_att">
+<HR> <H3> build_att </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/build_att">Show macro</A>
+<pre>
+ build a set of att from the current spin and sys
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="build_att.tt">
+<HR> <H3> build_att.tt </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/build_att.tt">Show macro</A>
+<pre>
+ build a set of att from the current spin and sys
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="build_att_one_sys">
+<HR> <H3> build_att_one_sys </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/build_att_one_sys">Show macro</A>
+<pre>
+ build_att_one_sys $ss_id  
+
+ build a set of att from the current spin system
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="build_cnst_db">
+<HR> <H3> build_cnst_db </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/build_cnst_db">Show macro</A>
+<pre>
+ build_cnst_db
+
+ create the constraint database from att according to the set of 
+ calibration peaks. The constraint distances are qualitatively
+ defined from the calibration peaks, and the bounds given by the 
+ user.
+
+
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="build_fire">
+<HR> <H3> build_fire </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/build_fire">Show macro</A>
+<pre>
+ this macro builds a strip file from the following information
+ - a fully assign HSQC 2D spectrum in the current assignement db
+ - a 3D spectrum
+ - the list of amino-acid to extract
+
+ for each assigned peak in the HSQC, a column, at the same ppm
+ coordinates will be extracted and put in a composite 2D.
+
+ The list of amino-acid to extract is given with the following notation:
+   blank separated index: 2 4 6 7 8 9 10 12 15 
+   or ranges :            6:10
+   the two can be mixed : 2 4 6:10 12 15
+ Be carefull with :
+    calibrating correctly your 3D
+</pre>
+</BLOCKQUOTE>
+<A NAME="build_pdb">
+<HR> <H3> build_pdb </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/build_pdb">Show macro</A>
+<pre>
+ build_pdb
+
+used to build the static list of the PDB files
+</pre>
+</BLOCKQUOTE>
+<A NAME="build_spec">
+<HR> <H3> build_spec </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/build_spec">Show macro</A>
+<pre>
+ build_spec
+
+used to build the static list of the data-file
+</pre>
+</BLOCKQUOTE>
+<A NAME="build_static_db.g">
+<HR> <H3> build_static_db.g </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/build_static_db.g">Show macro</A>
+<pre>
+ build the static data_bases in the local db directory
+
+ This macro is not used in normal work,
+ the topology 3let_1let and 1let_3let  db    being permanently there.
+ If you modify it, you will have to rerun it.
+
+ You is also possible that you cannot read the dbm files in the distribution
+ because your dbm set-up is not compatible (this is the case with Linux)
+ in this case, remove the files *.pag and *.dir from the directory
+ and rerun this macro, which will recreate them
+
+ now the systems are IUPAC compliant
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="build_strip">
+<HR> <H3> build_strip </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/build_strip">Show macro</A>
+<pre>
+ this macro builds a strip file from the following information
+ - a fully assign HSQC 2D spectrum in the current assignement db
+ - a 3D spectrum
+ - the list of amino-acid to extract
+
+ for each assigned peak in the HSQC, a column, at the same ppm
+ coordinates will be extracted and put in a composite 2D.
+
+ The list of amino-acid to extract is given with the following notation:
+   blank separated index: 2 4 6 7 8 9 10 12 15 
+   or ranges :            6:10
+   the two can be mixed : 2 4 6:10 12 15
+ Be carefull with :
+    calibrating correctly your 3D
+</pre>
+</BLOCKQUOTE>
+<A NAME="build_strip.new">
+<HR> <H3> build_strip.new </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/build_strip.new">Show macro</A>
+<pre>
+ this macro builds a strip file from the following information
+ - a HSQC 2D spectrum in the current assignement db
+ - a 3D spectrum
+ - the list of amino-acid to extract
+
+ for each assigned peak in the HSQC, a column, at the same ppm
+ coordinates will be extracted and put in a composite 2D.
+
+ The list of amino-acid to extract is given with the following notation:
+   blank separated index: 2 4 6 7 8 9 10 12 15 
+   or ranges :            6:10
+   the two can be mixed : 2 4 6:10 12 15
+ Be carefull with :
+    calibrating correctly your 3D
+</pre>
+</BLOCKQUOTE>
+<A NAME="BURG">
+<HR> <H3> BURG </H3> 
+<BLOCKQUOTE>
+<pre>
+BURG size
+Will perform an in-place forward linear prediction, by using the 
+Burg method. The size of the final data-set is size. This command is 
+equivalent to the sequence :
+DT-&gt;AR AR-&gt;DT 1 size
+but is computed on-place, and can thus be used on a full 2D or 3D 
+spectrum.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $ORDER $NAR $SI1_1D
+
+
+ see also : <A HREF="Acommands.html#AR-&gt;DT">AR-&gt;DT</A> <A HREF="Acommands.html#AR-&gt;SP">AR-&gt;SP</A> <A HREF="Bcommands.html#burg2d">burg2d</A> <A HREF="Bcommands.html#burg3d">burg3d</A> <A HREF="Bcommands.html#burg_rev">burg_rev</A> <A HREF="Dcommands.html#DT-&gt;AR">DT-&gt;AR</A> <A HREF="Ocommands.html#ORDER">ORDER</A> <A HREF="Scommands.html#svd_rev">svd_rev</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="burg2d">
+<HR> <H3> burg2d </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/burg2d">Show macro</A>
+<pre>
+ burg2d axis new_size
+
+ axis is F1 or F2,
+ extend the FID up to new_size, using burg method
+
+ 
+ see also : <A HREF="Bcommands.html#BURG">BURG</A> <A HREF="Bcommands.html#burg3d">burg3d</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="burg2d_back">
+<HR> <H3> burg2d_back </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/burg2d_back">Show macro</A>
+<pre>
+ burg2d_back axis new_size
+
+ extend backward the FID along axis up to new_size, using burg method
+ to be used when the beginning of the FIDs got truncated for some reason.
+
+ this is probably not optimum, as burg is phase-minimum
+ what we need here is rather a 'phase maximum' method.
+ This has the advantage of being MUCH faster than what would be optimum,
+ and will work probably just as well, as long as the number of points
+ to reconstruct is 'small enough'
+
+ 
+ see also : <A HREF="Bcommands.html#BURG">BURG</A> <A HREF="Bcommands.html#burg2d">burg2d</A> <A HREF="Bcommands.html#burg3d">burg3d</A> <A HREF="Bcommands.html#burg_back">burg_back</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="burg2d_mirror">
+<HR> <H3> burg2d_mirror </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/burg2d_mirror">Show macro</A>
+<pre>
+ burg2d_mirror axis offset new_size
+
+ axis is F1 or F2,
+ extend the FID up to new_size, using burg_mirror method
+
+ 
+ see also : <A HREF="Bcommands.html#BURG">BURG</A> <A HREF="Bcommands.html#burg2d">burg2d</A> <A HREF="Bcommands.html#burg3d">burg3d</A> <A HREF="Bcommands.html#burg_mirror">burg_mirror</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="burg3d">
+<HR> <H3> burg3d </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/burg3d">Show macro</A>
+<pre>
+ burg3d axis new_size
+
+ axis is F1 F2 or F3
+ extend the FID up to new_size, using burg method
+
+ 
+ see also : <A HREF="Bcommands.html#BURG">BURG</A> <A HREF="Bcommands.html#burg2d">burg2d</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="burg_back">
+<HR> <H3> burg_back </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/burg_back">Show macro</A>
+<pre>
+ burg_back new_size
+
+ extend backward the FID up to new_size, using burg method
+ to be used when the beginning of the FID got truncated for some reason.
+
+ this is probably not optimum, as burg is phase-minimum
+ what we need here is rather a 'phase maximum' method.
+ This has the advantage of being MUCH faster than what would be optimum,
+ and will work probably just as well, as long as the number of points
+ to reconstruct is 'small enough'
+
+ 
+ see also : <A HREF="Bcommands.html#BURG">BURG</A> <A HREF="Bcommands.html#burg2d">burg2d</A> <A HREF="Bcommands.html#burg2d_back">burg2d_back</A> <A HREF="Bcommands.html#burg3d">burg3d</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="burg_mirror">
+<HR> <H3> burg_mirror </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/burg_mirror">Show macro</A>
+<pre>
+ burg_mirror offset new_size
+
+ realizes he mirror image Linear Prediction, using the burg algorithm.
+
+ offset determines the position of the t=0 point 
+     0  no shift : in-phase data set.
+    -1  acquisition started exactly half a dwell after t=0 - (will need phase 0 180)
+    n&gt;0 acquisition started exactly n dwell before t=0
+        Warning, this is not coherent notation
+
+ new_size is the size of the FID after the LP extension.
+
+ See : Zhu and Bax J.Magn.Reson. 90, p405 (1990)
+ 
+ see also : <A HREF="Bcommands.html#BURG">BURG</A> <A HREF="Bcommands.html#burg2d_mirror">burg2d_mirror</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="burg_rev">
+<HR> <H3> burg_rev </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/burg_rev">Show macro</A>
+<pre>
+ burg_rev n_of_point
+
+ reconstruct the missing n_of_point first data points
+ using the burg method
+ changes order to n_of_point*2
+
+ 
+ see also : <A HREF="Acommands.html#AR-&gt;DT">AR-&gt;DT</A> <A HREF="Bcommands.html#BURG">BURG</A> <A HREF="Scommands.html#svd_rev">svd_rev</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="button.g">
+<HR> <H3> button.g </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/button.g">Show macro</A>
+<pre>
+ set-up the basic GUI
+ by loading the default menus
+ 
+ 
+ see also : <A HREF="Ecommands.html#env_basic.g">env_basic.g</A> <A HREF="Scommands.html#startup.g">startup.g</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="BUTTONBOX">
+<HR> <H3> BUTTONBOX </H3> 
+<BLOCKQUOTE>
+<pre>
+BUTTONBOX menu_name [ button_name gifa_command  | separator ] (n 
+times) *
+Permits to construct a new menu in the menu_bar (will create one if 
+none is available). This menu will appear as menu_name  in the 
+menu_bar. When menu_name  is clicked by the user, a button box will 
+appear, with as many entry as item in the list of commands. Each 
+entry in the list is defined as a couple of word, the first one 
+being the name of the button in the box, the second one being the 
+gifa command to be executed if the button is clicked. The command 
+will be executed exactly as if the user had typed it as the prompt 
+level, thus the command can be a simple command, several commands on 
+a line, of a macro name. However the WHILE, FOR, FOREACH, IF .. 
+THEN, GOTO commands are not available; the IF .. any_command syntaxe 
+is available. If a parameter is missing for the command, the user 
+will be prompted in the text window.
+The special entry separator  is not associated to a command, but 
+permits to enter a separator in the menu box.
+The list is terminated with a star.
+
+related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $CONFIG_GRAPH
+
+
+ see also : <A HREF="Ccommands.html#CLOSEBUTTON">CLOSEBUTTON</A> <A HREF="Dcommands.html#DIALOGBOX">DIALOGBOX</A> <A HREF="Fcommands.html#FORMBOX">FORMBOX</A> <A HREF="Mcommands.html#MACRO">MACRO</A> <A HREF="Pcommands.html#PULLDOWNMENU">PULLDOWNMENU</A> 
+</pre>
+</BLOCKQUOTE>
+
+ </body> 
+ 
