@@ -38,7 +38,7 @@ if $config_graph then
    if ($config_os s= "DARWIN") then
      set viewer := "open"
    else
-     set viewer := "mozilla"    ; Adapt this one to your set-up
+     set viewer := "firefox"    ; Adapt this one to your set-up
    endif
 
    pulldownmenu 1    ; choose menus instead of boxes

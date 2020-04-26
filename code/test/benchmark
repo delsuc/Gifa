@@ -1,5 +1,5 @@
 ; benchmark for gifa
-verbose 1    ; check what you're doing
+; verbose 1    ; check what you're doing
 ; benchmark for gifa
 ;   run on a 512 x 2k real data set.
 ;   Processing performed is :

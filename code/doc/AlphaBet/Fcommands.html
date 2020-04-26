@@ -1,6 +1,6 @@
 <html>
 <head>
-<!-- This document created by dodoc_html V2.1>
+<!-- This document created by dodoc_html V2.1 -->
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 </head>
 <body bgcolor="#FFFFFF" text="#000000" link="#CC0000">
@@ -878,71 +878,6 @@ For each function, index, ppm, hertz, second, damping or tabulated is the value 
 	 Note that since there is only one tabulated axis that can be defined 
 	 the additional parameters are useless. If dim = 0, then the conversion is done 
 	 in the context of the currently JOINed file rather than in the context of the internal buffers.
-
- see also : <A HREF="Ccommands.html#CONTEXTS">CONTEXTS</A> <A HREF="Ccommands.html#CONTROLS">CONTROLS</A> <A HREF="Mcommands.html#MACRO">MACRO</A> <A HREF="Vcommands.html#VARIABLES">VARIABLES</A> 
-</pre>
-</BLOCKQUOTE>
-<A NAME="FUNCTIONS COPIE">
-<HR> <H3> FUNCTIONS COPIE </H3> 
-<BLOCKQUOTE>
-<pre>
-the following functions and operators are available within evaluated 
-expression :
-
-Operators : 
-o the regular 4 operations, modulo  and power 
-	+	-	/	*	% (modulo)	^ (power)
-
-o arithmetic comparison
-	==	!=	&lt;	&gt;	&lt;=	&gt;=
-
-o string comparison
-	s=	s!
-
-o logical operators
-	|   (or)	&amp;  (and)	!  (not)
-
-o string concatenation
-	//   (direct concatenation)
-	;    (concatenation with a blank)
-
-functions :
-o the mathematical functions
-	sqrt(x)	cos(x)  sin(x)    atan(x)   log(x)    exp(x)
-	abs(x)  int(x)  round(x)  power2(n) max(x,y)  min(x,y)
-	
-o the alphanumeric functions :
-	toupper(st)	tolower(st)	(transformations of st)
-	sp(i)				(makes blank strings)
-	len(st)				(length of the string)
-	index(st1,st2)			(locates st2 in st1)
-	subst(st,i,j)			(extracts substring (i:j) from st)
-	head(st)			(extract the 1st word)
-	tail(st)			(everything but the 1st word)
-	headx(st,char)	tailx(st,char)  
-	       (same as head &amp; tail but char is the separator)
-	isalpha(st)  isnumb(st)
-               (check string type alphanumic. - numeric)
-o file access
-	eof(file)    (true if End of File file is reached)
-	
-o GIFA internal parameters
-	val1d(i)	val2d(i,j)	val3d(i,j,k)
-		(values in the 1D, 2D and 3D buffers)
-        valamb(i,j)   (value of the amoeba buffer)
-	itoh(index,dim,axis)	htoi(hertz,dim,axis)
-	itop(...)   ptoi(...)   htop(...)   ptoh(...)
-	itos(...)   stoi(...)   itod(...)   dtoi(...)
-	(unit conversions  i: index   p: ppm   h: Hz   s: second   d: damping  
-	 itoh:  means   index to Hz
-	 In all cases, axis is the axis along which conversion must be done
-	 and dim tells in which data space it is done (1D, 2D or 3D)
-	 dim=0 has the special meaning of using the currently joined data_set)
-
-	nextlm(array,index)     (next entry in associative or dbm array)
-	exist(var_name)         (true if var_name exists)
-	dbm(var_name)           (true if var_name is a dbm array)
-
 
  see also : <A HREF="Ccommands.html#CONTEXTS">CONTEXTS</A> <A HREF="Ccommands.html#CONTROLS">CONTROLS</A> <A HREF="Mcommands.html#MACRO">MACRO</A> <A HREF="Vcommands.html#VARIABLES">VARIABLES</A> 
 </pre>

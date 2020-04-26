@@ -19,4 +19,5 @@ C without written permission from the authors.
 C
 
       character*256 version
-      parameter (version = 'version 4.5 - 1 mar 2004  ')
+      parameter (version = 
+     *   'version 4.5 - 1 Mar 2004 - revived April 2020 ')

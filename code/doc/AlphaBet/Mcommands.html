@@ -1,6 +1,6 @@
 <html>
 <head>
-<!-- This document created by dodoc_html V2.1>
+<!-- This document created by dodoc_html V2.1 -->
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 </head>
 <body bgcolor="#FFFFFF" text="#000000" link="#CC0000">
@@ -155,7 +155,22 @@ Value is stored in the context $MAXINBOX
 related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $MAXINBOX
 
 
- see also : <A HREF="Ecommands.html#EVALN">EVALN</A> <A HREF="Icommands.html#INTEG">INTEG</A> <A HREF="Pcommands.html#pksumrec">pksumrec</A> <A HREF="Scommands.html#sumrec_1d">sumrec_1d</A> 
+ see also : <A HREF="Ecommands.html#EVALN">EVALN</A> <A HREF="Icommands.html#INTEG">INTEG</A> <A HREF="Mcommands.html#maxinbox">maxinbox</A> <A HREF="Pcommands.html#pksumrec">pksumrec</A> <A HREF="Scommands.html#sumrec_1d">sumrec_1d</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="maxinbox">
+<HR> <H3> maxinbox </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att/dyna    <A HREF="/usr/local/gifa/macro/att/dyna/maxinbox">Show macro</A>
+<pre>
+ maxinbox lf1 lf2 ur 1 ur2
+
+ computes the value of the maximum data point in the defined
+ box. value is returned in $returned global variable
+
+ 
+ see also : <A HREF="Scommands.html#SUMREC">SUMREC</A> 
 </pre>
 </BLOCKQUOTE>
 <A NAME="maxinbox.g">
@@ -385,6 +400,24 @@ Sets to zero the positive parts of the signal
  see also : <A HREF="Acommands.html#ABS">ABS</A> <A HREF="Ocommands.html#ONE">ONE</A> <A HREF="Pcommands.html#PLUS">PLUS</A> <A HREF="Zcommands.html#ZERO">ZERO</A> <A HREF="Zcommands.html#ZEROING">ZEROING</A> 
 </pre>
 </BLOCKQUOTE>
+<A NAME="MIRROR">
+<HR> <H3> MIRROR </H3> 
+<BLOCKQUOTE>
+<pre>
+mirror X
+
+implements mirror image reflection, as proposed by Zhu and Bax J.Magn.Reson. 90, p405 (1990)
+
+X determines the position of the t=0 point
+X =  0  no shift : in-phase data set
+    -1  acquisition started exactly half a dwell after t=0 (will need phase 0 180)
+    n&gt;0 acquisition started exactly n dwell before t=0
+        Warning, this is not coherent notation
+
+
+ see also : <A HREF="Bcommands.html#BURG">BURG</A> <A HREF="Bcommands.html#burg_mirror">burg_mirror</A> 
+</pre>
+</BLOCKQUOTE>
 <A NAME="mkdbppm">
 <HR> <H3> mkdbppm </H3> 
 <BLOCKQUOTE>
@@ -531,7 +564,7 @@ as in unix
 internal value for BCORR 3 algorithm
 
 
- see also : <A HREF="Bcommands.html#BCORR">BCORR</A> <A HREF="Bcommands.html#BCORRP?">BCORRP?</A> 
+ see also : <A HREF="Bcommands.html#BCORR">BCORR</A> 
 </pre>
 </BLOCKQUOTE>
 <A NAME="MORPHOS">
@@ -541,7 +574,7 @@ internal value for BCORR 3 algorithm
 internal value for BCORR 3 algorithm
 
 
- see also : <A HREF="Bcommands.html#BCORR">BCORR</A> <A HREF="Bcommands.html#BCORRP?">BCORRP?</A> 
+ see also : <A HREF="Bcommands.html#BCORR">BCORR</A> 
 </pre>
 </BLOCKQUOTE>
 <A NAME="mosaic">
@@ -771,6 +804,26 @@ related variable : $ZMEM[]
 <BLOCKQUOTE>
  <B>part of the Assignment Module</B> <P> 
  located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/mult_integ.new">Show macro</A>
+<pre>
+ mult_integ (interactive)
+
+ permits the integration of peaks along a series of 
+ experiments according to an assignment database, an amoeba file
+ and a data-sets list. 
+ For each peak, the integral values are written in Tela source file format 
+ in an independent file, located in processing directory
+ The amoeba file basename is also the name of the hash data-base between 
+ the indexes of peaks in assignment data-base and peak file.
+
+ mult_integ calls compute_label
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="mult_integ.old">
+<HR> <H3> mult_integ.old </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/mult_integ.old">Show macro</A>
 <pre>
  mult_integ (interactive)
 

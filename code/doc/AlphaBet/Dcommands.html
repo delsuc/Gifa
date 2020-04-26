@@ -1,6 +1,6 @@
 <html>
 <head>
-<!-- This document created by dodoc_html V2.1>
+<!-- This document created by dodoc_html V2.1 -->
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 </head>
 <body bgcolor="#FFFFFF" text="#000000" link="#CC0000">
@@ -23,6 +23,23 @@
 <BLOCKQUOTE>
  <B>part of the Assignment Module</B> <P> 
  located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/dbck">Show macro</A>
+<pre>
+ dbck
+
+ check all current assignment data-bases for integrity
+
+ default is to keep as much as possible wrong entries
+
+ due to a bug in the foreach code, This command may have to
+ be applied more than once in case of wrong entries.
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="dbck.save">
+<HR> <H3> dbck.save </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/dbck.save">Show macro</A>
 <pre>
  dbck
 
@@ -72,6 +89,24 @@ a previous DBOPEN command.
  see also : <A HREF="Dcommands.html#dbexport">dbexport</A> <A HREF="Dcommands.html#DBOPEN">DBOPEN</A> 
 </pre>
 </BLOCKQUOTE>
+<A NAME="dbm2gtb">
+<HR> <H3> dbm2gtb </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/dbm2gtb">Show macro</A>
+<pre>
+ dbm2gtb input file output file
+
+ WARNING
+ even though it is distributed with Gifa 5, this macro will run only
+ in Gifa version 4
+
+ this macro, will convert dbm files (the *.pag *.dir files)
+ and will create a gtb file (the format used by the dbopen command in Gifa 5)
+
+ 
+ see also : 
+</pre>
+</BLOCKQUOTE>
 <A NAME="DBOPEN">
 <HR> <H3> DBOPEN </H3> 
 <BLOCKQUOTE>
@@ -100,7 +135,7 @@ segmentation step of BCORR 3 when Dynamic clustering is used.
 +100 : the algorithm runs on the second derivative of the data set.
 
 
- see also : <A HREF="Bcommands.html#BCORR">BCORR</A> <A HREF="Bcommands.html#BCORRP?">BCORRP?</A> 
+ see also : <A HREF="Bcommands.html#BCORR">BCORR</A> 
 </pre>
 </BLOCKQUOTE>
 <A NAME="DCDISTANCE">
@@ -113,7 +148,7 @@ of BCORR 3 when Dynamic clustering is used.
 1 : Euclidian distance.
 
 
- see also : <A HREF="Bcommands.html#BCORR">BCORR</A> <A HREF="Bcommands.html#BCORRP?">BCORRP?</A> 
+ see also : <A HREF="Bcommands.html#BCORR">BCORR</A> 
 </pre>
 </BLOCKQUOTE>
 <A NAME="DCFACTOR">
@@ -124,7 +159,7 @@ Selects the scaling that will be used for the first segmentation
 step of BCORR 3 when Dynamic clustering is used.
 
 
- see also : <A HREF="Bcommands.html#BCORR">BCORR</A> <A HREF="Bcommands.html#BCORRP?">BCORRP?</A> 
+ see also : <A HREF="Bcommands.html#BCORR">BCORR</A> 
 </pre>
 </BLOCKQUOTE>
 <A NAME="DCITER">
@@ -135,7 +170,7 @@ Selects the maximum number of iterations that will be used for the
 first segmentation step of BCORR 3 when Dynamic clustering is used.
 
 
- see also : <A HREF="Bcommands.html#BCORR">BCORR</A> <A HREF="Bcommands.html#BCORRP?">BCORRP?</A> 
+ see also : <A HREF="Bcommands.html#BCORR">BCORR</A> 
 </pre>
 </BLOCKQUOTE>
 <A NAME="DEBUG">
@@ -161,7 +196,7 @@ by the bcorr 3 (polynomial) baseline correction command.
 Maximum (and recommanded) value is 10
 
 
- see also : <A HREF="Bcommands.html#BCORR">BCORR</A> <A HREF="Bcommands.html#BCORRP?">BCORRP?</A> 
+ see also : <A HREF="Bcommands.html#BCORR">BCORR</A> 
 </pre>
 </BLOCKQUOTE>
 <A NAME="detnbexp.g">
@@ -395,7 +430,7 @@ related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $DISP1D $ABSMAX $BCOLOR
     $SCALE $VHEIGHT $AXIS $ZOOM ZOOM_1D[1] ZOOM_1D[2]
 
 
- see also : <A HREF="Acommands.html#AXIS">AXIS</A> <A HREF="Bcommands.html#BCOLOR">BCOLOR</A> <A HREF="Ccommands.html#CCOLOR">CCOLOR</A> <A HREF="Ccommands.html#CDISP2D">CDISP2D</A> <A HREF="Ccommands.html#CLEAR">CLEAR</A> <A HREF="Ccommands.html#COLOR">COLOR</A> <A HREF="Dcommands.html#DISP2D">DISP2D</A> <A HREF="Dcommands.html#DISP3D">DISP3D</A> <A HREF="Rcommands.html#REF">REF</A> <A HREF="Scommands.html#SCALE">SCALE</A> <A HREF="Scommands.html#SHOWC">SHOWC</A> <A HREF="Scommands.html#STPL">STPL</A> <A HREF="Scommands.html#STPL?">STPL?</A> <A HREF="Scommands.html#super1d">super1d</A> <A HREF="Ucommands.html#UNREF">UNREF</A> <A HREF="Vcommands.html#VHEIGHT">VHEIGHT</A> 
+ see also : <A HREF="Acommands.html#AXIS">AXIS</A> <A HREF="Bcommands.html#BCOLOR">BCOLOR</A> <A HREF="Ccommands.html#CCOLOR">CCOLOR</A> <A HREF="Ccommands.html#CDISP2D">CDISP2D</A> <A HREF="Ccommands.html#CLEAR">CLEAR</A> <A HREF="Ccommands.html#COLOR">COLOR</A> <A HREF="Dcommands.html#DISP2D">DISP2D</A> <A HREF="Dcommands.html#DISP3D">DISP3D</A> <A HREF="Rcommands.html#REF">REF</A> <A HREF="Scommands.html#SCALE">SCALE</A> <A HREF="Scommands.html#SHOWC">SHOWC</A> <A HREF="Scommands.html#STPL">STPL</A> <A HREF="Scommands.html#super1d">super1d</A> <A HREF="Ucommands.html#UNREF">UNREF</A> <A HREF="Vcommands.html#VHEIGHT">VHEIGHT</A> 
 </pre>
 </BLOCKQUOTE>
 <A NAME="DISP2D">
@@ -411,7 +446,7 @@ related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $DISP2D $ABSMAX $BCOLOR
     $SCALE $SIGN $AXIS $ZOOM ZOOM_2D[1] ZOOM_2D[2] ZOOM_2D[3] ZOOM_2D[4]
 
 
- see also : <A HREF="Acommands.html#AXIS">AXIS</A> <A HREF="Bcommands.html#BCOLOR">BCOLOR</A> <A HREF="Ccommands.html#CDISP2D">CDISP2D</A> <A HREF="Ccommands.html#CLEAR">CLEAR</A> <A HREF="Ccommands.html#COLOR">COLOR</A> <A HREF="Dcommands.html#DISP1D">DISP1D</A> <A HREF="Dcommands.html#DISP3D">DISP3D</A> <A HREF="Rcommands.html#REF">REF</A> <A HREF="Scommands.html#SCALE">SCALE</A> <A HREF="Scommands.html#STPL">STPL</A> <A HREF="Scommands.html#STPL?">STPL?</A> <A HREF="Ucommands.html#UNREF">UNREF</A> 
+ see also : <A HREF="Acommands.html#AXIS">AXIS</A> <A HREF="Bcommands.html#BCOLOR">BCOLOR</A> <A HREF="Ccommands.html#CDISP2D">CDISP2D</A> <A HREF="Ccommands.html#CLEAR">CLEAR</A> <A HREF="Ccommands.html#COLOR">COLOR</A> <A HREF="Dcommands.html#DISP1D">DISP1D</A> <A HREF="Dcommands.html#DISP3D">DISP3D</A> <A HREF="Rcommands.html#REF">REF</A> <A HREF="Scommands.html#SCALE">SCALE</A> <A HREF="Scommands.html#STPL">STPL</A> <A HREF="Ucommands.html#UNREF">UNREF</A> 
 </pre>
 </BLOCKQUOTE>
 <A NAME="DISP3D">
@@ -473,6 +508,21 @@ related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $DISP3D
 <HR> <H3> dispcont </H3> 
 <BLOCKQUOTE>
  located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/dispcont">Show macro</A>
+<pre>
+ dispcont no_arg 
+
+ creates a form box which permits to modify the contour parameters
+
+ calls itself with parameters for the update
+
+ 
+ see also : <A HREF="Ccommands.html#CDISP2D">CDISP2D</A> <A HREF="Lcommands.html#LEVEL">LEVEL</A> <A HREF="Lcommands.html#LOGA">LOGA</A> <A HREF="Scommands.html#SIGN">SIGN</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="dispcont.old">
+<HR> <H3> dispcont.old </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/dispcont.old">Show macro</A>
 <pre>
  dispcont no_arg 
 

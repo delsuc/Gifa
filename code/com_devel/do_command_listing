@@ -17,7 +17,7 @@ while	($ARGV[0]  =~ /^-/) {
 
 $ldoc = "command_list.html";
 open(OFL, ">/usr/local/gifa/doc/$ldoc") || die "cannot open $ldoc\n";
-print OFL "<html>\n<head><!-- This document created by dodoc_html v1.0></head><body>\n";
+print OFL "<html>\n<head><!-- This document created by dodoc_html v1.0 --></head><body>\n";
 print OFL "<TITLE>Gifa Commands in alphabetical order </TITLE>\n";
 print OFL "<DL>\n";
 print OFL "<pre>\n";

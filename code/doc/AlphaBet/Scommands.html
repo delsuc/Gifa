@@ -1,6 +1,6 @@
 <html>
 <head>
-<!-- This document created by dodoc_html V2.1>
+<!-- This document created by dodoc_html V2.1 -->
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 </head>
 <body bgcolor="#FFFFFF" text="#000000" link="#CC0000">
@@ -134,7 +134,7 @@ derivatives.
 +10 : with a morphological filtering after the segmentation.
 
 
- see also : <A HREF="Bcommands.html#BCORR">BCORR</A> <A HREF="Bcommands.html#BCORRP?">BCORRP?</A> 
+ see also : <A HREF="Bcommands.html#BCORR">BCORR</A> 
 </pre>
 </BLOCKQUOTE>
 <A NAME="SEGM2">
@@ -153,7 +153,7 @@ automatic segmentation uses a window, WINSEGM2, and a threshold,
 LEVELSEGM2.
 
 
- see also : <A HREF="Bcommands.html#BCORR">BCORR</A> <A HREF="Bcommands.html#BCORRP?">BCORRP?</A> 
+ see also : <A HREF="Bcommands.html#BCORR">BCORR</A> 
 </pre>
 </BLOCKQUOTE>
 <A NAME="select_proj">
@@ -456,6 +456,18 @@ related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $C_JOINED $C_NAME
 
 </pre>
 </BLOCKQUOTE>
+<A NAME="showfit1pk.g.old">
+<HR> <H3> showfit1pk.g.old </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att/dyna    <A HREF="/usr/local/gifa/macro/att/dyna/showfit1pk.g.old">Show macro</A>
+<pre>
+ showfit1pk.g $data_typ
+
+ calculate and show the fitted curve on (10*$nbexp) points
+
+</pre>
+</BLOCKQUOTE>
 <A NAME="SHOWLINE">
 <HR> <H3> SHOWLINE </H3> 
 <BLOCKQUOTE>
@@ -613,6 +625,18 @@ display. Uses the current definition of SCOLOR for drawing.
 <BLOCKQUOTE>
  <B>part of the Assignment Module</B> <P> 
  located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/show_att.new">Show macro</A>
+<pre>
+ show_att $i
+
+ display on screen a peak.
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="show_att.old">
+<HR> <H3> show_att.old </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/show_att.old">Show macro</A>
 <pre>
  show_att $i
 
@@ -974,7 +998,7 @@ controls the smoothing of data for the first segmentation
 +10   hysteresis smoothing of the data set with the value LEVELHYSTE.
 
 
- see also : <A HREF="Bcommands.html#BCORR">BCORR</A> <A HREF="Bcommands.html#BCORRP?">BCORRP?</A> 
+ see also : <A HREF="Bcommands.html#BCORR">BCORR</A> 
 </pre>
 </BLOCKQUOTE>
 <A NAME="SPECW">
@@ -1065,6 +1089,30 @@ determines on which axis (axes) the apodization will be applies.
 
 </pre>
 </BLOCKQUOTE>
+<A NAME="stat_att_noe.save">
+<HR> <H3> stat_att_noe.save </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/stat_att_noe.save">Show macro</A>
+<pre>
+ stat_att_noe
+
+  noe assignment statistic.
+
+</pre>
+</BLOCKQUOTE>
+<A NAME="stat_att_noe.save_2">
+<HR> <H3> stat_att_noe.save_2 </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/stat_att_noe.save_2">Show macro</A>
+<pre>
+ stat_att_noe
+
+  noe assignment statistic.
+
+</pre>
+</BLOCKQUOTE>
 <A NAME="stat_sys">
 <HR> <H3> stat_sys </H3> 
 <BLOCKQUOTE>
@@ -1084,7 +1132,7 @@ Each new line during STPL is shifted by STDY centimeters on the Y
 axis. Default is 0.1
  
 
- see also : <A HREF="Scommands.html#STPL">STPL</A> <A HREF="Scommands.html#STPL?">STPL?</A> 
+ see also : <A HREF="Scommands.html#STPL">STPL</A> 
 </pre>
 </BLOCKQUOTE>
 <A NAME="STEP">
@@ -1145,16 +1193,6 @@ The command STPL? prompts you for all those parameters
  see also : <A HREF="Ccommands.html#CX">CX</A> <A HREF="Ccommands.html#CY">CY</A> <A HREF="Pcommands.html#PAGE">PAGE</A> <A HREF="Pcommands.html#PLOT">PLOT</A> <A HREF="Scommands.html#STDY">STDY</A> <A HREF="Scommands.html#STSHIFT">STSHIFT</A> <A HREF="Scommands.html#STSKEW">STSKEW</A> <A HREF="Scommands.html#STSKIP">STSKIP</A> 
 </pre>
 </BLOCKQUOTE>
-<A NAME="STPL?">
-<HR> <H3> STPL? </H3> 
-<BLOCKQUOTE>
-<pre>
-Prompts for all the parameters of the STPL command (see STPL)
-
- 
- see also : <A HREF="Scommands.html#STDY">STDY</A> <A HREF="Scommands.html#STPL">STPL</A> <A HREF="Scommands.html#STPL?">STPL?</A> <A HREF="Scommands.html#STSHIFT">STSHIFT</A> <A HREF="Scommands.html#STSKEW">STSKEW</A> <A HREF="Scommands.html#STSKIP">STSKIP</A> 
-</pre>
-</BLOCKQUOTE>
 <A NAME="strip_file">
 <HR> <H3> strip_file </H3> 
 <BLOCKQUOTE>
@@ -1176,7 +1214,7 @@ Prompts for all the parameters of the STPL command (see STPL)
  that the position in ppm reflects the peak index.
 
  if the final size is larger than a given threshold (see macro code)
- a temporary file will be created in /usr/tmp. Be careful not to overflow
+ a temporary file will be created in /tmp. Be careful not to overflow
  your disk !
 </pre>
 </BLOCKQUOTE>
@@ -1212,7 +1250,7 @@ plot. May be negative, null or positive; may be fractional.
 Default is 0.5.
  
 
- see also : <A HREF="Scommands.html#STPL">STPL</A> <A HREF="Scommands.html#STPL?">STPL?</A> 
+ see also : <A HREF="Scommands.html#STPL">STPL</A> 
 </pre>
 </BLOCKQUOTE>
 <A NAME="STSKEW">
@@ -1220,7 +1258,7 @@ Default is 0.5.
 <BLOCKQUOTE>
 <pre>
 Determines how the horizontal lines are skewed during a stacked plot. If 0 no skewing occurs, if positive the plot is skewed to the right, if negative, the plot is skewed to the left.For instance, a value of -1.0 will skew the horizontal by 45¡ to the left. STSKEW gives nice effects in conjunction with STSHIFT. 
- see also : <A HREF="Scommands.html#STPL">STPL</A> <A HREF="Scommands.html#STPL?">STPL?</A> 
+ see also : <A HREF="Scommands.html#STPL">STPL</A> 
 </pre>
 </BLOCKQUOTE>
 <A NAME="STSKIP">
@@ -1231,7 +1269,7 @@ Parameter for STPL.
 STPL will skip stskip lines during the plot. Default is 1.
  
 
- see also : <A HREF="Scommands.html#STPL">STPL</A> <A HREF="Scommands.html#STPL?">STPL?</A> 
+ see also : <A HREF="Scommands.html#STPL">STPL</A> 
 </pre>
 </BLOCKQUOTE>
 <A NAME="SUMCONS">
@@ -1353,6 +1391,20 @@ related <A HREF="Ccommands.html#CONTEXTS">contexts</A> : $NSVD
 
  
  see also : <A HREF="Bcommands.html#burg2d">burg2d</A> <A HREF="Dcommands.html#DT-&gt;SVD">DT-&gt;SVD</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="svd2d_stable">
+<HR> <H3> svd2d_stable </H3> 
+<BLOCKQUOTE>
+ located in /usr/local/gifa/macro    <A HREF="/usr/local/gifa/macro/svd2d_stable">Show macro</A>
+<pre>
+ svd2d_stable axis new_size
+
+ axis is F1 or F2,
+ extend the FID up to new_size, using SVD method
+
+ 
+ see also : <A HREF="Bcommands.html#burg2d">burg2d</A> <A HREF="Dcommands.html#DT-&gt;SVD">DT-&gt;SVD</A> <A HREF="Scommands.html#svd2d">svd2d</A> 
 </pre>
 </BLOCKQUOTE>
 <A NAME="SVDCLEAN1">
