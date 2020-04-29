@@ -16,18 +16,20 @@ It is also a contribution to the ["Ten Years Reproducibility Challenge"](https:/
 
 The directory [`article`](article) contains the LaTeX source code of the article submitted to ReScience.
 
-The directory [`code`](code) contains the code and the data
+The directory [`code`](code) contains the code 
 
-- com - various scripts used by the program while running
-- com_devel - various scripts used to build the program or the documentation
-- doc - the interactive documentation
-- help - help files
-- linux_obj - binary is built there
-- macro - the set of macros used by the program while running
-- source - the complete source of the program
-- test - the test suite
-- util - utility programs - not used in this release
-- Original_Distrib_Files - Old files unused for this release
+- [`com`](code/com) - various scripts used by the program while running
+- [`com_devel`](code/com_devel) - various scripts used to build the program or the documentation
+- [`doc`](code/doc) - the interactive documentation
+- [`help`](code/help) - help files
+- [`linux_obj`](code/linux_obj) - binary is built there
+- [`macro`](code/macro) - the set of macros used by the program while running
+- [`source`](code/source) - the complete source of the program
+- [`test`](code/test) - the test suite
+- [`util`](code/util) - utility programs - not used in this release
+- [`Original_Distrib_Files`](code/Original_Distrib_Files) - Old files unused for this release
+
+The directory [`data`](data) contain the test data used in the publication
 
 The first commits are as follows:
 - 1/ initial:  source files, macros, and tests of the 4.31 version - dated 1st Aug 2000 - the older source I could find (nearly 20 years later !)
