@@ -1,3 +1,4 @@
+; macro executing the 3D processing presented in Table 1
 dim 3
 itype 0
 chsize 256 64 512
