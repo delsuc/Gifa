@@ -3,11 +3,6 @@
 ; The user can - open / close the contour-mode display window
 ;              - choose to display positive / negative / both sides
 ;              - change the number and spacing of contour levels.
-;Preset parameters:; This macro creates a form box which permits to modify the
-; parameters of the contour-mode display window.
-; The user can - open / close the contour-mode display window
-;              - choose to display positive / negative / both sides
-;              - change the number and spacing of contour levels.
 ;Preset parameters:
 if ($CDISP2D==1) then     ;$cdisp2d describes graphic states.
     set cdef = on
