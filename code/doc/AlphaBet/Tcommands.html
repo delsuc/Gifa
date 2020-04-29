@@ -1,6 +1,6 @@
 <html>
 <head>
-<!-- This document created by dodoc_html V2.1>
+<!-- This document created by dodoc_html V2.1 -->
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 </head>
 <body bgcolor="#FFFFFF" text="#000000" link="#CC0000">
@@ -18,6 +18,20 @@
 
  
  see also : <A HREF="Gcommands.html#GET">GET</A> <A HREF="Lcommands.html#load">load</A> <A HREF="Pcommands.html#PUT">PUT</A> <A HREF="Scommands.html#showtab">showtab</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="test">
+<HR> <H3> test </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/test">Show macro</A>
+<pre>
+ align_pk_spin $spin_id
+ for a given spin align the peaks pointing to this spin
+ with the chemical shifts of the spin itself.
+ 
+ WARNING : peaks far from the spin are not detected nor moved !
+
 </pre>
 </BLOCKQUOTE>
 <A NAME="test1d">
@@ -202,6 +216,25 @@ Works for tabulated values
 
  
  see also : <A HREF="Mcommands.html#MUNSET">MUNSET</A> <A HREF="Ucommands.html#UNSET">UNSET</A> 
+</pre>
+</BLOCKQUOTE>
+<A NAME="tutu">
+<HR> <H3> tutu </H3> 
+<BLOCKQUOTE>
+ <B>part of the Assignment Module</B> <P> 
+ located in /usr/local/gifa/macro/att    <A HREF="/usr/local/gifa/macro/att/tutu">Show macro</A>
+<pre>
+ calib_integ  (interactive)
+
+ creates a tool which permits to handle several peaks used for intensity 
+ calibration
+
+ you can define peaks and associated upper and lower distance bounds.
+         store and load a set of peak definitions (stored as macro commands)
+         draw the peak definitions on screen
+
+ when loaded, the peak definition are stored in an associative array called
+ calib_dst[]
 </pre>
 </BLOCKQUOTE>
 <A NAME="txt2att">

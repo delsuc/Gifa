@@ -1,6 +1,6 @@
 <html>
 <head>
-<!-- This document created by dodoc_html V2.1>
+<!-- This document created by dodoc_html V2.1 -->
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 </head>
 <body bgcolor="#FFFFFF" text="#000000" link="#CC0000">
@@ -225,8 +225,10 @@ F1 transform
    FT type    sh (States Haberkorn) - tppi - sh_tppi - phase modu - n+p (echo antiecho)
    size after FT
       (but will be halved if you throw the imaginaries or do a baseline correction)
-   use LP : if "yes" Linear Prediction (the burg algorithm) is used for zerofilling in F1,
-      in which case, use a strong apodisation (sqsin) in F1
+   use LP : if "burg" Linear Prediction (the burg algorithm) is used for zerofilling in F1,
+            if "mirror on-phase" mirror image on-phase is used instead
+            if "mirror off-phase" mirror image off-phase is used (for data offseted by half a dwell time)
+      in all cases, use a strong apodisation (sqsin) in F1
 
 F2 transform
    FT type    sim (complex data);  seq (real/tppi data)

@@ -25,15 +25,15 @@ case $opt in
      sed 's/signal_/signal/' $base.c |
      sed 's/signal(&c__2/signal(2/' > $base.cc
      mv $base.cc $base.c
-     gcc -O2 $cflag $base.c;;
+     gcc -Ofast $cflag $base.c;;
    gifa) f2c $f2cflag -Nn802 -NL800  $nom
-     gcc -O2 $cflag $base.c;;
+     gcc -Ofast $cflag $base.c;;
    variable) f2c $f2cflag -Nn802 -NL800  $nom
-     gcc -O2 $cflag $base.c;;
+     gcc -Ofast $cflag $base.c;;
    execute) f2c $f2cflag -Nn1604 -NL1600 -Nx800  $nom
      gcc $cflag $base.c;;
    *) f2c $f2cflag  $nom
-     gcc -O2 $cflag $base.c;;
+     gcc -Ofast $cflag $base.c;;
    esac;;
 
 

@@ -24,7 +24,7 @@ while	($ARGV[0]  =~ /^-/) {
 #open out files - with html headers
 
 # base directory
-$base = "/usr/local/gifa/doc";
+$base = "/usr/local/gifa/doc/AlphaBet";
 
 # the first file, listed by alpha order, with the linked command names
 $doc  = "commands.html";
