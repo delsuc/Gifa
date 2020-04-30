@@ -18,7 +18,7 @@ else
 endif
 ;Build the form
 formbox "Display control" \
-    "dispcont_doit $cont $posneg $1ev Slog" \   ;Callback
+    "dispcont_doit $cont $posneg $1ev $log" \   ;Callback
     "Contour Display (cdisp2d)" \
         enum "on,off" cont $cdef \             ;Define fields
     "Display mode (sign)" \

@@ -167,14 +167,14 @@ simple, just an installation from the repository.
 \hypertarget{actual-changes}{%
 \subsubsection{Actual changes}\label{actual-changes}}
 
-\textbf{libraries:} I had to install X/Modif from the repository
+\paragraph{libraries:} I had to install X/Modif from the repository
 \texttt{libmotif-dev} and the \texttt{libxext-dev}; readline from
 \texttt{libreadline6-dev}. The \texttt{ndbm} database engine is not
 distributed, but the GNU foundation proposes \texttt{gdbm} which has a
 \texttt{ndbm} compatibility mode, activated with a flag at link time
 \texttt{-lgdbm\_compat}.
 
-\textbf{Linux and environment:} A few constructs were obsolete or not
+\paragraph{Linux and environment:} A few constructs were obsolete or not
 adapted to a modern system and had to be adapted.
 
 \begin{itemize}
@@ -199,14 +199,14 @@ adapted to a modern system and had to be adapted.
   The HTML documentation is created with a \texttt{perl} script, HTML
   comments were using
   "\texttt{\textless{}!-\/-\ comments\ \textgreater{}}" which is not
-  understood any-more; had to be changed to
+  understood any-more and had to be changed to
   "\texttt{\textless{}!-\/-\ comments\ -\/-\textgreater{}}"
 \item
   HTML display was using Netscape or Mozilla, this was changed to
   Firefox 
 \end{itemize}
 
-\textbf{licensing:} At the time of the publication, the program was not
+\paragraph{licensing:} At the time of the publication, the program was not
 open-source, and had to be activated with a licence key distributed upon
 request. A C code was checking the validity of the key at launch time,
 this code has been deactivated, and a CeCILL 2.1 license \cite{CeCILL} was associated
@@ -225,7 +225,22 @@ original study. The data-set which is shown in the original work could
 not be recovered. In consequence, I chose to present a TOCSY spectrum of
 Artemisine, obtained at 700MHz in a recent study \cite{Margueritte_2018}
 
-\lstinputlisting[caption={Text of the macro \texttt{dispcont}, which builds the display control form box.},label=Fig2a]{fig2a.g}
+
+\lstdefinelanguage{gifa}
+    {morekeywords={if, then, elsif, else, endif, formbox, exit, set, enum, int, real, message },
+    sensitive=false,
+    morecomment=[l]{;},
+    morestring=[b]",
+    }
+
+\lstset{ %backgroundcolor=\color{lightgray},
+    basicstyle=\small,
+    keywordstyle=\bfseries
+    }
+\lstinputlisting[language=gifa,
+    frame=single,
+    caption={Text of the macro \texttt{dispcont}, which builds the display control form box.},
+    label=Fig2a]{fig2a.g}
 
 \begin{figure}
 \centering
