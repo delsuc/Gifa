@@ -66,7 +66,7 @@ create the depend_list, used by `Makefile` to compile everything
 ```
 make depend
 ```
-build the binary
+build the binary *(ignore the warnings...)*
 ```
 make gifa
 ```
