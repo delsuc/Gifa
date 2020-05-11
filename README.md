@@ -72,7 +72,7 @@ make gifa
 ```
 then install copies stuff in `/usr/local` and `/usr/local/bin`
 ```
-make install
+sudo make install
 ```
 
 `make test` does not work because of some problem with dealing with the standard input 
