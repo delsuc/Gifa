@@ -9,12 +9,12 @@ doi: [10.1007/BF00228146](https://doi.org/10.1007/BF00228146)
  
 **Open Access version:** http://www.delsuc.net/pdf/2007-Journal%20of%20Magnetic%20Resonance-Tramesel.pdf
 
-It is also a contribution to the ["Ten Years Reproducibility Challenge"](https://github.com/ReScience/ten-years) run by [ReScience C](https://rescience.github.io/).
+It is also feature an [article](article/article.pdf) submitted as a contribution to the ["Ten Years Reproducibility Challenge"](https://github.com/ReScience/ten-years) run by [**ReScience C**](https://rescience.github.io/).
 
 
 ## Contents of this repository
 
-The directory [`article`](article) contains the LaTeX source code of the article submitted to ReScience.
+The directory [`article`](article) contains the LaTeX source code and accessory files of the article submitted to **ReScience C**.
 
 The directory [`code`](code) contains the code 
 
