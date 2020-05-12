@@ -49,6 +49,7 @@ Then with `apt-get` I install the following packages:
 `sudo apt-get install xxx` with `xxx` being successively
 `git`
 `f2c`
+`libxext-dev`
 `libmotif-dev`
 `libreadline6-dev`
 `libgdbm-dev`
@@ -75,22 +76,43 @@ then install copies stuff in `/usr/local` and `/usr/local/bin`
 sudo make install
 ```
 
-`make test` does not work because of some problem with dealing with the standard input 
+A full test procedure is in the `test`directory ad launched by `make test`; however this does not work because of some problem dealing with the standard input.
 
 but...
 ```
 cd ../test
 gifa
 ```
-... works.
+... works. 
 
-## duplicating the examples
-The two *Gifa* macros `fig2a.g` and `figure3.g`, located in the [`article`](article) directory reproduce the Figure 2 and 3 from the original article.
-( Note that in `fig2a.g` the action button produces an error because the `dispcont_doit` is not present. )
 
-Then the timing presented in Table 1 are obtained as follows:
+## first contact with *Gifa*
+*Gifa* is a data processing software, it processes and displays 1D, 2D and 3D NMR spectra. It is not the place here to go through all the feature, but just to glance at some of the features.
 
-- for the 2D processing, launch *Gifa* goto the [`code/test`](code/test) directory, and type `benchmark`.
+If you have done a full install, *Gifa* can be launched from the terminal just by typing `gifa` at the prompt, and the complete GUI will be launched (because a link to the `macro` has been added in your `$HOME` )
+
+You can load a spectrum, try `read` the file `Gifa/data/ARTE_ref_20.gs2`.
+*(`*.gf2` is for 2D FID; `*.gs2` is for 2D spectrum)*
+Then the tools in the zoombox can be used to control the display ()
+
+You can also interact with the spectrum (using a 3-buttons mouse):
+
+- **left or right click**: spectral coordinates in the zoombox
+- **middle click**: draw synchronized cross-hair in all spectral windows
+- **left + middle click**: draw a zoom box
+- **left + right click**: zoom in the drawn box
+
+To exit *Gifa*, type `exit` in the terminal, or go to the `About` menu.
+
+
+## duplicating the examples from the manuscript
+The two *Gifa* macros `fig2a.g` and `figure3.g`, located in the [`article`](article) directory reproduce the Figure 2 and 3 from the original article (names Figure 1 and 2 in the current manuscript).
+To launch them, simply go to `Gifa/article` type `gifa` to launch the program, and `fig2a.g` or `figure3.g` 
+( *Note that the purpose of `fig2a.g` is to control the display of a 2D spectrum - so if no spectrum is loaded it has no visible effect - if you wish to at least see something, you can for instance launch `figure3.g` first, as it loads and computes a 2D spectrum* )
+
+The timing presented in Table 1 are obtained as follows:
+
+- for the 2D processing, launch *Gifa* goto the [`code/test`](code/test) directory (there is a `cd` command), and type `benchmark`.
 This executes the standard benchmarking macro, which has been present since the very beginning of the development,
 and contains timing for all machines on which it has been tested.
 
