@@ -1,0 +1,32 @@
+; this text reproduces Figure 2b from theoriginal paper
+
+; macro dispcont doit
+; called by the form built with the dispcont macro
+
+set cont =  $_    ; Get arguments. $_ is for "next argument"
+set posneg =  $_
+set lev = $_
+set log =  $_
+;Process:
+if ($cont s= "off") then
+    cdisp2d 0
+else
+    if ($lev != $LEVEL) then
+        if ($lev <  1 | $lev >  64) error "Wrong number of levels"
+        level $lev
+    endif
+    if ($log != $LOGA) then
+        if ($log <  1) error "Loga should be >1"
+        loga $log
+    endif
+    cdisp2d 1
+endif
+if ($posneg s= "positive") then
+    sign 1
+elsif ($posneg s= "negative") then
+    sign -1
+else
+    sign 0
+endif
+exit
+

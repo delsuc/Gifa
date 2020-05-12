@@ -1,3 +1,5 @@
+; this text reproduces Figure 2a from theoriginal paper
+
 ; This macro creates a form box which permits to modify the
 ; parameters of the contour-mode display window.
 ; The user can - open / close the contour-mode display window
@@ -18,7 +20,7 @@ else
 endif
 ;Build the form
 formbox "Display control" \
-    "dispcont_doit $cont $posneg $1ev $log" \   ;Callback
+    "dispcont_doit $cont $posneg $lev $log" \   ;Callback
     "Contour Display (cdisp2d)" \
         enum "on,off" cont $cdef \             ;Define fields
     "Display mode (sign)" \

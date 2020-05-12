@@ -8,7 +8,7 @@ button.g
 ; read and process the data
 ; this part was created from 'Easy2d' results
 refmacro 0            ; no display during macro
-read Gifa/data/ARTE_ref_20.gf2    ; load the data
+read ../data/ARTE_ref_20.gf2    ; load the data
 correct1st                        ; compensate first FID
 sin 0 F2                          ; apodize in F2
 chsize % 8k                       ; zerofill in F2
@@ -28,6 +28,8 @@ cdisp2d 1 scale 15 loga 1.4 unit p zoom 1 3.5p 3.5p 0.8p 0.8p
 
 ; the 1D spectrum extracted at 1.0 ppm 
 disp1d 1 row 1p dim 1 zoom 1 1.3p 0.9p   ; the 1D spectrum
+
+dim 2                    ; back to 2D
 
 print " " print " " print " "
 print ('current file is :';$name)
