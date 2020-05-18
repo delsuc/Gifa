@@ -55,11 +55,25 @@ Then with `apt-get` I install the following packages:
 `libgdbm-dev`
 
 ## install and build Gifa
-get the source
+**To install**, get the source from here
 ```
 git clone https://github.com/delsuc/Gifa.git
 ```
-go to the source folder
+
+**The build process** is controlled by a single `Makefile` located in the `code/source` folder, along with the whole program source.
+Typing just `make` lists all the possible options.
+
+This makefile is common to all platforms on which *Gifa* was built,
+in a first step, it determines the actual platform, then transfers the control to another makefile located in a folder specific to the platform - `linux_obj` in our case.
+Building the binaries is handled by a `makefile` located in this folder, along with a `fortran` shell script that compiles the FORTRAN sources.
+The produced binary files are stored in this specific folder.
+
+The FORTRAN code is compiled to binary in three steps. First the `\*.for` file is preprocessed by a perl script called `FPP`, which handles include files, conditionals and assertions, and a `\*.f` is created.
+Then, in the present set-up, the `\*.f` is translated to a `\*.c` file with the `f2c` utility.
+Finally this C file is compiled to binary with a standard C compiler.
+
+
+To build, go to the source folder
 ```
 cd Gifa/code/source
 ```
@@ -67,7 +81,7 @@ create the depend_list, used by `Makefile` to compile everything
 ```
 make depend
 ```
-build the binary *(ignore the warnings...)*
+build the binary *(ignore the warnings!)*
 ```
 make gifa
 ```

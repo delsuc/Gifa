@@ -1,11 +1,11 @@
 \hypertarget{introduction}{%
 \section{Introduction}\label{introduction}}
 
-I present here the reproduction of the 1996 article ``Gifa V.4: A
+I present here the reproduction of the 1996 article entitled ``Gifa V.4: A
 complete package for NMR data set processing'' \cite{Pons_1996}.
 
 The \emph{Gifa} project is a carrier long effort. It was started in 1987
-as a way to gather various codes and ideas I had developed to handled
+as a way to gather various codes and ideas I had developed to handle
 and process NMR datasets in the early days of 2D and 3D NMR\footnote{I
   started doing NMR as early as 1979, for my French DEA project. 2D NMR
   was in its infancy (the initial paper from R.Ernst group is dated
@@ -18,7 +18,7 @@ and process NMR datasets in the early days of 2D and 3D NMR\footnote{I
 has been built over a careful memory management, a tuned data
 organisation, and a large set of elementary functions meant to be
 pipelined. The version 4 published in 1996 was a major improvement over
-the previous published version (1988) as it brought a complete scripting
+the previously published version (1988) as it brought a complete scripting
 language, a complete graphic user interface based on the Motif library,
 and a database management system. This program was not open-source at
 that time, but nevertheless profited from a large number of users, and
@@ -29,15 +29,15 @@ make it freely available on a code forge.
 \hypertarget{Historical-context}{%
 \section{Historical context}\label{Historical-context}}
 When I entered the \emph{ten years challenge}, I first thought of
-reproducing a latter avatar of the same project, a 2007 program
+reproducing a later avatar of the same project, a 2007 program
 implementation called at that time NPK \cite{Tramesel_2007}. The NPK
 version was an effort to move away from the monolithic environment of
 \emph{Gifa} which was nearly impossible to port to MacOs or Windows.
 This had lead us to move the graphic from X/Motif to Java/Swing and the
-scripting language to python 2.1 (thanks to then excellent
+scripting language to python 2.1 (thanks to the excellent
 \texttt{jython} package recently released then). However the
 mathematical core was unchanged and still written in F\textsc{ortran}77
-with strong 32 bit limitations. Because of this limitation, NPK was
+with strong 32 bit limitations. Because of these limitations, NPK was
 abandoned, and a much extended program has been developed in python
 since then \cite{Spike2016}.
 
@@ -47,8 +47,8 @@ effort, in particular considering my poor knowledge of Java and the fact
 that nobody was using this program any more. This is why I decided to
 fall back on the 1996 version of the same project.
 
-\emph{Gifa} was started in the eighties, when the first 32~bits
-architectures (VMS) were coexisting with older 16~bits ones (PDP-11). It
+\emph{Gifa} was started in the eighties, when the first 32~bit
+architectures (Vax/VMS) were coexisting with older 16~bit ones (PDP-11). It
 was also a time were 64MB of memory was plenty, and the challenge was to
 fit the 2D NMR datasets in memory, in contrast with other programs at
 that time which were doing lengthy processes by swapping the data on
@@ -67,13 +67,13 @@ operations (Fourier transforms, data-set arithmetic, model fitting,
 \ldots{}) and some advanced tools (Linear Prediction tools, Maximum
 Entropy optimisation, DOSY processing by Inverse Laplace
 transform\ldots{}). It is able to process 1D, 2D and in a less optimized
-manner 3D data-sets. It comes with a complete recursive script language
-with variable scoping, recursion, arrays, dictionaries, file I/O, and
+manner 3D data-sets. It comes with a complete scripting language
+with variable scoping, (limited) recursion, arrays, dictionaries, file I/O, and
 some database capabilities. This macro language, complemented with a set
 of graphic primitives is used to build a complete dynamic GUI, which
-covers basic and advanced operations, an assignment tool, and a
-relaxation module. As mentioned above, the memory model is very static
-and monolithic to allow an optimal use of the resources. This
+covers basic and advanced operations, an NMR assignment tool, and an NMR
+relaxation module. As mentioned above, the memory model is static
+and monolithic in order to allow an optimal use of the resources. This
 organisation insures little dependencies with respect to external tools,
 and a good control of the development.
 
@@ -87,12 +87,12 @@ upgrades (with migration of the accounts), and one OS change (from
 MacOsX to Linux Ubuntu).
 
 No version control system was used at that time, however I could find
-several versions of the source in in tar archives from version 4.31
+several versions of the source in tar archives from version 4.31
 dated Aug 2000, to version 4.5 dated Mars 2004. In the absence of the
 article version dated 1996, I decided to use these versions, and moved
 them to \href{https://github.com/delsuc/Gifa}{\texttt{github.com}} as
-successive commits. The code is about 54.000 lines of F\textsc{ortran}77
-, 18.000 lines of C and 27.000 lines of the macro language.
+successive commits. The code is about 54\,000 lines of F\textsc{ortran}77,
+18\,000 lines of C and 27\,000 lines of the macro language.
 
 The second step is to remember the file organisation and how to build
 the program. As the program was not open-source, this was not described
@@ -104,16 +104,15 @@ documentation, and guided me in the process.
 \subsection{Steps by steps}\label{steps-by-steps}}
 
 All the development work was performed in a virtual machine running
-Ubuntu 16.04 with 4GB of memory hosted by a MacBookPro with a Intel Core
+Ubuntu 16.04 32~bit with 4GB of memory hosted by a MacBookPro with a Intel Core
 i5-7360U processor at 2.30GHz, running Ubuntu 19.10.
 
-At the beginning of this project, I had three main concerns: i) the 32
-bit organisation of the program; ii) the maintainability of the
+At the beginning of this project, I had three main concerns: i) the 32~bit organisation of the program; ii) the maintainability of the
 production pipeline; and iii) external libraries, in particular the
 X/Motif library used for display.
 
-\hypertarget{a-32-bits-program}{%
-\subsubsection{a 32 bits program}\label{a-32-bits-program}}
+\hypertarget{A-32--program}{%
+\subsubsection{A 32 bit program}\label{A-32-bit-program}}
 
 As a consequence of the memory management, the 32 bit organisation is
 intrinsic to the program. Not sure on how to handle this, I decided to
@@ -131,7 +130,7 @@ AIX). This was possible through the use of a home-built production
 pipeline able to adapt the variations of each architecture, using a
 mixture of \texttt{make} and \texttt{perl} scripts and the \texttt{f2c}
 F\textsc{ortran}77 to C translator \cite{f2c}. Fortran source code first
-goes through a home-made Fortran code preprocessor which
+goes through a home-made Fortran code preprocessor that
 permits to include files, conditional code, and allows to tune and adapt
 the produced code. Fortran code is then translated to C by \texttt{f2c}
 and finally compiled with \texttt{gcc}. This scheme simplifies the
@@ -139,28 +138,28 @@ choice of the F\textsc{ortran}77 compiler and allows additional
 features, such as recursivity (not allowed in F\textsc{ortran}77 ) and
 simple link with C code.
 
-This set-up, which was optimized to allow a simple porting to a new
+This set-up, which was optimized to ease the porting to a new
 architecture, has helped a lot in the reproduction work. Only a few
 small modifications was needed to adapt the code to a recent version of
 Linux, running in a Virtual environment, as the basic languages
 (\texttt{make}, \texttt{perl}, and \texttt{C}) on which everything is
 based have not significantly changed.
 
-\hypertarget{external-libraries}{%
-\subsubsection{External libraries}\label{external-libraries}}
+\hypertarget{External-libraries}{%
+\subsubsection{External libraries}\label{External-libraries}}
 
-The program uses very few libraries apart for X/Motif graphic user
+The program uses very few external libraries apart for the X/Motif graphic user
 interface, and the \texttt{ndbm} database engine. Most mathematical
 algorithms (Fourier transform, Brent or Levenberg-Marquardt optimisers,
 \ldots{}) are natively coded, inspired from the excellent
-\emph{Numerical Recipes} book \cite{press96}. Linear algebra operations, uses
+\emph{Numerical Recipes} book \cite{press96}. Linear algebra operations, use
 the LINPACK \cite{linpack} routines, which sources were integrated in
 the code itself. Basic vector operations are constructed from a
 home-made library ( \texttt{vect.for} ) implementing 60+ basic
 operations, in an atomic manner, easy to optimize for the compiler.
 
 The X/Motif library had been a major hurdle during the \emph{Gifa} early
-development in particular the porting of various versions available, and
+development in particular while porting to the various available  versions, and
 I was fearing it would still be a problem. It turned out to be extremely
 simple, just an installation from the repository.
 
@@ -168,10 +167,10 @@ simple, just an installation from the repository.
 \subsubsection{Actual changes}\label{actual-changes}}
 
 \paragraph{libraries:} I had to install X/Modif from the repository
-\texttt{libmotif-dev} and the \texttt{libxext-dev}; readline from
+(\texttt{libmotif-dev}, \texttt{libxext-dev}) and readline from
 \texttt{libreadline6-dev}. The \texttt{ndbm} database engine is not
-distributed, but the GNU foundation proposes \texttt{gdbm} which has a
-\texttt{ndbm} compatibility mode, activated with a flag at link time
+available for the distribution 16.04, but the GNU Project proposes \texttt{gdbm} which has a
+\texttt{ndbm} compatibility mode, activated with a flag at link time:
 \texttt{-lgdbm\_compat}.
 
 \paragraph{Linux and environment:} A few constructs were obsolete or not
@@ -181,29 +180,29 @@ adapted to a modern system and had to be adapted.
 \tightlist
 \item
   At that time, \texttt{perl} was in version 4 (\texttt{perl} 5 was
-  released in 1994 and not widely adopted then). The Ubuntu chosen
-  release used \texttt{perl} 5.22 and a few simple syntaxic changes were
+  released in 1994 and not widely adopted then). Ubuntu 16.04
+  uses \texttt{perl} 5.22 and a few simple syntactic changes were
   needed to have a working pipeline.
 \item
   the timing code was using the \texttt{CLK\_TCK} macro which seems to
   be obsolete, this was modified to use
   \texttt{sysconf\ (\_SC\_CLK\_TCK)};
 \item
-  temporary files were created on \texttt{/usr/tmp}. I simply made a
-  link to \texttt{/tmp} to solve this problem which no modification in
+  temporary files were created on \texttt{/usr/tmp}. I had to make a
+  link to \texttt{/tmp} to solve this problem with no modification in
   the code;
 \item
-  I struggled a little with the link line - the simpler appeared to be
+  I struggled a bit with the linker step - the simpler appeared to be
   the better !
 \item
   The HTML documentation is created with a \texttt{perl} script, HTML
-  comments were using
+  comments were using the syntax
   "\texttt{\textless{}!-\/-\ comments\ \textgreater{}}" which is not
   understood any-more and had to be changed to
   "\texttt{\textless{}!-\/-\ comments\ -\/-\textgreater{}}"
 \item
-  HTML display was using Netscape or Mozilla, this was changed to
-  Firefox 
+  HTML display was using Netscape\texttrademark\ or Mozilla\texttrademark, this was changed to
+  Firefox\texttrademark . 
 \end{itemize}
 
 \paragraph{licensing:} At the time of the publication, the program was not
@@ -212,6 +211,8 @@ request. A C code was checking the validity of the key at launch time,
 this code has been deactivated, and a CeCILL 2.1 license \cite{CeCILL} was associated
 to the code.
 
+All the modifications are reflected as commits in the repository.
+
 \hypertarget{reproduction}{%
 \section{Reproduction}\label{reproduction}}
 
@@ -219,7 +220,7 @@ After performing the modifications above, the program runs directly with
 no particular problem, and the internal test suit is validated with no
 error. The display system is up and the graphic User Interface is
 correctly functioning. Figures 1 and 2a in the original study, which
-present the macro language are not reproduced here. Listing 1 reproduce
+present the macro language are not reproduced here. Listing 1 reproduces
 Figure 2b, and Figures 1 and 2 reproduce Figures 2c and 3 from the
 original study. The data-set which is shown in the original work could
 not be recovered. In consequence, I chose to present a TOCSY spectrum of
@@ -291,9 +292,9 @@ a complete check of all functionalities has not been fully performed.
 \hypertarget{conclusion}{%
 \section{Conclusion}\label{conclusion}}
 
-The \emph{Gifa} program was successfully reproduced, relatively easily
+The \emph{Gifa} program was successfully reproduced, in a relatively easy manner
 for a software of this size, developed about 25 years ago.
-The version of the code originally published was lost, but a latter version of
+The version of the code originally published was lost, but a later version of
 the program was used and fully reproduced on a recent computer.
 The reproduction was performed in a simple Virtual Machine, running the
 32\ bit version of Ubuntu 16.04, which should be supported until April
@@ -309,18 +310,19 @@ to be installed are the X/Motif graphic and the \texttt{gdbm} the GNU
 simple database engine, both being still supported under Linux. Also,
 the diversity of the Unix environment in the nineties, imposed the
 development a robust production pipeline easy to modify and to tune,
-which as a valuable tool in the reproduction. The needed corrections
-were mostly finding and installing the correct software packet or
-library. Some tools and some structures had to be modified because they
-were using obsolete constructs ( Netscape and HTML comments for instance
-!).
+which has been a valuable tool in this reproduction.
+The needed corrections
+mostly consisted in finding and installing the correct software packets or
+libraries.
+Some tools and some structures had to be modified because of obsolete constructs
+(Netscape\texttrademark\ or HTML comments for instance!).
 
 Reviving the \emph{Gifa} program was an interesting experience, it
-reminded me the qualities - and flaws - of this program, and the
-efficiency of a monolithic program, with a tight memory management and
+reminded me the qualities - and flaws - of this program, and
+let me appreciate the efficiency of a monolithic program, with a tight memory management and
 an algorithmics optimized to the limited resources available 20 years
 ago. Despite its limitations, such a program can still have many
-application today, for instance embedded in a larger environment.
+applications today, for instance embedded in a larger environment.
 
 This work also showed that a monolithic program, written with simple
 standard tools, with little dependencies on the environment, is quite

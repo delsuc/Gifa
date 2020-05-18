@@ -1,4 +1,4 @@
-; this text reproduces Figure 2a from theoriginal paper
+; this text reproduces Figure 2a from the original paper
 
 ; This macro creates a form box which permits to modify the
 ; parameters of the contour-mode display window.
