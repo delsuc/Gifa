@@ -50,7 +50,7 @@ replication:
           JL Pons, TE Malliavin, MA Delsuc
           J. Bio NMR 8 (4), 445-452 (1996)
  - bib:  Pons_1996
- - url:  http://www.delsuc.net/pdf/2007-Journal%20of%20Magnetic%20Resonance-Tramesel.pdf
+ - url:  http://www.delsuc.net/pdf/2007-Journal\%20of\%20Magnetic\%20Resonance-Tramesel.pdf
  - doi:  10.1016/j.jmr.2007.05.023
 
 # Don't forget to surround abstract with double quotes
