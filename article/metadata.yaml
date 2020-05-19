@@ -37,7 +37,7 @@ keywords: NMR, data processing, FORTRAN77
 code:
   - url: https://github.com/delsuc/Gifa
   - doi: 
-  - swh: 
+  - swh: swh:1:dir:57cb6f31528c596cc67ce46e142f3de8cb082bcb
 
 # Data URL and DOI (optional if no data)
 data:
