@@ -4,7 +4,7 @@
 I present here the reproduction of the 1996 article entitled ``Gifa V.4: A
 complete package for NMR data set processing'' \cite{Pons_1996}.
 
-The \emph{Gifa} project is a carrier long effort. It was started in 1987
+The \emph{Gifa} project is a career-long effort. It was started in 1987
 as a way to gather various codes and ideas I had developed to handle
 and process NMR datasets in the early days of 2D and 3D NMR\footnote{I
   started doing NMR as early as 1979, for my French DEA project. 2D NMR
@@ -305,15 +305,15 @@ programming languages, still well supported today (\texttt{f2c},
 \texttt{perl}, \texttt{make}, \texttt{gzip}, \texttt{tar}, \ldots{}).
 The program is one large code with very little external dependencies, as
 it internally contains all mathematical routines, an internal macro
-language, and its own GUI system. The only external libraries which had
-to be installed are the X/Motif graphic and the \texttt{gdbm} the GNU
-simple database engine, both being still supported under Linux. Also,
-the diversity of the Unix environment in the nineties, imposed the
-development a robust production pipeline easy to modify and to tune,
+language, and its own GUI system.
+The only external libraries which had
+to be installed are the X/Motif graphic and \texttt{ndbm}, a flat database engine.
+While the X/Motif library could be installed and linked with no modification, \texttt{ndbm} was not available. 
+By chance \texttt{gdbm}, the GNU simple database engine, has a compatibility mode for \texttt{ndbm} which could be readily used.
+Also, the diversity of the Unix environments in the nineties, imposed the
+development of a robust production pipeline easy to modify and to tune,
 which has been a valuable tool in this reproduction.
-The needed corrections
-mostly consisted in finding and installing the correct software packets or
-libraries.
+The needed corrections have mostly consisted in finding and installing the correct software packets or libraries.
 Some tools and some structures had to be modified because of obsolete constructs
 (Netscape\texttrademark\ or HTML comments for instance!).
 
