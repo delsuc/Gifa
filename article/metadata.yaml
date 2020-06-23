@@ -86,11 +86,11 @@ review:
   - url: https://github.com/ReScience/submissions/issues/33
 
 contributors:
-  - name:
-    orcid: 
+  - name: Pierre de Buyl
+    orcid: 0000-0002-6640-6463
     role: editor
-  - name:
-    orcid:
+  - name: Konrad Hinsen
+    orcid: 0000-0003-0330-9428
     role: reviewer
   - name:
     orcid:
@@ -98,19 +98,19 @@ contributors:
 
 # This information will be provided by the editor
 dates:
-  - received: 
-  - accepted:
-  - published: 
+  - received: April 30, 2020
+  - accepted: June 18, 2020
+  - published: June 23, 2020
 
 # This information will be provided by the editor
 article:
-  - number: # Article number will be automatically assigned during publication
-  - doi:    # DOI from Zenodo
-  - url:    # Final PDF URL (Zenodo or rescience website?)
+  - number: 9 # Article number will be automatically assigned during publication
+  - doi: 10.5281/zenodo.3904595   # DOI from Zenodo
+  - url: https://zenodo.org/record/3904595/files/article.pdf   # Final PDF URL (Zenodo or rescience website?)
 
 # This information will be provided by the editor
 journal:
   - name:   "ReScience C"
   - issn:   2430-3658
-  - volume: 4
+  - volume: 6
   - issue:  1
